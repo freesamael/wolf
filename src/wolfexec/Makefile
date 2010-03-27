@@ -1,0 +1,13 @@
+WOLFEXEC_OBJS = ${WOLFEXEC_SRCDIR}/test.o
+WOLFEXEC_TEST = ${WOLF_BINDIR}/test
+WOLFEXEC = ${WOLFEXEC_TEST}
+
+LIBS += -lpthread -ld2mce -lcom -lwolf
+LDFLAGS += -L${COMLIB_SRCDIR} -L${WOLFLIB_SRCDIR}
+
+${WOLFEXEC_TEST}: ${WOLFEXEC_OBJS}
+	${CPP} -o $@ ${LDFLAGS} $^ ${LIBS}
+
+wolfexec_clean:
+	-rm ${WOLFEXEC_OBJS} ${WOLFEXEC}
+
