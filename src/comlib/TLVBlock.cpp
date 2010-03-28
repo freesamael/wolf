@@ -26,6 +26,8 @@ TLVBlock::TLVBlock(unsigned short type, unsigned short length):
 		_type(type), _length(length)
 {
 	_buf = new char[length + szHeader];
+	_writetype();
+	_writelength();
 }
 
 TLVBlock::~TLVBlock()
@@ -39,9 +41,7 @@ TLVBlock::~TLVBlock()
 void TLVBlock::setType(unsigned short type)
 {
 	_type = type;
-
-	unsigned short ntype = htons(type);
-	memcpy(_buf, &ntype, szType);
+	_writetype();
 }
 
 /**
@@ -54,10 +54,32 @@ void TLVBlock::setLength(unsigned short len)
 	delete _buf;
 	_buf = new char[len + szHeader];
 
-	unsigned short nlen = htons(len);
+	_writetype();
+	_writelength();
+}
+
+/**
+ * @brief Write type into buffer.
+ */
+void TLVBlock::_writetype()
+{
+	unsigned short ntype = htons(_type);
+	memcpy(_buf, &ntype, szType);
+}
+
+/**
+ * @brief Write length into buffer.
+ */
+void TLVBlock::_writelength()
+{
+	unsigned short nlen = htons(_length);
 	memcpy(&_buf[szType], &nlen, szLength);
 }
 
+/**
+ * @brief Concatenate TLV blocks into one TLV block (nested TLV).
+ * @note Type will be TLV_TYPE_INVALID, which should be modified afterward.
+ */
 TLVBlock* TLVBlock::concate(const vector<TLVBlock*> &blocks)
 {
 	TLVBlock *blk = new TLVBlock();

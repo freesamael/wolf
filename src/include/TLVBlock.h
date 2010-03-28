@@ -37,6 +37,8 @@ public:
 	static TLVBlock* concate(const std::vector<TLVBlock*> &blocks);
 
 private:
+	void _writetype();
+	void _writelength();
 	unsigned short _type;
 	unsigned short _length;
 	char *_buf;
