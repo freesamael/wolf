@@ -21,6 +21,10 @@ AbstractManagerActor::~AbstractManagerActor()
 		delete _outports[i];
 }
 
+/**
+ * @brief Test if all inputs are ready.
+ * @return True if all inputs are ready or there's no inputs. False otherwise.
+ */
 bool AbstractManagerActor::isInputReady() const
 {
 	for (int i = 0; i < (int)_inports.size(); i++)

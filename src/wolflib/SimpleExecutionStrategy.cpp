@@ -7,6 +7,7 @@
 
 #include <deque>
 #include "SimpleExecutionStrategy.h"
+#include "IIterativeActor.h"
 
 using namespace std;
 
@@ -30,6 +31,14 @@ void SimpleExecutionStrategy::execute(const vector<IActor *> &actors)
 
 	// Execute one actor.
 	while (qready.size() > 0) {
+		IIterativeActor *itatr;
+		if ((itatr = dynamic_cast<IIterativeActor *>(qready.front()))) {
+			itatr->prefire();
+			while (itatr->firecond()) {
+				itatr->fire();
+			}
+			itatr->postfire();
+		}
 		qready.front()->prefire();
 		qready.front()->fire();
 		qready.front()->postfire();
