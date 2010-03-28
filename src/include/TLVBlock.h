@@ -9,9 +9,9 @@
 #define TLVBLOCK_H_
 
 #include <cstddef>
+#include <vector>
 
 #define TLV_TYPE_INVALID 	0
-#define TLV_TYPE_STRING		1
 
 namespace cml
 {
@@ -19,24 +19,27 @@ namespace cml
 class TLVBlock
 {
 public:
-	TLVBlock(unsigned short type = TLV_TYPE_INVALID,
-			unsigned short length = 0, char *value = NULL);
+	static const unsigned short szType, szLength, szHeader;
+	TLVBlock(unsigned short type = TLV_TYPE_INVALID, unsigned short length = 0);
 	~TLVBlock();
-	inline size_t typeSize() const { return sizeof(_type); }
-	inline size_t lengthSize() const { return sizeof(_length); }
-	inline size_t headerSize() const { return sizeof(_type) + sizeof(_length); }
 	inline unsigned short type() const { return _type; }
 	inline unsigned short length() const { return _length; }
-	inline char* value() const { return _value; }
-	inline void setType(unsigned short type) { _type = type; }
-	inline void setLength(unsigned short len) { _length = len; }
-	inline void setValue(char *value) { _value = value; }
-	void allocBuffer();
+	inline unsigned short size() const { return _length + szHeader; }
+	void setType(unsigned short type);
+	void setLength(unsigned short len);
+	inline char* getCompleteBuffer() { return _buf; }
+	inline const char* getCompleteBuffer() const { return _buf; }
+	inline char* getValueBuffer() {
+		return (!_length) ? NULL : &_buf[szHeader]; }
+	inline const char* getValueBuffer() const {
+		return (!_length) ? NULL : &_buf[szHeader]; }
+
+	static TLVBlock* concate(const std::vector<TLVBlock*> &blocks);
 
 private:
 	unsigned short _type;
 	unsigned short _length;
-	char *_value;
+	char *_buf;
 };
 
 }

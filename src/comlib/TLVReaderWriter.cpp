@@ -46,18 +46,17 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 
 	pthread_mutex_lock(&_mutex);
 	// Read type.
-	ret = activesock->read((char*)&type, blk.typeSize());
-	if (ret == (int)blk.typeSize()) {
+	ret = activesock->read((char*)&type, blk.szType);
+	if (ret == (int)blk.szType) {
 		type = ntohs(type);
 		// Read length.
-		ret = activesock->read((char*)&length, blk.lengthSize());
-		if (ret == (int)blk.lengthSize()) {
+		ret = activesock->read((char*)&length, blk.szLength);
+		if (ret == (int)blk.szLength) {
 			length = ntohs(length);
 			blk.setType(type);
 			blk.setLength(length);
-			blk.allocBuffer();
 			// Read value.
-			ret = activesock->read(blk.value(), blk.length());
+			ret = activesock->read(blk.getValueBuffer(), blk.length());
 			if (ret == blk.length())
 				success = true;
 		}
@@ -77,7 +76,7 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 bool TLVReaderWriter::write(const ITLVObject &obj, AbstractSocket *socket)
 {
 	bool success = false;
-	int ret, wsize = 0;
+	int ret;
 	TLVBlock *blk = obj.toTLVBlock();
 	AbstractSocket *activesock = (socket == NULL) ? _socket : socket;
 
@@ -86,22 +85,11 @@ bool TLVReaderWriter::write(const ITLVObject &obj, AbstractSocket *socket)
 
 	if (blk) {
 		pthread_mutex_lock(&_mutex);
-		unsigned short type = htons(blk->type()), length = htons(blk->length());
-		// Write type.
-		ret = activesock->write((char*)&type, blk->typeSize());
-		wsize += ret;
-		if (ret == (int)blk->typeSize()) {
-			// Write length.
-			ret = activesock->write((char*)&length, blk->lengthSize());
-			wsize += ret;
-			if (ret == (int)blk->lengthSize()) {
-				// Write value.
-				ret = activesock->write((char*)blk->value(), blk->length());
-				wsize += ret;
-			}
-		}
+		// Write whole buffer.
+		ret = activesock->write(blk->getCompleteBuffer(), blk->size());
 		pthread_mutex_unlock(&_mutex);
-		success = (wsize == (int)(blk->length() + blk->headerSize()));
+
+		success = (ret == (int)blk->size());
 	}
 
 	delete blk;

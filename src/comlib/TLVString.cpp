@@ -23,9 +23,8 @@ TLVBlock* TLVString::toTLVBlock() const
 		blk->setType(TLVObjectFactory::instance()->
 				lookupTypeId(typeid(*this).name()));
 		blk->setLength(_str.length());
-		blk->allocBuffer();
 		// TLV doesn't need to be null-terminated.
-		strncpy(blk->value(), _str.c_str(), blk->length());
+		strncpy(blk->getValueBuffer(), _str.c_str(), blk->length());
 		return blk;
 	}
 	return NULL;

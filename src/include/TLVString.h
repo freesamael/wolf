@@ -11,6 +11,8 @@
 #include <string>
 #include "ITLVObject.h"
 
+#define TLV_TYPE_STRING		1
+
 namespace cml
 {
 
