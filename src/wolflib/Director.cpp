@@ -6,9 +6,9 @@
  */
 
 #include <deque>
-#include "Channel.h"
 #include "Director.h"
-#include "AbstractActor.h"
+#include "Channel.h"
+#include "IActor.h"
 
 using namespace std;
 
@@ -27,9 +27,9 @@ Director::~Director()
  * @return True on success, false if it already exists inside the director.
  * @note Director takes the ownership of actors, and will delete/free them.
  */
-bool Director::addActor(AbstractActor *actor)
+bool Director::addActor(IActor *actor)
 {
-	vector<AbstractActor *>::iterator iter;
+	vector<IActor *>::iterator iter;
 	for (iter = _actors.begin(); iter != _actors.end(); iter++) {
 		if (*iter == actor)
 			return false;
@@ -42,9 +42,9 @@ bool Director::addActor(AbstractActor *actor)
  * @brief Remove an actor.
  * @return True on success, false if not found.
  */
-bool Director::removeActor(AbstractActor *actor)
+bool Director::removeActor(IActor *actor)
 {
-	vector<AbstractActor *>::iterator iter;
+	vector<IActor *>::iterator iter;
 	for (iter = _actors.begin(); iter != _actors.end(); iter++) {
 		if (*iter == actor) {
 			_actors.erase(iter);

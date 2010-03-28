@@ -15,21 +15,20 @@
 namespace wfe
 {
 
-class AbstractActor;
 class Channel;
 class Director
 {
 public:
 	Director(IExecutionStrategy *exest): _exest(exest){}
 	~Director();
-	bool addActor(AbstractActor *actor);
-	bool removeActor(AbstractActor *actor);
+	bool addActor(IActor *actor);
+	bool removeActor(IActor *actor);
 	Channel* createChannel(const std::string &name);
 	Channel* findChannel(const std::string &name);
 	void execute();
 
 private:
-	std::vector<AbstractActor *> _actors;
+	std::vector<IActor *> _actors;
 	std::vector<Channel *> _channels;
 	IExecutionStrategy *_exest;
 };

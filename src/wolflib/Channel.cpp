@@ -12,6 +12,8 @@ using namespace cml;
 
 namespace wfe
 {
-
-
+	const char *Channel::ChannelStateString[] =
+			{"Empty", "Written"};
+	const char *Channel::IOTypeString[] =
+			{"Input", "Output"};
 }

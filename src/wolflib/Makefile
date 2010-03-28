@@ -1,4 +1,7 @@
-WOLFLIB_OBJS = ${WOLFLIB_SRCDIR}/AbstractActor.o ${WOLFLIB_SRCDIR}/AbstractIterativeActor.o ${WOLFLIB_SRCDIR}/Channel.o ${WOLFLIB_SRCDIR}/Director.o ${WOLFLIB_SRCDIR}/Port.o ${WOLFLIB_SRCDIR}/SimpleExecutionStrategy.o
+WOLFLIB_OBJS = ${WOLFLIB_SRCDIR}/AbstractManagerActor.o \
+${WOLFLIB_SRCDIR}/Channel.o ${WOLFLIB_SRCDIR}/Director.o \
+${WOLFLIB_SRCDIR}/Port.o ${WOLFLIB_SRCDIR}/SimpleExecutionStrategy.o \
+${WOLFLIB_SRCDIR}/IActor.o
 
 WOLFLIB = ${WOLFLIB_SRCDIR}/libwolf.a
 

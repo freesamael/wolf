@@ -16,7 +16,7 @@ namespace wfe
 class SimpleExecutionStrategy: public IExecutionStrategy
 {
 public:
-	void execute(const std::vector<AbstractActor*> &actors);
+	void execute(const std::vector<IActor *> &actors);
 };
 
 }

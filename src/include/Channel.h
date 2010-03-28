@@ -14,7 +14,6 @@
 namespace wfe
 {
 
-class AbstractActor;
 class Channel
 {
 public:
@@ -22,10 +21,12 @@ public:
 		EMPTY,
 		WRITTEN
 	} ChannelState;
+	static const char *ChannelStateString[];
 	typedef enum IOType {
 		INPUT,
 		OUTPUT
 	} IOType;
+	static const char *IOTypeString[];
 
 	Channel(const std::string &name): _name(name), _smem(NULL) {}
 	inline ChannelState state() const { return (!_smem) ? EMPTY : WRITTEN; }

@@ -9,22 +9,22 @@
 #define PORT_H_
 
 #include <cstddef>
+#include "IActor.h"
 
 namespace wfe
 {
 
-class AbstractActor;
 class Channel;
 class Port
 {
 public:
-	Port(AbstractActor *actor): _actor(actor), _channel(NULL) {}
-	inline AbstractActor* actor() const { return _actor; }
+	Port(IActor *actor): _actor(actor), _channel(NULL) {}
+	inline IActor* actor() const { return _actor; }
 	inline Channel* channel() const { return _channel; }
 	inline void setChannel(Channel *channel) { _channel = channel; }
 
 private:
-	AbstractActor *_actor;
+	IActor *_actor;
 	Channel *_channel;
 };
 

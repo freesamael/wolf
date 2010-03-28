@@ -9,11 +9,10 @@
 #define IEXECUTIONSTRATEGY_H_
 
 #include <vector>
+#include "IActor.h"
 
 namespace wfe
 {
-
-class AbstractActor;
 
 /**
  * @note Execution strategies should take care of of both normal actors and
@@ -22,7 +21,7 @@ class AbstractActor;
 class IExecutionStrategy
 {
 public:
-	virtual void execute(const std::vector<AbstractActor*> &actors) = 0;
+	virtual void execute(const std::vector<IActor *> &actors) = 0;
 };
 
 }
