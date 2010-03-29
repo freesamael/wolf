@@ -61,6 +61,7 @@ TLVBlock* TLVMessage::toTLVBlock() const
 		return blk;
 	}
 
+	fprintf(stderr, "TLVMessage::toTLVBlock(): Error: Parameter can not be NULL.\n");
 	return NULL;
 }
 
