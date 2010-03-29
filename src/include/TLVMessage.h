@@ -13,25 +13,29 @@
 namespace wfe
 {
 
-class TLVMessage: cml::ITLVObject
+class TLVMessage: public cml::ITLVObject
 {
 public:
-	typedef enum Command {
-		INVALID,
-		ADD_MASTER,
-		ADD_SLAVE,
-		RUN_ACTOR
-	} Command;
-	TLVMessage(Command c = INVALID, ITLVObject *param = NULL):
+	/**
+	 * Enumeration of commands. To ensure the size and value of commands, we
+	 * use constant unsigned short instead of C++ 'enum' here.
+	 */
+	static const unsigned short EMPTY;
+	static const unsigned short ADD_MASTER;
+	static const unsigned short ADD_SLAVE;
+	static const unsigned short RUN_ACTOR;
+
+	TLVMessage(unsigned short c = EMPTY, ITLVObject *param = NULL):
 		_cmd(c), _param(NULL) {}
 	void run();
-	inline Command command() const { return _cmd; }
+	inline unsigned short command() const { return _cmd; }
 	inline ITLVObject* parameter() const { return _param; }
-	inline void setCommand(Command c) { _cmd = c; }
+	inline void setCommand(unsigned short c) { _cmd = c; }
 	inline void setParameter(ITLVObject *param) { _param = param; }
 	cml::TLVBlock* toTLVBlock() const;
+
 private:
-	Command _cmd;
+	unsigned short _cmd;
 	ITLVObject *_param;
 };
 

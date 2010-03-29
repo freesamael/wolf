@@ -40,6 +40,7 @@ bool Thread::start()
 		}
 		return true;
 	}
+	fprintf(stderr, "Thread::start(): Error: Thread %d is already started\n", (int)_tid);
 	return false;
 }
 

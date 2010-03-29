@@ -35,9 +35,9 @@ AbstractSocket::AbstractSocket(int sock):
 AbstractSocket::~AbstractSocket()
 {
 	if (close() != 0)
-		perror("AbstractSocket::~AbstractSocket: Closing socket");
+		perror("AbstractSocket::~AbstractSocket(): Closing socket");
 	if (pthread_mutex_destroy(&_mutex) != 0)
-		perror("AbstractSocket::~AbstractSocket: Destroying mutex");
+		perror("AbstractSocket::~AbstractSocket(): Destroying mutex");
 }
 
 /**

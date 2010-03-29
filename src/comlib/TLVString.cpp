@@ -5,6 +5,7 @@
  *      Author: samael
  */
 
+#include <cstdio>
 #include <cstring>
 #include <typeinfo>
 #include "TLVString.h"
@@ -27,6 +28,7 @@ TLVBlock* TLVString::toTLVBlock() const
 		strncpy(blk->getValueBuffer(), _str.c_str(), blk->length());
 		return blk;
 	}
+	fprintf(stderr, "TLVString::toTLVBlock(): Error: String is empty.\n");
 	return NULL;
 }
 

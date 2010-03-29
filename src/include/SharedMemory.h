@@ -18,7 +18,6 @@ class SharedMemory
 {
 public:
 	SharedMemory(std::string name, size_t size);
-	~SharedMemory();
 	inline const std::string& name() const { return _name; }
 	inline size_t size() const { return _size; }
 	inline char* buffer() { return _buf; }

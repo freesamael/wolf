@@ -5,6 +5,7 @@
  *      Author: samael
  */
 
+#include <cstdio>
 #include <arpa/inet.h>
 #include "TLVUInt32Creator.h"
 #include "TLVBlock.h"
@@ -20,6 +21,7 @@ ITLVObject* TLVUInt32Creator::create(const TLVBlock &blk) const
 		TLVUInt32 *obj = new TLVUInt32(ntohl(*nv));
 		return obj;
 	}
+	fprintf(stderr, "TLVUInt32Creator::create(): Error: TLV length unmatched.\n");
 	return NULL;
 }
 

@@ -5,6 +5,7 @@
  *      Author: samael
  */
 
+#include <cstdio>
 #include "TLVReaderWriter.h"
 #include "TLVBlock.h"
 #include "ITLVObject.h"
@@ -41,8 +42,10 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 	ITLVObject *obj = NULL;
 	AbstractSocket *activesock = (socket == NULL) ? _socket : socket;
 
-	if (!activesock)
+	if (!activesock) {
+		fprintf(stderr, "TLVReaderWriter::read(): Error: No active socket found.\n");
 		return NULL;
+	}
 
 	pthread_mutex_lock(&_mutex);
 	// Read type.
@@ -59,12 +62,19 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 			ret = activesock->read(blk.getValueBuffer(), blk.length());
 			if (ret == blk.length())
 				success = true;
-		}
-	}
+			else
+				fprintf(stderr, "TLVReaderWriter::read(): Error: Expected %u bytes but %u bytes read.\n",
+						blk.length(), ret);
+		} else
+			fprintf(stderr, "TLVReaderWriter::read(): Error: Unmatched bytes read while reading TLV length.\n");
+	} else
+		fprintf(stderr, "TLVReaderWriter::read(): Error: Unmatched bytes read while reading TLV type.\n");
 	pthread_mutex_unlock(&_mutex);
 
 	if (success)
 		obj = TLVObjectFactory::instance()->createTLVObject(blk);
+	else
+		fprintf(stderr, "TLVReaderWriter::read(): Error: Unable to build object.\n");
 
 	return obj;
 }
@@ -80,8 +90,10 @@ bool TLVReaderWriter::write(const ITLVObject &obj, AbstractSocket *socket)
 	TLVBlock *blk = obj.toTLVBlock();
 	AbstractSocket *activesock = (socket == NULL) ? _socket : socket;
 
-	if (!activesock)
+	if (!activesock) {
+		fprintf(stderr, "TLVReaderWriter::write(): Error: No active socket found.\n");
 		return false;
+	}
 
 	if (blk) {
 		pthread_mutex_lock(&_mutex);
@@ -89,8 +101,11 @@ bool TLVReaderWriter::write(const ITLVObject &obj, AbstractSocket *socket)
 		ret = activesock->write(blk->getCompleteBuffer(), blk->size());
 		pthread_mutex_unlock(&_mutex);
 
-		success = (ret == (int)blk->size());
-	}
+		if (!(success = (ret == (int)blk->size())))
+			fprintf(stderr, "TLVReaderWriter::write(): Error: Expected %u bytes but %u bytes written.",
+					blk->size(), ret);
+	} else
+		fprintf(stderr, "TLVReaderWriter::write(): Error: Unable to create TLV block from given object.\n");
 
 	delete blk;
 	return success;

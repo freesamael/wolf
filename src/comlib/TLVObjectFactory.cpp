@@ -5,6 +5,7 @@
  *      Author: samael
  */
 
+#include <cstdio>
 #include <typeinfo>
 #include "TLVObjectFactory.h"
 #include "ITLVObjectCreator.h"
@@ -142,6 +143,8 @@ ITLVObject* TLVObjectFactory::createTLVObject(const TLVBlock &blk)
 			_creators.end()) {
 		return iter->second->create(blk);
 	}
+	fprintf(stderr, "TLVObjectFactory::createTLVObject(): Error: No suitable creator found for type %u.\n",
+			blk.type());
 	return NULL;
 }
 

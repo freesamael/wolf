@@ -17,11 +17,16 @@ using namespace std;
 namespace wfe
 {
 
+const unsigned short TLVMessage::EMPTY = 0;
+const unsigned short TLVMessage::ADD_MASTER = 1;
+const unsigned short TLVMessage::ADD_SLAVE = 2;
+const unsigned short TLVMessage::RUN_ACTOR = 3;
+
 void TLVMessage::run()
 {
 	switch (_cmd) {
-	case INVALID:
-		fprintf(stderr, "TLVMessage::run(): Error: INVALID command can not be run.\n");
+	case EMPTY:
+		fprintf(stderr, "TLVMessage::run(): Error: EMPTY command can not be run.\n");
 		break;
 	case ADD_MASTER:
 		break;
@@ -36,23 +41,27 @@ void TLVMessage::run()
 
 TLVBlock* TLVMessage::toTLVBlock() const
 {
-	// Create TLV blocks.
-	TLVBlock *cmd = TLVUInt32(_cmd).toTLVBlock(),
-			*param = _param->toTLVBlock();
+	if (_param) {
+		// Create TLV blocks.
+		TLVBlock *cmd = TLVUInt32(_cmd).toTLVBlock(),
+				*param = _param->toTLVBlock();
 
-	// Put into vector.
-	vector<TLVBlock *> blks;
-	blks.push_back(cmd);
-	blks.push_back(param);
+		// Put into vector.
+		vector<TLVBlock *> blks;
+		blks.push_back(cmd);
+		blks.push_back(param);
 
-	// Construct concatenated block.
-	TLVBlock *blk = TLVBlock::concate(blks);
+		// Construct concatenated block.
+		TLVBlock *blk = TLVBlock::concate(blks);
 
-	// Clean up.
-	delete cmd;
-	delete param;
+		// Clean up.
+		delete cmd;
+		delete param;
 
-	return blk;
+		return blk;
+	}
+
+	return NULL;
 }
 
 }

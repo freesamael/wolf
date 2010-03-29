@@ -19,9 +19,4 @@ SharedMemory::SharedMemory(string name, size_t size):
 	_buf = (char *)d2mce_malloc(name.c_str(), size);
 }
 
-SharedMemory::~SharedMemory()
-{
-	// TODO Auto-generated destructor stub
-}
-
 }
