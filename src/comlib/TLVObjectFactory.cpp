@@ -10,7 +10,8 @@
 #include "ITLVObjectCreator.h"
 #include "TLVBlock.h"
 #include "TLVStringCreator.h"
-#include "TLVString.h"
+#include "TLVUInt16Creator.h"
+#include "TLVUInt32Creator.h"
 
 using namespace std;
 
@@ -23,7 +24,11 @@ pthread_mutex_t TLVObjectFactory::_mutex = PTHREAD_MUTEX_INITIALIZER;
 TLVObjectFactory::TLVObjectFactory()
 {
 	registerType(typeid(TLVString).name(), TLV_TYPE_STRING);
+	registerType(typeid(TLVUInt16).name(), TLV_TYPE_UINT16);
+	registerType(typeid(TLVUInt32).name(), TLV_TYPE_UINT32);
 	registerCreator(typeid(TLVString).name(), new TLVStringCreator());
+	registerCreator(typeid(TLVUInt16).name(), new TLVUInt16Creator());
+	registerCreator(typeid(TLVUInt32).name(), new TLVUInt32Creator());
 }
 
 TLVObjectFactory::~TLVObjectFactory()

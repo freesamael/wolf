@@ -7,7 +7,6 @@
 
 #include <cstring>
 #include "TLVStringCreator.h"
-#include "TLVString.h"
 #include "ITLVObject.h"
 #include "TLVBlock.h"
 
@@ -16,12 +15,7 @@ using namespace std;
 namespace cml
 {
 
-ITLVObject* TLVStringCreator::create()
-{
-	return new TLVString();
-}
-
-ITLVObject* TLVStringCreator::create(const TLVBlock &blk)
+ITLVObject* TLVStringCreator::create(const TLVBlock &blk) const
 {
 	// Convert to null-terminated string.
 	char *ntstr = new char[blk.length() + 1];

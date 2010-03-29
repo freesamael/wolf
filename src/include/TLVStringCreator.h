@@ -9,6 +9,9 @@
 #define TLVSTRINGCREATOR_H_
 
 #include "ITLVObjectCreator.h"
+#include "TLVString.h"
+
+#define TLV_TYPE_STRING		1
 
 namespace cml
 {
@@ -16,8 +19,8 @@ namespace cml
 class TLVStringCreator: public ITLVObjectCreator
 {
 public:
-	ITLVObject* create();
-	ITLVObject* create(const TLVBlock &blk);
+	inline ITLVObject* create() const { return new TLVString(); }
+	ITLVObject* create(const TLVBlock &blk) const;
 };
 
 }

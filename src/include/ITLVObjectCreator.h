@@ -18,8 +18,8 @@ class ITLVObjectCreator
 {
 public:
 	virtual ~ITLVObjectCreator() {}
-	virtual ITLVObject* create() = 0;
-	virtual ITLVObject* create(const TLVBlock &blk) = 0;
+	virtual ITLVObject* create() const = 0;
+	virtual ITLVObject* create(const TLVBlock &blk) const = 0;
 };
 
 }
