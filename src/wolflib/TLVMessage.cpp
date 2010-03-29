@@ -6,9 +6,13 @@
  */
 
 #include <cstdio>
+#include <vector>
 #include "TLVMessage.h"
+#include "TLVBlock.h"
+#include "TLVUInt32.h"
 
 using namespace cml;
+using namespace std;
 
 namespace wfe
 {
@@ -32,7 +36,23 @@ void TLVMessage::run()
 
 TLVBlock* TLVMessage::toTLVBlock() const
 {
-	return NULL;
+	// Create TLV blocks.
+	TLVBlock *cmd = TLVUInt32(_cmd).toTLVBlock(),
+			*param = _param->toTLVBlock();
+
+	// Put into vector.
+	vector<TLVBlock *> blks;
+	blks.push_back(cmd);
+	blks.push_back(param);
+
+	// Construct concatenated block.
+	TLVBlock *blk = TLVBlock::concate(blks);
+
+	// Clean up.
+	delete cmd;
+	delete param;
+
+	return blk;
 }
 
 }
