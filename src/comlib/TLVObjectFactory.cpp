@@ -136,7 +136,7 @@ ITLVObject* TLVObjectFactory::createTLVObject(unsigned short type_id)
  * @brief Create a object from corresponding TLV block.
  * @return Object created, or NULL if no proper creators found.
  */
-ITLVObject* TLVObjectFactory::createTLVObject(const TLVBlock &blk)
+ITLVObject* TLVObjectFactory::createTLVObject(const ITLVBlock &blk)
 {
 	map<string, ITLVObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(lookupTypeName(blk.type()))) !=

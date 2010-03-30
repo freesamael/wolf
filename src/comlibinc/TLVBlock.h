@@ -11,16 +11,15 @@
 #include <cstddef>
 #include <vector>
 #include <arpa/inet.h>
-
-#define TLV_TYPE_INVALID 	0
+#include "TLVTypes.h"
+#include "ITLVBlock.h"
 
 namespace cml
 {
 
-class TLVBlock
+class TLVBlock: public ITLVBlock
 {
 public:
-	static const unsigned short szType, szLength, szHeader;
 	TLVBlock(unsigned short type = TLV_TYPE_INVALID, unsigned short length = 0);
 	~TLVBlock();
 	inline unsigned short type() const {
@@ -37,13 +36,14 @@ public:
 	inline const char* getValueBuffer() const {
 		return (!length()) ? NULL : &_buf[szHeader]; }
 
-	static TLVBlock* concate(const std::vector<TLVBlock*> &blocks);
+	static TLVBlock* concate(const std::vector<const ITLVBlock*> &blocks);
 
 private:
 	void _writetype(unsigned short type);
 	void _writelength(unsigned short length);
 	char *_buf;
 };
+
 
 }
 

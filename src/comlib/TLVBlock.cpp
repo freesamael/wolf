@@ -14,12 +14,9 @@ using namespace std;
 namespace cml
 {
 
-const unsigned short TLVBlock::szType = sizeof(unsigned short);
-const unsigned short TLVBlock::szLength = sizeof(unsigned short);
-const unsigned short TLVBlock::szHeader = sizeof(unsigned short) * 2;
-
 /**
- * @note TLVBlock takes the ownership of value buffer, and deletes it on
+ * @brief Construct a TLVblock with given value.
+ * @detailed TLVBlock takes the owstatic const unsigned short szType, szLength, szHeader;nership of it's own buffer, and deletes it on
  * destruction.
  */
 TLVBlock::TLVBlock(unsigned short type, unsigned short length)
@@ -77,7 +74,7 @@ void TLVBlock::_writelength(unsigned short length)
  * @brief Concatenate TLV blocks into one TLV block (nested TLV).
  * @note Type will be TLV_TYPE_INVALID, which should be modified afterward.
  */
-TLVBlock* TLVBlock::concate(const vector<TLVBlock*> &blocks)
+TLVBlock* TLVBlock::concate(const vector<const ITLVBlock*> &blocks)
 {
 	TLVBlock *blk = new TLVBlock();
 

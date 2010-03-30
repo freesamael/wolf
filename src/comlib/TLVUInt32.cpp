@@ -15,14 +15,16 @@
 namespace cml
 {
 
+const unsigned short TLVUInt32::Size = ITLVBlock::szHeader +
+		sizeof(unsigned int);
+
 TLVBlock* TLVUInt32::toTLVBlock() const
 {
 	TLVBlock *blk = new TLVBlock();
 	unsigned int nv = htonl(_value);
 
-	blk->setType(TLVObjectFactory::instance()->
-			lookupTypeId(typeid(*this).name()));
-	blk->setLength(4);
+	blk->setType(TLV_TYPE_UINT32);
+	blk->setLength(sizeof(unsigned int));
 	memcpy(blk->getValueBuffer(), &nv, blk->length());
 
 	return blk;

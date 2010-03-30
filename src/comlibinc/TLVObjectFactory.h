@@ -13,11 +13,11 @@
 #include <pthread.h>
 #include "ITLVObject.h"
 #include "ITLVObjectCreator.h"
+#include "ITLVBlock.h"
 
 namespace cml
 {
 
-class TLVBlock;
 class TLVObjectFactory
 {
 public:
@@ -30,7 +30,7 @@ public:
 	std::string lookupTypeName(unsigned short id);
 	ITLVObject* createTLVObject(const std::string &type_name);
 	ITLVObject* createTLVObject(unsigned short type_id);
-	ITLVObject* createTLVObject(const TLVBlock &blk);
+	ITLVObject* createTLVObject(const ITLVBlock &blk);
 
 private:
 	TLVObjectFactory();

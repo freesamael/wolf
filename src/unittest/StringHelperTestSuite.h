@@ -20,6 +20,7 @@ class StringHelperTestSuite: public TestCase
 		CPPUNIT_TEST(testTokenMultCharDelim);
 		CPPUNIT_TEST(testTokenWithOldData);
 	CPPUNIT_TEST_SUITE_END();
+
 public:
 	void testTokenSingleCharDelim();
 	void testTokenMultCharDelim();

@@ -13,9 +13,14 @@
 namespace wfe
 {
 
+/**
+ * @note TLVMessage takes the ownership of parameter, and deletes it on
+ * destruction.
+ */
 class TLVMessage: public cml::ITLVObject
 {
 public:
+	static const unsigned short TLVType;
 	/**
 	 * Enumeration of commands. To ensure the size and value of commands, we
 	 * use constant unsigned short instead of C++ 'enum' here.
@@ -28,6 +33,7 @@ public:
 
 	TLVMessage(unsigned short c = EMPTY, ITLVObject *param = NULL):
 		_cmd(c), _param(NULL) {}
+	~TLVMessage() { delete _param; }
 	void run();
 	inline unsigned short command() const { return _cmd; }
 	inline ITLVObject* parameter() const { return _param; }

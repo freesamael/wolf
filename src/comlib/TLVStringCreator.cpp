@@ -15,7 +15,7 @@ using namespace std;
 namespace cml
 {
 
-ITLVObject* TLVStringCreator::create(const TLVBlock &blk) const
+ITLVObject* TLVStringCreator::create(const ITLVBlock &blk) const
 {
 	// Convert to null-terminated string.
 	char *ntstr = new char[blk.length() + 1];

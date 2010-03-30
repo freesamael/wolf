@@ -13,7 +13,7 @@
 namespace cml
 {
 
-ITLVObject* TLVUInt32Creator::create(const TLVBlock &blk) const
+ITLVObject* TLVUInt32Creator::create(const ITLVBlock &blk) const
 {
 	// Length should always be 4 bytes.
 	if (blk.length() == 4) {

@@ -10,6 +10,7 @@
 #include <arpa/inet.h>
 #include "TLVMessageCreator.h"
 #include "TLVBlock.h"
+#include "SharedTLVBlock.h"
 #include "TLVUInt16.h"
 #include "TLVObjectFactory.h"
 
@@ -28,43 +29,33 @@ namespace wfe
  * The first sub-TLV is command, and the second represents parameter (which is
  * an optional field).
  */
-ITLVObject* TLVMessageCreator::create(const TLVBlock &blk) const
+ITLVObject* TLVMessageCreator::create(const ITLVBlock &blk) const
 {
-	TLVBlock cmdblk, paramblk;
-	TLVUInt16 *cmd = NULL;
+	SharedTLVBlock *cmdblk, *paramblk;
+	TLVUInt16 *cmd;
 	ITLVObject *param = NULL;
 
 	// Construct command block.
-//	unsigned short *ntype = (unsigned short *)blk.getValueBuffer();
-//	unsigned short *nlen = (unsigned short *)&blk.getValueBuffer()[TLVBlock::szType];
-//	cmdblk.setType(ntohs(*ntype));
-//	cmdblk.setLength(ntohs(*nlen));
-//	memcpy(cmdblk.getValueBuffer(), &blk.getValueBuffer()[TLVBlock::szHeader],
-//			cmdblk.length());
+	cmdblk = new SharedTLVBlock(blk.getValueBuffer());
 	cmd = dynamic_cast<TLVUInt16 *>(TLVObjectFactory::instance()->
-			createTLVObject(*((TLVBlock *)blk.getValueBuffer())));
+			createTLVObject(*cmdblk));
 	if (!cmd) {
 		fprintf(stderr, "TLVMessageCreator::create(): Error: Unable to construct command.\n");
 		return NULL;
 	}
 
 	// Construct param block (if any).
-	if (blk.length() > ((TLVBlock*)blk.getValueBuffer())->size() ) {
-//		ntype = (unsigned short *)&blk.getValueBuffer()[cmdblk.size()];
-//		nlen = (unsigned short *)&blk.getValueBuffer()[cmdblk.size() + TLVBlock::szType];
-//		paramblk.setType(ntohs(*ntype));
-//		paramblk.setLength(ntohs(*nlen));
-//		memcpy(paramblk.getValueBuffer(),
-//				&blk.getValueBuffer()[cmdblk.size() + TLVBlock::szHeader],
-//				paramblk.length());
-		param = TLVObjectFactory::instance()->
-				createTLVObject(*((TLVBlock *)(blk.getValueBuffer() +
-						((TLVBlock*)blk.getValueBuffer())->size())));
+	if (blk.length() > TLVUInt16::Size) {
+		paramblk = new SharedTLVBlock(blk.getValueBuffer() + cmdblk->size());
+		param = TLVObjectFactory::instance()->createTLVObject(*paramblk);
+		delete paramblk;
 	}
 
 	// Construct message object.
 	TLVMessage *msg = new TLVMessage(cmd->value(), param);
+
 	delete cmd;
+	delete cmdblk;
 
 	return msg;
 }

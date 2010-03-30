@@ -9,17 +9,17 @@
 #define ITLVOBJECTCREATOR_H_
 
 #include "ITLVObject.h"
+#include "ITLVBlock.h"
 
 namespace cml
 {
 
-class TLVBlock;
 class ITLVObjectCreator
 {
 public:
 	virtual ~ITLVObjectCreator() {}
 	virtual ITLVObject* create() const = 0;
-	virtual ITLVObject* create(const TLVBlock &blk) const = 0;
+	virtual ITLVObject* create(const ITLVBlock &blk) const = 0;
 };
 
 }

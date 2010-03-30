@@ -10,14 +10,17 @@
 #include <typeinfo>
 #include "TLVMessage.h"
 #include "TLVBlock.h"
-#include "TLVUInt32.h"
+#include "TLVUInt16.h"
 #include "TLVObjectFactory.h"
+#include "CustomTLVTypes.h"
 
 using namespace cml;
 using namespace std;
 
 namespace wfe
 {
+
+const unsigned short TLVMessage::TLVType = 10;
 
 const char *TLVMessage::CommandString[] = {
 		"Empty", "Add Master", "Add Slave", "Run Actor"
@@ -46,11 +49,11 @@ void TLVMessage::run()
 
 TLVBlock* TLVMessage::toTLVBlock() const
 {
-	vector<TLVBlock *> blks;
+	vector<const ITLVBlock *> blks;
 	TLVBlock *cmd = NULL, *param = NULL;
 
 	// Create command block.
-	cmd = TLVUInt32(_cmd).toTLVBlock();
+	cmd = TLVUInt16(_cmd).toTLVBlock();
 	blks.push_back(cmd);
 
 	// Create param block (if any).
@@ -61,7 +64,7 @@ TLVBlock* TLVMessage::toTLVBlock() const
 
 	// Construct concatenated block.
 	TLVBlock *blk = TLVBlock::concate(blks);
-	blk->setType(TLVObjectFactory::instance()->lookupTypeId(typeid(*this).name()));
+	blk->setType(TLV_TYPE_MESSAGE);
 
 	// Clean up.
 	delete cmd;

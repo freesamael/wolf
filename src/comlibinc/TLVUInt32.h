@@ -16,6 +16,8 @@ namespace cml
 class TLVUInt32: public ITLVObject
 {
 public:
+	static const unsigned short Size;
+
 	TLVUInt32(unsigned int value = 0): _value(value) {}
 	unsigned int value() const { return _value; }
 	void setValue(unsigned int v) { _value = v; }

@@ -16,6 +16,7 @@
 #include "TLVMessage.h"
 #include "TLVMessageCreator.h"
 #include "TLVObjectFactory.h"
+#include "CustomTLVTypes.h"
 
 using namespace cml;
 using namespace wfe;
@@ -96,7 +97,6 @@ void test_tlvmsg()
 
 	delete blk;
 	delete omsg;
-
 }
 
 int main()

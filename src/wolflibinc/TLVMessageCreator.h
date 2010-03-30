@@ -11,8 +11,6 @@
 #include "ITLVObjectCreator.h"
 #include "TLVMessage.h"
 
-#define TLV_TYPE_MESSAGE	10
-
 namespace wfe
 {
 
@@ -20,7 +18,7 @@ class TLVMessageCreator: public cml::ITLVObjectCreator
 {
 public:
 	inline cml::ITLVObject* create() const { return new TLVMessage(); }
-	cml::ITLVObject* create(const cml::TLVBlock &blk) const;
+	cml::ITLVObject* create(const cml::ITLVBlock &blk) const;
 };
 
 }

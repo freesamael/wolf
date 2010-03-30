@@ -21,8 +21,7 @@ TLVBlock* TLVString::toTLVBlock() const
 {
 	if (!_str.empty()) {
 		TLVBlock *blk = new TLVBlock();
-		blk->setType(TLVObjectFactory::instance()->
-				lookupTypeId(typeid(*this).name()));
+		blk->setType(TLV_TYPE_STRING);
 		blk->setLength(_str.length());
 		// TLV doesn't need to be null-terminated.
 		char *dst = blk->getValueBuffer();
