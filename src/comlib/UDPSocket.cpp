@@ -6,8 +6,10 @@
  */
 
 #include <cstdio>
+#include <cstring>
 #include <errno.h>
 #include "UDPSocket.h"
+#include "HostAddress.h"
 
 namespace cml
 {
@@ -16,6 +18,60 @@ UDPSocket::UDPSocket()
 {
 	if ((_sockfd = socket(AF_INET, type(), 0)) < 0)
 		perror("UDPSocket::UDPSocket()");
+}
+
+/**
+ * @brief Receive a UDP message from socket.
+ * @param [in] buf
+ * @param [in] size
+ * @param [out] addr
+ * @param [out] port
+ * @return Size read. On error, return -1.
+ */
+ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
+		unsigned short *port)
+{
+	ssize_t result;
+	struct sockaddr_in inaddr;
+	socklen_t alen = sizeof(inaddr);
+
+	pthread_mutex_lock(&_mutex);
+	if ((result = ::recvfrom(_sockfd, buf, size, 0,
+			(struct sockaddr *)&inaddr, &alen)) < 0) {
+		perror("UDPSocket::recvfrom()");
+	}
+	pthread_mutex_unlock(&_mutex);
+
+	addr->setAddr(inaddr.sin_addr.s_addr);
+	*port = inaddr.sin_port;
+
+	return result;
+}
+
+/**
+ * @brief Send a UDP message to given address/port.
+ * @return Size written. On error, return -1.
+ */
+ssize_t UDPSocket::sendto(const char *buf, size_t size, const HostAddress &addr,
+		unsigned short port)
+{
+	ssize_t result;
+	sockaddr_in inaddr;
+
+	// Clear and set address/port.
+	memset(&inaddr, 0, sizeof(inaddr));
+	inaddr.sin_family = AF_INET;
+	inaddr.sin_addr.s_addr = addr.toInetAddr();
+	inaddr.sin_port = htons(port);
+
+	pthread_mutex_lock(&_mutex);
+	if ((result = ::sendto(_sockfd, buf, size, 0, (struct sockaddr *)&inaddr,
+			sizeof(inaddr))) < 0) {
+		perror("UDPSocket::sendto()");
+	}
+	pthread_mutex_unlock(&_mutex);
+
+	return result;
 }
 
 }

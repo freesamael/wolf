@@ -31,8 +31,8 @@ public:
 	bool bind(unsigned short port);
 	bool connect(const HostAddress &addr, unsigned short port);
 	bool close();
-	int read(char *buf, size_t size);
-	int write(char *buf, size_t size);
+	ssize_t read(char *buf, size_t size);
+	ssize_t write(const char *buf, size_t size);
 	bool setBlockable(Blockable blk);
 
 	static HostAddress getHostByName(const std::string &host);

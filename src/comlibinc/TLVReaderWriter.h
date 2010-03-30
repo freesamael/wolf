@@ -14,13 +14,17 @@
 namespace cml
 {
 
+class UDPSocket;
 class TLVReaderWriter
 {
 public:
 	TLVReaderWriter(AbstractSocket *socket = NULL);
 	~TLVReaderWriter();
 	ITLVObject* read(AbstractSocket *socket = NULL);
+	ITLVObject* recvfrom(HostAddress *addr, unsigned short *port,
+			UDPSocket *socket = NULL);
 	bool write(const ITLVObject &obj, AbstractSocket *socket = NULL);
+	//bool sendto(const HostAddress &addr, unsigned short port);
 
 private:
 	pthread_mutex_t _mutex;

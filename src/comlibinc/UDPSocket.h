@@ -13,12 +13,17 @@
 namespace cml
 {
 
+class HostAddress;
 class UDPSocket: public AbstractSocket
 {
 public:
 	UDPSocket();
 	UDPSocket(int sock): AbstractSocket(sock) {}
 	inline int type() const { return SOCK_DGRAM; }
+	ssize_t recvfrom(char *buf, size_t size, HostAddress *addr,
+			unsigned short *port);
+	ssize_t sendto(const char *buf, size_t size, const HostAddress &addr,
+			unsigned short port);
 };
 
 }

@@ -103,9 +103,9 @@ bool AbstractSocket::close()
  * @brief Read a message.
  * @return Size read. On error, return -1.
  */
-int AbstractSocket::read(char *buf, size_t size)
+ssize_t AbstractSocket::read(char *buf, size_t size)
 {
-	int result;
+	ssize_t result;
 	pthread_mutex_lock(&_mutex);
 	if ((result = ::read(_sockfd, buf, size)) < 0)
 		perror("AbstractSocket::read()");
@@ -117,9 +117,9 @@ int AbstractSocket::read(char *buf, size_t size)
  * @brief Write a message.
  * @return Size written. On error, return -1.
  */
-int AbstractSocket::write(char *buf, size_t size)
+ssize_t AbstractSocket::write(const char *buf, size_t size)
 {
-	int result;
+	ssize_t result;
 	pthread_mutex_lock(&_mutex);
 	if ((result = ::write(_sockfd, buf, size)) < 0)
 		perror("AbstractSocket::write()");

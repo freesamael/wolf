@@ -10,6 +10,7 @@
 #include "TLVBlock.h"
 #include "ITLVObject.h"
 #include "TLVObjectFactory.h"
+#include "UDPSocket.h"
 
 using namespace std;
 
@@ -79,6 +80,19 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 	return obj;
 }
 
+ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
+		UDPSocket *socket)
+{
+	UDPSocket *activesock = (socket == NULL) ?
+			dynamic_cast<UDPSocket *>(_socket) : socket;
+
+	if (!activesock) {
+		fprintf(stderr, "TLVReaderWriter::write(): Error: No active UDP socket found.\n");
+		return NULL;
+	}
+	// TODO: Finish this function.
+}
+
 /**
  * @brief Write a TLV object.
  * @param socket Socket to write, or NULL to use the one from constructor.
@@ -110,5 +124,7 @@ bool TLVReaderWriter::write(const ITLVObject &obj, AbstractSocket *socket)
 	delete blk;
 	return success;
 }
+
+
 
 }
