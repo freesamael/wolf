@@ -7,9 +7,11 @@
 
 #include <cstdio>
 #include <vector>
+#include <typeinfo>
 #include "TLVMessage.h"
 #include "TLVBlock.h"
 #include "TLVUInt32.h"
+#include "TLVObjectFactory.h"
 
 using namespace cml;
 using namespace std;
@@ -17,6 +19,9 @@ using namespace std;
 namespace wfe
 {
 
+const char *TLVMessage::CommandString[] = {
+		"Empty", "Add Master", "Add Slave", "Run Actor"
+};
 const unsigned short TLVMessage::EMPTY = 0;
 const unsigned short TLVMessage::ADD_MASTER = 1;
 const unsigned short TLVMessage::ADD_SLAVE = 2;
@@ -41,28 +46,28 @@ void TLVMessage::run()
 
 TLVBlock* TLVMessage::toTLVBlock() const
 {
+	vector<TLVBlock *> blks;
+	TLVBlock *cmd = NULL, *param = NULL;
+
+	// Create command block.
+	cmd = TLVUInt32(_cmd).toTLVBlock();
+	blks.push_back(cmd);
+
+	// Create param block (if any).
 	if (_param) {
-		// Create TLV blocks.
-		TLVBlock *cmd = TLVUInt32(_cmd).toTLVBlock(),
-				*param = _param->toTLVBlock();
-
-		// Put into vector.
-		vector<TLVBlock *> blks;
-		blks.push_back(cmd);
+		param = _param->toTLVBlock();
 		blks.push_back(param);
-
-		// Construct concatenated block.
-		TLVBlock *blk = TLVBlock::concate(blks);
-
-		// Clean up.
-		delete cmd;
-		delete param;
-
-		return blk;
 	}
 
-	fprintf(stderr, "TLVMessage::toTLVBlock(): Error: Parameter can not be NULL.\n");
-	return NULL;
+	// Construct concatenated block.
+	TLVBlock *blk = TLVBlock::concate(blks);
+	blk->setType(TLVObjectFactory::instance()->lookupTypeId(typeid(*this).name()));
+
+	// Clean up.
+	delete cmd;
+	delete param;
+
+	return blk;
 }
 
 }

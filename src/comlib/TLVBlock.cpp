@@ -22,12 +22,11 @@ const unsigned short TLVBlock::szHeader = sizeof(unsigned short) * 2;
  * @note TLVBlock takes the ownership of value buffer, and deletes it on
  * destruction.
  */
-TLVBlock::TLVBlock(unsigned short type, unsigned short length):
-		_type(type), _length(length)
+TLVBlock::TLVBlock(unsigned short type, unsigned short length)
 {
 	_buf = new char[length + szHeader];
-	_writetype();
-	_writelength();
+	_writetype(type);
+	_writelength(length);
 }
 
 TLVBlock::~TLVBlock()
@@ -40,8 +39,7 @@ TLVBlock::~TLVBlock()
  */
 void TLVBlock::setType(unsigned short type)
 {
-	_type = type;
-	_writetype();
+	_writetype(type);
 }
 
 /**
@@ -49,31 +47,30 @@ void TLVBlock::setType(unsigned short type)
  */
 void TLVBlock::setLength(unsigned short len)
 {
-	_length = len;
-
+	unsigned short tp = type();
 	delete _buf;
 	_buf = new char[len + szHeader];
 
-	_writetype();
-	_writelength();
+	_writetype(tp);
+	_writelength(len);
 }
 
 /**
  * @brief Write type into buffer.
  */
-void TLVBlock::_writetype()
+void TLVBlock::_writetype(unsigned short type)
 {
-	unsigned short ntype = htons(_type);
+	unsigned short ntype = htons(type);
 	memcpy(_buf, &ntype, szType);
 }
 
 /**
  * @brief Write length into buffer.
  */
-void TLVBlock::_writelength()
+void TLVBlock::_writelength(unsigned short length)
 {
-	unsigned short nlen = htons(_length);
-	memcpy(&_buf[szType], &nlen, szLength);
+	unsigned short nlen = htons(length);
+	memcpy(_buf + szType, &nlen, szLength);
 }
 
 /**

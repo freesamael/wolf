@@ -10,6 +10,7 @@
 
 #include <cstddef>
 #include <vector>
+#include <arpa/inet.h>
 
 #define TLV_TYPE_INVALID 	0
 
@@ -22,25 +23,25 @@ public:
 	static const unsigned short szType, szLength, szHeader;
 	TLVBlock(unsigned short type = TLV_TYPE_INVALID, unsigned short length = 0);
 	~TLVBlock();
-	inline unsigned short type() const { return _type; }
-	inline unsigned short length() const { return _length; }
-	inline unsigned short size() const { return _length + szHeader; }
+	inline unsigned short type() const {
+		return ntohs(((unsigned short *)_buf)[0]); }
+	inline unsigned short length() const {
+		return ntohs(((unsigned short *)_buf)[1]); }
+	inline unsigned short size() const { return length() + szHeader; }
 	void setType(unsigned short type);
 	void setLength(unsigned short len);
 	inline char* getCompleteBuffer() { return _buf; }
 	inline const char* getCompleteBuffer() const { return _buf; }
 	inline char* getValueBuffer() {
-		return (!_length) ? NULL : &_buf[szHeader]; }
+		return (!length()) ? NULL : &_buf[szHeader]; }
 	inline const char* getValueBuffer() const {
-		return (!_length) ? NULL : &_buf[szHeader]; }
+		return (!length()) ? NULL : &_buf[szHeader]; }
 
 	static TLVBlock* concate(const std::vector<TLVBlock*> &blocks);
 
 private:
-	void _writetype();
-	void _writelength();
-	unsigned short _type;
-	unsigned short _length;
+	void _writetype(unsigned short type);
+	void _writelength(unsigned short length);
 	char *_buf;
 };
 

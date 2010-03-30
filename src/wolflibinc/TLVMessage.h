@@ -20,6 +20,7 @@ public:
 	 * Enumeration of commands. To ensure the size and value of commands, we
 	 * use constant unsigned short instead of C++ 'enum' here.
 	 */
+	static const char *CommandString[];
 	static const unsigned short EMPTY;
 	static const unsigned short ADD_MASTER;
 	static const unsigned short ADD_SLAVE;

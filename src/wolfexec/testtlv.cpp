@@ -6,18 +6,36 @@
  */
 
 #include <iostream>
+#include <cstdio>
+#include <cstring>
+#include <typeinfo>
 #include "TLVBlock.h"
 #include "TLVString.h"
 #include "TLVUInt16.h"
 #include "TLVUInt32.h"
+#include "TLVMessage.h"
+#include "TLVMessageCreator.h"
 #include "TLVObjectFactory.h"
 
 using namespace cml;
+using namespace wfe;
 using namespace std;
 
-int main()
+void test_tlvblock()
 {
-	// Test String
+	TLVBlock blk;
+	blk.setType(5566);
+	blk.setLength(8080);
+
+	printf("Type = 0x%x, Length = 0x%x\n", blk.type(), blk.length());
+	printf("Type (Native) = 0x%x, Length (Native) = 0x%x\n",
+			((unsigned short *)blk.getCompleteBuffer())[0],
+			((unsigned short *)blk.getCompleteBuffer())[1]);
+}
+
+void test_tlvstring()
+{
+	// Test String.
 	TLVString str("Hello World!");
 	TLVBlock *blk = str.toTLVBlock();
 	TLVString *ostr = (TLVString *)TLVObjectFactory::instance()->
@@ -27,10 +45,13 @@ int main()
 
 	delete blk;
 	delete ostr;
+}
 
-	// Test UInt16
+void test_tlvuint16()
+{
+	// Test UInt16.
 	TLVUInt16 ui16(155);
-	blk = ui16.toTLVBlock();
+	TLVBlock *blk = ui16.toTLVBlock();
 	TLVUInt16 *oui16 = (TLVUInt16 *)TLVObjectFactory::instance()->
 			createTLVObject(*blk);
 
@@ -38,10 +59,13 @@ int main()
 
 	delete blk;
 	delete oui16;
+}
 
-	// Test UInt32
+void test_tlvuint32()
+{
+	// Test UInt32.
 	TLVUInt32 ui32(16777216);
-	blk = ui32.toTLVBlock();
+	TLVBlock *blk = ui32.toTLVBlock();
 	TLVUInt32 *oui32 = (TLVUInt32 *)TLVObjectFactory::instance()->
 			createTLVObject(*blk);
 
@@ -49,6 +73,39 @@ int main()
 
 	delete blk;
 	delete oui32;
+}
 
+void register_tlvmsg()
+{
+	// Register types/creators.
+	TLVObjectFactory::instance()->registerType(typeid(TLVMessage).name(),
+			TLV_TYPE_MESSAGE);
+	TLVObjectFactory::instance()->registerCreator(typeid(TLVMessage).name(),
+			new TLVMessageCreator());
+}
+
+void test_tlvmsg()
+{
+	// Test Message.
+	TLVMessage msg(TLVMessage::EMPTY);
+	TLVBlock *blk = msg.toTLVBlock();
+	TLVMessage *omsg = (TLVMessage *)TLVObjectFactory::instance()->
+			createTLVObject(*blk);
+
+	cout << TLVMessage::CommandString[omsg->command()] << endl;
+
+	delete blk;
+	delete omsg;
+
+}
+
+int main()
+{
+	test_tlvblock();
+	test_tlvstring();
+	test_tlvuint16();
+	test_tlvuint32();
+	register_tlvmsg();
+	test_tlvmsg();
 	return 0;
 }

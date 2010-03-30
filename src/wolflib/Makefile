@@ -6,8 +6,8 @@ ${WOLFLIB_SRCDIR}/TLVMessageCreator.o
 
 WOLFLIB = ${WOLFLIB_SRCDIR}/libwolf.a
 
-${WOLFLIB}: ${WOLFLIB_OBJS}
-	${AR} rvs $@ $^
+${WOLFLIB}: ${WOLFLIB_OBJS} ${COMLIB}
+	${AR} rvs $@ ${WOLFLIB_OBJS} 
 
 wolflib_clean:
 	-rm ${WOLFLIB_OBJS} ${WOLFLIB}

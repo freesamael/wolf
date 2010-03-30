@@ -25,7 +25,8 @@ TLVBlock* TLVString::toTLVBlock() const
 				lookupTypeId(typeid(*this).name()));
 		blk->setLength(_str.length());
 		// TLV doesn't need to be null-terminated.
-		strncpy(blk->getValueBuffer(), _str.c_str(), blk->length());
+		char *dst = blk->getValueBuffer();
+		strncpy(dst, _str.c_str(), blk->length());
 		return blk;
 	}
 	fprintf(stderr, "TLVString::toTLVBlock(): Error: String is empty.\n");
