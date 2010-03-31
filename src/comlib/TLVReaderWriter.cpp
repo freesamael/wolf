@@ -6,11 +6,15 @@
  */
 
 #include <cstdio>
+#include <cstring>
 #include "TLVReaderWriter.h"
 #include "TLVBlock.h"
 #include "ITLVObject.h"
 #include "TLVObjectFactory.h"
 #include "UDPSocket.h"
+#include "SharedTLVBlock.h"
+
+#define SZ_MAXBUF	65536	// Maximun 64KB.
 
 using namespace std;
 
@@ -38,7 +42,7 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 {
 	bool success = false;
 	int ret;
-	unsigned int type, length;
+	unsigned short type, length;
 	TLVBlock blk;
 	ITLVObject *obj = NULL;
 	AbstractSocket *activesock = (socket == NULL) ? _socket : socket;
@@ -48,7 +52,6 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 		return NULL;
 	}
 
-	pthread_mutex_lock(&_mutex);
 	// Read type.
 	ret = activesock->read((char*)&type, blk.szType);
 	if (ret == (int)blk.szType) {
@@ -70,7 +73,6 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 			fprintf(stderr, "TLVReaderWriter::read(): Error: Unmatched bytes read while reading TLV length.\n");
 	} else
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Unmatched bytes read while reading TLV type.\n");
-	pthread_mutex_unlock(&_mutex);
 
 	if (success)
 		obj = TLVObjectFactory::instance()->createTLVObject(blk);
@@ -80,9 +82,17 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 	return obj;
 }
 
+/**
+ * @brief Read a TLV object from given UDP socket.
+ */
 ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 		UDPSocket *socket)
 {
+	char *localbuf = NULL;
+	int ret;
+	TLVBlock blk;
+	SharedTLVBlock *tmpblk = NULL;
+	ITLVObject *obj = NULL;
 	UDPSocket *activesock = (socket == NULL) ?
 			dynamic_cast<UDPSocket *>(_socket) : socket;
 
@@ -90,7 +100,36 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 		fprintf(stderr, "TLVReaderWriter::write(): Error: No active UDP socket found.\n");
 		return NULL;
 	}
-	// TODO: Finish this function.
+
+	// Read datagram.
+	localbuf = new char[SZ_MAXBUF];
+	if ((ret = activesock->recvfrom(localbuf, SZ_MAXBUF, addr, port)) <
+			ITLVBlock::szHeader) {
+		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: Data read is too small to be a TLV block.\n");
+		delete localbuf;
+		return NULL;
+	}
+
+	// Construct TLV block.
+	tmpblk = new SharedTLVBlock(localbuf);
+	blk.setType(tmpblk->type());
+	blk.setLength(tmpblk->length());
+	if (ret != blk.size()) {
+		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: Expected %u bytes but %u bytes read.\n",
+				blk.size(), ret);
+		delete tmpblk;
+		return NULL;
+	} else {
+		memcpy(blk.getValueBuffer(), tmpblk->getValueBuffer(), blk.length());
+	}
+
+	// Construct TLV object.
+	obj = TLVObjectFactory::instance()->createTLVObject(blk);
+
+	delete tmpblk;
+	delete localbuf;
+
+	return obj;
 }
 
 /**
@@ -124,7 +163,5 @@ bool TLVReaderWriter::write(const ITLVObject &obj, AbstractSocket *socket)
 	delete blk;
 	return success;
 }
-
-
 
 }
