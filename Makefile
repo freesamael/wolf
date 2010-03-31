@@ -13,4 +13,3 @@ WOLF_BINDIR = ${PWD}/bin
 all: wolf
 
 include ${WOLF_SRCDIR}/Makefile
-

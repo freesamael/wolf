@@ -13,4 +13,3 @@ wolf: ${COMLIB} ${WOLFLIB} ${WOLFEXECS}
 test: ${UNITTEST}
 
 clean: comlib_clean wolflib_clean wolfexec_clean unittest_clean
-

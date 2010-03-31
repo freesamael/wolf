@@ -9,4 +9,3 @@ ${WOLFEXECS}: ${WOLFOBJS}
 
 wolfexec_clean:
 	-rm ${WOLFOBJS} ${WOLFEXECS}
-
