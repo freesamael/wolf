@@ -1,16 +1,7 @@
-UNITTEST_OBJS = ${UNITTEST_SRCDIR}/main.o \
-${UNITTEST_SRCDIR}/ProcessEnvironmentTestSuite.o \
-${UNITTEST_SRCDIR}/ProcessTestSuite.o \
-${UNITTEST_SRCDIR}/StringHelperTestSuite.o \
-${UNITTEST_SRCDIR}/TLVStringCreatorTestSuite.o \
-${UNITTEST_SRCDIR}/TLVStringTestSuite.o \
-${UNITTEST_SRCDIR}/TLVBlockTestSuite.o \
-${UNITTEST_SRCDIR}/TLVMessageTestSuite.o \
-${UNITTEST_SRCDIR}/TLVMessageCreatorTestSuite.o
- 
+UNITTEST_OBJS := ${patsubst %.cpp,%.o,${wildcard ${UNITTEST_SRCDIR}/*.cpp}}
 UNITTEST = ${WOLF_BINDIR}/unittest
-
-LIBS += -lcppunit
+${UNITTEST}: CXXFLAGS += -I${COMLIB_INCDIR} -I${WOLFLIB_INCDIR}
+${UNITTEST}: LIBS += -lcppunit
 
 ${UNITTEST}: ${UNITTEST_OBJS} ${WOLFLIB} ${COMLIB}
 	${CXX} -o $@ ${LDFLAGS} $^ ${LIBS}
