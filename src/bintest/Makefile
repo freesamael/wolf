@@ -1,11 +1,11 @@
-WOLFOBJS := ${patsubst %.cpp,%.o,${wildcard ${WOLFEXEC_SRCDIR}/*.cpp}}
-WOLFEXECS := ${addprefix ${WOLF_BINDIR}/,${notdir ${basename ${WOLFOBJS}}}}
-${WOLFEXECS}: CXXFLAGS += -I${COMLIB_INCDIR} -I${WOLFLIB_INCDIR} -I${D2MCE_INCDIR}
-${WOLFEXECS}: LIBS += -lpthread -ld2mce -lcom -lwolf
-${WOLFEXECS}: LDFLAGS += -L${COMLIB_SRCDIR} -L${WOLFLIB_SRCDIR} -L${D2MCE_LIBDIR}
+BINTEST_OBJS := ${patsubst %.cpp,%.o,${wildcard ${BINTEST_SRCDIR}/*.cpp}}
+BINTEST := ${addprefix ${WOLF_BINDIR}/,${notdir ${basename ${BINTEST_OBJS}}}}
+${BINTEST}: CXXFLAGS += -I${COMLIB_INCDIR} -I${WOLFLIB_INCDIR} -I${D2MCE_INCDIR}
+${BINTEST}: LIBS += -lpthread -ld2mce -lcom -lwolf
+${BINTEST}: LDFLAGS += -L${COMLIB_SRCDIR} -L${WOLFLIB_SRCDIR} -L${D2MCE_LIBDIR}
 
-${WOLFEXECS}: ${WOLFOBJS}
-	${CXX} -o $@ ${LDFLAGS} ${WOLFEXEC_SRCDIR}/${@F}.o ${LIBS}
+${BINTEST}: ${BINTEST_OBJS}
+	${CXX} -o $@ ${LDFLAGS} ${BINTEST_SRCDIR}/${@F}.o ${LIBS}
 
-wolfexec_clean:
-	-rm ${WOLFOBJS} ${WOLFEXECS}
+bintest_clean:
+	-rm ${BINTEST_OBJS} ${BINTEST}

@@ -2,14 +2,14 @@ COMLIB_SRCDIR = ${WOLF_SRCDIR}/comlib
 COMLIB_INCDIR = ${WOLF_SRCDIR}/comlibinc
 WOLFLIB_SRCDIR = ${WOLF_SRCDIR}/wolflib
 WOLFLIB_INCDIR = ${WOLF_SRCDIR}/wolflibinc
-WOLFEXEC_SRCDIR = ${WOLF_SRCDIR}/wolfexec
+BINTEST_SRCDIR = ${WOLF_SRCDIR}/bintest
 UNITTEST_SRCDIR = ${WOLF_SRCDIR}/unittest
 
 include ${COMLIB_SRCDIR}/Makefile ${WOLFLIB_SRCDIR}/Makefile \
-${WOLFEXEC_SRCDIR}/Makefile ${UNITTEST_SRCDIR}/Makefile
+${BINTEST_SRCDIR}/Makefile ${UNITTEST_SRCDIR}/Makefile
 
-wolf: ${COMLIB} ${WOLFLIB} ${WOLFEXECS}
+wolf: ${COMLIB} ${WOLFLIB} ${BINTEST}
 
 test: ${UNITTEST}
 
-clean: comlib_clean wolflib_clean wolfexec_clean unittest_clean
+clean: comlib_clean wolflib_clean bintest_clean unittest_clean
