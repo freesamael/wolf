@@ -1,7 +1,8 @@
 UNITTEST_OBJS := ${patsubst %.cpp,%.o,${wildcard ${UNITTEST_SRCDIR}/*.cpp}}
 UNITTEST = ${WOLF_BINDIR}/unittest
 ${UNITTEST}: CXXFLAGS += -I${COMLIB_INCDIR} -I${WOLFLIB_INCDIR} -I${D2MCE_INCDIR}
-${UNITTEST}: LIBS += -lcppunit
+${UNITTEST}: LIBS += -lcppunit -lpthread -ld2mce
+${UNITTEST}: LDFLAGS += -L${D2MCE_LIBDIR}
 
 ${UNITTEST}: ${UNITTEST_OBJS} ${WOLFLIB} ${COMLIB}
 	${CXX} -o $@ ${LDFLAGS} $^ ${LIBS}

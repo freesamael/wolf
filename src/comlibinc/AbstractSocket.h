@@ -35,6 +35,7 @@ public:
 	ssize_t read(char *buf, size_t size);
 	ssize_t write(const char *buf, size_t size);
 	bool setBlockable(Blockable blk);
+	bool setTTL(int ttl);
 
 	static HostAddress getHostByName(const std::string &host);
 	static unsigned short getServiceByName(const std::string &service);

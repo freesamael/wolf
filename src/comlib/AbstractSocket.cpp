@@ -185,4 +185,21 @@ unsigned short AbstractSocket::getServiceByName(const string &service)
 	return 0;
 }
 
+/**
+ * @brief Set the TTL of socket.
+ * @return True on success, false on failure.
+ */
+bool AbstractSocket::setTTL(int ttl)
+{
+	if (ttl < 1) {
+		fprintf(stderr, "AbstractSocket::setTTL(): Error: TTL must greater or equal to 1.\n");
+		return false;
+	}
+	if (setsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {
+		perror("AbstractSocket::setTTL()");
+		return false;
+	}
+	return true;
+}
+
 }

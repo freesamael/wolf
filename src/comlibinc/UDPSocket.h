@@ -24,6 +24,7 @@ public:
 			unsigned short *port);
 	ssize_t sendto(const char *buf, size_t size, const HostAddress &addr,
 			unsigned short port);
+	bool setBroadcast(bool bcast);
 };
 
 }

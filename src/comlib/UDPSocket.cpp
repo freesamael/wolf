@@ -72,4 +72,19 @@ ssize_t UDPSocket::sendto(const char *buf, size_t size, const HostAddress &addr,
 	return result;
 }
 
+/**
+ * @brief Set if the it can broadcast.
+ * @return True on success, false on failure.
+ */
+bool UDPSocket::setBroadcast(bool bcast)
+{
+	int broadcast = (bcast) ? 1 : 0;
+	if (setsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
+			sizeof(broadcast)) < 0) {
+		perror("UDPSocket::setBroadcast");
+		return false;
+	}
+	return true;
+}
+
 }

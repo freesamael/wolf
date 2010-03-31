@@ -6,11 +6,11 @@
  */
 
 #include <iostream>
-#include "Channel.h"
-#include "Director.h"
-#include "Port.h"
-#include "SimpleExecutionStrategy.h"
-#include "AbstractManagerActor.h"
+#include <Channel.h>
+#include <Director.h>
+#include <Port.h>
+#include <SimpleExecutionStrategy.h>
+#include <AbstractManagerActor.h>
 
 using namespace std;
 using namespace cml;
