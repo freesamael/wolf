@@ -18,21 +18,19 @@ int main()
 {
     TCPServer server;
     server.listen(5566, 10);
+    TCPSocket *sock = server.accept();
+    TLVReaderWriter rw(sock);
+    ITLVObject *obj;
 
-    TCPSocket *sock;
-    while ((sock = server.accept())) {
-        // Read in.
-        while (true) {
-            TLVReaderWriter rw(sock);
-            ITLVObject *obj = rw.read();
-            TLVString *str;
-            if ((str = dynamic_cast<TLVString *>(obj))) {
-                cout << str->toString() << endl;
-                rw.write(*str);
-            }
-            delete obj;
-        }
-    }
+	// Read in.
+	while ((obj = rw.read())) {
+		TLVString *str;
+		if ((str = dynamic_cast<TLVString *>(obj))) {
+			cout << str->toString() << endl;
+			rw.write(*str);
+		}
+		delete obj;
+	}
 
     return 0;
 }

@@ -30,6 +30,7 @@ public:
 	int toSocketDescriptor() const { return _sockfd; }
 	bool bind(unsigned short port);
 	bool connect(const HostAddress &addr, unsigned short port);
+	bool shutdown();
 	bool close();
 	ssize_t read(char *buf, size_t size);
 	ssize_t write(const char *buf, size_t size);

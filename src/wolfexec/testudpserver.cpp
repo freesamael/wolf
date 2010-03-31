@@ -7,32 +7,32 @@
 
 #include <iostream>
 #include <string>
+#include "AbstractSocket.h"
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
 #include "TLVString.h"
+#include "HostAddress.h"
 
 using namespace std;
 using namespace cml;
 
 int main()
 {
-//    TCPServer server;
-//    server.listen(5566, 10);
-//
-//    TCPSocket *sock;
-//    while ((sock = server.accept())) {
-//        // Read in.
-//        while (true) {
-//            TLVReaderWriter rw(sock);
-//            ITLVObject *obj = rw.read();
-//            TLVString *str;
-//            if ((str = dynamic_cast<TLVString *>(obj))) {
-//                cout << str->toString() << endl;
-//                rw.write(*str);
-//            }
-//            delete obj;
-//        }
-//    }
+	UDPSocket sock;
+	TLVReaderWriter rw(&sock);
+    ITLVObject *obj;
+    HostAddress addr;
+    unsigned short port;
+
+    sock.bind(5566);
+    while ((obj = rw.recvfrom(&addr, &port))) {
+    	TLVString *str;
+    	if ((str = dynamic_cast<TLVString *>(obj))) {
+    		cout << str->toString() << endl;
+    		rw.sendto(*str, addr, port);
+    	}
+    	delete obj;
+    }
 
     return 0;
 }

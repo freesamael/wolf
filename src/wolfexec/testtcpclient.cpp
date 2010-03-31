@@ -21,7 +21,7 @@ int main()
     TLVReaderWriter rw(&sock);
     sock.connect("127.0.0.1", 5566);
 
-    while (true) {
+    do {
         cin >> str;
 
         // Write out.
@@ -36,6 +36,9 @@ int main()
             cout << istr->toString() << endl;
         }
         delete obj;
-    }
+    } while (str != "quit");
+
+    sock.shutdown();
+
     return 0;
 }

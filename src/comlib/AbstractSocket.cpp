@@ -34,7 +34,7 @@ AbstractSocket::AbstractSocket(int sock):
 
 AbstractSocket::~AbstractSocket()
 {
-	if (close() != 0)
+	if (::close(_sockfd) != 0)
 		perror("AbstractSocket::~AbstractSocket(): Closing socket");
 	if (pthread_mutex_destroy(&_mutex) != 0)
 		perror("AbstractSocket::~AbstractSocket(): Destroying mutex");
@@ -87,13 +87,13 @@ bool AbstractSocket::connect(const HostAddress &addr,
 }
 
 /**
- * @brief Close the socket.
+ * @brief Shutdown the socket.
  * @return True on success, false on failure.
  */
-bool AbstractSocket::close()
+bool AbstractSocket::shutdown()
 {
-	if (::close(_sockfd) != 0) {
-		perror("AbstractSocket::close()");
+	if (::shutdown(_sockfd, SHUT_RDWR) != 0) {
+		perror("AbstractSocket::shutdown()");
 		return false;
 	}
 	return true;
@@ -106,10 +106,8 @@ bool AbstractSocket::close()
 ssize_t AbstractSocket::read(char *buf, size_t size)
 {
 	ssize_t result;
-	pthread_mutex_lock(&_mutex);
 	if ((result = ::read(_sockfd, buf, size)) < 0)
 		perror("AbstractSocket::read()");
-	pthread_mutex_unlock(&_mutex);
 	return result;
 }
 

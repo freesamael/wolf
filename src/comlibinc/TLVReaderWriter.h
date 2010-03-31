@@ -8,7 +8,6 @@
 #ifndef TLVREADERWRITER_H_
 #define TLVREADERWRITER_H_
 
-#include <pthread.h>
 #include "AbstractSocket.h"
 
 namespace cml
@@ -24,10 +23,10 @@ public:
 	ITLVObject* recvfrom(HostAddress *addr, unsigned short *port,
 			UDPSocket *socket = NULL);
 	bool write(const ITLVObject &obj, AbstractSocket *socket = NULL);
-	//bool sendto(const HostAddress &addr, unsigned short port);
+	bool sendto(const ITLVObject &obj, const HostAddress &addr,
+			unsigned short port, UDPSocket *socket = NULL);
 
 private:
-	pthread_mutex_t _mutex;
 	AbstractSocket *_socket;
 };
 

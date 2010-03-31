@@ -35,15 +35,13 @@ ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
 	struct sockaddr_in inaddr;
 	socklen_t alen = sizeof(inaddr);
 
-	pthread_mutex_lock(&_mutex);
 	if ((result = ::recvfrom(_sockfd, buf, size, 0,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
 		perror("UDPSocket::recvfrom()");
 	}
-	pthread_mutex_unlock(&_mutex);
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
-	*port = inaddr.sin_port;
+	*port = ntohs(inaddr.sin_port);
 
 	return result;
 }
