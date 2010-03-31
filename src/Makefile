@@ -8,8 +8,8 @@ UNITTEST_SRCDIR = ${WOLF_SRCDIR}/unittest
 include ${COMLIB_SRCDIR}/Makefile ${WOLFLIB_SRCDIR}/Makefile \
 ${BINTEST_SRCDIR}/Makefile ${UNITTEST_SRCDIR}/Makefile
 
-wolf: ${COMLIB} ${WOLFLIB} ${BINTEST}
+wolf: ${COMLIB} ${WOLFLIB}
 
-test: ${UNITTEST}
+test: ${UNITTEST} ${BINTEST}
 
 clean: comlib_clean wolflib_clean bintest_clean unittest_clean
