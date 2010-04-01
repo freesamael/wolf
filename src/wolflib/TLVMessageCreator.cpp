@@ -13,6 +13,7 @@
 #include <TLVObjectFactory.h>
 #include "TLVMessageCreator.h"
 
+using namespace std;
 using namespace cml;
 
 namespace wfe

@@ -33,8 +33,7 @@ public:
 	static const unsigned short SHUTDOWN;
 
 	TLVMessage(unsigned short c = EMPTY, ITLVObject *param = NULL):
-		_cmd(c), _param(NULL) {}
-	~TLVMessage() { delete _param; }
+		_cmd(c), _param(param) {}
 	void run();
 	inline unsigned short command() const { return _cmd; }
 	inline ITLVObject* parameter() const { return _param; }

@@ -5,6 +5,8 @@
  *      Author: samael
  */
 
+#include <iostream>
+#include <typeinfo>
 #include <cstdio>
 #include <UDPSocket.h>
 #include <TCPSocket.h>

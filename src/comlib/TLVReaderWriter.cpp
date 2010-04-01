@@ -37,7 +37,7 @@ TLVReaderWriter::~TLVReaderWriter()
  */
 ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 {
-	char *localbuf = NULL;
+	char hdrbuf[ITLVBlock::szHeader];
 	int ret;
 	SharedTLVBlock *tmpblk = NULL;
 	TLVBlock blk;
@@ -49,28 +49,24 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 		return NULL;
 	}
 
-	// Read buffer.
-	localbuf = new char[SZ_MAXBUF];
-	if ((ret = activesock->read(localbuf, SZ_MAXBUF)) == 0) { // End of file.
-		delete localbuf;
+	// Read header.
+	if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Data read is too small to be a TLV block.\n");
-		delete localbuf;
 		return NULL;
 	}
 
-	// Construct TLV block.
-	tmpblk = new SharedTLVBlock(localbuf);
+	// Read value.
+	tmpblk = new SharedTLVBlock(hdrbuf);
 	blk.setType(tmpblk->type());
 	blk.setLength(tmpblk->length());
-	if (ret != blk.size()) {
+	if ((ret = activesock->read(blk.getValueBuffer(), blk.length())) !=
+			blk.length()) {
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Expected %u bytes but %u bytes read.\n",
 				blk.size(), ret);
 		delete tmpblk;
 		return NULL;
-	} else {
-		memcpy(blk.getValueBuffer(), tmpblk->getValueBuffer(), blk.length());
 	}
 
 	// Construct TLV object.
@@ -79,7 +75,6 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Unable to construct TLV object.\n");
 
 	delete tmpblk;
-	delete localbuf;
 
 	return obj;
 }
