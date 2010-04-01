@@ -10,7 +10,9 @@ include ${COMLIB_SRCDIR}/Makefile ${WOLFLIB_SRCDIR}/Makefile \
 ${BINTEST_SRCDIR}/Makefile ${UNITTEST_SRCDIR}/Makefile \
 ${RUNNER_SRCDIR}/Makefile
 
-wolf: ${COMLIB} ${WOLFLIB} ${RUNNER}
+wolf: lib test
+
+lib: ${COMLIB} ${WOLFLIB} ${RUNNER}
 
 test: ${BINTEST} ${UNITTEST}
 

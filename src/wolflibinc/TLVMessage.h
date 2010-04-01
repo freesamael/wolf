@@ -30,6 +30,7 @@ public:
 	static const unsigned short ADD_MASTER;
 	static const unsigned short ADD_SLAVE;
 	static const unsigned short RUN_ACTOR;
+	static const unsigned short SHUTDOWN;
 
 	TLVMessage(unsigned short c = EMPTY, ITLVObject *param = NULL):
 		_cmd(c), _param(NULL) {}

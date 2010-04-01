@@ -23,12 +23,13 @@ namespace wfe
 const unsigned short TLVMessage::TLVType = 10;
 
 const char *TLVMessage::CommandString[] = {
-		"Empty", "Add Master", "Add Slave", "Run Actor"
+		"Empty", "Add Master", "Add Slave", "Run Actor", "Shutdown"
 };
 const unsigned short TLVMessage::EMPTY = 0;
 const unsigned short TLVMessage::ADD_MASTER = 1;
 const unsigned short TLVMessage::ADD_SLAVE = 2;
 const unsigned short TLVMessage::RUN_ACTOR = 3;
+const unsigned short TLVMessage::SHUTDOWN = 4;
 
 void TLVMessage::run()
 {
