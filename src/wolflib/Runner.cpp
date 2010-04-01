@@ -12,8 +12,7 @@
 #include "TLVReaderWriter.h"
 #include "TLVMessage.h"
 #include "HostAddress.h"
-#include "IActor.h"
-#include "IIterativeActor.h"
+#include "AbstractWorkerActor.h"
 
 using namespace std;
 using namespace cml;
@@ -101,22 +100,14 @@ void runner_loop(TCPSocket *tsock)
 				fprintf(stderr, "Runner::run(): Error: Unexpected command %s.\n",
 						TLVMessage::CommandString[inmsg->command()]);
 			} else {
-				IActor *actor;
-				if (!(actor = dynamic_cast<IActor *>(inmsg->parameter()))) {
+				AbstractWorkerActor *actor;
+				if (!(actor = dynamic_cast<AbstractWorkerActor *>(inmsg->parameter()))) {
 					fprintf(stderr, "Runner::run(): Error: Invalid parameter.\n");
 				} else {
-					// Run actor.
-					IIterativeActor *itactor;
-					if ((itactor = dynamic_cast<IIterativeActor *>(actor))) {
-						itactor->prefire();
-						while (itactor->firecond())
-							itactor->fire();
-						itactor->postfire();
-					} else {
-						actor->prefire();
+					actor->prefire();
+					while (actor->firecond())
 						actor->fire();
-						actor->postfire();
-					}
+					actor->postfire();
 				}
 			}
 		}

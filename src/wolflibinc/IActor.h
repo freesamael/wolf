@@ -14,16 +14,16 @@ namespace wfe
 class IActor
 {
 public:
-	typedef enum ActorState {
+	typedef enum State {
 		NOT_READY,
 		READY,
 		RUNNING,
 		FINISH
-	} ActorState;
-	static const char *ActorStateString[];
+	} State;
+	static const char *StateString[];
 
 	virtual ~IActor() {}
-	virtual ActorState state() = 0;
+	virtual State state() = 0;
 	virtual void prefire() = 0;
 	virtual void fire() = 0;
 	virtual void postfire() = 0;

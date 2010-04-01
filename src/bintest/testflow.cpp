@@ -23,10 +23,10 @@ public:
 		_outports.push_back(new Port(this));
 	}
 	const vector<Port *>& outports() { return _outports; }
-	ActorState state() {
+	State state() {
 		if (_state == NOT_READY)
 			_state = READY;
-		cout << "FirstActor: " << ActorStateString[_state] << endl;
+		cout << "FirstActor: " << StateString[_state] << endl;
 		return _state;
 	}
 	void prefire() { _state = RUNNING; }
@@ -37,7 +37,7 @@ public:
 	void postfire() { _state = FINISH; }
 	void reset() { _state = NOT_READY; }
 private:
-	IActor::ActorState _state;
+	IActor::State _state;
 	vector<Port *> _outports;
 };
 
@@ -48,11 +48,11 @@ public:
 		_inports.push_back(new Port(this));
 	}
 	const vector<Port *>& inports() { return _inports; }
-	ActorState state() {
+	State state() {
 		if (_state == NOT_READY)
 			if (_inports[0]->channel()->state() == Channel::WRITTEN)
 				_state = READY;
-		cout << "LastActor: " << ActorStateString[_state] << endl;
+		cout << "LastActor: " << StateString[_state] << endl;
 		return _state;
 	}
 	void prefire() { _state = RUNNING; }
@@ -60,7 +60,7 @@ public:
 	void postfire() { _state = FINISH; }
 	void reset() { _state = NOT_READY; }
 private:
-	IActor::ActorState _state;
+	IActor::State _state;
 	vector<Port *> _inports;
 };
 
@@ -71,11 +71,11 @@ public:
 		_inports.push_back(new Port(this));
 		_outports.push_back(new Port(this));
 	}
-	ActorState state() {
+	State state() {
 		if (_state == NOT_READY)
 			if (isInputReady())
 				_state = READY;
-		cout << _name << ": " << ActorStateString[_state] << endl;
+		cout << _name << ": " << StateString[_state] << endl;
 		return _state;
 	}
 	void prefire() { _state = RUNNING; }

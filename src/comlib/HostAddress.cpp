@@ -12,6 +12,8 @@ using namespace std;
 namespace cml
 {
 
+HostAddress HostAddress::BroadcastAddress("255.255.255.255");
+
 string HostAddress::toString() const
 {
 	struct in_addr addr;

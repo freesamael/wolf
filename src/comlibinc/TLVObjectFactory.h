@@ -21,9 +21,8 @@ namespace cml
 class TLVObjectFactory
 {
 public:
-	~TLVObjectFactory();
 	static TLVObjectFactory* instance();
-	inline static void releaseInstance() { delete _instance; }
+	static void release();
 	void registerType(const std::string &name, unsigned short id);
 	void registerCreator(const std::string &name, ITLVObjectCreator *creator);
 	unsigned short lookupTypeId(const std::string &name);
@@ -34,6 +33,7 @@ public:
 
 private:
 	TLVObjectFactory();
+	~TLVObjectFactory();
 	static TLVObjectFactory *_instance;
 	static pthread_mutex_t _mutex;
 	std::map<std::string, unsigned short> _typeids;

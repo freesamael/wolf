@@ -29,7 +29,7 @@ public:
 	inline const std::vector<Port *>& outports() { return _outports; }
 
 protected:
-	IActor::ActorState _state;
+	IActor::State _state;
 	std::vector<Port *> _inports;
 	std::vector<Port *> _outports;
 };

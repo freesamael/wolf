@@ -48,6 +48,14 @@ TLVObjectFactory* TLVObjectFactory::instance()
 	return _instance;
 }
 
+void TLVObjectFactory::release()
+{
+	pthread_mutex_lock(&_mutex);
+	delete _instance;
+	_instance = NULL;
+	pthread_mutex_unlock(&_mutex);
+}
+
 /**
  * @brief Register a net type corresponding to a host type. If the net type is
  * already registered, it will overwrite the registered type.

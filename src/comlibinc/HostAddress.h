@@ -22,6 +22,8 @@ namespace cml
 class HostAddress
 {
 public:
+	static HostAddress BroadcastAddress;
+
 	HostAddress(): _addr(INADDR_NONE) {}
 	HostAddress(in_addr_t addr): _addr(addr) {}
 	HostAddress(const char *addr): _addr(inet_addr(addr)) {}

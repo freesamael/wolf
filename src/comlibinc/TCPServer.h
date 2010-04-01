@@ -20,11 +20,11 @@ public:
 	TCPServer() {}
 	TCPServer(int sock): TCPSocket(sock) {}
 	~TCPServer();
-	bool listen(unsigned qlen);
 	bool listen(unsigned short port, unsigned qlen);
 	TCPSocket* accept(AbstractSocket::Blockable blk = AbstractSocket::BLOCK);
 
 private:
+	bool listen(unsigned qlen);
 	std::vector<TCPSocket *> _socks;
 };
 

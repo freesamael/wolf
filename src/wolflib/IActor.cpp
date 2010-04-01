@@ -9,6 +9,6 @@
 
 namespace wfe
 {
-	const char *IActor::ActorStateString[] =
+	const char *IActor::StateString[] =
 			{"Not Ready", "Ready", "Running", "Finish"};
 }

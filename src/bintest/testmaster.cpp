@@ -82,7 +82,7 @@ int main()
 
 	fake.join();
 
-	TLVObjectFactory::instance()->releaseInstance();
+	TLVObjectFactory::instance()->release();
 
 	return 0;
 }

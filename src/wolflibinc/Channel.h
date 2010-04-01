@@ -17,11 +17,11 @@ namespace wfe
 class Channel
 {
 public:
-	typedef enum ChannelState {
+	typedef enum State {
 		EMPTY,
 		WRITTEN
-	} ChannelState;
-	static const char *ChannelStateString[];
+	} State;
+	static const char *StateString[];
 	typedef enum IOType {
 		INPUT,
 		OUTPUT
@@ -29,7 +29,7 @@ public:
 	static const char *IOTypeString[];
 
 	Channel(const std::string &name): _name(name), _smem(NULL) {}
-	inline ChannelState state() const { return (!_smem) ? EMPTY : WRITTEN; }
+	inline State state() const { return (!_smem) ? EMPTY : WRITTEN; }
 	inline const std::string& name() const { return _name; }
 	inline cml::SharedMemory* read() { return _smem; }
 	inline void write(cml::SharedMemory *mem) { _smem = mem; }
