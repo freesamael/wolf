@@ -12,11 +12,11 @@
 #include <vector>
 #include <pthread.h>
 #include <d2mce/d2mce.h>
+#include "SharedMemory.h"
 
 namespace cml
 {
 
-class SharedMemory;
 class D2MCE
 {
 public:

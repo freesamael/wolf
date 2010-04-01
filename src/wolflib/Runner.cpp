@@ -6,12 +6,11 @@
  */
 
 #include <cstdio>
+#include <UDPSocket.h>
+#include <TCPSocket.h>
+#include <TLVReaderWriter.h>
 #include "Runner.h"
-#include "UDPSocket.h"
-#include "TCPSocket.h"
-#include "TLVReaderWriter.h"
 #include "TLVMessage.h"
-#include "HostAddress.h"
 #include "AbstractWorkerActor.h"
 
 using namespace std;

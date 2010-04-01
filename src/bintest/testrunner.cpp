@@ -26,4 +26,8 @@ int main()
 
 	Runner runner;
 	runner.run(5566, 7788);
+
+	TLVObjectFactory::release();
+
+	return 0;
 }

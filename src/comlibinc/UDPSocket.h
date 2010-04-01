@@ -13,7 +13,6 @@
 namespace cml
 {
 
-class HostAddress;
 class UDPSocket: public AbstractSocket
 {
 public:

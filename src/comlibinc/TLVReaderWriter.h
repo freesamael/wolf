@@ -9,11 +9,11 @@
 #define TLVREADERWRITER_H_
 
 #include "AbstractSocket.h"
+#include "UDPSocket.h"
 
 namespace cml
 {
 
-class UDPSocket;
 class TLVReaderWriter
 {
 public:

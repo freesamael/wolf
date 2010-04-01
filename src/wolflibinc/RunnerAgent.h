@@ -25,7 +25,7 @@ public:
 	} State;
 	static const char *StateString[];
 	static RunnerAgent* instance();
-	static inline void release();
+	static void release();
 	State state() const { return _state; }
 	bool setup(unsigned short runner_port, unsigned short master_port,
 			unsigned timeout = 2000);

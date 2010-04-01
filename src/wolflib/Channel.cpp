@@ -7,9 +7,6 @@
 
 #include "Channel.h"
 
-using namespace std;
-using namespace cml;
-
 namespace wfe
 {
 	const char *Channel::StateString[] =

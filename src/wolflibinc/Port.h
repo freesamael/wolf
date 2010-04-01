@@ -10,11 +10,11 @@
 
 #include <cstddef>
 #include "IActor.h"
+#include "Channel.h"
 
 namespace wfe
 {
 
-class Channel;
 class Port
 {
 public:

@@ -9,11 +9,11 @@
 #define ISOURCECOMPONENT_H_
 
 #include <vector>
+#include "Port.h"
 
 namespace wfe
 {
 
-class Port;
 class ISourceComponent
 {
 public:

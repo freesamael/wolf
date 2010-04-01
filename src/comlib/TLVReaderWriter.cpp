@@ -12,7 +12,6 @@
 #include "ITLVObject.h"
 #include "TLVObjectFactory.h"
 #include "UDPSocket.h"
-#include "SharedTLVBlock.h"
 
 #define SZ_MAXBUF	65536	// Maximun 64KB.
 

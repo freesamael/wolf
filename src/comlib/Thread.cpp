@@ -59,7 +59,7 @@ bool Thread::join()
 
 /**
  * @brief Block wait until thread exits or timeout.
- * @param timeout Timeout in millisecond.
+ * @param timeout Timeout in microsecond.
  * @return True on success, false on failure (including timeout).
  */
 bool Thread::join(unsigned timeout)

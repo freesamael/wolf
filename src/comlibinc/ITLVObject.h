@@ -9,6 +9,7 @@
 #define ITLVOBJECT_H_
 
 #include <cstddef>
+#include "TLVBlock.h"
 
 namespace cml
 {

@@ -9,7 +9,6 @@
 #include <cstring>
 #include <errno.h>
 #include "UDPSocket.h"
-#include "HostAddress.h"
 
 namespace cml
 {

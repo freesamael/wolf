@@ -24,7 +24,7 @@ TCPServer::~TCPServer()
 /**
  * @brief Listen with queue lenth = qlen.
  */
-bool TCPServer::listen(unsigned qlen)
+bool TCPServer::_listen(unsigned qlen)
 {
 	if (::listen(_sockfd, qlen) < 0) {
 		perror("TCPServer::listen()");
@@ -39,7 +39,7 @@ bool TCPServer::listen(unsigned qlen)
 bool TCPServer::listen(unsigned short port, unsigned qlen)
 {
 	if (bind(port))
-		if (listen(qlen))
+		if (_listen(qlen))
 			return true;
 	return false;
 }
@@ -61,7 +61,8 @@ TCPSocket* TCPServer::accept(AbstractSocket::Blockable blk)
 
 		if ((sock = ::accept(_sockfd, (struct sockaddr *)&inaddr,
 				&addlen)) < 0) {
-			perror("TCPServer::accept()");
+			if (!(blk == NONBLOCK && (errno == EAGAIN || errno == EWOULDBLOCK)))
+				perror("TCPServer::accept()");
 			return NULL;
 		}
 		TCPSocket *tcpsock = new TCPSocket(sock);

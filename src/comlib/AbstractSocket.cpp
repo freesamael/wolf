@@ -133,26 +133,24 @@ ssize_t AbstractSocket::write(const char *buf, size_t size)
  */
 bool AbstractSocket::setBlockable(Blockable blk)
 {
-	int arg, narg;
+	int arg;
 
 	// Get arg.
-	if ((arg = fcntl(_sockfd, F_GETFD, NULL)) < 0) {
+	if ((arg = fcntl(_sockfd, F_GETFL, NULL)) < 0) {
 		perror("AbstractSocket::setBlockable(): Getting flags");
 		return false;
 	}
 
 	// Change arg.
 	if (blk == NONBLOCK)
-		narg = arg | O_NONBLOCK;
+		arg |= O_NONBLOCK;
 	else
-		narg = arg & O_NONBLOCK;
+		arg &= (~O_NONBLOCK);
 
 	// Set arg.
-	if (narg != arg) {
-		if ((fcntl(_sockfd, F_SETFD, arg)) < 0) {
-			perror("AbstractSocket::setBlockable(): Setting flags");
-			return false;
-		}
+	if ((fcntl(_sockfd, F_SETFL, arg)) < 0) {
+		perror("AbstractSocket::setBlockable(): Setting flags");
+		return false;
 	}
 	return true;
 }

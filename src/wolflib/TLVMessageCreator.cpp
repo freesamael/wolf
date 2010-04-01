@@ -8,11 +8,10 @@
 #include <cstdio>
 #include <cstring>
 #include <arpa/inet.h>
+#include <TLVBlock.h>
+#include <TLVUInt16.h>
+#include <TLVObjectFactory.h>
 #include "TLVMessageCreator.h"
-#include "TLVBlock.h"
-#include "SharedTLVBlock.h"
-#include "TLVUInt16.h"
-#include "TLVObjectFactory.h"
 
 using namespace cml;
 

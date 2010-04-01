@@ -7,10 +7,10 @@
 
 #include <cstdio>
 #include <sys/time.h>
+#include <TCPServer.h>
+#include <UDPSocket.h>
+#include <TLVReaderWriter.h>
 #include "RunnerAgent.h"
-#include "TCPServer.h"
-#include "UDPSocket.h"
-#include "TLVReaderWriter.h"
 #include "TLVMessage.h"
 
 using namespace cml;
@@ -60,6 +60,7 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 		return false;
 
 	TCPServer server;
+	server.listen(master_port);
 	struct timeval now, abs_tout;
 	struct timeval rel_tout = {timeout / 1000000, timeout % 1000000};
 

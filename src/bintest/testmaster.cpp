@@ -7,60 +7,14 @@
 
 #include <iostream>
 #include <typeinfo>
-#include <cstdio>
-#include <cstdlib>
-#include <Thread.h>
-#include <TCPServer.h>
-#include <TCPSocket.h>
-#include <TLVReaderWriter.h>
-#include <TLVMessage.h>
-#include <UDPSocket.h>
 #include <TLVObjectFactory.h>
+#include <RunnerAgent.h>
 #include <CustomTLVTypes.h>
 #include <TLVMessageCreator.h>
-
-#define SLAVE_PORT 5566
-#define MASTER_PORT 7788
 
 using namespace std;
 using namespace cml;
 using namespace wfe;
-
-class FakeCommandGenerator: public Thread
-{
-	void run()
-	{
-		cout << "Start command generator thread." << endl;
-
-		TCPServer server;
-		server.listen(MASTER_PORT, 10);
-
-		TCPSocket *sock = server.accept();
-		TLVReaderWriter rw(sock);
-		TLVMessage *inmsg;
-
-		if (!(inmsg = dynamic_cast<TLVMessage *>(rw.read()))) {
-			fprintf(stderr, "Error: Invalid incoming message.\n");
-			return;
-		}
-
-		if (inmsg->command() != TLVMessage::ADD_SLAVE) {
-			fprintf(stderr, "Error: Expected command %s but got %s.\n",
-					TLVMessage::CommandString[TLVMessage::ADD_SLAVE],
-					TLVMessage::CommandString[inmsg->command()]);
-		}
-
-		delete inmsg;
-
-		for (int i = 0; i < 20; i++) {
-			TLVMessage outmsg(TLVMessage::RUN_ACTOR);
-			rw.write(outmsg);
-			sleep(1);
-		}
-
-		sock->shutdown();
-	}
-};
 
 int main()
 {
@@ -69,19 +23,9 @@ int main()
 	TLVObjectFactory::instance()->registerCreator(typeid(TLVMessage).name(),
 			new TLVMessageCreator());
 
-	FakeCommandGenerator fake;
-	fake.start();
+	cout << RunnerAgent::instance()->setup(5566, 7788, 2000000) << endl;
 
-	UDPSocket sock;
-	TLVReaderWriter rw(&sock);
-	TLVMessage outmsg(TLVMessage::ADD_MASTER);
-
-	sock.setBroadcast(true);
-	sock.setTTL(1);
-	rw.sendto(outmsg, "255.255.255.255", SLAVE_PORT);
-
-	fake.join();
-
+	RunnerAgent::release();
 	TLVObjectFactory::instance()->release();
 
 	return 0;
