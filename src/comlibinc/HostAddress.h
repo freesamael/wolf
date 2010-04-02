@@ -22,7 +22,7 @@ namespace cml
 class HostAddress
 {
 public:
-	static HostAddress BroadcastAddress;
+	static const HostAddress BroadcastAddress;
 
 	HostAddress(): _addr(INADDR_NONE) {}
 	HostAddress(in_addr_t addr): _addr(addr) {}

@@ -24,7 +24,7 @@ using namespace std;
 
 void test_tlvblock()
 {
-	TLVBlock blk;
+	StandardTLVBlock blk;
 	blk.setType(5566);
 	blk.setLength(8080);
 
@@ -38,7 +38,7 @@ void test_tlvstring()
 {
 	// Test String.
 	TLVString str("Hello World!");
-	TLVBlock *blk = str.toTLVBlock();
+	StandardTLVBlock *blk = str.toTLVBlock();
 	TLVString *ostr = (TLVString *)TLVObjectFactory::instance()->
 			createTLVObject(*blk);
 
@@ -52,7 +52,7 @@ void test_tlvuint16()
 {
 	// Test UInt16.
 	TLVUInt16 ui16(155);
-	TLVBlock *blk = ui16.toTLVBlock();
+	StandardTLVBlock *blk = ui16.toTLVBlock();
 	TLVUInt16 *oui16 = (TLVUInt16 *)TLVObjectFactory::instance()->
 			createTLVObject(*blk);
 
@@ -66,7 +66,7 @@ void test_tlvuint32()
 {
 	// Test UInt32.
 	TLVUInt32 ui32(16777216);
-	TLVBlock *blk = ui32.toTLVBlock();
+	StandardTLVBlock *blk = ui32.toTLVBlock();
 	TLVUInt32 *oui32 = (TLVUInt32 *)TLVObjectFactory::instance()->
 			createTLVObject(*blk);
 
@@ -89,7 +89,7 @@ void test_tlvmsg()
 {
 	// Test Message.
 	TLVMessage msg(TLVMessage::EMPTY);
-	TLVBlock *blk = msg.toTLVBlock();
+	StandardTLVBlock *blk = msg.toTLVBlock();
 	TLVMessage *omsg = (TLVMessage *)TLVObjectFactory::instance()->
 			createTLVObject(*blk);
 

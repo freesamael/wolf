@@ -27,8 +27,8 @@ public:
 	 */
 	static const char *CommandString[];
 	static const unsigned short EMPTY;
-	static const unsigned short ADD_MASTER;
-	static const unsigned short ADD_SLAVE;
+	static const unsigned short HELLO_MASTER;
+	static const unsigned short HELLO_SLAVE;
 	static const unsigned short RUN_ACTOR;
 	static const unsigned short SHUTDOWN;
 
@@ -39,7 +39,7 @@ public:
 	inline ITLVObject* parameter() const { return _param; }
 	inline void setCommand(unsigned short c) { _cmd = c; }
 	inline void setParameter(ITLVObject *param) { _param = param; }
-	cml::TLVBlock* toTLVBlock() const;
+	cml::StandardTLVBlock* toTLVBlock() const;
 
 private:
 	unsigned short _cmd;

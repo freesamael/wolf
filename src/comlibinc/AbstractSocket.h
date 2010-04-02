@@ -27,7 +27,6 @@ public:
 	AbstractSocket(int sock);
 	virtual ~AbstractSocket();
 	virtual int type() const = 0;
-	int toSocketDescriptor() const { return _sockfd; }
 	bool bind(unsigned short port);
 	bool connect(const HostAddress &addr, unsigned short port);
 	bool shutdown();
@@ -36,6 +35,7 @@ public:
 	ssize_t write(const char *buf, size_t size);
 	bool setBlockable(Blockable blk);
 	bool setTTL(int ttl);
+	int toSocketDescriptor() const { return _sockfd; }
 
 	static HostAddress getHostByName(const std::string &host);
 	static unsigned short getServiceByName(const std::string &service);

@@ -14,12 +14,12 @@
 namespace cml
 {
 
-class TLVBlock;
+class StandardTLVBlock;
 class ITLVObject
 {
 public:
 	virtual ~ITLVObject() {}
-	virtual TLVBlock* toTLVBlock() const = 0;
+	virtual StandardTLVBlock* toTLVBlock() const = 0;
 };
 
 }

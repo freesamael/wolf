@@ -18,9 +18,9 @@ namespace cml
 const unsigned short TLVUInt32::Size = ITLVBlock::szHeader +
 		sizeof(unsigned int);
 
-TLVBlock* TLVUInt32::toTLVBlock() const
+StandardTLVBlock* TLVUInt32::toTLVBlock() const
 {
-	TLVBlock *blk = new TLVBlock();
+	StandardTLVBlock *blk = new StandardTLVBlock();
 	unsigned int nv = htonl(_value);
 
 	blk->setType(TLV_TYPE_UINT32);

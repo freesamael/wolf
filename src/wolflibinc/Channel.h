@@ -22,11 +22,6 @@ public:
 		WRITTEN
 	} State;
 	static const char *StateString[];
-	typedef enum IOType {
-		INPUT,
-		OUTPUT
-	} IOType;
-	static const char *IOTypeString[];
 
 	Channel(const std::string &name): _name(name), _smem(NULL) {}
 	inline State state() const { return (!_smem) ? EMPTY : WRITTEN; }

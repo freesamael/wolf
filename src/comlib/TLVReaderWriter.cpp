@@ -40,7 +40,7 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 	char hdrbuf[ITLVBlock::szHeader];
 	int ret;
 	SharedTLVBlock *tmpblk = NULL;
-	TLVBlock blk;
+	StandardTLVBlock blk;
 	ITLVObject *obj = NULL;
 	AbstractSocket *activesock = (socket == NULL) ? _socket : socket;
 
@@ -87,7 +87,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 {
 	char *localbuf = NULL;
 	int ret;
-	TLVBlock blk;
+	StandardTLVBlock blk;
 	SharedTLVBlock *tmpblk = NULL;
 	ITLVObject *obj = NULL;
 	UDPSocket *activesock = (socket == NULL) ?
@@ -142,7 +142,7 @@ bool TLVReaderWriter::write(const ITLVObject &obj, AbstractSocket *socket)
 {
 	bool success = false;
 	int ret;
-	TLVBlock *blk = obj.toTLVBlock();
+	StandardTLVBlock *blk = obj.toTLVBlock();
 	AbstractSocket *activesock = (socket == NULL) ? _socket : socket;
 
 	if (!activesock) {
@@ -173,7 +173,7 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 {
 	bool success = false;
 	int ret;
-	TLVBlock *blk = obj.toTLVBlock();
+	StandardTLVBlock *blk = obj.toTLVBlock();
 	UDPSocket *activesock = (socket == NULL) ?
 			dynamic_cast<UDPSocket *>(_socket) : socket;
 

@@ -28,6 +28,7 @@ public:
 	static RunnerAgent* instance();
 	static void release();
 	State state() const { return _state; }
+	const std::vector<cml::TCPSocket *>& runners() const { return _runners; }
 	bool setup(unsigned short runner_port, unsigned short master_port,
 			unsigned int timeout = 2);
 	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *runner = NULL);

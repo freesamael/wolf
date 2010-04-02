@@ -21,7 +21,7 @@ public:
 	TLVUInt32(unsigned int value = 0): _value(value) {}
 	unsigned int value() const { return _value; }
 	void setValue(unsigned int v) { _value = v; }
-	TLVBlock* toTLVBlock() const;
+	StandardTLVBlock* toTLVBlock() const;
 
 private:
 	unsigned int _value;

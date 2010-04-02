@@ -19,7 +19,7 @@ void TLVStringCreatorTestSuite::testCreate()
 {
 	TLVStringCreator *ctr = new TLVStringCreator();
 	TLVString *str, *yastr;
-	TLVBlock *blk;
+	StandardTLVBlock *blk;
 
 	str = dynamic_cast<TLVString*>(ctr->create());
 	str->setString("Hello World");

@@ -17,7 +17,7 @@ using namespace std;
 
 void TLVBlockTestSuite::testBlockOperations()
 {
-	TLVBlock blk;
+	StandardTLVBlock blk;
 	blk.setType(0x55aa);
 	blk.setLength(0x00ff);
 
@@ -27,17 +27,17 @@ void TLVBlockTestSuite::testBlockOperations()
 
 void TLVBlockTestSuite::testNestedBlocks()
 {
-	TLVBlock b1(0x4321, 0x8), b2(0x1234, 0x8), b3(0xa5a5, 0x10);
+	StandardTLVBlock b1(0x4321, 0x8), b2(0x1234, 0x8), b3(0xa5a5, 0x10);
 	vector<const ITLVBlock *> v1;
 	v1.push_back(&b1);
 	v1.push_back(&b2);
 
-	TLVBlock *nb1 = TLVBlock::concate(v1);
+	StandardTLVBlock *nb1 = StandardTLVBlock::concate(v1);
 	vector<const ITLVBlock *> v2;
 	v2.push_back(nb1);
 	v2.push_back(&b3);
 
-	TLVBlock *nb2 = TLVBlock::concate(v2);
+	StandardTLVBlock *nb2 = StandardTLVBlock::concate(v2);
 
 	/*---------------------------------------nb2------------------------------------------------------
 	 * |      |      | ----------------------nb1-------------------------------- --------b3--------- |

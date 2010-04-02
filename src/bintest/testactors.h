@@ -26,8 +26,8 @@ public:
 	void reset() {}
 	wfe::IActor::State state() { return wfe::IActor::READY; }
 	bool firecond() const { return _cond; }
-	cml::TLVBlock* toTLVBlock() const {
-		return new cml::TLVBlock(TLV_TYPE_TEST_ACTOR, 16);
+	cml::StandardTLVBlock* toTLVBlock() const {
+		return new cml::StandardTLVBlock(TLV_TYPE_TEST_ACTOR, 16);
 	}
 
 private:

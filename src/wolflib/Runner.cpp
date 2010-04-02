@@ -56,9 +56,9 @@ HostAddress wait_master(unsigned short runner_port)
 		return HostAddress();
 	}
 
-	if (inmsg->command() != TLVMessage::ADD_MASTER) {
+	if (inmsg->command() != TLVMessage::HELLO_MASTER) {
 		fprintf(stderr, "Runner::run(): Error: Expected command %s but got %s.\n",
-				TLVMessage::CommandString[TLVMessage::ADD_MASTER],
+				TLVMessage::CommandString[TLVMessage::HELLO_MASTER],
 				TLVMessage::CommandString[inmsg->command()]);
 		return HostAddress();
 	}
@@ -80,7 +80,7 @@ bool connect_master(TCPSocket *tsock, const HostAddress &addr,
 		return false;
 	}
 
-	TLVMessage outmsg(TLVMessage::ADD_SLAVE);
+	TLVMessage outmsg(TLVMessage::HELLO_SLAVE);
 	return tcprw.write(outmsg);
 }
 

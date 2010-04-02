@@ -19,14 +19,14 @@ namespace cml
  * @detailed TLVBlock takes the owstatic const unsigned short szType, szLength, szHeader;nership of it's own buffer, and deletes it on
  * destruction.
  */
-TLVBlock::TLVBlock(unsigned short type, unsigned short length)
+StandardTLVBlock::StandardTLVBlock(unsigned short type, unsigned short length)
 {
 	_buf = new char[length + szHeader];
 	_writetype(type);
 	_writelength(length);
 }
 
-TLVBlock::~TLVBlock()
+StandardTLVBlock::~StandardTLVBlock()
 {
 	delete _buf;
 }
@@ -34,7 +34,7 @@ TLVBlock::~TLVBlock()
 /**
  * @brief Set TLV type.
  */
-void TLVBlock::setType(unsigned short type)
+void StandardTLVBlock::setType(unsigned short type)
 {
 	_writetype(type);
 }
@@ -42,7 +42,7 @@ void TLVBlock::setType(unsigned short type)
 /**
  * @brief Set length and allocate proper buffer.
  */
-void TLVBlock::setLength(unsigned short len)
+void StandardTLVBlock::setLength(unsigned short len)
 {
 	unsigned short tp = type();
 	delete _buf;
@@ -55,7 +55,7 @@ void TLVBlock::setLength(unsigned short len)
 /**
  * @brief Write type into buffer.
  */
-void TLVBlock::_writetype(unsigned short type)
+void StandardTLVBlock::_writetype(unsigned short type)
 {
 	unsigned short ntype = htons(type);
 	memcpy(_buf, &ntype, szType);
@@ -64,7 +64,7 @@ void TLVBlock::_writetype(unsigned short type)
 /**
  * @brief Write length into buffer.
  */
-void TLVBlock::_writelength(unsigned short length)
+void StandardTLVBlock::_writelength(unsigned short length)
 {
 	unsigned short nlen = htons(length);
 	memcpy(_buf + szType, &nlen, szLength);
@@ -74,9 +74,9 @@ void TLVBlock::_writelength(unsigned short length)
  * @brief Concatenate TLV blocks into one TLV block (nested TLV).
  * @note Type will be TLV_TYPE_INVALID, which should be modified afterward.
  */
-TLVBlock* TLVBlock::concate(const vector<const ITLVBlock*> &blocks)
+StandardTLVBlock* StandardTLVBlock::concate(const vector<const ITLVBlock*> &blocks)
 {
-	TLVBlock *blk = new TLVBlock();
+	StandardTLVBlock *blk = new StandardTLVBlock();
 
 	unsigned short tlen = 0;
 	for (int i = 0; i < (int)blocks.size(); i++)

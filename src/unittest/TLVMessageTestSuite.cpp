@@ -20,8 +20,8 @@ using namespace wfe;
 
 void TLVMessageTestSuite::testToTLVBlock()
 {
-	TLVMessage msg(TLVMessage::ADD_MASTER);
-	TLVBlock *blk = msg.toTLVBlock();
+	TLVMessage msg(TLVMessage::HELLO_MASTER);
+	StandardTLVBlock *blk = msg.toTLVBlock();
 
 	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_MESSAGE, blk->type());
 	CPPUNIT_ASSERT_EQUAL(TLVUInt16::Size, blk->length());

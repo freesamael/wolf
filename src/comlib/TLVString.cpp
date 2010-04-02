@@ -17,10 +17,10 @@ using namespace std;
 namespace cml
 {
 
-TLVBlock* TLVString::toTLVBlock() const
+StandardTLVBlock* TLVString::toTLVBlock() const
 {
 	if (!_str.empty()) {
-		TLVBlock *blk = new TLVBlock();
+		StandardTLVBlock *blk = new StandardTLVBlock();
 		blk->setType(TLV_TYPE_STRING);
 		blk->setLength(_str.length());
 		// TLV doesn't need to be null-terminated.

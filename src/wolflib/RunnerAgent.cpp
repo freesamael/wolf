@@ -42,9 +42,9 @@ public:
 				TLVMessage *msg;
 				if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
 					fprintf(stderr, "RunnerAgent::setup(): Error: Invalid incoming message.\n");
-				} else if (msg->command() != TLVMessage::ADD_SLAVE) {
+				} else if (msg->command() != TLVMessage::HELLO_SLAVE) {
 					fprintf(stderr, "RunnerAgent::setup(): Error: Expected command %s but got %s.\n",
-							TLVMessage::CommandString[TLVMessage::ADD_SLAVE],
+							TLVMessage::CommandString[TLVMessage::HELLO_SLAVE],
 							TLVMessage::CommandString[msg->command()]);
 				} else {
 					_runners->push_back(tsock);
@@ -110,7 +110,7 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 	TLVReaderWriter udprw(&usock);
 	usock.setBroadcast(true);
 	usock.setTTL(1);
-	udprw.sendto(TLVMessage(TLVMessage::ADD_MASTER),
+	udprw.sendto(TLVMessage(TLVMessage::HELLO_MASTER),
 			HostAddress::BroadcastAddress, runner_port);
 
 	// Wait until timed out.

@@ -11,6 +11,4 @@ namespace wfe
 {
 	const char *Channel::StateString[] =
 			{"Empty", "Written"};
-	const char *Channel::IOTypeString[] =
-			{"Input", "Output"};
 }

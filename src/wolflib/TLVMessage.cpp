@@ -23,11 +23,11 @@ namespace wfe
 const unsigned short TLVMessage::TLVType = 10;
 
 const char *TLVMessage::CommandString[] = {
-		"Empty", "Add Master", "Add Slave", "Run Actor", "Shutdown"
+		"Empty", "Hello Master", "Hello Slave", "Run Actor", "Shutdown"
 };
 const unsigned short TLVMessage::EMPTY = 0;
-const unsigned short TLVMessage::ADD_MASTER = 1;
-const unsigned short TLVMessage::ADD_SLAVE = 2;
+const unsigned short TLVMessage::HELLO_MASTER = 1;
+const unsigned short TLVMessage::HELLO_SLAVE = 2;
 const unsigned short TLVMessage::RUN_ACTOR = 3;
 const unsigned short TLVMessage::SHUTDOWN = 4;
 
@@ -37,9 +37,9 @@ void TLVMessage::run()
 	case EMPTY:
 		fprintf(stderr, "TLVMessage::run(): Error: EMPTY command can not be run.\n");
 		break;
-	case ADD_MASTER:
+	case HELLO_MASTER:
 		break;
-	case ADD_SLAVE:
+	case HELLO_SLAVE:
 		break;
 	case RUN_ACTOR:
 		break;
@@ -48,10 +48,10 @@ void TLVMessage::run()
 	}
 }
 
-TLVBlock* TLVMessage::toTLVBlock() const
+StandardTLVBlock* TLVMessage::toTLVBlock() const
 {
 	vector<const ITLVBlock *> blks;
-	TLVBlock *cmd = NULL, *param = NULL;
+	StandardTLVBlock *cmd = NULL, *param = NULL;
 
 	// Create command block.
 	cmd = TLVUInt16(_cmd).toTLVBlock();
@@ -64,7 +64,7 @@ TLVBlock* TLVMessage::toTLVBlock() const
 	}
 
 	// Construct concatenated block.
-	TLVBlock *blk = TLVBlock::concate(blks);
+	StandardTLVBlock *blk = StandardTLVBlock::concate(blks);
 	blk->setType(TLV_TYPE_MESSAGE);
 
 	// Clean up.

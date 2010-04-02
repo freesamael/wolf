@@ -12,7 +12,7 @@ using namespace std;
 namespace cml
 {
 
-HostAddress HostAddress::BroadcastAddress("255.255.255.255");
+HostAddress const HostAddress::BroadcastAddress("255.255.255.255");
 
 string HostAddress::toString() const
 {

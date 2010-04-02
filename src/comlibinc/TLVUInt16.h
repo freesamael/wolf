@@ -21,7 +21,7 @@ public:
 	TLVUInt16(unsigned short value = 0): _value(value) {}
 	unsigned short value() const { return _value; }
 	void setValue(unsigned short v) { _value = v; }
-	TLVBlock* toTLVBlock() const;
+	StandardTLVBlock* toTLVBlock() const;
 
 private:
 	unsigned short _value;

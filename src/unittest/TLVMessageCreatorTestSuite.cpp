@@ -19,7 +19,7 @@ void TLVMessageCreatorTestSuite::testCreate()
 	TLVMessageCreator creator;
 	TLVMessage msg(TLVMessage::RUN_ACTOR);
 
-	TLVBlock *blk = msg.toTLVBlock();
+	StandardTLVBlock *blk = msg.toTLVBlock();
 	TLVMessage *omsg = dynamic_cast<TLVMessage *>(creator.create(*blk));
 
 	CPPUNIT_ASSERT(omsg);

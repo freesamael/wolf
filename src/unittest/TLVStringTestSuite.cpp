@@ -19,7 +19,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TLVStringTestSuite);
 void TLVStringTestSuite::testToTLVBlock()
 {
 	TLVString *str;
-	TLVBlock *blk;
+	StandardTLVBlock *blk;
 
 	str = new TLVString("12345");
 	blk = str->toTLVBlock();

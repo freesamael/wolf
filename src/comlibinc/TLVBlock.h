@@ -17,11 +17,11 @@
 namespace cml
 {
 
-class TLVBlock: public ITLVBlock
+class StandardTLVBlock: public ITLVBlock
 {
 public:
-	TLVBlock(unsigned short type = TLV_TYPE_INVALID, unsigned short length = 0);
-	~TLVBlock();
+	StandardTLVBlock(unsigned short type = TLV_TYPE_INVALID, unsigned short length = 0);
+	~StandardTLVBlock();
 	inline unsigned short type() const {
 		return ntohs(((unsigned short *)_buf)[0]); }
 	inline unsigned short length() const {
@@ -36,7 +36,7 @@ public:
 	inline const char* getValueBuffer() const {
 		return (!length()) ? NULL : &_buf[szHeader]; }
 
-	static TLVBlock* concate(const std::vector<const ITLVBlock*> &blocks);
+	static StandardTLVBlock* concate(const std::vector<const ITLVBlock*> &blocks);
 
 private:
 	void _writetype(unsigned short type);
