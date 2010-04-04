@@ -9,13 +9,16 @@
 #include <cstring>
 #include <typeinfo>
 #include "TLVString.h"
+#include "TLVStringCreator.h"
 #include "TLVBlock.h"
-#include "TLVObjectFactory.h"
+#include "TLVObjectFactoryAutoRegistor.h"
 
 using namespace std;
 
 namespace cml
 {
+
+TLV_OBJECT_REGISTRATION(TLVString, TLV_TYPE_STRING, TLVStringCreator);
 
 StandardTLVBlock* TLVString::toTLVBlock() const
 {

@@ -10,8 +10,9 @@
 #include <typeinfo>
 #include <TLVBlock.h>
 #include <TLVUInt16.h>
-#include <TLVObjectFactory.h>
+#include <TLVObjectFactoryAutoRegistor.h>
 #include "TLVMessage.h"
+#include "TLVMessageCreator.h"
 #include "CustomTLVTypes.h"
 
 using namespace cml;
@@ -19,6 +20,8 @@ using namespace std;
 
 namespace wfe
 {
+
+TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE, TLVMessageCreator);
 
 const unsigned short TLVMessage::TLVType = 10;
 
@@ -30,23 +33,6 @@ const unsigned short TLVMessage::HELLO_MASTER = 1;
 const unsigned short TLVMessage::HELLO_SLAVE = 2;
 const unsigned short TLVMessage::RUN_ACTOR = 3;
 const unsigned short TLVMessage::SHUTDOWN = 4;
-
-void TLVMessage::run()
-{
-	switch (_cmd) {
-	case EMPTY:
-		fprintf(stderr, "TLVMessage::run(): Error: EMPTY command can not be run.\n");
-		break;
-	case HELLO_MASTER:
-		break;
-	case HELLO_SLAVE:
-		break;
-	case RUN_ACTOR:
-		break;
-	default:
-		fprintf(stderr, "TLVMessage::run(): Error: Unrecognized command.\n");
-	}
-}
 
 StandardTLVBlock* TLVMessage::toTLVBlock() const
 {

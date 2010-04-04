@@ -5,8 +5,8 @@
  *      Author: samael
  */
 
-#ifndef IEXECUTIONSTRATEGY_H_
-#define IEXECUTIONSTRATEGY_H_
+#ifndef IWORKFLOWEXECUTOR_H_
+#define IWORKFLOWEXECUTOR_H_
 
 #include <vector>
 #include "IActor.h"
@@ -18,12 +18,13 @@ namespace wfe
  * @note Execution strategies should take care of of both normal actors and
  * iterative actors.
  */
-class IExecutionStrategy
+class IWorkflowExecutor
 {
 public:
+	virtual ~IWorkflowExecutor() {}
 	virtual void execute(const std::vector<IActor *> &actors) = 0;
 };
 
 }
 
-#endif /* IEXECUTIONSTRATEGY_H_ */
+#endif /* IWORKFLOWEXECUTOR_H_ */

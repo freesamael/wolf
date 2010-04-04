@@ -9,7 +9,7 @@
 #include <Channel.h>
 #include <Director.h>
 #include <Port.h>
-#include <SimpleExecutionStrategy.h>
+#include <SimpleWorkflowExecutor.h>
 #include <AbstractManagerActor.h>
 
 using namespace std;
@@ -92,7 +92,7 @@ private:
 
 int main()
 {
-	SimpleExecutionStrategy exest;
+	SimpleWorkflowExecutor exest;
 	Director d(&exest);
 
 	// Create actors.

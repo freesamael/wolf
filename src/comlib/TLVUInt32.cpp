@@ -9,11 +9,14 @@
 #include <typeinfo>
 #include <arpa/inet.h>
 #include "TLVUInt32.h"
+#include "TLVUInt32Creator.h"
 #include "TLVBlock.h"
-#include "TLVObjectFactory.h"
+#include "TLVObjectFactoryAutoRegistor.h"
 
 namespace cml
 {
+
+TLV_OBJECT_REGISTRATION(TLVUInt32, TLV_TYPE_UINT32, TLVUInt32Creator);
 
 const unsigned short TLVUInt32::Size = ITLVBlock::szHeader +
 		sizeof(unsigned int);

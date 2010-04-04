@@ -35,7 +35,7 @@ public:
 	ssize_t write(const char *buf, size_t size);
 	bool setBlockable(Blockable blk);
 	bool setTTL(int ttl);
-	int toSocketDescriptor() const { return _sockfd; }
+	int socketDescriptor() const { return _sockfd; }
 
 	static HostAddress getHostByName(const std::string &host);
 	static unsigned short getServiceByName(const std::string &service);

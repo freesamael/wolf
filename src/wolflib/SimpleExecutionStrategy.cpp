@@ -6,7 +6,7 @@
  */
 
 #include <deque>
-#include "SimpleExecutionStrategy.h"
+#include "SimpleWorkflowExecutor.h"
 #include "IIterativeActor.h"
 
 using namespace std;
@@ -14,7 +14,7 @@ using namespace std;
 namespace wfe
 {
 
-void SimpleExecutionStrategy::execute(const vector<IActor *> &actors)
+void SimpleWorkflowExecutor::execute(const vector<IActor *> &actors)
 {
 	deque<IActor *> qready;
 	vector<IActor *> vwait = actors;

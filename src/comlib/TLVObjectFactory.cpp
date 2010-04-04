@@ -24,12 +24,6 @@ pthread_mutex_t TLVObjectFactory::_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 TLVObjectFactory::TLVObjectFactory()
 {
-	registerType(typeid(TLVString).name(), TLV_TYPE_STRING);
-	registerType(typeid(TLVUInt16).name(), TLV_TYPE_UINT16);
-	registerType(typeid(TLVUInt32).name(), TLV_TYPE_UINT32);
-	registerCreator(typeid(TLVString).name(), new TLVStringCreator());
-	registerCreator(typeid(TLVUInt16).name(), new TLVUInt16Creator());
-	registerCreator(typeid(TLVUInt32).name(), new TLVUInt32Creator());
 }
 
 TLVObjectFactory::~TLVObjectFactory()
@@ -41,19 +35,19 @@ TLVObjectFactory::~TLVObjectFactory()
 
 TLVObjectFactory* TLVObjectFactory::instance()
 {
-	pthread_mutex_lock(&_mutex);
+//	pthread_mutex_lock(&_mutex);
 	if (!_instance)
 		_instance = new TLVObjectFactory();
-	pthread_mutex_unlock(&_mutex);
+//	pthread_mutex_unlock(&_mutex);
 	return _instance;
 }
 
 void TLVObjectFactory::release()
 {
-	pthread_mutex_lock(&_mutex);
+//	pthread_mutex_lock(&_mutex);
 	delete _instance;
 	_instance = NULL;
-	pthread_mutex_unlock(&_mutex);
+//	pthread_mutex_unlock(&_mutex);
 }
 
 /**

@@ -10,7 +10,7 @@
 
 #include <string>
 #include <vector>
-#include "IExecutionStrategy.h"
+#include "IWorkflowExecutor.h"
 
 namespace wfe
 {
@@ -19,7 +19,7 @@ class Channel;
 class Director
 {
 public:
-	Director(IExecutionStrategy *exest): _exest(exest){}
+	Director(IWorkflowExecutor *exest): _exest(exest){}
 	~Director();
 	bool addActor(IActor *actor);
 	bool removeActor(IActor *actor);
@@ -30,7 +30,7 @@ public:
 private:
 	std::vector<IActor *> _actors;
 	std::vector<Channel *> _channels;
-	IExecutionStrategy *_exest;
+	IWorkflowExecutor *_exest;
 };
 
 }

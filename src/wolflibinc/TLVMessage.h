@@ -34,7 +34,6 @@ public:
 
 	TLVMessage(unsigned short c = EMPTY, ITLVObject *param = NULL):
 		_cmd(c), _param(param) {}
-	void run();
 	inline unsigned short command() const { return _cmd; }
 	inline ITLVObject* parameter() const { return _param; }
 	inline void setCommand(unsigned short c) { _cmd = c; }
