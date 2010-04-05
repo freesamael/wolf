@@ -10,7 +10,6 @@
 
 #include <map>
 #include <string>
-#include <pthread.h>
 #include "ITLVObject.h"
 #include "ITLVObjectCreator.h"
 #include "ITLVBlock.h"
@@ -35,7 +34,6 @@ private:
 	TLVObjectFactory();
 	~TLVObjectFactory();
 	static TLVObjectFactory *_instance;
-	static pthread_mutex_t _mutex;
 	std::map<std::string, unsigned short> _typeids;
 	std::map<std::string, ITLVObjectCreator *> _creators;
 };

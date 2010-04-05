@@ -15,7 +15,8 @@ namespace wfe
 {
 
 /**
- * @note Execution strategies should take care of of both normal actors and
+ * \note
+ * Execution strategies should be aware of of both normal actors and
  * iterative actors.
  */
 class IWorkflowExecutor

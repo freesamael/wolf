@@ -15,6 +15,9 @@
 namespace cml
 {
 
+/**
+ * Auto register used to register type id and creator to TLVObjectFactory.
+ */
 class TLVObjectFactoryAutoRegistor
 {
 public:

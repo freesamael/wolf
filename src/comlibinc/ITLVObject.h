@@ -15,6 +15,10 @@ namespace cml
 {
 
 class StandardTLVBlock;
+
+/**
+ * \interface ITLVObject
+ */
 class ITLVObject
 {
 public:

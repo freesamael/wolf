@@ -16,9 +16,11 @@ namespace cml
 {
 
 /**
- * @brief Execute a program with given arguments.
- * @note If no environment was specified, it uses evexvp(), otherwise it uses
- * execve().
+ * Execute a program with given arguments.
+ *
+ * \note
+ * If no environment was specified, it uses evexvp(), which means it searches
+ * $PATH for executables. Otherwise it uses execve().
  */
 void Process::start(const string &program, const string &args)
 {
@@ -45,10 +47,12 @@ void Process::start(const string &program, const string &args)
 }
 
 /**
- * @brief Construct arguments in char** form used in execve().
- * @note The lifetime of return string arrays depends on input parameters
- * because it uses string.c_str(). Be careful about the lifetime issue and call
- * this function in constructArgs("program_name", ...) way.
+ * Construct arguments in char** form used in execve().
+ *
+ * \note
+ * The lifetime of return string arrays depends on input parameters because it
+ * uses string.c_str(). Be careful about the lifetime issue and don't call this
+ * function by constant c-string such as constructArgs("program_name", ...).
  */
 const char** Process::constructArgs(const std::string &program,
 		const vector<string> &args)

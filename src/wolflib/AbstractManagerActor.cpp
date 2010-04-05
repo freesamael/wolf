@@ -12,6 +12,10 @@
 namespace wfe
 {
 
+/**
+ * \note
+ * AbstractManagerActor deletes all ports on destruction.
+ */
 AbstractManagerActor::~AbstractManagerActor()
 {
 	for (int i = 0; i < (int)_inports.size(); i++)
@@ -22,8 +26,10 @@ AbstractManagerActor::~AbstractManagerActor()
 }
 
 /**
- * @brief Test if all inputs are ready.
- * @return True if all inputs are ready or there's no inputs. False otherwise.
+ * Test if all inputs are ready.
+ *
+ * \return
+ * True if all inputs are ready or there's no inputs. False otherwise.
  */
 bool AbstractManagerActor::isInputReady() const
 {

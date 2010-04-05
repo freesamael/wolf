@@ -20,7 +20,6 @@ namespace cml
 {
 
 TLVObjectFactory* TLVObjectFactory::_instance = NULL;
-pthread_mutex_t TLVObjectFactory::_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 TLVObjectFactory::TLVObjectFactory()
 {
@@ -35,26 +34,26 @@ TLVObjectFactory::~TLVObjectFactory()
 
 TLVObjectFactory* TLVObjectFactory::instance()
 {
-//	pthread_mutex_lock(&_mutex);
 	if (!_instance)
 		_instance = new TLVObjectFactory();
-//	pthread_mutex_unlock(&_mutex);
 	return _instance;
 }
 
 void TLVObjectFactory::release()
 {
-//	pthread_mutex_lock(&_mutex);
 	delete _instance;
 	_instance = NULL;
-//	pthread_mutex_unlock(&_mutex);
 }
 
 /**
- * @brief Register a net type corresponding to a host type. If the net type is
- * already registered, it will overwrite the registered type.
- * @param name Type name, i.e. typeid(Class).name().
- * @param id ID used in TLV type.
+ * Register a net type corresponding to a host type. If the net type is already
+ * registered, it overwrites the registered type.
+ *
+ * \param name
+ * Type name, i.e. typeid(Class).name().
+ *
+ * \param id
+ * ID used in TLV type.
  */
 void TLVObjectFactory::registerType(const std::string &name, unsigned short id)
 {
@@ -69,11 +68,16 @@ void TLVObjectFactory::registerType(const std::string &name, unsigned short id)
 }
 
 /**
- * @brief Register a creator to the factory.
- * @param name Type name, i.e. typeid(Class).name().
- * @param creator Associated creator.
- * @note Factory will keep the ownership which means it deletes creators on
- * destruction.
+ * Register a creator to the factory.
+ *
+ * \param name
+ * Type name, i.e. typeid(Class).name().
+ *
+ * \param creator
+ * Associated creator.
+ *
+ * \note
+ * Factory keeps the ownership which means it deletes creators on destruction.
  */
 void TLVObjectFactory::registerCreator(const std::string &name,
 		ITLVObjectCreator *creator)
@@ -89,8 +93,10 @@ void TLVObjectFactory::registerCreator(const std::string &name,
 }
 
 /**
- * @brief Get TLV type id by giving host typename (typeid().name()).
- * @return Type id or TLV_TYPE_INVALID if not found.
+ * Get TLV type id by giving host typename (typeid().name()).
+ *
+ * \return
+ * Type id or TLV_TYPE_INVALID if nothing found.
  */
 unsigned short TLVObjectFactory::lookupTypeId(const string &name)
 {
@@ -101,8 +107,10 @@ unsigned short TLVObjectFactory::lookupTypeId(const string &name)
 }
 
 /**
- * @brief Get host typename (typeid().name()) by giving TLV type id.
- * @return Typename or empty string if not found.
+ * Get host typename (typeid().name()) by giving TLV type id.
+ *
+ * \return
+ * Typename or empty string if nothing found.
  */
 string TLVObjectFactory::lookupTypeName(unsigned short id)
 {
@@ -115,8 +123,10 @@ string TLVObjectFactory::lookupTypeName(unsigned short id)
 }
 
 /**
- * @brief Create a object by typename (typeid().name()).
- * @return Object created, or NULL if no corresponding creators found.
+ * Create a object by typename (typeid().name()).
+ *
+ * \return
+ * Object created, or NULL if no corresponding creators found.
  */
 ITLVObject* TLVObjectFactory::createTLVObject(const string &type_name)
 {
@@ -127,7 +137,7 @@ ITLVObject* TLVObjectFactory::createTLVObject(const string &type_name)
 }
 
 /**
- * @brief Overloaded creation function.
+ * Overloaded creation function.
  */
 ITLVObject* TLVObjectFactory::createTLVObject(unsigned short type_id)
 {
@@ -135,8 +145,10 @@ ITLVObject* TLVObjectFactory::createTLVObject(unsigned short type_id)
 }
 
 /**
- * @brief Create a object from corresponding TLV block.
- * @return Object created, or NULL if no proper creators found.
+ * Create a object from corresponding TLV block.
+ *
+ * \return
+ * Object created, or NULL if no proper creators found.
  */
 ITLVObject* TLVObjectFactory::createTLVObject(const ITLVBlock &blk)
 {
@@ -149,7 +161,5 @@ ITLVObject* TLVObjectFactory::createTLVObject(const ITLVBlock &blk)
 			blk.type());
 	return NULL;
 }
-
-
 
 }

@@ -11,9 +11,8 @@
 #include "TLVBlock.h"
 #include "ITLVObject.h"
 #include "TLVObjectFactory.h"
-#include "UDPSocket.h"
 
-#define SZ_MAXBUF	65536	// Maximun 64KB.
+#define SZ_MAXBUF	8192	///< Max buffer size used in recvfrom().
 
 using namespace std;
 
@@ -30,19 +29,26 @@ TLVReaderWriter::~TLVReaderWriter()
 }
 
 /**
- * @brief Read a TLV object from given socket.
- * @param socket Socket to read, or NULL to use the one given with constructor.
- * @return Object on success, NULL on failure.
- * @note User should delete the object manually.
+ * Read a TLV object from given TCP socket.
+ *
+ * \param[in] socket
+ * Socket to use. Or NULL to use the default socket given in constructor.
+ *
+ * \return
+ * Object on success, NULL on failure.
+ *
+ * \note
+ * User should delete the returned object manually.
  */
-ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
+ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 {
 	char hdrbuf[ITLVBlock::szHeader];
 	int ret;
 	SharedTLVBlock *tmpblk = NULL;
 	StandardTLVBlock blk;
 	ITLVObject *obj = NULL;
-	AbstractSocket *activesock = (socket == NULL) ? _socket : socket;
+	TCPSocket *activesock = (socket == NULL) ?
+			dynamic_cast<TCPSocket *>(_socket) : socket;
 
 	if (!activesock) {
 		fprintf(stderr, "TLVReaderWriter::read(): Error: No active socket found.\n");
@@ -80,7 +86,56 @@ ITLVObject* TLVReaderWriter::read(AbstractSocket *socket)
 }
 
 /**
- * @brief Read a TLV object from given UDP socket.
+ * Write a TLV object with given TCP Socket.
+ *
+ * \param[in] socket
+ * Socket to use. Or NULL to use the default socket given in constructor.
+ *
+ * \return
+ * True on success, false otherwise.
+ */
+bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
+{
+	bool success = false;
+	int ret;
+	StandardTLVBlock *blk = obj.toTLVBlock();
+	TCPSocket *activesock = (socket == NULL) ?
+			dynamic_cast<TCPSocket *>(_socket) : socket;
+
+	if (!activesock) {
+		fprintf(stderr, "TLVReaderWriter::write(): Error: No active socket found.\n");
+		return false;
+	}
+
+	if (blk) {
+		ret = activesock->write(blk->getCompleteBuffer(), blk->size());
+		if (!(success = (ret == (int)blk->size()))) {
+			if (ret > 0) {
+				fprintf(stderr, "TLVReaderWriter::write(): Error: Expected %u bytes but %u bytes written.",
+						blk->size(), ret);
+			} else {
+				fprintf(stderr, "TLVReaderWriter::read(): Error: Fail to write.\n");
+			}
+		}
+	} else {
+		fprintf(stderr, "TLVReaderWriter::write(): Error: Unable to create TLV block from given object.\n");
+	}
+
+	delete blk;
+	return success;
+}
+
+/**
+ * Read a TLV object from given UDP socket.
+ *
+ * \param[in] socket
+ * Socket to use. Or NULL to use the default socket given in constructor.
+ *
+ * \return
+ * Object on success, NULL on failure.
+ *
+ * \note
+ * User should delete the returned object manually.
  */
 ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 		UDPSocket *socket)
@@ -135,39 +190,14 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 }
 
 /**
- * @brief Write a TLV object.
- * @param socket Socket to write, or NULL to use the one from constructor.
+ * Send a message with given UDP Socket.
+ *
+ * \param[in] socket
+ * Socket to use. Or NULL to use the default socket given in constructor.
+ *
+ * \return
+ * True on success, false otherwise.
  */
-bool TLVReaderWriter::write(const ITLVObject &obj, AbstractSocket *socket)
-{
-	bool success = false;
-	int ret;
-	StandardTLVBlock *blk = obj.toTLVBlock();
-	AbstractSocket *activesock = (socket == NULL) ? _socket : socket;
-
-	if (!activesock) {
-		fprintf(stderr, "TLVReaderWriter::write(): Error: No active socket found.\n");
-		return false;
-	}
-
-	if (blk) {
-		ret = activesock->write(blk->getCompleteBuffer(), blk->size());
-		if (!(success = (ret == (int)blk->size()))) {
-			if (ret > 0) {
-				fprintf(stderr, "TLVReaderWriter::write(): Error: Expected %u bytes but %u bytes written.",
-						blk->size(), ret);
-			} else {
-				fprintf(stderr, "TLVReaderWriter::read(): Error: Fail to write.\n");
-			}
-		}
-	} else {
-		fprintf(stderr, "TLVReaderWriter::write(): Error: Unable to create TLV block from given object.\n");
-	}
-
-	delete blk;
-	return success;
-}
-
 bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 		unsigned short port, UDPSocket *socket)
 {

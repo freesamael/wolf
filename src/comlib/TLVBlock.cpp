@@ -15,8 +15,10 @@ namespace cml
 {
 
 /**
- * @brief Construct a TLVblock with given value.
- * @detailed TLVBlock takes the owstatic const unsigned short szType, szLength, szHeader;nership of it's own buffer, and deletes it on
+ * Construct a TLVblock with given value.
+ *
+ * \note
+ * TLVBlock takes the ownership of it's own buffer, and deletes it on
  * destruction.
  */
 StandardTLVBlock::StandardTLVBlock(unsigned short type, unsigned short length)
@@ -32,7 +34,7 @@ StandardTLVBlock::~StandardTLVBlock()
 }
 
 /**
- * @brief Set TLV type.
+ * Set TLV type.
  */
 void StandardTLVBlock::setType(unsigned short type)
 {
@@ -40,7 +42,7 @@ void StandardTLVBlock::setType(unsigned short type)
 }
 
 /**
- * @brief Set length and allocate proper buffer.
+ * Set length and allocate proper buffer.
  */
 void StandardTLVBlock::setLength(unsigned short len)
 {
@@ -53,7 +55,7 @@ void StandardTLVBlock::setLength(unsigned short len)
 }
 
 /**
- * @brief Write type into buffer.
+ * Write type into buffer.
  */
 void StandardTLVBlock::_writetype(unsigned short type)
 {
@@ -62,7 +64,7 @@ void StandardTLVBlock::_writetype(unsigned short type)
 }
 
 /**
- * @brief Write length into buffer.
+ * Write length into buffer.
  */
 void StandardTLVBlock::_writelength(unsigned short length)
 {
@@ -71,8 +73,10 @@ void StandardTLVBlock::_writelength(unsigned short length)
 }
 
 /**
- * @brief Concatenate TLV blocks into one TLV block (nested TLV).
- * @note Type will be TLV_TYPE_INVALID, which should be modified afterward.
+ * Concatenate TLV blocks into one TLV block (nested TLV).
+ *
+ * \note
+ * Type will be set as TLV_TYPE_INVALID, which should be modified afterward.
  */
 StandardTLVBlock* StandardTLVBlock::concate(const vector<const ITLVBlock*> &blocks)
 {

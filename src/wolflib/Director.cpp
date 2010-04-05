@@ -23,9 +23,13 @@ Director::~Director()
 }
 
 /**
- * @brief Add an actor into the director to execute.
- * @return True on success, false if it already exists inside the director.
- * @note Director takes the ownership of actors, and will delete/free them.
+ * Add an actor into the director to execute.
+ *
+ * \return
+ * True on success, false if it already exists inside the director.
+ *
+ * \note
+ * Director takes the ownership of actors, and will delete/free them.
  */
 bool Director::addActor(IActor *actor)
 {
@@ -39,8 +43,13 @@ bool Director::addActor(IActor *actor)
 }
 
 /**
- * @brief Remove an actor.
- * @return True on success, false if not found.
+ * Remove an actor.
+ *
+ * \return
+ * True on success, false if not found.
+ *
+ * \note
+ * Director won't delete the given actor.
  */
 bool Director::removeActor(IActor *actor)
 {
@@ -55,8 +64,8 @@ bool Director::removeActor(IActor *actor)
 }
 
 /**
- * @brief Create a channel with given name. If the channel already exists, it
- * returns the original one rather than create a new one.
+ * Create a channel with given name. If the channel already exists, it returns
+ * the original one rather than create a new one.
  */
 Channel* Director::createChannel(const string &name)
 {
@@ -70,8 +79,10 @@ Channel* Director::createChannel(const string &name)
 }
 
 /**
- * @brief Find a channel with given name.
- * @return Proper channel or NULL if nothing found.
+ * Find a channel with given name.
+ *
+ * \return
+ * Proper channel or NULL if nothing found.
  */
 Channel* Director::findChannel(const string &name)
 {

@@ -20,12 +20,19 @@ UDPSocket::UDPSocket()
 }
 
 /**
- * @brief Receive a UDP message from socket.
- * @param [in] buf
- * @param [in] size
- * @param [out] addr
- * @param [out] port
- * @return Size read. On error, return -1.
+ * Receive a UDP message from socket.
+ *
+ * \param[in] buf Buffer to write the incoming message.
+ * \param[in] size Size of bytes to read.
+ * \param[out] addr Sender address of incoming message.
+ * \param[out] port Sender port of incoming message.
+ *
+ * \return
+ * Size read. On error, return -1.
+ *
+ * \note
+ * If the buffer size is not enough to record incoming message, the extra data
+ * is discarded.
  */
 ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
 		unsigned short *port)
@@ -46,8 +53,10 @@ ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
 }
 
 /**
- * @brief Send a UDP message to given address/port.
- * @return Size written. On error, return -1.
+ * Send a UDP message to given address/port.
+ *
+ * \return
+ * Size written. On error, return -1.
  */
 ssize_t UDPSocket::sendto(const char *buf, size_t size, const HostAddress &addr,
 		unsigned short port)
@@ -72,8 +81,9 @@ ssize_t UDPSocket::sendto(const char *buf, size_t size, const HostAddress &addr,
 }
 
 /**
- * @brief Set if the it can broadcast.
- * @return True on success, false on failure.
+ * Set if the it can broadcast.
+ * \return
+ * True on success, false on failure.
  */
 bool UDPSocket::setBroadcast(bool bcast)
 {

@@ -15,9 +15,6 @@
 namespace wfe
 {
 
-/**
- * @note AbstractManagerActor deletes all ports on destruction.
- */
 class AbstractManagerActor: public IActor, public ISinkComponent,
 		public ISourceComponent
 {

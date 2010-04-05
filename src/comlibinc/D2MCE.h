@@ -17,6 +17,9 @@
 namespace cml
 {
 
+/**
+ * Wrapper for D2MCE.
+ */
 class D2MCE
 {
 public:

@@ -32,6 +32,12 @@ AbstractSocket::AbstractSocket(int sock):
 	pthread_mutex_init(&_mutex, NULL);
 }
 
+/**
+ * \note
+ * It closes the socket automatically on destruction. However, in case of TCP
+ * socket, users need to call shutdown() before destruction for graceful TCP
+ * disconnection.
+ */
 AbstractSocket::~AbstractSocket()
 {
 	if (::close(_sockfd) != 0)
@@ -41,7 +47,7 @@ AbstractSocket::~AbstractSocket()
 }
 
 /**
- * @brief Bind socket to a port.
+ * Bind the socket to a given port.
  */
 bool AbstractSocket::bind(unsigned short port)
 {
@@ -63,8 +69,10 @@ bool AbstractSocket::bind(unsigned short port)
 }
 
 /**
- * @brief Connect to a host.
- * @return True on success, false on failure.
+ * Connect to a host.
+ *
+ * \return
+ * True on success, false on failure.
  */
 bool AbstractSocket::connect(const HostAddress &addr,
 		unsigned short port)
@@ -87,8 +95,10 @@ bool AbstractSocket::connect(const HostAddress &addr,
 }
 
 /**
- * @brief Shutdown the socket.
- * @return True on success, false on failure.
+ * Shutdown the socket.
+ *
+ * \return
+ * True on success, false on failure.
  */
 bool AbstractSocket::shutdown()
 {
@@ -100,8 +110,10 @@ bool AbstractSocket::shutdown()
 }
 
 /**
- * @brief Read a message.
- * @return Size read. On error, return -1.
+ * Read a message.
+ *
+ * \return
+ * Size read. On error, return -1.
  */
 ssize_t AbstractSocket::read(char *buf, size_t size)
 {
@@ -112,8 +124,10 @@ ssize_t AbstractSocket::read(char *buf, size_t size)
 }
 
 /**
- * @brief Write a message.
- * @return Size written. On error, return -1.
+ * Write a message.
+ *
+ * \return
+ * Size written. On error, return -1.
  */
 ssize_t AbstractSocket::write(const char *buf, size_t size)
 {
@@ -126,12 +140,12 @@ ssize_t AbstractSocket::write(const char *buf, size_t size)
 }
 
 /**
- * @brief Set if the socket is block or nonblock.
- * @details If the original flag is the same as the input argument, it does
- * nothing but return success.
- * @return True on success, false on failure.
+ * Set if the socket should be nonblocking.
+ *
+ * \return
+ * True on success, false on failure.
  */
-bool AbstractSocket::setBlockable(Blockable blk)
+bool AbstractSocket::setNonblock(bool nonblk)
 {
 	int arg;
 
@@ -142,7 +156,7 @@ bool AbstractSocket::setBlockable(Blockable blk)
 	}
 
 	// Change arg.
-	if (blk == NONBLOCK)
+	if (nonblk)
 		arg |= O_NONBLOCK;
 	else
 		arg &= (~O_NONBLOCK);
@@ -156,7 +170,56 @@ bool AbstractSocket::setBlockable(Blockable blk)
 }
 
 /**
- * @brief Get host address by host name (e.g. "www.google.com").
+ * Check if the socket is nonblocking.
+ */
+bool AbstractSocket::isNonblock() const
+{
+	int arg;
+
+	// Get arg.
+	if ((arg = fcntl(_sockfd, F_GETFL, NULL)) < 0) {
+		perror("AbstractSocket::setBlockable(): Getting flags");
+		return false;
+	}
+
+	return (arg & O_NONBLOCK);
+}
+
+/**
+ * Set the TTL of the socket.
+ *
+ * \return
+ * True on success, false on failure.
+ */
+bool AbstractSocket::setTTL(int ttl)
+{
+	if (ttl < 1) {
+		fprintf(stderr, "AbstractSocket::setTTL(): Error: TTL must greater or equal to 1.\n");
+		return false;
+	}
+	if (setsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {
+		perror("AbstractSocket::setTTL()");
+		return false;
+	}
+	return true;
+}
+
+/**
+ * Get the current TTL of the socket.
+ */
+int AbstractSocket::TTL() const
+{
+	int ttl;
+	socklen_t len = sizeof(ttl);
+	if (getsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, &len) < 0) {
+		perror("AbstractSocket::TTL()");
+		return -1;
+	}
+	return ttl;
+}
+
+/**
+ * Get host address by host name (e.g. "www.google.com").
  */
 HostAddress AbstractSocket::getHostByName(const string &host)
 {
@@ -171,7 +234,7 @@ HostAddress AbstractSocket::getHostByName(const string &host)
 }
 
 /**
- * @brief Get port number by service name (e.g. "http").
+ * Get port number by service name (e.g. "http").
  */
 unsigned short AbstractSocket::getServiceByName(const string &service)
 {
@@ -181,23 +244,6 @@ unsigned short AbstractSocket::getServiceByName(const string &service)
 		return pse->s_port;
 	}
 	return 0;
-}
-
-/**
- * @brief Set the TTL of socket.
- * @return True on success, false on failure.
- */
-bool AbstractSocket::setTTL(int ttl)
-{
-	if (ttl < 1) {
-		fprintf(stderr, "AbstractSocket::setTTL(): Error: TTL must greater or equal to 1.\n");
-		return false;
-	}
-	if (setsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {
-		perror("AbstractSocket::setTTL()");
-		return false;
-	}
-	return true;
 }
 
 }

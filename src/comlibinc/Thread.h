@@ -13,6 +13,9 @@
 namespace cml
 {
 
+/**
+ * Pthread wrapper.
+ */
 class Thread
 {
 public:

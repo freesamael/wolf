@@ -40,7 +40,8 @@ void Runner::run(unsigned short runner_port, unsigned short master_port)
 }
 
 /**
- * @brief Listen and wait for master broadcasting a ADD_MASTER message.
+ * \internal
+ * Listen and wait for master broadcasting a ADD_MASTER message.
  */
 HostAddress wait_master(unsigned short runner_port)
 {
@@ -69,7 +70,8 @@ HostAddress wait_master(unsigned short runner_port)
 }
 
 /**
- * @brief Connect to the master node.
+ * \internal
+ * Connect to the master node.
  */
 bool connect_master(TCPSocket *tsock, const HostAddress &addr,
 		unsigned short master_port)
@@ -85,7 +87,8 @@ bool connect_master(TCPSocket *tsock, const HostAddress &addr,
 }
 
 /**
- * @brief Core loop of runner.
+ * \internal
+ * Core loop of runner.
  */
 void runner_loop(TCPSocket *tsock)
 {

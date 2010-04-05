@@ -14,6 +14,9 @@
 namespace cml
 {
 
+/**
+ * \interface ITLVObjectCreator
+ */
 class ITLVObjectCreator
 {
 public:

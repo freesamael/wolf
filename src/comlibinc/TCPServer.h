@@ -14,6 +14,9 @@
 namespace cml
 {
 
+/**
+ * TCP server used to accept incoming connections.
+ */
 class TCPServer: public TCPSocket
 {
 public:
@@ -21,7 +24,7 @@ public:
 	TCPServer(int sock): TCPSocket(sock) {}
 	~TCPServer();
 	bool listen(unsigned short port, unsigned qlen = 10);
-	TCPSocket* accept(AbstractSocket::Blockable blk = AbstractSocket::BLOCK);
+	TCPSocket* accept(bool nonblk = false);
 
 private:
 	bool _listen(unsigned qlen);

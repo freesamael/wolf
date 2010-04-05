@@ -12,6 +12,9 @@ using namespace std;
 namespace cml
 {
 
+/**
+ * Allocate a piece of shared memory on DSM.
+ */
 SharedMemory::SharedMemory(string name, size_t size):
 		_name(name), _size(size)
 {

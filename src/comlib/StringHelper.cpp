@@ -14,9 +14,13 @@ namespace cml
 {
 
 /**
- * @brief strtok() equivalent C++ function.
- * @param[out] out_vec results.
- * @note The original elements in the vector will be erased.
+ * strtok() equivalent C++ function.
+ *
+ * \param[out] out_vec
+ * results.
+ *
+ * \note
+ * The original elements in out_vec will be erased before returning.
  */
 void StringHelper::tokens(const string &str, const string &delim,
 		vector<string> *out_vec)
@@ -40,9 +44,12 @@ void StringHelper::tokens(const string &str, const string &delim,
 }
 
 /**
- * @details Copy src to string dst of size siz.  At most siz-1 characters
+ * Copy src to string dst of size siz.  At most siz-1 characters
  * will be copied.  Always NUL terminates (unless siz == 0).
  * Returns strlen(src); if retval >= siz, truncation occurred.
+ *
+ * \note
+ * Taken from BSD implementation.
  */
 size_t StringHelper::strlcpy(char *dst, const char *src, size_t siz)
 {
@@ -71,11 +78,14 @@ size_t StringHelper::strlcpy(char *dst, const char *src, size_t siz)
 }
 
 /**
- * @details Appends src to string dst of size siz (unlike strncat, siz is the
+ * Appends src to string dst of size siz (unlike strncat, siz is the
  * full size of dst, not space left).  At most siz-1 characters
  * will be copied.  Always NUL terminates (unless siz <= strlen(dst)).
  * Returns strlen(src) + MIN(siz, strlen(initial dst)).
  * If retval >= siz, truncation occurred.
+ *
+ * \note
+ * Taken from BSD implementation.
  */
 size_t StringHelper::strlcat(char *dst, const char *src, size_t siz)
 {

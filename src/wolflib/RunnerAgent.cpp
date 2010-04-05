@@ -37,7 +37,7 @@ public:
 	{
 		while (!_stop) {
 			TCPSocket *tsock;
-			if ((tsock = _server->accept(AbstractSocket::NONBLOCK))) {
+			if ((tsock = _server->accept(true))) {
 				TLVReaderWriter tcprw(tsock);
 				TLVMessage *msg;
 				if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
@@ -91,7 +91,7 @@ RunnerAgent::~RunnerAgent()
 }
 
 /**
- * @brief Setup runner agent.
+ * Setup runner agent.
  */
 bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 		unsigned timeout)
@@ -128,8 +128,10 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 }
 
 /**
- * @brief Send an worker actor to runners.
- * @param[in] runner Runner to send actor to, or NULL to all runners.
+ * Send an worker actor to runners.
+ *
+ * \param[in] runner
+ * Runner to send actor to, or NULL to all runners.
  */
 bool RunnerAgent::sendActor(AbstractWorkerActor *actor, TCPSocket *runner)
 {

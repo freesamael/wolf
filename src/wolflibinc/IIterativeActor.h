@@ -14,8 +14,8 @@ namespace wfe
 {
 
 /**
- * @class IIterativeActor.
- * @brief Scheduler should continuously call fire() until firecond() is false.
+ * \note
+ * Scheduler should continuously call fire() until firecond() is false.
  */
 class IIterativeActor: public IActor
 {

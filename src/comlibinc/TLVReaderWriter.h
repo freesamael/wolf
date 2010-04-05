@@ -10,6 +10,7 @@
 
 #include "AbstractSocket.h"
 #include "UDPSocket.h"
+#include "TCPSocket.h"
 
 namespace cml
 {
@@ -19,10 +20,14 @@ class TLVReaderWriter
 public:
 	TLVReaderWriter(AbstractSocket *socket = NULL);
 	~TLVReaderWriter();
-	ITLVObject* read(AbstractSocket *socket = NULL);
+
+	// TCP read/write.
+	ITLVObject* read(TCPSocket *socket = NULL);
+	bool write(const ITLVObject &obj, TCPSocket *socket = NULL);
+
+	// UDP read/write.
 	ITLVObject* recvfrom(HostAddress *addr, unsigned short *port,
 			UDPSocket *socket = NULL);
-	bool write(const ITLVObject &obj, AbstractSocket *socket = NULL);
 	bool sendto(const ITLVObject &obj, const HostAddress &addr,
 			unsigned short port, UDPSocket *socket = NULL);
 

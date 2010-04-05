@@ -18,7 +18,7 @@ namespace cml
 {
 
 /**
- * @brief Set a variable with given value. It overwrites old one if any.
+ * Set a variable with given value. It overwrites old one if any.
  */
 void ProcessEnvironment::setVariable(const string &variable,
 		const string &value)
@@ -30,8 +30,8 @@ void ProcessEnvironment::setVariable(const string &variable,
 }
 
 /**
- * @brief Clear (delete) a variable. If the variable does not exist, it will
- * takes no effect.
+ * Clear (delete) a variable. If the variable does not exist, it takes no
+ * effect.
  */
 void ProcessEnvironment::clearVariable(const string &variable)
 {
@@ -41,8 +41,8 @@ void ProcessEnvironment::clearVariable(const string &variable)
 }
 
 /**
- * @brief Find the value of given variable. If no such variable exists, it
- * will return an empty string.
+ * Find the value of given variable. If no such variable exists, it returns an
+ * empty string.
  */
 string ProcessEnvironment::lookupValue(const string &variable) const
 {
@@ -53,10 +53,14 @@ string ProcessEnvironment::lookupValue(const string &variable) const
 }
 
 /**
- * @brief Get the list of variables in null-terminated array form.
- * @return Pointer to the array. User should use freeNullTerminatedArray() to
- * deallocate it.
- * @note This function is NOT thread-safe.
+ * Get the list of variables in null-terminated array form.
+ *
+ * \return
+ * Pointer to the array. User should use freeNullTerminatedArray() to deallocate
+ * it.
+ *
+ * \note
+ * This function is NOT thread-safe.
  */
 char** ProcessEnvironment::toNullTerminatedArray() const
 {
@@ -79,7 +83,7 @@ char** ProcessEnvironment::toNullTerminatedArray() const
 }
 
 /**
- * @brief Deallocate an array came from toNullTerminatedArray().
+ * Deallocate an array came from toNullTerminatedArray().
  */
 void ProcessEnvironment::freeNullTerminatedArray(char **array)
 {
@@ -91,6 +95,9 @@ void ProcessEnvironment::freeNullTerminatedArray(char **array)
 	delete array;
 }
 
+/**
+ * Get the environment variables of current program.
+ */
 ProcessEnvironment ProcessEnvironment::systemEnvironment()
 {
 	ProcessEnvironment env;

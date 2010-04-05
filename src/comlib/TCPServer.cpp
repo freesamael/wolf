@@ -22,7 +22,8 @@ TCPServer::~TCPServer()
 }
 
 /**
- * @brief Listen with queue lenth = qlen.
+ * \internal
+ * Listen with queue lenth = qlen.
  */
 bool TCPServer::_listen(unsigned qlen)
 {
@@ -34,7 +35,7 @@ bool TCPServer::_listen(unsigned qlen)
 }
 
 /**
- * @brief Overloaded function which combines bind() and listen().
+ * Overloaded function which combines bind() and listen().
  */
 bool TCPServer::listen(unsigned short port, unsigned qlen)
 {
@@ -45,23 +46,25 @@ bool TCPServer::listen(unsigned short port, unsigned qlen)
 }
 
 /**
- * @brief Accept for incoming connections.
- * @details If set with NONBLOCK and no pending requests, it returns NULL. If
- * set with BLOCK, it will block waiting until a request is pended.
- * @return A pointer to TCPSocket representing incoming connection if success,
- * NULL if failure. Note that the TCPSocket is managed by TCPServer and should
- * not be delete/free manually. TCPServer handles this.
+ * Accept for incoming connections. If nonblk is true and there's no pending
+ * requests on the socket, it returns NULL immediately. Otherwise, it blocks to
+ * wait until a request is pended.
+ *
+ * \return
+ * A pointer to TCPSocket representing incoming connection if success, or NULL
+ * if failure. Note that the TCPSocket returned is managed by TCPServer and
+ * should not be delete/free manually. TCPServer handles this.
  */
-TCPSocket* TCPServer::accept(AbstractSocket::Blockable blk)
+TCPSocket* TCPServer::accept(bool nonblk)
 {
-	if (setBlockable(blk)) {
+	if (setNonblock(nonblk)) {
 		struct sockaddr_in inaddr;
 		unsigned addlen = sizeof(inaddr);
 		int sock;
 
 		if ((sock = ::accept(_sockfd, (struct sockaddr *)&inaddr,
 				&addlen)) < 0) {
-			if (!(blk == NONBLOCK && (errno == EAGAIN || errno == EWOULDBLOCK)))
+			if (!(nonblk && (errno == EAGAIN || errno == EWOULDBLOCK)))
 				perror("TCPServer::accept()");
 			return NULL;
 		}

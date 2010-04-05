@@ -46,8 +46,10 @@ void D2MCE::release()
 }
 
 /**
- * @brief Join a D2MCE computing group.
- * @return True on success, false otherwise.
+ * Join a D2MCE computing group.
+ *
+ * \return
+ * True on success, false otherwise.
  */
 bool D2MCE::join(string appname, string groupname)
 {
@@ -56,9 +58,12 @@ bool D2MCE::join(string appname, string groupname)
 }
 
 /**
- * @brief Barrier.
- * @param nnodes Number of nodes to wait (including the calling node itself).
- * @return True on success, false otherwise.
+ * Barrier.
+ *
+ * \param nnodes
+ * Number of nodes to wait (including the calling node itself).
+ * \return
+ * True on success, false otherwise.
  */
 bool D2MCE::barrier(unsigned int nnodes)
 {
@@ -66,8 +71,10 @@ bool D2MCE::barrier(unsigned int nnodes)
 }
 
 /**
- * @brief Create a piece of shared memory with given size and name.
- * @note D2MCE takes the ownership of shared memory and will delete/free the memory.
+ * Create a piece of shared memory with given size and name.
+ *
+ * \note
+ * D2MCE takes the ownership of shared memory and will delete/free the memory.
  */
 SharedMemory* D2MCE::createSharedMemory(const string &name, size_t size)
 {
@@ -77,8 +84,10 @@ SharedMemory* D2MCE::createSharedMemory(const string &name, size_t size)
 }
 
 /**
- * @brief Find a piece of shared memory with given name.
- * @return Proper shared memory, or NULL if not found.
+ * Find a piece of shared memory with given name.
+ *
+ * \return
+ * Proper shared memory, or NULL if not found.
  */
 SharedMemory* D2MCE::findSharedMemory(const string &name)
 {

@@ -29,7 +29,7 @@ Thread::~Thread()
 }
 
 /**
- * @brief Create a thread to execute run().
+ * Create a thread to execute run().
  */
 bool Thread::start()
 {
@@ -45,8 +45,10 @@ bool Thread::start()
 }
 
 /**
- * @brief Block wait until thread exits.
- * @return True on success, false on failure.
+ * Block wait until thread exits.
+ *
+ * \return
+ * True on success, false on failure.
  */
 bool Thread::join()
 {
@@ -58,9 +60,13 @@ bool Thread::join()
 }
 
 /**
- * @brief Block wait until thread exits or timeout.
- * @param timeout Timeout in microsecond.
- * @return True on success, false on failure (including timeout).
+ * Block wait until thread exits or timeout.
+ *
+ * \param timeout
+ * Timeout in microsecond.
+ *
+ * \return
+ * True on success, false on failure (including timeout).
  */
 bool Thread::join(unsigned timeout)
 {
@@ -86,15 +92,24 @@ bool Thread::join(unsigned timeout)
 }
 
 /**
- * @brief Request cancel for executing thread.
- * @note If the thread doesn't poll testcancel() in run(), it has no effect.
- * @return True on success, false on failure.
+ * Request cancel for executing thread.
+ *
+ * \note
+ * If the thread doesn't poll testcancel() in run(), it has no effect. It's the
+ * characteristic of pthread.
+ *
+ * \return
+ * True on success, false on failure.
  */
 bool Thread::cancel()
 {
 	return !pthread_cancel(_tid);
 }
 
+/**
+ * \internal
+ * thread function adaptor.
+ */
 void* Thread::_thread_caller(void *param)
 {
 	cml::Thread *th = reinterpret_cast<cml::Thread *>(param);

@@ -20,7 +20,7 @@ namespace wfe
 {
 
 /**
- * @detailed The nested TLV blocks look like:
+ * The nested TLV blocks look like:
  * -------------------------------------------------------
  * |    |      | ------------------- ----(Optional)----- |
  * |Type|Length| |Type|Length|Value| |Type|Length|Value| |
