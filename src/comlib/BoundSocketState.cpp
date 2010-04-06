@@ -66,8 +66,8 @@ ssize_t BoundSocketState::recvfrom(AbstractSocket *sock, char *buf, size_t size,
 		HostAddress *addr, unsigned short *port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		fprintf(stderr, "BoundSocketState::recvfrom(): Error: recvfrom in passive mode is only suitable for UDP sockets.\n");
-		return 0;
+		fprintf(stderr, "BoundSocketState::recvfrom(): Error: recvfrom is only suitable for UDP sockets.\n");
+		return -1;
 	}
 
 	ssize_t result;
@@ -89,8 +89,8 @@ ssize_t BoundSocketState::sendto(AbstractSocket *sock, const char *buf,
 		size_t size, const HostAddress &addr, unsigned short port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		fprintf(stderr, "BoundSocketState::sendto(): Error: sendto in passive mode is only suitable for UDP sockets.\n");
-		return 0;
+		fprintf(stderr, "BoundSocketState::sendto(): Error: sendto is only suitable for UDP sockets.\n");
+		return -1;
 	}
 
 	ssize_t result;

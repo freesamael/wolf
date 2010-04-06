@@ -11,8 +11,7 @@
 #include <sys/types.h>
 #include <sys/socket.h>
 #include "ClosedSocketState.h"
-#include "ConnectedSocketState.h"
-#include "BoundSocketState.h"
+#include "SimpleActiveSocketState.h"
 #include "TCPSocket.h"
 #include "UDPSocket.h"
 
@@ -34,87 +33,20 @@ ClosedSocketState* ClosedSocketState::instance()
 bool ClosedSocketState::activeOpen(AbstractSocket *sock,
 		const HostAddress &addr, unsigned short port)
 {
-	if (!_initialize(sock))
-		return false;
-
-	// Clear and set address/port.
-	sockaddr_in inaddr;
-	memset(&inaddr, 0, sizeof(inaddr));
-	inaddr.sin_family = AF_INET;
-	inaddr.sin_addr.s_addr = addr.toInetAddr();
-	inaddr.sin_port = htons(port);
-
-	// Perform connection.
-	if (connect(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
-		perror("ClosedSocketState::activeOpen()");
-		return false;
-	}
-
-	sock->changeState(ConnectedSocketState::instance());
-	return true;
+	if (open(sock))
+		return sock->activeOpen(addr, port);
+	return false;
 }
 
 bool ClosedSocketState::passiveOpen(AbstractSocket *sock,
 		unsigned short port, int qlen)
 {
-	if (!_initialize(sock))
-		return false;
-
-	// Clear and set inet address/port.
-	sockaddr_in inaddr;
-	memset(&inaddr, 0, sizeof(inaddr));
-	inaddr.sin_family = AF_INET;
-	inaddr.sin_addr.s_addr = INADDR_ANY;
-	inaddr.sin_port = htons(port);
-
-	// Perform binding.
-	if (bind(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
-		perror("ClosedSocketState::passiveOpen()");
-		return false;
-	}
-
-	// Perform listen if it's a TCP socket.
-	if ((dynamic_cast<TCPSocket *>(sock))) {
-		if (listen(sock->sockfd(), qlen) < 0) {
-			perror("ClosedSocketState::passiveOpen()");
-			return false;
-		}
-	}
-
-	sock->changeState(BoundSocketState::instance());
-	return true;
+	if (open(sock))
+		return sock->passiveOpen(port, qlen);
+	return false;
 }
 
-ssize_t ClosedSocketState::sendto(AbstractSocket *sock, const char *buf,
-		size_t size, const HostAddress &addr, unsigned short port)
-{
-	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		fprintf(stderr, "ClosedSocketState::sendto(): Error: sendto in closed mode is only suitable for UDP sockets.\n");
-		return 0;
-	}
-
-	ssize_t result;
-	sockaddr_in inaddr;
-
-	// Clear and set address/port.
-	memset(&inaddr, 0, sizeof(inaddr));
-	inaddr.sin_family = AF_INET;
-	inaddr.sin_addr.s_addr = addr.toInetAddr();
-	inaddr.sin_port = htons(port);
-
-	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
-			(struct sockaddr *)&inaddr,	sizeof(inaddr))) < 0) {
-		perror("ClosedSocketState::sendto()");
-	}
-
-	return result;
-}
-
-/**
- * \internal
- * Private method to initialize a given socket.
- */
-bool ClosedSocketState::_initialize(AbstractSocket *sock)
+bool ClosedSocketState::open(AbstractSocket *sock)
 {
 	int type;
 	int sockfd;
@@ -125,16 +57,17 @@ bool ClosedSocketState::_initialize(AbstractSocket *sock)
 	else if (dynamic_cast<TCPSocket *>(sock))
 		type = SOCK_STREAM;
 	else {
-		fprintf(stderr, "ClosedSocketState::_initialize(): Error: Unsupported type.\n");
+		fprintf(stderr, "ClosedSocketState::open(): Error: Unsupported type.\n");
 		return false;
 	}
 
 	// Initialize.
 	if ((sockfd = socket(AF_INET, type, 0)) < 0) {
-		perror("ClosedSocketState::_initialize()");
+		perror("ClosedSocketState::open()");
 		return false;
 	}
 	sock->setSockfd(sockfd);
+	sock->changeState(SimpleActiveSocketState::instance());
 
 	return true;
 }

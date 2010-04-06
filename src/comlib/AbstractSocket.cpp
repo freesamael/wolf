@@ -16,6 +16,7 @@
 #include "TLVObjectFactory.h"
 #include "TLVBlock.h"
 #include "ClosedSocketState.h"
+#include "SimpleActiveSocketState.h"
 
 using namespace std;
 
@@ -32,7 +33,7 @@ AbstractSocket::AbstractSocket(int sock):
 		_sockfd(sock)
 {
 	pthread_mutex_init(&_mutex, NULL);
-	_state = ClosedSocketState::instance();
+	_state = SimpleActiveSocketState::instance();
 }
 
 /**
@@ -43,6 +44,17 @@ AbstractSocket::~AbstractSocket()
 	_state->close(this);
 	if (pthread_mutex_destroy(&_mutex) != 0)
 		perror("AbstractSocket::~AbstractSocket(): Destroying mutex");
+}
+
+/**
+ * Open the socket without binding or connection.
+ *
+ * \return
+ * True on success, false otherwise.
+ */
+bool AbstractSocket::open()
+{
+	return _state->open(this);
 }
 
 /**

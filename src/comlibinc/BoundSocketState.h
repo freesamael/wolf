@@ -28,14 +28,15 @@ public:
 			const HostAddress &addr, unsigned short port);
 
 	// Unsupported operations.
+	inline bool open(AbstractSocket *sock) { return false; }
 	inline bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
 				unsigned short port) { return false; }
 	inline bool passiveOpen(AbstractSocket *sock, unsigned short port,
 			int qlen = 10) { return false; }
 	inline ssize_t read(AbstractSocket *sock, char *buf, size_t size)
-			{ return false; }
+			{ return -1; }
 	inline ssize_t write(AbstractSocket *sock, const char *buf, size_t size)
-			{ return false; }
+			{ return -1; }
 
 
 

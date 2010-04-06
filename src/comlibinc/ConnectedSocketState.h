@@ -25,6 +25,7 @@ public:
 	ssize_t write(AbstractSocket *sock, const char *buf, size_t size);
 
 	// Unsupported operations.
+	inline bool open(AbstractSocket *sock) { return false; }
 	inline bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
 				unsigned short port) { return false; }
 	inline bool passiveOpen(AbstractSocket *sock, unsigned short port,

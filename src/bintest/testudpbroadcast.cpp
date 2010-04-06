@@ -17,6 +17,7 @@ int main()
 	TLVString str("i wanna go home...");
 	TLVReaderWriter rw;
 
+	sock.open();
 	sock.setBroadcast(true);
 	sock.setTTL(1);
 	for (int i = 0; i < 10; i++) {

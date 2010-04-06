@@ -26,6 +26,7 @@ public:
 	AbstractSocket(int sock);
 	virtual ~AbstractSocket();
 
+	bool open();
 	bool activeOpen(const HostAddress &addr, unsigned short port);
 	bool passiveOpen(unsigned short port, int qlen = 10);
 	bool close();

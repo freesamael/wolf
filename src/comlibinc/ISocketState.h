@@ -19,12 +19,18 @@ class TCPSocket;
 class ISocketState
 {
 public:
+	/// Simply open the socket.
+	/// \return True on success, false otherwise.
+	virtual bool open(AbstractSocket *sock) = 0;
+
 	/// Actively open the socket, which means connect to a specific host.
+	/// It can be called after open(), or called directly without open().
 	/// \return True on success, false otherwise.
 	virtual bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
 			unsigned short port) = 0;
 
 	/// Passively open the socket, which means bind or listen on specific port.
+	/// It can be called after open(), or called directly without open().
 	/// \return True on success, false otherwise.
 	virtual bool passiveOpen(AbstractSocket *sock, unsigned short port,
 			int qlen = 10) = 0;

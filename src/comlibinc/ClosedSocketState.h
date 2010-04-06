@@ -20,11 +20,10 @@ public:
 	inline const std::string& toString() const { return _statestr; }
 
 	// Supported operations.
+	bool open(AbstractSocket *sock);
 	bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
 				unsigned short port);
 	bool passiveOpen(AbstractSocket *sock, unsigned short port,	int qlen = 10);
-	ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
-			const HostAddress &addr, unsigned short port);
 
 	// Unsupported operations.
 	inline bool close(AbstractSocket *sock) { return false; }
@@ -33,8 +32,10 @@ public:
 			{ return -1; }
 	inline ssize_t write(AbstractSocket *sock, const char *buf, size_t size)
 			{ return -1; }
-	ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
+	inline ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
 			HostAddress *addr, unsigned short *port) { return -1; }
+	inline ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
+			const HostAddress &addr, unsigned short port) { return -1; }
 
 private:
 	ClosedSocketState(): _statestr("Closed") {}
