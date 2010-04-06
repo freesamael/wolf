@@ -34,5 +34,13 @@ void TLVStringCreatorTestSuite::testCreate()
 	delete blk;
 	delete str;
 
+	str = new TLVString();
+	blk = str->toTLVBlock();
+	yastr = dynamic_cast<TLVString*>(ctr->create(*blk));
+	CPPUNIT_ASSERT_EQUAL(str->toString(), yastr->toString());
+	delete yastr;
+	delete blk;
+	delete str;
+
 	delete ctr;
 }
