@@ -24,7 +24,7 @@ int main()
     HostAddress addr;
     unsigned short port;
 
-    sock.bind(5566);
+    sock.passiveOpen(5566);
     while ((obj = rw.recvfrom(&addr, &port))) {
     	TLVString *str;
     	if ((str = dynamic_cast<TLVString *>(obj))) {

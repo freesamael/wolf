@@ -11,7 +11,6 @@
 #include <vector>
 #include <pthread.h>
 #include <TCPSocket.h>
-#include <TCPServer.h>
 #include "AbstractWorkerActor.h"
 
 namespace wfe
@@ -28,10 +27,10 @@ public:
 	static RunnerAgent* instance();
 	static void release();
 	State state() const { return _state; }
-	const std::vector<cml::TCPSocket *>& runners() const { return _runners; }
+	const std::vector<cml::TCPSocket *>& runners() const { return _ssocks; }
 	bool setup(unsigned short runner_port, unsigned short master_port,
 			unsigned int timeout = 2);
-	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *runner = NULL);
+	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
 
 private:
 	RunnerAgent();
@@ -39,8 +38,8 @@ private:
 	static RunnerAgent* _instance;
 	static pthread_mutex_t _mutex;
 	State _state;
-	cml::TCPServer _server;
-	std::vector<cml::TCPSocket *> _runners;
+	cml::TCPSocket _msock;
+	std::vector<cml::TCPSocket *> _ssocks;
 };
 
 }

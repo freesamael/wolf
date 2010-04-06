@@ -15,6 +15,7 @@
 #include "ITLVObject.h"
 #include "TLVObjectFactory.h"
 #include "TLVBlock.h"
+#include "ClosedSocketState.h"
 
 using namespace std;
 
@@ -24,89 +25,46 @@ namespace cml
 AbstractSocket::AbstractSocket()
 {
 	pthread_mutex_init(&_mutex, NULL);
+	_state = ClosedSocketState::instance();
 }
 
 AbstractSocket::AbstractSocket(int sock):
 		_sockfd(sock)
 {
 	pthread_mutex_init(&_mutex, NULL);
+	_state = ClosedSocketState::instance();
 }
 
 /**
- * \note
- * It closes the socket automatically on destruction. However, in case of TCP
- * socket, users need to call shutdown() before destruction for graceful TCP
- * disconnection.
+ * It automatically shutdown and close the socket.
  */
 AbstractSocket::~AbstractSocket()
 {
-	if (::close(_sockfd) != 0)
-		perror("AbstractSocket::~AbstractSocket(): Closing socket");
+	_state->close(this);
 	if (pthread_mutex_destroy(&_mutex) != 0)
 		perror("AbstractSocket::~AbstractSocket(): Destroying mutex");
 }
 
 /**
- * Bind the socket to a given port.
+ * Actively open the socket (connect to a host).
+ *
+ * \return
+ * True on success, false otherwise.
  */
-bool AbstractSocket::bind(unsigned short port)
+bool AbstractSocket::activeOpen(const HostAddress &addr, unsigned short port)
 {
-	sockaddr_in inaddr;
-
-	// Clear and set inet address/port.
-	memset(&inaddr, 0, sizeof(inaddr));
-	inaddr.sin_family = AF_INET;
-	inaddr.sin_addr.s_addr = INADDR_ANY;
-	inaddr.sin_port = htons(port);
-
-	// Perform binding.
-	if (::bind(_sockfd, (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
-		perror("AbstractSocket::bind()");
-		return false;
-	}
-
-	return true;
+	return _state->activeOpen(this, addr, port);
 }
 
 /**
- * Connect to a host.
+ * Passively open the socket (bind or listen on specific port).
  *
  * \return
- * True on success, false on failure.
+ * True on success, false otherwise.
  */
-bool AbstractSocket::connect(const HostAddress &addr,
-		unsigned short port)
+bool AbstractSocket::passiveOpen(unsigned short port, int qlen)
 {
-	sockaddr_in inaddr;
-
-	// Clear and set address/port.
-	memset(&inaddr, 0, sizeof(inaddr));
-	inaddr.sin_family = AF_INET;
-	inaddr.sin_addr.s_addr = addr.toInetAddr();
-	inaddr.sin_port = htons(port);
-
-	// Perform connection.
-	if (::connect(_sockfd, (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
-		perror("AbstractSocket::connect()");
-		return false;
-	}
-
-	return true;
-}
-
-/**
- * Shutdown the socket.
- *
- * \return
- * True on success, false on failure.
- */
-bool AbstractSocket::shutdown()
-{
-	if (::shutdown(_sockfd, SHUT_RDWR) != 0) {
-		perror("AbstractSocket::shutdown()");
-		return false;
-	}
-	return true;
+	return _state->passiveOpen(this, port, qlen);
 }
 
 /**
@@ -117,10 +75,7 @@ bool AbstractSocket::shutdown()
  */
 ssize_t AbstractSocket::read(char *buf, size_t size)
 {
-	ssize_t result;
-	if ((result = ::read(_sockfd, buf, size)) < 0)
-		perror("AbstractSocket::read()");
-	return result;
+	return _state->read(this, buf, size);
 }
 
 /**
@@ -131,10 +86,8 @@ ssize_t AbstractSocket::read(char *buf, size_t size)
  */
 ssize_t AbstractSocket::write(const char *buf, size_t size)
 {
-	ssize_t result;
 	pthread_mutex_lock(&_mutex);
-	if ((result = ::write(_sockfd, buf, size)) < 0)
-		perror("AbstractSocket::write()");
+	ssize_t result = _state->write(this, buf, size);
 	pthread_mutex_unlock(&_mutex);
 	return result;
 }
@@ -151,7 +104,7 @@ bool AbstractSocket::setNonblock(bool nonblk)
 
 	// Get arg.
 	if ((arg = fcntl(_sockfd, F_GETFL, NULL)) < 0) {
-		perror("AbstractSocket::setBlockable(): Getting flags");
+		perror("AbstractSocket::setNonblock(): Getting flags");
 		return false;
 	}
 
@@ -163,7 +116,7 @@ bool AbstractSocket::setNonblock(bool nonblk)
 
 	// Set arg.
 	if ((fcntl(_sockfd, F_SETFL, arg)) < 0) {
-		perror("AbstractSocket::setBlockable(): Setting flags");
+		perror("AbstractSocket::setNonblock(): Setting flags");
 		return false;
 	}
 	return true;
@@ -178,7 +131,7 @@ bool AbstractSocket::isNonblock() const
 
 	// Get arg.
 	if ((arg = fcntl(_sockfd, F_GETFL, NULL)) < 0) {
-		perror("AbstractSocket::setBlockable(): Getting flags");
+		perror("AbstractSocket::isNonblock()");
 		return false;
 	}
 

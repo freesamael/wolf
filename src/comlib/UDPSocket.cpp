@@ -13,12 +13,6 @@
 namespace cml
 {
 
-UDPSocket::UDPSocket()
-{
-	if ((_sockfd = socket(AF_INET, type(), 0)) < 0)
-		perror("UDPSocket::UDPSocket()");
-}
-
 /**
  * Receive a UDP message from socket.
  *
@@ -37,19 +31,7 @@ UDPSocket::UDPSocket()
 ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
 		unsigned short *port)
 {
-	ssize_t result;
-	struct sockaddr_in inaddr;
-	socklen_t alen = sizeof(inaddr);
-
-	if ((result = ::recvfrom(_sockfd, buf, size, 0,
-			(struct sockaddr *)&inaddr, &alen)) < 0) {
-		perror("UDPSocket::recvfrom()");
-	}
-
-	addr->setAddr(inaddr.sin_addr.s_addr);
-	*port = ntohs(inaddr.sin_port);
-
-	return result;
+	return _state->recvfrom(this, buf, size, addr, port);
 }
 
 /**
@@ -61,27 +43,15 @@ ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
 ssize_t UDPSocket::sendto(const char *buf, size_t size, const HostAddress &addr,
 		unsigned short port)
 {
-	ssize_t result;
-	sockaddr_in inaddr;
-
-	// Clear and set address/port.
-	memset(&inaddr, 0, sizeof(inaddr));
-	inaddr.sin_family = AF_INET;
-	inaddr.sin_addr.s_addr = addr.toInetAddr();
-	inaddr.sin_port = htons(port);
-
 	pthread_mutex_lock(&_mutex);
-	if ((result = ::sendto(_sockfd, buf, size, 0, (struct sockaddr *)&inaddr,
-			sizeof(inaddr))) < 0) {
-		perror("UDPSocket::sendto()");
-	}
+	ssize_t result = _state->sendto(this, buf, size, addr, port);
 	pthread_mutex_unlock(&_mutex);
-
 	return result;
 }
 
 /**
  * Set if the it can broadcast.
+ *
  * \return
  * True on success, false on failure.
  */
@@ -90,10 +60,27 @@ bool UDPSocket::setBroadcast(bool bcast)
 	int broadcast = (bcast) ? 1 : 0;
 	if (setsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
 			sizeof(broadcast)) < 0) {
-		perror("UDPSocket::setBroadcast");
+		perror("UDPSocket::setBroadcast()");
 		return false;
 	}
 	return true;
+}
+
+/**
+ * Check if it can broadcast.
+ *
+ * \return
+ * True if it can, false if it can't or an error occurred.
+ */
+bool UDPSocket::canBroadcast() const
+{
+	int broadcast;
+	socklen_t len = sizeof(broadcast);
+	if (getsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, &len) < 0) {
+		perror("UDPSocket::canBroadcast()");
+		return false;
+	}
+	return broadcast;
 }
 
 }

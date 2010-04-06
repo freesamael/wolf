@@ -19,7 +19,7 @@ int main()
     string str;
     TCPSocket sock;
     TLVReaderWriter rw(&sock);
-    sock.connect("127.0.0.1", 5566);
+    sock.activeOpen("127.0.0.1", 5566);
 
     do {
         cin >> str;
@@ -37,8 +37,6 @@ int main()
         }
         delete obj;
     } while (str != "quit");
-
-    sock.shutdown();
 
     return 0;
 }

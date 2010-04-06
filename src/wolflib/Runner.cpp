@@ -51,7 +51,7 @@ HostAddress wait_master(unsigned short runner_port)
 	HostAddress inaddr;
 	unsigned short inport;
 
-	usock.bind(runner_port);
+	usock.passiveOpen(runner_port);
 	if (!(inmsg = dynamic_cast<TLVMessage *>(udprw.recvfrom(&inaddr, &inport)))) {
 		fprintf(stderr, "Runner::run(): Error: Invalid incoming message.\n");
 		return HostAddress();
@@ -77,7 +77,7 @@ bool connect_master(TCPSocket *tsock, const HostAddress &addr,
 		unsigned short master_port)
 {
 	TLVReaderWriter tcprw(tsock);
-	if (!tsock->connect(addr, master_port)) {
+	if (!tsock->activeOpen(addr, master_port)) {
 		fprintf(stderr, "Runner::run(): Unable to connect to the master node.\n");
 		return false;
 	}

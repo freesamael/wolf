@@ -36,11 +36,11 @@ void StringHelper::tokens(const string &str, const string &delim,
 	out_vec->clear();
 
 	// Extract tokens.
-	do {
+	while (pos_begin < string::npos) {
 		pos_end = str.find_first_of(delim, pos_begin);
 		out_vec->push_back(str.substr(pos_begin, pos_end - pos_begin));
 		pos_begin = str.find_first_not_of(delim, pos_end);
-	} while (pos_begin < string::npos);
+	}
 }
 
 /**

@@ -11,6 +11,7 @@
 #include <pthread.h>
 #include "HostAddress.h"
 #include "ITLVObject.h"
+#include "ISocketState.h"
 
 namespace cml
 {
@@ -24,32 +25,31 @@ public:
 	AbstractSocket();
 	AbstractSocket(int sock);
 	virtual ~AbstractSocket();
-	virtual int type() const = 0; ///< Get the type of socket.
 
-	// Socket commands.
-	bool bind(unsigned short port);
-	bool connect(const HostAddress &addr, unsigned short port);
-	bool shutdown();
+	bool activeOpen(const HostAddress &addr, unsigned short port);
+	bool passiveOpen(unsigned short port, int qlen = 10);
 	bool close();
-
-	// Read/write.
 	ssize_t read(char *buf, size_t size);
 	ssize_t write(const char *buf, size_t size);
 
-	// Other properties.
-	int socketDescriptor() const { return _sockfd; }
 	bool setNonblock(bool nonblk);
 	bool isNonblock() const;
 	bool setTTL(int ttl);
 	int TTL() const;
 
-	// Static heplers.
+	inline void changeState(ISocketState *state) { _state = state; }
+	inline const ISocketState* state() const { return _state; }
+	inline void setSockfd(int sock) { _sockfd = sock; }
+	inline int sockfd() const { return _sockfd; }
+
+	// Static helpers.
 	static HostAddress getHostByName(const std::string &host);
 	static unsigned short getServiceByName(const std::string &service);
 
 protected:
 	int _sockfd;
 	pthread_mutex_t _mutex;
+	ISocketState *_state;
 };
 
 }

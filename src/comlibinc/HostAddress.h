@@ -22,6 +22,7 @@ namespace cml
 class HostAddress
 {
 public:
+	static const HostAddress LocalhostAddress;
 	static const HostAddress BroadcastAddress;
 
 	HostAddress(): _addr(INADDR_NONE) {}

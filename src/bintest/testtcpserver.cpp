@@ -7,7 +7,7 @@
 
 #include <iostream>
 #include <string>
-#include "TCPServer.h"
+#include <TCPSocket.h>
 #include "TLVReaderWriter.h"
 #include "TLVString.h"
 
@@ -16,10 +16,10 @@ using namespace cml;
 
 int main()
 {
-    TCPServer server;
-    server.listen(5566, 10);
-    TCPSocket *sock = server.accept();
-    TLVReaderWriter rw(sock);
+    TCPSocket msock;
+    msock.passiveOpen(5566);
+    TCPSocket *ssock = msock.accept();
+    TLVReaderWriter rw(ssock);
     ITLVObject *obj;
 
 	// Read in.

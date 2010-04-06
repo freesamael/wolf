@@ -17,10 +17,13 @@ namespace cml
 class TCPSocket: public AbstractSocket
 {
 public:
-	TCPSocket();
+	TCPSocket() {}
 	TCPSocket(int sock): AbstractSocket(sock) {}
-	virtual ~TCPSocket() {}
-	inline int type() const { return SOCK_STREAM; }
+	~TCPSocket();
+	TCPSocket* accept();
+
+private:
+	std::vector<TCPSocket *> _ssocks;
 };
 
 }

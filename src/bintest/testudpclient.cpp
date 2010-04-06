@@ -21,9 +21,8 @@ int main()
     UDPSocket sock;
     TLVReaderWriter rw(&sock);
     HostAddress addr;
-    unsigned short port;
 
-    sock.connect("127.0.0.1", 5566);
+    sock.activeOpen("127.0.0.1", 5566);
     do {
     	cin >> str;
 
