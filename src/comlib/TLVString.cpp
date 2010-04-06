@@ -22,17 +22,13 @@ TLV_OBJECT_REGISTRATION(TLVString, TLV_TYPE_STRING, TLVStringCreator);
 
 StandardTLVBlock* TLVString::toTLVBlock() const
 {
-	if (!_str.empty()) {
-		StandardTLVBlock *blk = new StandardTLVBlock();
-		blk->setType(TLV_TYPE_STRING);
-		blk->setLength(_str.length());
-		// TLV doesn't need to be null-terminated.
-		char *dst = blk->getValueBuffer();
-		strncpy(dst, _str.c_str(), blk->length());
-		return blk;
-	}
-	fprintf(stderr, "TLVString::toTLVBlock(): Error: String is empty.\n");
-	return NULL;
+	StandardTLVBlock *blk = new StandardTLVBlock();
+	blk->setType(TLV_TYPE_STRING);
+	blk->setLength(_str.length());
+	// TLV doesn't need to be null-terminated.
+	char *dst = blk->getValueBuffer();
+	strncpy(dst, _str.c_str(), blk->length());
+	return blk;
 }
 
 }
