@@ -16,7 +16,7 @@ namespace cml
 class UDPSocket: public AbstractSocket
 {
 public:
-	UDPSocket() {}
+	UDPSocket() { open(); }
 	UDPSocket(int sock): AbstractSocket(sock) {}
 	ssize_t recvfrom(char *buf, size_t size, HostAddress *addr,
 			unsigned short *port);
