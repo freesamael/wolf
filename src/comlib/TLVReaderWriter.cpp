@@ -51,7 +51,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 			dynamic_cast<TCPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		fprintf(stderr, "TLVReaderWriter::read(): Error: No active socket found.\n");
+		fprintf(stderr, "TLVReaderWriter::read(): Error: No active TCP socket found.\n");
 		return NULL;
 	}
 
@@ -103,7 +103,7 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 			dynamic_cast<TCPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		fprintf(stderr, "TLVReaderWriter::write(): Error: No active socket found.\n");
+		fprintf(stderr, "TLVReaderWriter::write(): Error: No active TCP socket found.\n");
 		return false;
 	}
 

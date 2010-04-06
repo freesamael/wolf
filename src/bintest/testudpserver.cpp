@@ -21,18 +21,21 @@ int main()
 	UDPSocket sock;
 	TLVReaderWriter rw(&sock);
     ITLVObject *obj;
+    TLVString *instr;
+    string str;
     HostAddress addr;
     unsigned short port;
 
     sock.passiveOpen(5566);
-    while ((obj = rw.recvfrom(&addr, &port))) {
-    	TLVString *str;
-    	if ((str = dynamic_cast<TLVString *>(obj))) {
-    		cout << str->toString() << endl;
-    		rw.sendto(*str, addr, port);
+    do {
+    	obj = rw.recvfrom(&addr, &port);
+    	if ((instr = dynamic_cast<TLVString *>(obj))) {
+    		str = instr->toString();
+    		cout << str << endl;
+    		rw.sendto(*instr, addr, port);
     	}
     	delete obj;
-    }
+    } while (str != "quit");
 
     return 0;
 }

@@ -79,6 +79,11 @@ bool AbstractSocket::passiveOpen(unsigned short port, int qlen)
 	return _state->passiveOpen(this, port, qlen);
 }
 
+bool AbstractSocket::close()
+{
+	return _state->close(this);
+}
+
 /**
  * Read a message.
  *

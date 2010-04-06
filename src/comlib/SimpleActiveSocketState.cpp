@@ -87,6 +87,29 @@ bool SimpleActiveSocketState::close(AbstractSocket *sock)
 	return true;
 }
 
+ssize_t SimpleActiveSocketState::recvfrom(AbstractSocket *sock, char *buf,
+		size_t size, HostAddress *addr, unsigned short *port)
+{
+	if (!(dynamic_cast<UDPSocket *>(sock))) {
+		fprintf(stderr, "SimpleActiveSocketState::recvfrom(): Error: recvfrom is only suitable for UDP sockets.\n");
+		return -1;
+	}
+
+	ssize_t result;
+	struct sockaddr_in inaddr;
+	socklen_t alen = sizeof(inaddr);
+
+	if ((result = ::recvfrom(sock->sockfd(), buf, size, 0,
+			(struct sockaddr *)&inaddr, &alen)) < 0) {
+		perror("SimpleActiveSocketState::recvfrom()");
+	}
+
+	addr->setAddr(inaddr.sin_addr.s_addr);
+	*port = ntohs(inaddr.sin_port);
+
+	return result;
+}
+
 ssize_t SimpleActiveSocketState::sendto(AbstractSocket *sock, const char *buf,
 		size_t size, const HostAddress &addr, unsigned short port)
 {
@@ -111,5 +134,7 @@ ssize_t SimpleActiveSocketState::sendto(AbstractSocket *sock, const char *buf,
 
 	return result;
 }
+
+
 
 }

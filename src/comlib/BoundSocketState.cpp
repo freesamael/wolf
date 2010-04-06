@@ -13,6 +13,7 @@
 #include <arpa/inet.h>
 #include "BoundSocketState.h"
 #include "ClosedSocketState.h"
+#include "ConnectedSocketState.h"
 #include "UDPSocket.h"
 #include "TCPSocket.h"
 
@@ -32,11 +33,6 @@ BoundSocketState* BoundSocketState::instance()
 
 bool BoundSocketState::close(AbstractSocket *sock)
 {
-	if (shutdown(sock->sockfd(), SHUT_RDWR) != 0) {
-		perror("BoundSocketState::close(): shutdown");
-		return false;
-	}
-
 	if (::close(sock->sockfd()) != 0) {
 		perror("BoundSocketState::close(): close");
 		return false;
@@ -58,7 +54,10 @@ TCPSocket* BoundSocketState::accept(AbstractSocket *sock)
 			perror("BoundSocketState::accept()");
 		return NULL;
 	}
+
 	TCPSocket *tcpsock = new TCPSocket(insock);
+	tcpsock->changeState(ConnectedSocketState::instance());
+
 	return tcpsock;
 }
 

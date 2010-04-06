@@ -63,8 +63,8 @@ public:
 	virtual ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
 			const HostAddress &addr, unsigned short port) = 0;
 
-	/// Get the state string.
-	virtual const std::string& toString() const = 0;
+	/// Get the state name.
+	virtual const std::string& name() const = 0;
 };
 
 }

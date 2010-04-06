@@ -21,19 +21,19 @@ int main()
     UDPSocket sock;
     TLVReaderWriter rw(&sock);
     HostAddress addr;
+    unsigned short port;
 
-    sock.activeOpen("127.0.0.1", 5566);
     do {
     	cin >> str;
 
         // Write out.
         TLVString ostr(str);
-        rw.write(ostr);
+        rw.sendto(ostr, "127.0.0.1", 5566);
 
         // Read in.
         ITLVObject *obj;
         TLVString *istr;
-        obj = rw.read();
+        obj = rw.recvfrom(&addr, &port);
         if ((istr = dynamic_cast<TLVString *>(obj))) {
             cout << istr->toString() << endl;
         }

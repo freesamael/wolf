@@ -20,7 +20,7 @@ class SimpleActiveSocketState: public ISocketState
 {
 public:
 	static SimpleActiveSocketState* instance();
-	inline const std::string& toString() const { return _statestr; }
+	inline const std::string& name() const { return _statestr; }
 
 	// Supported operations.
 	bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
@@ -30,6 +30,8 @@ public:
 	bool close(AbstractSocket *sock);
 	ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
 			const HostAddress &addr, unsigned short port);
+	ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
+			HostAddress *addr, unsigned short *port);
 
 	// Unsupported operations.
 	inline bool open(AbstractSocket *sock) { return false; }
@@ -38,13 +40,9 @@ public:
 			{ return -1; }
 	inline ssize_t write(AbstractSocket *sock, const char *buf, size_t size)
 			{ return -1; }
-	inline ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
-				HostAddress *addr, unsigned short *port) { return -1; }
-
-
 
 private:
-	SimpleActiveSocketState(): _statestr("Bound") {}
+	SimpleActiveSocketState(): _statestr("Active") {}
 	static SimpleActiveSocketState *_instance;
 	std::string _statestr;
 };

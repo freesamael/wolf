@@ -1,0 +1,54 @@
+/*
+ * TCPSocketTestSuite.cpp
+ *
+ *  Created on: Apr 6, 2010
+ *      Author: samael
+ */
+
+#include <string>
+#include <Thread.h>
+#include <TCPSocket.h>
+#include "TCPSocketTestSuite.h"
+
+CPPUNIT_TEST_SUITE_REGISTRATION(TCPSocketTestSuite);
+
+using namespace std;
+using namespace cml;
+
+struct Acceptor: public Thread
+{
+	TCPSocket *msock, *ssock;
+	Acceptor(TCPSocket *m): msock(m) {}
+	void run() { ssock = msock->accept(); }
+};
+
+void TCPSocketTestSuite::testReadWrite()
+{
+	TCPSocket server, client;
+	Acceptor athread(&server);
+
+	CPPUNIT_ASSERT_EQUAL((string)"Closed", server.state()->name());
+	CPPUNIT_ASSERT_EQUAL((string)"Closed", client.state()->name());
+	CPPUNIT_ASSERT(server.passiveOpen(6655));
+	CPPUNIT_ASSERT_EQUAL((string)"Bound", server.state()->name());
+
+	athread.start();
+	CPPUNIT_ASSERT(client.activeOpen("127.0.0.1", 6655));
+	CPPUNIT_ASSERT_EQUAL((string)"Connected", client.state()->name());
+	CPPUNIT_ASSERT_EQUAL((string)"Connected", athread.ssock->state()->name());
+
+	const char *str = "Hello World";
+	char sstr[20], cstr[20];
+	CPPUNIT_ASSERT_EQUAL(12, client.write(str, 12));
+	CPPUNIT_ASSERT_EQUAL(12, athread.ssock->read(sstr, 12));
+	CPPUNIT_ASSERT_EQUAL(12, athread.ssock->write(sstr, 12));
+	CPPUNIT_ASSERT_EQUAL(12, client.read(cstr, 12));
+	CPPUNIT_ASSERT_EQUAL((string)str, (string)cstr);
+
+	CPPUNIT_ASSERT(client.close());
+	CPPUNIT_ASSERT(athread.ssock->close());
+	CPPUNIT_ASSERT(server.close());
+	CPPUNIT_ASSERT_EQUAL((string)"Closed", server.state()->name());
+	CPPUNIT_ASSERT_EQUAL((string)"Closed", client.state()->name());
+	CPPUNIT_ASSERT_EQUAL((string)"Closed", athread.ssock->state()->name());
+}

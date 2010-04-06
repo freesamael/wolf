@@ -17,7 +17,7 @@ class BoundSocketState: public ISocketState
 {
 public:
 	static BoundSocketState* instance();
-	inline const std::string& toString() const { return _statestr; }
+	inline const std::string& name() const { return _statestr; }
 
 	// Supported operations.
 	bool close(AbstractSocket *sock);
