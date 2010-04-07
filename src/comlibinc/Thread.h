@@ -20,7 +20,7 @@ class Thread
 {
 public:
 	Thread();
-	~Thread();
+	virtual ~Thread();
 	virtual void run() = 0;
 	inline pthread_t threadID() const { return _tid; }
 	bool start();

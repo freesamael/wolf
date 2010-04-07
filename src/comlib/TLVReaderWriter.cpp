@@ -209,7 +209,7 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 
 	if (!activesock) {
 		fprintf(stderr, "TLVReaderWriter::sendto(): Error: No active UDP socket found.\n");
-		return NULL;
+		return false;
 	}
 
 	if (blk) {
