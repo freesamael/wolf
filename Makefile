@@ -9,6 +9,7 @@ CXXFLAGS += -g3 -O0 -Wall
 
 WOLF_SRCDIR = ${PWD}/src
 WOLF_BINDIR = ${PWD}/bin
+WOLF_LIBDIR = ${PWD}/lib
 
 all: wolf
 
