@@ -10,7 +10,10 @@ CXXFLAGS += -g3 -O0 -Wall
 WOLF_SRCDIR = ${PWD}/src
 WOLF_BINDIR = ${PWD}/bin
 WOLF_LIBDIR = ${PWD}/lib
+WOLF_TESTDIR = ${PWD}/test
 
-all: wolf
+all: wolf test
+clean: wolf_clean test_clean
 
 include ${WOLF_SRCDIR}/Makefile
+include ${WOLF_TESTDIR}/Makefile
