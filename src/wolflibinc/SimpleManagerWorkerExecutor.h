@@ -9,7 +9,6 @@
 #define SIMPLEMANAGERWORKEREXECUTOR_H_
 
 #include "IManagerWorkerExecutor.h"
-#include "RunnerAgent.h"
 
 namespace wfe
 {
@@ -17,11 +16,7 @@ namespace wfe
 class SimpleManagerWorkerExecutor: public IManagerWorkerExecutor
 {
 public:
-	SimpleManagerWorkerExecutor(RunnerAgent *agent): _agent(agent) {}
 	void execute(const std::vector<AbstractWorkerActor *> &workers);
-
-private:
-	RunnerAgent *_agent;
 };
 
 }

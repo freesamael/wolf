@@ -10,6 +10,7 @@
 #include <Director.h>
 #include <Port.h>
 #include <SimpleWorkflowExecutor.h>
+#include <SimpleManagerWorkerExecutor.h>
 #include <AbstractManagerActor.h>
 
 using namespace std;
@@ -67,7 +68,8 @@ private:
 class TestActor: public AbstractManagerActor
 {
 public:
-	TestActor(const string &name): _name(name) {
+	TestActor(IManagerWorkerExecutor *exec, const string &name):
+		AbstractManagerActor(exec), _name(name) {
 		_inports.push_back(new Port(this));
 		_outports.push_back(new Port(this));
 	}
@@ -92,14 +94,17 @@ private:
 
 int main()
 {
-	SimpleWorkflowExecutor exest;
-	Director d(&exest);
+	SimpleWorkflowExecutor workflowexec;
+	SimpleManagerWorkerExecutor manwokexec;
+	Director d(&workflowexec);
 
 	// Create actors.
 	FirstActor *fa = new FirstActor();
 	LastActor *la = new LastActor();
-	TestActor *t1 = new TestActor("Actor 1"), *t2 = new TestActor("Actor 2"),
-			*t3 = new TestActor("Actor 3"), *t4 = new TestActor("Actor 4");
+	TestActor *t1 = new TestActor(&manwokexec, "Actor 1"),
+			*t2 = new TestActor(&manwokexec, "Actor 2"),
+			*t3 = new TestActor(&manwokexec, "Actor 3"),
+			*t4 = new TestActor(&manwokexec, "Actor 4");
 
 	// Add actors.
 	d.addActor(fa);

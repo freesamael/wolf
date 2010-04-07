@@ -26,6 +26,14 @@ AbstractManagerActor::~AbstractManagerActor()
 }
 
 /**
+ * By default it executes all workers by the executor given during construction.
+ */
+void AbstractManagerActor::fire()
+{
+	_exec->execute(_workers);
+}
+
+/**
  * Test if all inputs are ready.
  *
  * \return

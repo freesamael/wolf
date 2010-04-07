@@ -6,6 +6,7 @@
  */
 
 #include "SimpleManagerWorkerExecutor.h"
+#include "RunnerAgent.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ namespace wfe
 void SimpleManagerWorkerExecutor::execute(const vector<AbstractWorkerActor *> &workers)
 {
 	for (int i = 0; i < (int)workers.size(); i++)
-		_agent->sendActor(workers[i]);
+		RunnerAgent::instance()->sendActor(workers[i]);
 }
 
 }
