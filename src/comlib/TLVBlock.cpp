@@ -30,7 +30,7 @@ StandardTLVBlock::StandardTLVBlock(unsigned short type, unsigned short length)
 
 StandardTLVBlock::~StandardTLVBlock()
 {
-	delete _buf;
+	delete [] _buf;
 }
 
 /**
@@ -47,7 +47,7 @@ void StandardTLVBlock::setType(unsigned short type)
 void StandardTLVBlock::setLength(unsigned short len)
 {
 	unsigned short tp = type();
-	delete _buf;
+	delete [] _buf;
 	_buf = new char[len + szHeader];
 
 	_writetype(tp);

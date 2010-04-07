@@ -28,11 +28,13 @@ void TLVMessageTestSuite::testToTLVBlock()
 
 	delete blk;
 
-	msg.setParameter(new TLVUInt32(2048));
+	TLVUInt32 *u32 = new TLVUInt32(2048);
+	msg.setParameter(u32);
 	blk = msg.toTLVBlock();
 
 	CPPUNIT_ASSERT_EQUAL((unsigned short)(TLVUInt16::Size + TLVUInt32::Size),
 			blk->length());
 
+	delete u32;
 	delete blk;
 }

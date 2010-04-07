@@ -23,7 +23,7 @@ public:
 	void setProcessEnvironment(const ProcessEnvironment &env) { _env = env; }
 	inline ProcessEnvironment processEnvironment() const { return _env; }
 	void start(const std::string &program, const std::string &args = "");
-	static const char** constructArgs(const std::string &program,
+	static char** constructArgs(const std::string &program,
 				const std::vector<std::string> &args);
 
 private:

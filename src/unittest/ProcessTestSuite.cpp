@@ -5,6 +5,7 @@
  *      Author: samael
  */
 
+#include <cstdlib>
 #include "ProcessTestSuite.h"
 #include "Process.h"
 #include "StringHelper.h"
@@ -20,7 +21,7 @@ void ProcessTestSuite::testConstructArgs()
 	vector<string> args;
 	StringHelper::tokens(str, " ", &args);
 
-	const char **argv = Process::constructArgs(prog, args);
+	char **argv = Process::constructArgs(prog, args);
 
 	CPPUNIT_ASSERT_EQUAL((string)"program", (string)argv[0]);
 	CPPUNIT_ASSERT_EQUAL((string)"-arg1", (string)argv[1]);
@@ -28,7 +29,9 @@ void ProcessTestSuite::testConstructArgs()
 	CPPUNIT_ASSERT_EQUAL((string)"-arg3", (string)argv[3]);
 	CPPUNIT_ASSERT_EQUAL((string)"-arg4", (string)argv[4]);
 	CPPUNIT_ASSERT_EQUAL((string)"-arg5", (string)argv[5]);
-	CPPUNIT_ASSERT_EQUAL((const char *)NULL, argv[6]);
+	CPPUNIT_ASSERT_EQUAL((char *)NULL, argv[6]);
 
-	delete argv;
+	for (int i = 0; i <= (int)args.size(); i++)
+		free(argv[i]);
+	delete [] argv;
 }

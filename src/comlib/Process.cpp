@@ -6,6 +6,8 @@
  */
 
 #include <cstdio>
+#include <cstdlib>
+#include <cstring>
 #include <errno.h>
 #include "Process.h"
 #include "StringHelper.h"
@@ -27,7 +29,7 @@ void Process::start(const string &program, const string &args)
 	// Construct argument list.
 	vector<string> argtoks;
 	StringHelper::tokens(args, " ", &argtoks);
-	const char **argv = constructArgs(program, argtoks);
+	char **argv = constructArgs(program, argtoks);
 
 	// Execute.
 	if ((_proc = fork()) == 0) {
@@ -36,34 +38,36 @@ void Process::start(const string &program, const string &args)
 		 * Hence it's safe to force convert the type here.
 		 */
 		if (_env.isEmpty())
-			execvp(program.c_str(), (char * const *)argv);
+			execvp(program.c_str(), argv);
 		else
-			execve(program.c_str(), (char * const *)argv,
+			execve(program.c_str(), argv,
 					_env.toNullTerminatedArray());
 		perror("Process::start()");
 	}
 
-	delete argv;
+	// Cleanup duplicated data.
+	for (int i = 0; i <= (int)args.size(); i++)
+		free(argv[i]);
+	delete [] argv;
 }
 
 /**
  * Construct arguments in char** form used in execve().
  *
  * \note
- * The lifetime of return string arrays depends on input parameters because it
- * uses string.c_str(). Be careful about the lifetime issue and don't call this
- * function by constant c-string such as constructArgs("program_name", ...).
+ * Remember to free the array (by delete) and the elements inside the array (by
+ * free() because strdup uses malloc()).
  */
-const char** Process::constructArgs(const std::string &program,
+char** Process::constructArgs(const std::string &program,
 		const vector<string> &args)
 {
 	// + program and NULL.
-	const char **argv = new const char * [args.size() + 2];
+	char **argv = new char *[args.size() + 2];
 
 	// Fill arguments.
-	argv[0] = program.c_str();
+	argv[0] = strdup(program.c_str());
 	for (int i = 1; i <= (int)args.size(); i++)
-		argv[i] = args[i - 1].c_str();
+		argv[i] = strdup(args[i - 1].c_str());
 	argv[args.size() + 1] = NULL;
 
 	return argv;

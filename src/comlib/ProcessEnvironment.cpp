@@ -65,7 +65,7 @@ string ProcessEnvironment::lookupValue(const string &variable) const
 char** ProcessEnvironment::toNullTerminatedArray() const
 {
 	int size = _envmap.size();
-	char **array = new char* [size + 1];
+	char **array = new char *[size + 1];
 	map<string, string>::const_iterator iter = _envmap.begin();
 
 	// Insert values;
@@ -89,10 +89,10 @@ void ProcessEnvironment::freeNullTerminatedArray(char **array)
 {
 	// Free elements.
 	for (int i = 0; array[i] != NULL; i++)
-		delete array[i];
+		delete [] array[i];
 
 	// Free array.
-	delete array;
+	delete [] array;
 }
 
 /**

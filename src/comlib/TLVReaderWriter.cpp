@@ -157,11 +157,11 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 	localbuf = new char[SZ_MAXBUF];
 	if ((ret = activesock->recvfrom(localbuf, SZ_MAXBUF, addr, port)) == 0) {
 		// End of file.
-		delete localbuf;
+		delete [] localbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
 		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: Data read is too small to be a TLV block.\n");
-		delete localbuf;
+		delete [] localbuf;
 		return NULL;
 	}
 
@@ -184,7 +184,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: Unable to construct TLV object.\n");
 
 	delete tmpblk;
-	delete localbuf;
+	delete [] localbuf;
 
 	return obj;
 }

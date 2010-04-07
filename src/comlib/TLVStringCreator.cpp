@@ -26,7 +26,7 @@ ITLVObject* TLVStringCreator::create(const ITLVBlock &blk) const
 	TLVString *str = new TLVString(ntstr);
 
 	// Cleanup
-	delete ntstr;
+	delete [] ntstr;
 
 	return str;
 }
