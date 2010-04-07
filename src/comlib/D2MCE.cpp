@@ -7,14 +7,17 @@
 
 #include "D2MCE.h"
 #include "SharedMemory.h"
+#include "SingletonAutoDestructor.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
 namespace cml
 {
 
+SINGLETON_REGISTRATION(D2MCE);
+
 D2MCE *D2MCE::_instance = NULL;
-pthread_mutex_t D2MCE::_pthmutex = PTHREAD_MUTEX_INITIALIZER;
 
 D2MCE::D2MCE()
 {
@@ -30,19 +33,15 @@ D2MCE::~D2MCE()
 
 D2MCE* D2MCE::instance()
 {
-	pthread_mutex_lock(&_pthmutex);
 	if (_instance == NULL)
 		_instance = new D2MCE();
-	pthread_mutex_unlock(&_pthmutex);
 	return _instance;
 }
 
 void D2MCE::release()
 {
-	pthread_mutex_lock(&_pthmutex);
 	delete _instance;
 	_instance = NULL;
-	pthread_mutex_unlock(&_pthmutex);
 }
 
 /**

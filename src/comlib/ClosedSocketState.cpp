@@ -14,11 +14,15 @@
 #include "SimpleActiveSocketState.h"
 #include "TCPSocket.h"
 #include "UDPSocket.h"
+#include "SingletonAutoDestructor.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
 namespace cml
 {
+
+SINGLETON_REGISTRATION(ClosedSocketState);
 
 ClosedSocketState *ClosedSocketState::_instance = NULL;
 
@@ -26,8 +30,13 @@ ClosedSocketState* ClosedSocketState::instance()
 {
 	if (!_instance)
 		_instance = new ClosedSocketState();
-
 	return _instance;
+}
+
+void ClosedSocketState::release()
+{
+	delete _instance;
+	_instance = NULL;
 }
 
 bool ClosedSocketState::activeOpen(AbstractSocket *sock,

@@ -20,6 +20,7 @@ class SimpleActiveSocketState: public ISocketState
 {
 public:
 	static SimpleActiveSocketState* instance();
+	static void release();
 	inline const std::string& name() const { return _statestr; }
 
 	// Supported operations.

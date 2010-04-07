@@ -14,6 +14,7 @@
 #include "TLVMessage.h"
 #include "TLVMessageCreator.h"
 #include "CustomTLVTypes.h"
+#include "HelperMacros.h"
 
 using namespace cml;
 using namespace std;

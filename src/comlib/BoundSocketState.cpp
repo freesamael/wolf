@@ -16,11 +16,15 @@
 #include "ConnectedSocketState.h"
 #include "UDPSocket.h"
 #include "TCPSocket.h"
+#include "SingletonAutoDestructor.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
 namespace cml
 {
+
+SINGLETON_REGISTRATION(BoundSocketState);
 
 BoundSocketState *BoundSocketState::_instance = NULL;
 
@@ -29,6 +33,12 @@ BoundSocketState* BoundSocketState::instance()
 	if (!_instance)
 		_instance = new BoundSocketState();
 	return _instance;
+}
+
+void BoundSocketState::release()
+{
+	delete _instance;
+	_instance = NULL;
 }
 
 bool BoundSocketState::close(AbstractSocket *sock)

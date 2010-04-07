@@ -13,11 +13,15 @@
 #include "TLVStringCreator.h"
 #include "TLVUInt16Creator.h"
 #include "TLVUInt32Creator.h"
+#include "SingletonAutoDestructor.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
 namespace cml
 {
+
+SINGLETON_REGISTRATION(TLVObjectFactory);
 
 TLVObjectFactory* TLVObjectFactory::_instance = NULL;
 

@@ -10,7 +10,6 @@
 
 #include <string>
 #include <vector>
-#include <pthread.h>
 #include <d2mce/d2mce.h>
 #include "SharedMemory.h"
 
@@ -34,7 +33,6 @@ private:
 	D2MCE();
 	~D2MCE();
 	static D2MCE *_instance;
-	static pthread_mutex_t _pthmutex;
 	int _nodeid;
 	d2mce_barrier_t _barrier;
 	std::vector<SharedMemory*> _smems;

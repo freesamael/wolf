@@ -11,6 +11,8 @@
 #include <UDPSocket.h>
 #include <TLVReaderWriter.h>
 #include <Thread.h>
+#include <SingletonAutoDestructor.h>
+#include <HelperMacros.h>
 #include "RunnerAgent.h"
 #include "TLVMessage.h"
 
@@ -19,6 +21,8 @@ using namespace cml;
 
 namespace wfe
 {
+
+SINGLETON_REGISTRATION(RunnerAgent);
 
 const char *RunnerAgent::StateString[] = { "Not Ready", "Ready" };
 RunnerAgent *RunnerAgent::_instance = NULL;

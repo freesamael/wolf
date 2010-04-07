@@ -15,9 +15,13 @@
 #include "BoundSocketState.h"
 #include "TCPSocket.h"
 #include "UDPSocket.h"
+#include "SingletonAutoDestructor.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
+
+SINGLETON_REGISTRATION(SimpleActiveSocketState);
 
 SimpleActiveSocketState *SimpleActiveSocketState::_instance = NULL;
 
@@ -26,6 +30,12 @@ SimpleActiveSocketState* SimpleActiveSocketState::instance()
 	if (!_instance)
 		_instance = new SimpleActiveSocketState();
 	return _instance;
+}
+
+void SimpleActiveSocketState::release()
+{
+	delete _instance;
+	_instance = NULL;
 }
 
 bool SimpleActiveSocketState::activeOpen(AbstractSocket *sock,

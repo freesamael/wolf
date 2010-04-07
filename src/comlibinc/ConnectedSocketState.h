@@ -17,6 +17,7 @@ class ConnectedSocketState: public ISocketState
 {
 public:
 	static ConnectedSocketState* instance();
+	static void release();
 	inline const std::string& name() const { return _statestr; }
 
 	// Supported operations.

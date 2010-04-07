@@ -25,9 +25,6 @@ int main()
 	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
 	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
 	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
-	RunnerAgent::release();
-
-	TLVObjectFactory::instance()->release();
 
 	return 0;
 }

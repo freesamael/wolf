@@ -12,6 +12,7 @@
 #include "TLVStringCreator.h"
 #include "TLVBlock.h"
 #include "TLVObjectFactoryAutoRegistor.h"
+#include "HelperMacros.h"
 
 using namespace std;
 

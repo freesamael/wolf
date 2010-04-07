@@ -17,6 +17,7 @@ class ClosedSocketState: public ISocketState
 {
 public:
 	static ClosedSocketState* instance();
+	static void release();
 	inline const std::string& name() const { return _statestr; }
 
 	// Supported operations.

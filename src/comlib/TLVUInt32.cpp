@@ -12,6 +12,7 @@
 #include "TLVUInt32Creator.h"
 #include "TLVBlock.h"
 #include "TLVObjectFactoryAutoRegistor.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
