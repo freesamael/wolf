@@ -19,6 +19,8 @@ class TCPSocket;
 class ISocketState
 {
 public:
+	virtual ~ISocketState() {}
+
 	/// Simply open the socket.
 	/// \return True on success, false otherwise.
 	virtual bool open(AbstractSocket *sock) = 0;

@@ -5,7 +5,7 @@ ${UNITTEST}: LIBS += -lwolf -ld2mce -lpthread -lcppunit
 ${UNITTEST}: LDFLAGS += -L${WOLF_LIBDIR} -L${D2MCE_LIBDIR}
 
 ${UNITTEST}: ${UNITTEST_OBJS} ${WOLFLIB}
-	${CXX} -o $@ ${LDFLAGS} ${UNITTEST_OBJS} ${LIBS}
+	${CXX} ${CXXFLAGS} -o $@ ${LDFLAGS} ${UNITTEST_OBJS} ${LIBS}
 
 unittest_clean:
 	-rm ${UNITTEST} ${UNITTEST_OBJS}
