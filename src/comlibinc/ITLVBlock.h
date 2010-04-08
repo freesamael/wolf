@@ -22,8 +22,8 @@ public:
 	virtual ~ITLVBlock() {}
 	virtual unsigned short type() const = 0;
 	virtual unsigned short length() const = 0;
-	virtual unsigned short plainSize() const = 0; ///< Total size (header + value).
-	virtual const char* plainBuffer() const = 0;
+	virtual unsigned short plainSize() const = 0; ///< Size of plain buffer.
+	virtual const char* plainBuffer() const = 0; ///< Plain buffer including header.
 	virtual const char* value() const = 0;
 };
 
