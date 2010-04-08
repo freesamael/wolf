@@ -84,15 +84,15 @@ StandardTLVBlock* StandardTLVBlock::concate(const vector<const ITLVBlock*> &bloc
 
 	unsigned short tlen = 0;
 	for (int i = 0; i < (int)blocks.size(); i++)
-		tlen += blocks[i]->size();
+		tlen += blocks[i]->plainSize();
 
 	blk->setLength(tlen);
 
 	unsigned short offset = 0;
 	for (int i = 0; i < (int)blocks.size(); i++) {
-		memcpy(&blk->getValueBuffer()[offset], blocks[i]->getCompleteBuffer(),
-				blocks[i]->size());
-		offset += blocks[i]->size();
+		memcpy(&blk->value()[offset], blocks[i]->plainBuffer(),
+				blocks[i]->plainSize());
+		offset += blocks[i]->plainSize();
 	}
 
 	return blk;

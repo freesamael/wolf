@@ -30,7 +30,7 @@ StandardTLVBlock* TLVUInt32::toTLVBlock() const
 
 	blk->setType(TLV_TYPE_UINT32);
 	blk->setLength(sizeof(unsigned int));
-	memcpy(blk->getValueBuffer(), &nv, blk->length());
+	memcpy(blk->value(), &nv, blk->length());
 
 	return blk;
 }

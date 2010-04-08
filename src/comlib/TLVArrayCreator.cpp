@@ -28,8 +28,8 @@ ITLVObject* TLVArrayCreator::create(const ITLVBlock &blk) const
 	do {
 		// Get block.
 		delete sblk;
-		sblk = new SharedTLVBlock(blk.getValueBuffer() + offset);
-		offset += sblk->size();
+		sblk = new SharedTLVBlock(blk.value() + offset);
+		offset += sblk->plainSize();
 
 		// Get object.
 		ITLVObject *obj = TLVObjectFactory::instance()->createTLVObject(*sblk);
@@ -37,7 +37,7 @@ ITLVObject* TLVArrayCreator::create(const ITLVBlock &blk) const
 			fprintf(stderr, "TLVArrayCreator::create(): Error: Fail to construct an element inside the TLV blocks.\n");
 		else
 			array->elements().push_back(obj);
-	} while (sblk->size() + offset < blk.length());
+	} while (sblk->plainSize() + offset < blk.length());
 
 	delete sblk;
 

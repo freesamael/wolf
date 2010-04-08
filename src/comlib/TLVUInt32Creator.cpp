@@ -17,7 +17,7 @@ ITLVObject* TLVUInt32Creator::create(const ITLVBlock &blk) const
 {
 	// Length should always be 4 bytes.
 	if (blk.length() == 4) {
-		unsigned int *nv = (unsigned int *)blk.getValueBuffer();
+		unsigned int *nv = (unsigned int *)blk.value();
 		TLVUInt32 *obj = new TLVUInt32(ntohl(*nv));
 		return obj;
 	}

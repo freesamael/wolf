@@ -19,7 +19,7 @@ ITLVObject* TLVStringCreator::create(const ITLVBlock &blk) const
 {
 	// Convert to null-terminated string.
 	char *ntstr = new char[blk.length() + 1];
-	strncpy(ntstr, blk.getValueBuffer(), blk.length());
+	strncpy(ntstr, blk.value(), blk.length());
 	ntstr[blk.length()] = '\0';
 
 	// Initialize TLVString.

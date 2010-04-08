@@ -36,7 +36,7 @@ ITLVObject* TLVMessageCreator::create(const ITLVBlock &blk) const
 	ITLVObject *param = NULL;
 
 	// Construct command block.
-	cmdblk = new SharedTLVBlock(blk.getValueBuffer());
+	cmdblk = new SharedTLVBlock(blk.value());
 	cmd = dynamic_cast<TLVUInt16 *>(TLVObjectFactory::instance()->
 			createTLVObject(*cmdblk));
 	if (!cmd) {
@@ -46,7 +46,7 @@ ITLVObject* TLVMessageCreator::create(const ITLVBlock &blk) const
 
 	// Construct param block (if any).
 	if (blk.length() > TLVUInt16::Size) {
-		paramblk = new SharedTLVBlock(blk.getValueBuffer() + cmdblk->size());
+		paramblk = new SharedTLVBlock(blk.value() + cmdblk->plainSize());
 		param = TLVObjectFactory::instance()->createTLVObject(*paramblk);
 		delete paramblk;
 	}

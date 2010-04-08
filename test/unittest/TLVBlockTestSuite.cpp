@@ -53,17 +53,17 @@ void TLVBlockTestSuite::testNestedBlocks()
 
 	CPPUNIT_ASSERT_EQUAL((unsigned short)0x0, nb1->type());
 	CPPUNIT_ASSERT_EQUAL((unsigned short)0x18, nb1->length());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x0, ntohs(((unsigned short *)nb2->getValueBuffer())[0]));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x18, ntohs(((unsigned short *)nb2->getValueBuffer())[1]));
+	CPPUNIT_ASSERT_EQUAL((unsigned short)0x0, ntohs(((unsigned short *)nb2->value())[0]));
+	CPPUNIT_ASSERT_EQUAL((unsigned short)0x18, ntohs(((unsigned short *)nb2->value())[1]));
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x4321, ntohs(((unsigned short *)nb1->getValueBuffer())[0]));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x8, ntohs(((unsigned short *)nb1->getValueBuffer())[1]));
+	CPPUNIT_ASSERT_EQUAL((unsigned short)0x4321, ntohs(((unsigned short *)nb1->value())[0]));
+	CPPUNIT_ASSERT_EQUAL((unsigned short)0x8, ntohs(((unsigned short *)nb1->value())[1]));
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x1234, ntohs(((unsigned short *)(nb1->getValueBuffer() + b1.size()))[0]));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x8, ntohs(((unsigned short *)(nb1->getValueBuffer() + b1.size()))[1]));
+	CPPUNIT_ASSERT_EQUAL((unsigned short)0x1234, ntohs(((unsigned short *)(nb1->value() + b1.plainSize()))[0]));
+	CPPUNIT_ASSERT_EQUAL((unsigned short)0x8, ntohs(((unsigned short *)(nb1->value() + b1.plainSize()))[1]));
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0xa5a5, ntohs(((unsigned short *)(nb2->getValueBuffer() + nb1->size()))[0]));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x10, ntohs(((unsigned short *)(nb2->getValueBuffer() + nb1->size()))[1]));
+	CPPUNIT_ASSERT_EQUAL((unsigned short)0xa5a5, ntohs(((unsigned short *)(nb2->value() + nb1->plainSize()))[0]));
+	CPPUNIT_ASSERT_EQUAL((unsigned short)0x10, ntohs(((unsigned short *)(nb2->value() + nb1->plainSize()))[1]));
 
 	delete nb1;
 	delete nb2;

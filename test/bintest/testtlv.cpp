@@ -30,8 +30,8 @@ void test_tlvblock()
 
 	printf("Type = 0x%x, Length = 0x%x\n", blk.type(), blk.length());
 	printf("Type (Native) = 0x%x, Length (Native) = 0x%x\n",
-			((unsigned short *)blk.getCompleteBuffer())[0],
-			((unsigned short *)blk.getCompleteBuffer())[1]);
+			((unsigned short *)blk.plainBuffer())[0],
+			((unsigned short *)blk.plainBuffer())[1]);
 }
 
 void test_tlvstring()

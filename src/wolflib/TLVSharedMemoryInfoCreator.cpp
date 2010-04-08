@@ -25,8 +25,8 @@ ITLVObject* TLVSharedMemoryInfoCreator::create(const ITLVBlock &blk) const
 	}
 
 	// Get name.
-	SharedTLVBlock nblk(blk.getValueBuffer());
-	if (blk.length() < nblk.size() + TLVUInt32::Size) {
+	SharedTLVBlock nblk(blk.value());
+	if (blk.length() < nblk.plainSize() + TLVUInt32::Size) {
 		fprintf(stderr, "TLVSharedMemoryInfoCreator::create(): Error: TLV block size is too small.\n");
 		return NULL;
 	}
@@ -38,7 +38,7 @@ ITLVObject* TLVSharedMemoryInfoCreator::create(const ITLVBlock &blk) const
 	}
 
 	// Get size.
-	SharedTLVBlock sblk(blk.getValueBuffer() + nblk.size());
+	SharedTLVBlock sblk(blk.value() + nblk.plainSize());
 	TLVUInt32 *u32;
 	if (!(u32 = dynamic_cast<TLVUInt32 *>(TLVObjectFactory::instance()->
 			createTLVObject(sblk)))) {

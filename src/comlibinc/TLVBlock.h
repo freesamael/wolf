@@ -29,18 +29,18 @@ public:
 		return ntohs(((unsigned short *)_buf)[0]); }
 	inline unsigned short length() const {
 		return ntohs(((unsigned short *)_buf)[1]); }
-	inline unsigned short size() const { return length() + szHeader; }
+	inline unsigned short plainSize() const { return length() + szHeader; }
 
 	// Setters.
 	void setType(unsigned short type);
 	void setLength(unsigned short len);
 
 	// Buffer.
-	inline char* getCompleteBuffer() { return _buf; }
-	inline const char* getCompleteBuffer() const { return _buf; }
-	inline char* getValueBuffer() {
+	inline char* plainBuffer() { return _buf; }
+	inline const char* plainBuffer() const { return _buf; }
+	inline char* value() {
 		return (!length()) ? NULL : &_buf[szHeader]; }
-	inline const char* getValueBuffer() const {
+	inline const char* value() const {
 		return (!length()) ? NULL : &_buf[szHeader]; }
 
 	// Static helpers.
@@ -67,9 +67,9 @@ public:
 		return ntohs(((unsigned short *)_buf)[0]); }
 	inline unsigned short length() const {
 		return ntohs(((unsigned short *)_buf)[1]); }
-	inline unsigned short size() const { return length() + szHeader; }
-	inline const char* getCompleteBuffer() const { return _buf; }
-	inline const char* getValueBuffer() const {
+	inline unsigned short plainSize() const { return length() + szHeader; }
+	inline const char* plainBuffer() const { return _buf; }
+	inline const char* value() const {
 		return (!length()) ? NULL : &_buf[szHeader]; }
 
 private:

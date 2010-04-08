@@ -28,7 +28,7 @@ StandardTLVBlock* TLVString::toTLVBlock() const
 	blk->setType(TLV_TYPE_STRING);
 	blk->setLength(_str.length());
 	// TLV doesn't need to be null-terminated.
-	char *dst = blk->getValueBuffer();
+	char *dst = blk->value();
 	strncpy(dst, _str.c_str(), blk->length());
 	return blk;
 }

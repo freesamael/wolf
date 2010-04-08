@@ -67,10 +67,10 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	tmpblk = new SharedTLVBlock(hdrbuf);
 	blk.setType(tmpblk->type());
 	blk.setLength(tmpblk->length());
-	if ((ret = activesock->read(blk.getValueBuffer(), blk.length())) !=
+	if ((ret = activesock->read(blk.value(), blk.length())) !=
 			blk.length()) {
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Expected %u bytes but %u bytes read.\n",
-				blk.size(), ret);
+				blk.plainSize(), ret);
 		delete tmpblk;
 		return NULL;
 	}
@@ -108,11 +108,11 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 	}
 
 	if (blk) {
-		ret = activesock->write(blk->getCompleteBuffer(), blk->size());
-		if (!(success = (ret == (int)blk->size()))) {
+		ret = activesock->write(blk->plainBuffer(), blk->plainSize());
+		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
 				fprintf(stderr, "TLVReaderWriter::write(): Error: Expected %u bytes but %u bytes written.",
-						blk->size(), ret);
+						blk->plainSize(), ret);
 			} else {
 				fprintf(stderr, "TLVReaderWriter::read(): Error: Fail to write.\n");
 			}
@@ -169,13 +169,13 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 	tmpblk = new SharedTLVBlock(localbuf);
 	blk.setType(tmpblk->type());
 	blk.setLength(tmpblk->length());
-	if (ret != blk.size()) {
+	if (ret != blk.plainSize()) {
 		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: Expected %u bytes but %u bytes read.\n",
-				blk.size(), ret);
+				blk.plainSize(), ret);
 		delete tmpblk;
 		return NULL;
 	} else {
-		memcpy(blk.getValueBuffer(), tmpblk->getValueBuffer(), blk.length());
+		memcpy(blk.value(), tmpblk->value(), blk.length());
 	}
 
 	// Construct TLV object.
@@ -213,12 +213,12 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 	}
 
 	if (blk) {
-		ret = activesock->sendto(blk->getCompleteBuffer(), blk->size(),
+		ret = activesock->sendto(blk->plainBuffer(), blk->plainSize(),
 				addr, port);
-		if (!(success = (ret == (int)blk->size()))) {
+		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
 				fprintf(stderr, "TLVReaderWriter::sendto(): Error: Expected %u bytes but %u bytes written.",
-						blk->size(), ret);
+						blk->plainSize(), ret);
 			} else {
 				fprintf(stderr, "TLVReaderWriter::sendto(): Error: Fail to write.\n");
 			}
