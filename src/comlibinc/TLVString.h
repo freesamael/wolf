@@ -14,6 +14,9 @@
 namespace cml
 {
 
+/**
+ * std::string wrapper to support TLV.
+ */
 class TLVString: public ITLVObject
 {
 public:

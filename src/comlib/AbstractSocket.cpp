@@ -23,17 +23,16 @@ using namespace std;
 namespace cml
 {
 
-AbstractSocket::AbstractSocket()
+AbstractSocket::AbstractSocket():
+		_state(ClosedSocketState::instance())
 {
 	pthread_mutex_init(&_mutex, NULL);
-	_state = ClosedSocketState::instance();
 }
 
 AbstractSocket::AbstractSocket(int sock):
-		_sockfd(sock)
+		_sockfd(sock), _state(SimpleActiveSocketState::instance())
 {
 	pthread_mutex_init(&_mutex, NULL);
-	_state = SimpleActiveSocketState::instance();
 }
 
 /**

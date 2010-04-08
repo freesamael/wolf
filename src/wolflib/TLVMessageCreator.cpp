@@ -20,12 +20,12 @@ namespace wfe
 {
 
 /**
- * The nested TLV blocks look like:
- * -------------------------------------------------------
- * |    |      | ------------------- ----(Optional)----- |
- * |Type|Length| |Type|Length|Value| |Type|Length|Value| |
- * |    |      | ------------------- ------------------- |
- * -------------------------------------------------------
+ * The nested TLV blocks look like:\n
+ * -------------------------------------------------------\n
+ * |    |      | ------------------- ----(Optional)----- |\n
+ * |Type|Length| |Type|Length|Value| |Type|Length|Value| |\n
+ * |    |      | ------------------- ------------------- |\n
+ * -------------------------------------------------------\n
  * The first sub-TLV is command, and the second represents parameter (which is
  * an optional field).
  */

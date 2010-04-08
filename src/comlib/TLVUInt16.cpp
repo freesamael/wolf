@@ -10,9 +10,10 @@
 #include <arpa/inet.h>
 #include "TLVUInt16.h"
 #include "TLVUInt16Creator.h"
-#include "TLVObjectFactoryAutoRegistor.h"
+#include "TLVObjectFactoryAutoRegistry.h"
 #include "TLVBlock.h"
 #include "HelperMacros.h"
+#include "TLVTypes.h"
 
 namespace cml
 {

@@ -12,7 +12,7 @@
 #include <AbstractWorkerActor.h>
 #include <TLVBlock.h>
 #include <ITLVObjectCreator.h>
-#include <TLVObjectFactoryAutoRegistor.h>
+#include <TLVObjectFactoryAutoRegistry.h>
 #include <HelperMacros.h>
 
 #define TLV_TYPE_TEST_ACTOR		11

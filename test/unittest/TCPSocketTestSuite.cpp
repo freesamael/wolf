@@ -18,7 +18,7 @@ using namespace cml;
 struct Acceptor: public Thread
 {
 	TCPSocket *msock, *ssock;
-	Acceptor(TCPSocket *m): msock(m) {}
+	Acceptor(TCPSocket *m): msock(m), ssock(NULL) {}
 	void run() { ssock = msock->accept(); }
 };
 
@@ -35,6 +35,7 @@ void TCPSocketTestSuite::testReadWrite()
 	athread.start();
 	CPPUNIT_ASSERT(client.activeOpen("127.0.0.1", 6655));
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", client.state()->name());
+	CPPUNIT_ASSERT_ASSERTION_FAIL(CPPUNIT_ASSERT_EQUAL((TCPSocket *)NULL, athread.ssock));
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", athread.ssock->state()->name());
 
 	const char *str = "Hello World";

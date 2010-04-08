@@ -10,7 +10,7 @@
 #include <typeinfo>
 #include <TLVBlock.h>
 #include <TLVUInt16.h>
-#include <TLVObjectFactoryAutoRegistor.h>
+#include <TLVObjectFactoryAutoRegistry.h>
 #include "TLVMessage.h"
 #include "TLVMessageCreator.h"
 #include "CustomTLVTypes.h"

@@ -11,8 +11,9 @@
 #include "TLVUInt32.h"
 #include "TLVUInt32Creator.h"
 #include "TLVBlock.h"
-#include "TLVObjectFactoryAutoRegistor.h"
+#include "TLVObjectFactoryAutoRegistry.h"
 #include "HelperMacros.h"
+#include "TLVTypes.h"
 
 namespace cml
 {

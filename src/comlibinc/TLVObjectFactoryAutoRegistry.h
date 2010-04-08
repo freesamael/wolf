@@ -16,12 +16,12 @@ namespace cml
 {
 
 /**
- * Auto register used to register type id and creator to TLVObjectFactory.
+ * Auto registry used to register type id and creator to TLVObjectFactory.
  */
-class TLVObjectFactoryAutoRegistor
+class TLVObjectFactoryAutoRegistry
 {
 public:
-	TLVObjectFactoryAutoRegistor(const std::string &type, unsigned short id,
+	TLVObjectFactoryAutoRegistry(const std::string &type, unsigned short id,
 			ITLVObjectCreator *creator);
 };
 

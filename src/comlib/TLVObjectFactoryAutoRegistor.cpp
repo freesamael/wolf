@@ -5,13 +5,13 @@
  *      Author: samael
  */
 
-#include "TLVObjectFactoryAutoRegistor.h"
+#include "TLVObjectFactoryAutoRegistry.h"
 #include "TLVObjectFactory.h"
 
 namespace cml
 {
 
-TLVObjectFactoryAutoRegistor::TLVObjectFactoryAutoRegistor(const std::string &type,
+TLVObjectFactoryAutoRegistry::TLVObjectFactoryAutoRegistry(const std::string &type,
 		unsigned short id,ITLVObjectCreator *creator)
 {
 	TLVObjectFactory::instance()->registerType(type, id);

@@ -11,8 +11,8 @@
 #include <cstddef>
 #include <vector>
 #include <arpa/inet.h>
-#include "TLVTypes.h"
 #include "ITLVBlock.h"
+#include "TLVTypes.h"
 
 namespace cml
 {

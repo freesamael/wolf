@@ -12,7 +12,7 @@
 #define __CONCATE(x, y) x##y
 
 #define TLV_OBJECT_REGISTRATION( type, id, creator ) \
-	static cml::TLVObjectFactoryAutoRegistor CONCATE(autoreg, __LINE__)( \
+	static cml::TLVObjectFactoryAutoRegistry CONCATE(autoreg, __LINE__)( \
 			typeid(type).name(), id, new creator() )
 
 #define SINGLETON_REGISTRATION( type ) \

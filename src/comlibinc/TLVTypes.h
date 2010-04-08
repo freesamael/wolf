@@ -12,5 +12,6 @@
 #define TLV_TYPE_STRING		1
 #define TLV_TYPE_UINT16		2
 #define TLV_TYPE_UINT32		3
+#define TLV_TYPE_ARRAY		4
 
 #endif /* TLVTYPES_H_ */

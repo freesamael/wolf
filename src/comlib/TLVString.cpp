@@ -11,8 +11,9 @@
 #include "TLVString.h"
 #include "TLVStringCreator.h"
 #include "TLVBlock.h"
-#include "TLVObjectFactoryAutoRegistor.h"
+#include "TLVObjectFactoryAutoRegistry.h"
 #include "HelperMacros.h"
+#include "TLVTypes.h"
 
 using namespace std;
 
