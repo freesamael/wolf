@@ -22,5 +22,6 @@ void TLVArrayTestSuite::testToTLVBlock()
 
 	ITLVBlock *blk = array.toTLVBlock();
 	CPPUNIT_ASSERT_EQUAL((unsigned short)80, blk->length());
+	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_ARRAY, blk->type());
 	delete blk;
 }
