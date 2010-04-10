@@ -11,6 +11,7 @@
 #include <UDPSocket.h>
 #include <TCPSocket.h>
 #include <TLVReaderWriter.h>
+#include <D2MCE.h>
 #include "Runner.h"
 #include "TLVMessage.h"
 #include "AbstractWorkerActor.h"
@@ -24,9 +25,11 @@ namespace wfe
 HostAddress wait_master(unsigned short runner_port);
 bool connect_master(TCPSocket *tsock, const HostAddress &addr,
 		unsigned short master_port);
+bool join_group(const string &appname);
 void runner_loop(TCPSocket *tsock);
 
-void Runner::run(unsigned short runner_port, unsigned short master_port)
+void Runner::run(unsigned short runner_port, unsigned short master_port,
+		const string &appname)
 {
 	HostAddress addr;
 	if (!(addr = wait_master(runner_port)).isValid())
@@ -34,6 +37,9 @@ void Runner::run(unsigned short runner_port, unsigned short master_port)
 
 	TCPSocket tsock;
 	if (!connect_master(&tsock, addr, master_port))
+		return;
+
+	if (!join_group(appname))
 		return;
 
 	runner_loop(&tsock);
@@ -84,6 +90,20 @@ bool connect_master(TCPSocket *tsock, const HostAddress &addr,
 
 	TLVMessage outmsg(TLVMessage::HELLO_SLAVE);
 	return tcprw.write(outmsg);
+}
+
+bool join_group(const string &appname)
+{
+//	if (!D2MCE::instance()->join(appname)) {
+//		fprintf(stderr, "Runner::run(): Unable to join group.\n");
+//		return false;
+//	}
+	D2MCE::instance()->join(appname);
+	printf("%d nodes inside the group, node id = %d.\n",
+			D2MCE::instance()->getNumberOfNodes(),
+			D2MCE::instance()->nodeId());
+
+	return true;
 }
 
 /**

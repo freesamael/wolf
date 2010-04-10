@@ -13,6 +13,7 @@
 #include <Thread.h>
 #include <SingletonAutoDestructor.h>
 #include <HelperMacros.h>
+#include <D2MCE.h>
 #include "RunnerAgent.h"
 #include "TLVMessage.h"
 
@@ -96,7 +97,7 @@ RunnerAgent::~RunnerAgent()
  * Setup runner agent.
  */
 bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
-		unsigned timeout)
+		const string &appname, unsigned timeout)
 {
 	if (_state != NOT_READY)
 		return false;
@@ -124,6 +125,17 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 		fprintf(stderr, "RunnerAgent::setup(): Error: No runner found.\n");
 		return false;
 	}
+
+	// Join D2MCE computing group.
+//	if (!D2MCE::instance()->join(appname)) {
+//		fprintf(stderr, "RunnerAgent::setup(): Error: Unable to join group.\n");
+//		return false;
+//	}
+
+	D2MCE::instance()->join(appname);
+	printf("%d nodes inside the group, node id = %d.\n",
+			D2MCE::instance()->getNumberOfNodes(),
+			D2MCE::instance()->nodeId());
 
 	_state = READY;
 	return true;

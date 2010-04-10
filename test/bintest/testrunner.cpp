@@ -20,7 +20,6 @@ using namespace wfe;
 int main()
 {
 	Runner runner;
-	runner.run(5566, 7788);
-
+	runner.run(5566, 7788, "test");
 	return 0;
 }

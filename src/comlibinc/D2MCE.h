@@ -26,6 +26,8 @@ public:
 	static void release();
 	bool join(std::string appname, std::string groupname = "default");
 	bool barrier(unsigned int nnodes);
+	int nodeId() const { return _nodeid; }
+	int getNumberOfNodes() const;
 	SharedMemory* createSharedMemory(const std::string &name, size_t size);
 	SharedMemory* findSharedMemory(const std::string &name);
 

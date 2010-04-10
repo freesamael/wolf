@@ -1,5 +1,5 @@
 /*
- * SimpleExecutionStrategy.cpp
+ * SimpleWorkflowExecutor.cpp
  *
  *  Created on: Mar 25, 2010
  *      Author: samael

@@ -21,7 +21,7 @@ class AbstractManagerActor: public IActor, public ISinkComponent,
 		public ISourceComponent
 {
 public:
-	AbstractManagerActor(IManagerWorkerExecutor *exec):
+	AbstractManagerActor(IManagerWorkerExecutor *exec = NULL):
 		_exec(exec), _state(IActor::NOT_READY) {}
 	virtual ~AbstractManagerActor();
 	virtual void fire();

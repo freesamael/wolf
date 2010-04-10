@@ -1,5 +1,5 @@
 /*
- * SimpleExecutionStrategy.h
+ * SimpleWorkflowExecutor.h
  *
  *  Created on: Mar 25, 2010
  *      Author: samael

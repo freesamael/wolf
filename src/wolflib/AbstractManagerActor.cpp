@@ -30,7 +30,8 @@ AbstractManagerActor::~AbstractManagerActor()
  */
 void AbstractManagerActor::fire()
 {
-	_exec->execute(_workers);
+	if (_exec)
+		_exec->execute(_workers);
 }
 
 /**
@@ -41,9 +42,12 @@ void AbstractManagerActor::fire()
  */
 bool AbstractManagerActor::isInputReady() const
 {
-	for (int i = 0; i < (int)_inports.size(); i++)
+	for (int i = 0; i < (int)_inports.size(); i++) {
+		if (!_inports[i]->channel())
+			return false;
 		if (_inports[i]->channel()->state() != Channel::WRITTEN)
 			return false;
+	}
 	return true;
 }
 

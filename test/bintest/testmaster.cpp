@@ -21,10 +21,10 @@ int main()
 {
 	TestActor actor;
 
-	RunnerAgent::instance()->setup(5566, 7788, 2);
-	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
-	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
-	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
+	RunnerAgent::instance()->setup(5566, 7788, "test", 2);
+//	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
+//	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
+//	cout << RunnerAgent::instance()->sendActor(&actor) << endl;
 
 	return 0;
 }

@@ -9,6 +9,7 @@
 #define RUNNERAGENT_H_
 
 #include <vector>
+#include <string>
 #include <pthread.h>
 #include <TCPSocket.h>
 #include "AbstractWorkerActor.h"
@@ -28,8 +29,8 @@ public:
 	static void release();
 	State state() const { return _state; }
 	const std::vector<cml::TCPSocket *>& runners() const { return _ssocks; }
-	bool setup(unsigned short runner_port, unsigned short master_port,
-			unsigned int timeout = 2);
+	bool setup(unsigned short runner_port, unsigned short master_port, const
+			std::string &appname, unsigned int timeout = 2);
 	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
 
 private:

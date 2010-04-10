@@ -49,11 +49,14 @@ void D2MCE::release()
  *
  * \return
  * True on success, false otherwise.
+ *
+ * \todo
+ * Check the return value, it seems the value is always false.
  */
 bool D2MCE::join(string appname, string groupname)
 {
 	_nodeid = d2mce_join(appname.c_str(), groupname.c_str(), D2MCE_GROUP_ANY);
-	return (d2mce_barrier_init(&_barrier, "barrier") == 1 && _nodeid > 0);
+	return (d2mce_barrier_init(&_barrier, "barrier") > 0 && _nodeid > 0);
 }
 
 /**
@@ -67,6 +70,14 @@ bool D2MCE::join(string appname, string groupname)
 bool D2MCE::barrier(unsigned int nnodes)
 {
 	return (d2mce_barrier(&_barrier, nnodes) == 1);
+}
+
+/**
+ * Get the number of nodes in current working group.
+ */
+int D2MCE::getNumberOfNodes() const
+{
+	return d2mce_getNodeNum();
 }
 
 /**
