@@ -10,7 +10,7 @@
 #include <TLVMessageCreator.h>
 #include <TLVMessage.h>
 #include <Runner.h>
-#include <CustomTLVTypes.h>
+#include <WfeTLVTypes.h>
 #include "testactors.h"
 
 using namespace std;

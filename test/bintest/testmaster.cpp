@@ -9,7 +9,7 @@
 #include <typeinfo>
 #include <TLVObjectFactory.h>
 #include <RunnerAgent.h>
-#include <CustomTLVTypes.h>
+#include <WfeTLVTypes.h>
 #include <TLVMessageCreator.h>
 #include "testactors.h"
 

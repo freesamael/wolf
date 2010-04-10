@@ -10,7 +10,7 @@
 #include "TLVArrayCreator.h"
 #include "TLVObjectFactoryAutoRegistry.h"
 #include "HelperMacros.h"
-#include "TLVTypes.h"
+#include "CmlTLVTypes.h"
 
 using namespace std;
 

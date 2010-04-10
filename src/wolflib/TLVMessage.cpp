@@ -13,7 +13,7 @@
 #include <TLVObjectFactoryAutoRegistry.h>
 #include "TLVMessage.h"
 #include "TLVMessageCreator.h"
-#include "CustomTLVTypes.h"
+#include "WfeTLVTypes.h"
 #include "HelperMacros.h"
 
 using namespace cml;

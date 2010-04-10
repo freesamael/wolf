@@ -16,7 +16,7 @@
 #include "TLVMessage.h"
 #include "TLVMessageCreator.h"
 #include "TLVObjectFactory.h"
-#include "CustomTLVTypes.h"
+#include "WfeTLVTypes.h"
 
 using namespace cml;
 using namespace wfe;

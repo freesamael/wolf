@@ -11,9 +11,9 @@
 #include <TLVUInt32.h>
 #include <TLVString.h>
 #include <TLVMessage.h>
-#include <TLVTypes.h>
+#include <CmlTLVTypes.h>
 #include <TLVBlock.h>
-#include <CustomTLVTypes.h>
+#include <WfeTLVTypes.h>
 #include "TLVObjectFactoryTestSuite.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVObjectFactoryTestSuite);

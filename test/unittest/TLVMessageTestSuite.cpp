@@ -9,7 +9,7 @@
 #include "TLVMessage.h"
 #include "TLVMessageCreator.h"
 #include "TLVBlock.h"
-#include "CustomTLVTypes.h"
+#include "WfeTLVTypes.h"
 #include "TLVUInt32.h"
 #include "TLVUInt16.h"
 

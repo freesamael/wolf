@@ -18,7 +18,8 @@ public:
 		NOT_READY,
 		READY,
 		RUNNING,
-		FINISH
+		FINISHED,
+		TERMINATED
 	} State;
 	static const char *StateString[];
 

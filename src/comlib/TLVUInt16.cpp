@@ -13,7 +13,7 @@
 #include "TLVObjectFactoryAutoRegistry.h"
 #include "TLVBlock.h"
 #include "HelperMacros.h"
-#include "TLVTypes.h"
+#include "CmlTLVTypes.h"
 
 namespace cml
 {

@@ -1,12 +1,12 @@
 /*
- * TLVTypes.h
+ * CmlTLVTypes.h
  *
  *  Created on: Mar 30, 2010
  *      Author: samael
  */
 
-#ifndef TLVTYPES_H_
-#define TLVTYPES_H_
+#ifndef CMLTLVTYPES_H_
+#define CMLTLVTYPES_H_
 
 #define TLV_TYPE_INVALID 	0
 #define TLV_TYPE_STRING		1
@@ -14,4 +14,4 @@
 #define TLV_TYPE_UINT32		3
 #define TLV_TYPE_ARRAY		4
 
-#endif /* TLVTYPES_H_ */
+#endif /* CMLTLVTYPES_H_ */

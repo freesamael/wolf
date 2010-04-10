@@ -13,7 +13,7 @@
 #include <HelperMacros.h>
 #include "TLVSharedMemoryInfo.h"
 #include "TLVSharedMemoryInfoCreator.h"
-#include "CustomTLVTypes.h"
+#include "WfeTLVTypes.h"
 
 using namespace std;
 using namespace cml;

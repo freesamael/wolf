@@ -15,7 +15,7 @@ class NumberReaderActor: public wfe::AbstractManagerActor
 public:
 	NumberReaderActor() { _inports.push_back(new wfe::Port(this)); }
 	inline void prefire() { _state = RUNNING; }
-	inline void postfire() { _state = FINISH; }
+	inline void postfire() { _state = FINISHED; }
 	inline void reset() { _state = NOT_READY; }
 	void fire();
 	State state();

@@ -35,7 +35,7 @@ public:
 		cout << "FirstActor: Fire." << endl;
 		_outports[0]->channel()->write((SharedMemory *)1);
 	}
-	void postfire() { _state = FINISH; }
+	void postfire() { _state = FINISHED; }
 	void reset() { _state = NOT_READY; }
 private:
 	IActor::State _state;
@@ -58,7 +58,7 @@ public:
 	}
 	void prefire() { _state = RUNNING; }
 	void fire() { cout << "LastActor: Fire." << endl; }
-	void postfire() { _state = FINISH; }
+	void postfire() { _state = FINISHED; }
 	void reset() { _state = NOT_READY; }
 private:
 	IActor::State _state;
@@ -85,7 +85,7 @@ public:
 		cout << _name << ": Fire." << endl;
 		_outports[0]->channel()->write((SharedMemory*)1);
 	}
-	void postfire() { _state = FINISH; }
+	void postfire() { _state = FINISHED; }
 	void reset() { _state = NOT_READY; }
 
 private:

@@ -17,7 +17,7 @@ class RandomNumberGeneratorActor: public wfe::AbstractManagerActor
 public:
 	RandomNumberGeneratorActor();
 	inline void prefire() { _state = RUNNING; }
-	inline void postfire() { _state = FINISH; }
+	inline void postfire() { _state = FINISHED; }
 	inline void reset() { _state = NOT_READY; }
 	void fire();
 	State state();

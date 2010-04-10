@@ -8,10 +8,11 @@
 #include <cstring>
 #include "TLVSharedMemoryInfoTestSuite.h"
 #include "TLVSharedMemoryInfo.h"
-#include "CustomTLVTypes.h"
+#include "CmlTLVTypes.h"
 #include "TLVUInt32.h"
 #include "TLVString.h"
 #include "TLVBlock.h"
+#include "WfeTLVTypes.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVSharedMemoryInfoTestSuite);
 
