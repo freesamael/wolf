@@ -5,6 +5,7 @@
  *      Author: samael
  */
 
+#include <iostream>
 #include <vector>
 #include <TLVObjectFactoryAutoRegistry.h>
 #include <HelperMacros.h>
@@ -38,24 +39,30 @@ StandardTLVBlock* NumberSubstractorWorker::toTLVBlock() const
 
 void NumberSubstractorWorker::prefire()
 {
+	cout << "Worker: prefire()" << endl;
 	_firecount = 0;
 	_sm = D2MCE::instance()->createSharedMemory(_sminfo->name(),
 			_sminfo->size());
+	_sm->lock();
+	_sm->load();
+	cout << "Worker: number = " << *reinterpret_cast<int *>(_sm->buffer()) << endl;
+	_sm->unlock();
 }
 
 void NumberSubstractorWorker::fire()
 {
+	cout << "Worker: fire()" << endl;
 	_sm->lock();
 	_sm->load();
-
 	(*reinterpret_cast<int *>(_sm->buffer()))--;
 	_firecount++;
-
 	_sm->store();
 	_sm->unlock();
 }
 
 void NumberSubstractorWorker::postfire()
 {
+	cout << "Worker: postfire()" << endl;
+	cout << "Worker: number = " << *reinterpret_cast<int *>(_sm->buffer()) << endl;
 	D2MCE::instance()->barrier((unsigned)D2MCE::instance()->getNumberOfNodes());
 }

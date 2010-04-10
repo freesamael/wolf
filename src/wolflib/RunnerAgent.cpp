@@ -108,6 +108,12 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 	athread.setparam(&_msock, &_ssocks);
 	athread.start();
 
+	// Join D2MCE computing group.
+	D2MCE::instance()->join(appname);
+	printf("%d nodes inside the group, node id = %d.\n",
+			D2MCE::instance()->getNumberOfNodes(),
+			D2MCE::instance()->nodeId());
+
 	// Broadcast notification.
 	UDPSocket usock;
 	TLVReaderWriter udprw(&usock);
@@ -126,16 +132,6 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 		return false;
 	}
 
-	// Join D2MCE computing group.
-//	if (!D2MCE::instance()->join(appname)) {
-//		fprintf(stderr, "RunnerAgent::setup(): Error: Unable to join group.\n");
-//		return false;
-//	}
-
-	D2MCE::instance()->join(appname);
-	printf("%d nodes inside the group, node id = %d.\n",
-			D2MCE::instance()->getNumberOfNodes(),
-			D2MCE::instance()->nodeId());
 
 	_state = READY;
 	return true;
@@ -153,8 +149,37 @@ bool RunnerAgent::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 		return false;
 
 	TLVMessage msg;
-	msg.setCommand(TLVMessage::RUN_ACTOR);
+	msg.setCommand(TLVMessage::LOAD_ACTOR);
 	msg.setParameter(actor);
+
+	// Send to given runner.
+	if (rsock) {
+		TLVReaderWriter rw(rsock);
+		return rw.write(msg);
+	}
+
+	// Send to all runners.
+	bool success = true;
+	for (int i = 0; i < (int)_ssocks.size(); i++) {
+		TLVReaderWriter rw(_ssocks[i]);
+		success &= rw.write(msg);
+	}
+	return success;
+}
+
+/**
+ * Run worker sent on remote runners.
+ *
+ * \param[in] rsock
+ * Socket of runner to run actor, or NULL for all runners.
+ */
+bool RunnerAgent::runActor(TCPSocket *rsock)
+{
+	if (_state != READY)
+		return false;
+
+	TLVMessage msg;
+	msg.setCommand(TLVMessage::RUN_ACTOR);
 
 	// Send to given runner.
 	if (rsock) {

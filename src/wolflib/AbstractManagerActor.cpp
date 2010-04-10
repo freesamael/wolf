@@ -8,6 +8,7 @@
 #include "AbstractManagerActor.h"
 #include "Port.h"
 #include "Channel.h"
+#include "RunnerAgent.h"
 
 namespace wfe
 {
@@ -25,13 +26,20 @@ AbstractManagerActor::~AbstractManagerActor()
 		delete _outports[i];
 }
 
+void AbstractManagerActor::prefire()
+{
+	for (int i = 0; i < (int)_workers.size(); i++)
+		RunnerAgent::instance()->sendActor(_workers[i]);
+}
+
 /**
  * By default it executes all workers by the executor given during construction.
  */
 void AbstractManagerActor::fire()
 {
-	if (_exec)
-		_exec->execute(_workers);
+	RunnerAgent::instance()->runActor();
+//	if (_exec)
+//		_exec->execute(_workers);
 }
 
 /**

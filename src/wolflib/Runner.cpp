@@ -114,28 +114,35 @@ void runner_loop(TCPSocket *tsock)
 {
 	TLVReaderWriter tcprw(tsock);
 	ITLVObject *inobj;
-	TLVMessage *inmsg;
+	TLVMessage *inmsg = NULL;
+	AbstractWorkerActor *actor = NULL;
 
 	while ((inobj = tcprw.read())) {
 		if (!(inmsg = dynamic_cast<TLVMessage *>(inobj))) {
 			fprintf(stderr, "Runner::run(): Error: Invalid incoming message.\n");
+			delete inobj;
 		} else {
-			if (inmsg->command() != TLVMessage::RUN_ACTOR) {
-				fprintf(stderr, "Runner::run(): Error: Unexpected command %s.\n",
-						TLVMessage::CommandString[inmsg->command()]);
-			} else {
-				AbstractWorkerActor *actor;
-				if (!(actor = dynamic_cast<AbstractWorkerActor *>(inmsg->parameter()))) {
+			if (inmsg->command() == TLVMessage::LOAD_ACTOR) {
+				if (!(actor = dynamic_cast<AbstractWorkerActor *>(inmsg->parameter())))
 					fprintf(stderr, "Runner::run(): Error: Invalid parameter.\n");
-				} else {
+				else
 					actor->prefire();
+			} else if (inmsg->command() == TLVMessage::RUN_ACTOR) {
+				if (!actor) {
+					fprintf(stderr, "Runner::run(): Error: No actor loaded.\n");
+				} else {
 					while (actor->firecond())
 						actor->fire();
 					actor->postfire();
+					delete actor;
+					actor = NULL;
 				}
+			} else {
+				fprintf(stderr, "Runner::run(): Error: Unexpected command %s.\n",
+						TLVMessage::CommandString[inmsg->command()]);
+				delete inmsg;
 			}
 		}
-		delete inobj;
 	}
 }
 

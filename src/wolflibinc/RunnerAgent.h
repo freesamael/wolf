@@ -32,6 +32,7 @@ public:
 	bool setup(unsigned short runner_port, unsigned short master_port, const
 			std::string &appname, unsigned int timeout = 2);
 	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
+	bool runActor(cml::TCPSocket *rsock = NULL);
 
 private:
 	RunnerAgent();

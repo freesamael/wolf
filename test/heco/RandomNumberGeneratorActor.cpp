@@ -31,7 +31,7 @@ IActor::State RandomNumberGeneratorActor::state()
 void RandomNumberGeneratorActor::fire()
 {
 	SharedMemory *sm = D2MCE::instance()->createSharedMemory("rand", sizeof(int));
-	int n = rand();
+	int n = 1000;
 	*reinterpret_cast<int *>(sm->buffer()) = n;
 	sm->store();
 	_outports[0]->channel()->write(sm);

@@ -10,13 +10,14 @@
 
 #include <AbstractManagerActor.h>
 #include <SharedMemory.h>
+#include <IManagerWorkerExecutor.h>
 
 class NumberSubstractorManager: public wfe::AbstractManagerActor
 {
 public:
-	NumberSubstractorManager();
+	NumberSubstractorManager(wfe::IManagerWorkerExecutor *exec);
 	void prefire();
-	void fire() {}
+	void fire();
 	void postfire();
 	inline void reset() { _state = NOT_READY; }
 	State state();

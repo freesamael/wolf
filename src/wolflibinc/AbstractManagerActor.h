@@ -24,6 +24,7 @@ public:
 	AbstractManagerActor(IManagerWorkerExecutor *exec = NULL):
 		_exec(exec), _state(IActor::NOT_READY) {}
 	virtual ~AbstractManagerActor();
+	virtual void prefire();
 	virtual void fire();
 	bool isInputReady() const;
 	inline const std::vector<Port *>& inports() { return _inports; }
