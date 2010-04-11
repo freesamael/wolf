@@ -16,6 +16,12 @@ namespace cml
 /**
  * strtok() equivalent C++ function.
  *
+ * \param[in] str
+ * String to process.
+ *
+ * \param[in] delim
+ * Symbols to split the string.
+ *
  * \param[out] out_vec
  * results.
  *

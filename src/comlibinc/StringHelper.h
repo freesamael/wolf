@@ -21,7 +21,7 @@ class StringHelper
 {
 public:
 	static void tokens(const std::string &str, const std::string &delim,
-			std::vector<std::string> *out_vector);
+			std::vector<std::string> *out_vec);
 	static size_t strlcpy(char *dst, const char *src, size_t siz);
 	static size_t strlcat(char *dst, const char *src, size_t siz);
 };
