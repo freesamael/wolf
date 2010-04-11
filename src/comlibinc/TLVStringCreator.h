@@ -14,6 +14,9 @@
 namespace cml
 {
 
+/**
+ * Creator for TLVString.
+ */
 class TLVStringCreator: public ITLVObjectCreator
 {
 public:

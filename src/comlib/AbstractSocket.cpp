@@ -36,7 +36,7 @@ AbstractSocket::AbstractSocket(int sock):
 }
 
 /**
- * It automatically shutdown and close the socket.
+ * It automatically closes the socket on destruction.
  */
 AbstractSocket::~AbstractSocket()
 {

@@ -1,10 +1,3 @@
-/*
- * Socket.h
- *
- *  Created on: Mar 8, 2010
- *      Author: samael
- */
-
 #ifndef SOCKET_H_
 #define SOCKET_H_
 
@@ -17,7 +10,8 @@ namespace cml
 {
 
 /**
- * The abstract socket used for TCP/UDP.
+ * The abstract socket used for TCP/UDP sockets. It encapsulates the underlying
+ * socket states by ISocketState.
  */
 class AbstractSocket
 {

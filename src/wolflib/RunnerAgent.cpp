@@ -140,6 +140,9 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 /**
  * Send an worker actor to runners.
  *
+ * \param[in] actor
+ * Actor to send.
+ *
  * \param[in] rsock
  * Socket of runner to send actor to, or NULL for all runners.
  */

@@ -14,7 +14,9 @@ namespace cml
 {
 
 /**
- * Simple active state is only valid for UDP socket.
+ * Implements active state.
+ *
+ * \see ISocketState
  */
 class SimpleActiveSocketState: public ISocketState
 {
@@ -23,7 +25,6 @@ public:
 	static void release();
 	inline const std::string& name() const { return _statestr; }
 
-	// Supported operations.
 	bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
 			unsigned short port);
 	bool passiveOpen(AbstractSocket *sock, unsigned short port,
@@ -34,11 +35,14 @@ public:
 	ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
 			HostAddress *addr, unsigned short *port);
 
-	// Unsupported operations.
+	/// Unsupported operation with dummy implementation.
 	inline bool open(AbstractSocket *sock) { return false; }
+	/// Unsupported operation with dummy implementation.
 	inline TCPSocket* accept(AbstractSocket *sock) { return NULL; }
+	/// Unsupported operation with dummy implementation.
 	inline ssize_t read(AbstractSocket *sock, char *buf, size_t size)
 			{ return -1; }
+	/// Unsupported operation with dummy implementation.
 	inline ssize_t write(AbstractSocket *sock, const char *buf, size_t size)
 			{ return -1; }
 

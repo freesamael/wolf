@@ -15,6 +15,10 @@
 namespace cml
 {
 
+/**
+ * A reader/writer to send TLV objects to a remote host or receive TLV objects
+ * from a remote host.
+ */
 class TLVReaderWriter
 {
 public:

@@ -13,6 +13,9 @@ namespace cml
 
 /**
  * \interface ITLVBlock
+ *
+ * Defines the interface of Type-Length-Value (TLV) block. This system uses a
+ * TLV format with 16 bits type field and 16 bits length field.
  */
 class ITLVBlock
 {

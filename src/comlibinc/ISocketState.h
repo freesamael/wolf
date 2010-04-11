@@ -16,6 +16,23 @@ namespace cml
 
 class AbstractSocket;
 class TCPSocket;
+
+/**
+ * \interface ISocketState
+ *
+ * It represents stateful socket status. There are 4 possible states - closed,
+ * active, bound and connected, and the corresponding classes are
+ * ClosedSocketState, SimpleActiveSocketState, BoundSocketState and
+ * ConnectedSocketState, respectively.
+ *
+ * When a TCPSocket is initialized, it's in closed state. When it's opened
+ * passively by passiveOpen(), it's active and then becomes in bound state
+ * immediately. When it's opened actively by activeOpen(), it's active and then
+ * becomes in connected state. A UDPSocket has similar behavior except that it
+ * automatically calls open() on construction which turns it into active state.
+ * For a UDPSocket, user can use recvfrom() and sendto() in active state without
+ * passiveOpen() or activeOpen().
+ */
 class ISocketState
 {
 public:

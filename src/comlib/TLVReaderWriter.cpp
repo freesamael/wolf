@@ -88,6 +88,9 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 /**
  * Write a TLV object with given TCP Socket.
  *
+ * \param[in] obj
+ * Object to write.
+ *
  * \param[in] socket
  * Socket to use. Or NULL to use the default socket given in constructor.
  *
@@ -127,6 +130,12 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 
 /**
  * Read a TLV object from given UDP socket.
+ *
+ * \param[out] addr
+ * Sender address of the incoming message.
+ *
+ * \param[out] port
+ * Sender port of the incoming message.
  *
  * \param[in] socket
  * Socket to use. Or NULL to use the default socket given in constructor.
@@ -190,7 +199,17 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 }
 
 /**
- * Send a message with given UDP Socket.
+ * Send a message with given UDP Socket. If the object is too large to fit a
+ * UDP packet, the receiver won't successfully construct it.
+ *
+ * \param[in] obj
+ * Object to send.
+ *
+ * \param[in] addr
+ * Address of target.
+ *
+ * \param[in] port
+ * Port of target.
  *
  * \param[in] socket
  * Socket to use. Or NULL to use the default socket given in constructor.

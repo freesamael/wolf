@@ -13,6 +13,9 @@
 namespace cml
 {
 
+/**
+ * 16 bit unsigned integer with TLV supports.
+ */
 class TLVUInt16: public ITLVObject
 {
 public:

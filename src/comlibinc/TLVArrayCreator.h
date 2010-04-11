@@ -14,6 +14,9 @@
 namespace cml
 {
 
+/**
+ * The creator for TLVArray.
+ */
 class TLVArrayCreator: public ITLVObjectCreator
 {
 public:

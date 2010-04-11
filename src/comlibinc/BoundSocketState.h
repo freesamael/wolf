@@ -1,10 +1,3 @@
-/*
- * BoundSocketState.h
- *
- *  Created on: Apr 5, 2010
- *      Author: samael
- */
-
 #ifndef BOUNDSOCKETSTATE_H_
 #define BOUNDSOCKETSTATE_H_
 
@@ -13,6 +6,11 @@
 namespace cml
 {
 
+/**
+ * Implements bound state.
+ *
+ * \see ISocketState
+ */
 class BoundSocketState: public ISocketState
 {
 public:
@@ -20,7 +18,6 @@ public:
 	static void release();
 	inline const std::string& name() const { return _statestr; }
 
-	// Supported operations.
 	bool close(AbstractSocket *sock);
 	TCPSocket* accept(AbstractSocket *sock);
 	ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
@@ -28,14 +25,18 @@ public:
 	ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
 			const HostAddress &addr, unsigned short port);
 
-	// Unsupported operations.
+	/// Unsupported operation with dummy implementation.
 	inline bool open(AbstractSocket *sock) { return false; }
+	/// Unsupported operation with dummy implementation.
 	inline bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
 				unsigned short port) { return false; }
+	/// Unsupported operation with dummy implementation.
 	inline bool passiveOpen(AbstractSocket *sock, unsigned short port,
 			int qlen = 10) { return false; }
+	/// Unsupported operation with dummy implementation.
 	inline ssize_t read(AbstractSocket *sock, char *buf, size_t size)
 			{ return -1; }
+	/// Unsupported operation with dummy implementation.
 	inline ssize_t write(AbstractSocket *sock, const char *buf, size_t size)
 			{ return -1; }
 

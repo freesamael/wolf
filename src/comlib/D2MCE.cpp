@@ -64,6 +64,7 @@ bool D2MCE::join(string appname, string groupname)
  *
  * \param nnodes
  * Number of nodes to wait (including the calling node itself).
+ *
  * \return
  * True on success, false otherwise.
  */

@@ -16,6 +16,11 @@ namespace cml
 
 /**
  * \interface ITLVObjectCreator
+ *
+ * All TLV objects (ITLVObject derives) should have a corresponding creator.
+ * It must be registered to TLVObjectFactory.
+ *
+ * \see ITLVObject
  */
 class ITLVObjectCreator
 {

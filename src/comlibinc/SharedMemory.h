@@ -14,6 +14,11 @@
 namespace cml
 {
 
+/**
+ * Represents a piece of shared memory on D2MCE tuple space. A SharedMemory
+ * should be constructed by D2MCE::createSharedMemory() and the lifetime is
+ * managed by D2MCE.
+ */
 class SharedMemory
 {
 public:
