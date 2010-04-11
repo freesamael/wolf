@@ -17,6 +17,12 @@
 namespace cml
 {
 
+/**
+ * The central factory for TLV objects. TLVReaderWriter uses TLVObjectFactory
+ * to create a TLV object from a incoming message of TLV blocks. All TLV object
+ * should register its type and creator to TLVObjectFactory in order to make the
+ * creation process work.
+ */
 class TLVObjectFactory
 {
 public:

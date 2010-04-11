@@ -14,6 +14,13 @@
 namespace cml
 {
 
+/**
+ * Represents TCP sockets. If a TCPSocket is created by accept(), it's managed
+ * by the master socket who creates it, and the master socket will destroy it
+ * on destruction of the master socket.
+ *
+ * \see AbstractSocket
+ */
 class TCPSocket: public AbstractSocket
 {
 public:

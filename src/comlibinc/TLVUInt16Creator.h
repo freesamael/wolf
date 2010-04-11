@@ -14,6 +14,9 @@
 namespace cml
 {
 
+/**
+ * Creator for TLVUInt16.
+ */
 class TLVUInt16Creator: public ITLVObjectCreator
 {
 public:

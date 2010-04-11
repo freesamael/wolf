@@ -17,6 +17,12 @@
 namespace cml
 {
 
+/**
+ * A TLV block which manages it's own buffer. It automatically destroys the
+ * buffer on destruction. In case that you need a TLV block sharing the buffer
+ * with others and doesn't destory the buffer automatically, use SharedTLVBlock
+ * instead.
+ */
 class StandardTLVBlock: public ITLVBlock
 {
 public:

@@ -1,10 +1,3 @@
-/*
- * D2MCE.h
- *
- *  Created on: Mar 17, 2010
- *      Author: samael
- */
-
 #ifndef D2MCE_H_
 #define D2MCE_H_
 
@@ -17,7 +10,7 @@ namespace cml
 {
 
 /**
- * Wrapper for D2MCE.
+ * A wrapper for D2MCE.
  */
 class D2MCE
 {

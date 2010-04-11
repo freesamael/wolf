@@ -14,6 +14,9 @@
 namespace cml
 {
 
+/**
+ * Helper functions for std::string.
+ */
 class StringHelper
 {
 public:

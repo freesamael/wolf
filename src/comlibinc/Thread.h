@@ -14,7 +14,7 @@ namespace cml
 {
 
 /**
- * Pthread wrapper.
+ * A pthread wrapper.
  */
 class Thread
 {

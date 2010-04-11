@@ -1,10 +1,6 @@
-/*
- * CmlTLVTypes.h
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * Defines all TLV types used in namespace cml.
  */
-
 #ifndef CMLTLVTYPES_H_
 #define CMLTLVTYPES_H_
 

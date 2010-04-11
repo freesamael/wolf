@@ -14,6 +14,9 @@
 namespace cml
 {
 
+/**
+ * Environment variables for Process.
+ */
 class ProcessEnvironment
 {
 public:

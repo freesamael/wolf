@@ -13,6 +13,11 @@
 namespace cml
 {
 
+/**
+ * Represents UDP sockets.
+ *
+ * \see AbstractSocket
+ */
 class UDPSocket: public AbstractSocket
 {
 public:

@@ -16,6 +16,11 @@
 namespace cml
 {
 
+/**
+ * Used to execute an external process with given environment variables.
+ *
+ * \see ProcessEnvironment
+ */
 class Process
 {
 public:

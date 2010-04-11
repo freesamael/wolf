@@ -1,10 +1,3 @@
-/*
- * HostAddress.h
- *
- *  Created on: Mar 8, 2010
- *      Author: samael
- */
-
 #ifndef HOSTADDRESS_H_
 #define HOSTADDRESS_H_
 
@@ -22,8 +15,8 @@ namespace cml
 class HostAddress
 {
 public:
-	static const HostAddress LocalhostAddress;
-	static const HostAddress BroadcastAddress;
+	static const HostAddress LocalhostAddress; ///< Loopback address.
+	static const HostAddress BroadcastAddress; ///< Broadcast address.
 
 	HostAddress(): _addr(INADDR_NONE) {}
 	HostAddress(in_addr_t addr): _addr(addr) {}

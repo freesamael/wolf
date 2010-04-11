@@ -11,6 +11,9 @@
 namespace cml
 {
 
+/**
+ * Auto destructor used to destroy single objects when the program exits.
+ */
 template <class T>
 class SingletonAutoDestructor
 {
