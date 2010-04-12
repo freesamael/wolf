@@ -1,10 +1,3 @@
-/*
- * TLVSharedMemoryInfoCreator.h
- *
- *  Created on: Apr 8, 2010
- *      Author: samael
- */
-
 #ifndef TLVSHAREDMEMORYINFOCREATOR_H_
 #define TLVSHAREDMEMORYINFOCREATOR_H_
 

@@ -33,7 +33,7 @@ public:
 	void prefire() { _state = RUNNING; }
 	void fire() {
 		cout << "FirstActor: Fire." << endl;
-		_outports[0]->channel()->write((SharedMemory *)1);
+		_outports[0]->channel()->setSharedMemory((SharedMemory *)1);
 	}
 	void postfire() { _state = FINISHED; }
 	void reset() { _state = NOT_READY; }
@@ -83,7 +83,7 @@ public:
 	void prefire() { _state = RUNNING; }
 	void fire() {
 		cout << _name << ": Fire." << endl;
-		_outports[0]->channel()->write((SharedMemory*)1);
+		_outports[0]->channel()->setSharedMemory((SharedMemory*)1);
 	}
 	void postfire() { _state = FINISHED; }
 	void reset() { _state = NOT_READY; }

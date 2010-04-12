@@ -1,10 +1,3 @@
-/*
- * TLVMessage.h
- *
- *  Created on: Mar 29, 2010
- *      Author: samael
- */
-
 #ifndef TLVMESSAGE_H_
 #define TLVMESSAGE_H_
 

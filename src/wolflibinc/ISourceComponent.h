@@ -1,10 +1,3 @@
-/*
- * ISourceComponent.h
- *
- *  Created on: Mar 28, 2010
- *      Author: samael
- */
-
 #ifndef ISOURCECOMPONENT_H_
 #define ISOURCECOMPONENT_H_
 
@@ -14,6 +7,11 @@
 namespace wfe
 {
 
+/**
+ * \interface ISourceComponent
+ *
+ * Represents all objects with output ports.
+ */
 class ISourceComponent
 {
 public:

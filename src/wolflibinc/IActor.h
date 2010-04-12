@@ -1,19 +1,18 @@
-/*
- * IActor.h
- *
- *  Created on: Mar 28, 2010
- *      Author: samael
- */
-
 #ifndef IACTOR_H_
 #define IACTOR_H_
 
 namespace wfe
 {
 
+/**
+ * \interface IActor
+ *
+ * Represents all actor object that can be executed.
+ */
 class IActor
 {
 public:
+	/// Actor states.
 	typedef enum State {
 		NOT_READY,
 		READY,
@@ -25,9 +24,11 @@ public:
 
 	virtual ~IActor() {}
 	virtual State state() = 0;
+//	virtual void setup();
 	virtual void prefire() = 0;
 	virtual void fire() = 0;
 	virtual void postfire() = 0;
+//	virtual void wrapup() = 0;
 	virtual void reset() = 0;
 };
 

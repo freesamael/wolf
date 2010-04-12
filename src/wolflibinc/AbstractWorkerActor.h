@@ -1,10 +1,3 @@
-/*
- * AbstractWorkerActor.h
- *
- *  Created on: Mar 28, 2010
- *      Author: samael
- */
-
 #ifndef ABSTRACTWORKERACTOR_H_
 #define ABSTRACTWORKERACTOR_H_
 

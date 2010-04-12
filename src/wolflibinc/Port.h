@@ -1,10 +1,3 @@
-/*
- * Port.h
- *
- *  Created on: Mar 23, 2010
- *      Author: samael
- */
-
 #ifndef PORT_H_
 #define PORT_H_
 
@@ -18,6 +11,11 @@ namespace wfe
 class Port
 {
 public:
+	typedef enum Type {
+		INPUT,
+		OUTPUT
+	} Type;
+	static const char *TypeString[];
 	Port(IActor *actor): _actor(actor), _channel(NULL) {}
 	inline IActor* actor() const { return _actor; }
 	inline Channel* channel() const { return _channel; }

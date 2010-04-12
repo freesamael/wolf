@@ -1,10 +1,7 @@
-/*
- * WFETLVTypes.h
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file WfeTLVTypes.h
+ * Defines all TLV types used in namespace wfe.
  */
-
 #ifndef WFETLVTYPES_H_
 #define WFETLVTYPES_H_
 

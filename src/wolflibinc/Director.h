@@ -1,10 +1,3 @@
-/*
- * Director.h
- *
- *  Created on: Mar 22, 2010
- *      Author: samael
- */
-
 #ifndef DIRECTOR_H_
 #define DIRECTOR_H_
 

@@ -1,10 +1,3 @@
-/*
- * SimpleWorkflowExecutor.h
- *
- *  Created on: Mar 25, 2010
- *      Author: samael
- */
-
 #ifndef SIMPLEWORKFLOWEXECUTOR_H_
 #define SIMPLEWORKFLOWEXECUTOR_H_
 

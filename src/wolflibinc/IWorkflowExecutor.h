@@ -1,10 +1,3 @@
-/*
- * IExecutionStrategy.h
- *
- *  Created on: Mar 25, 2010
- *      Author: samael
- */
-
 #ifndef IWORKFLOWEXECUTOR_H_
 #define IWORKFLOWEXECUTOR_H_
 

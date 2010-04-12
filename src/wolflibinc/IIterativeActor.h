@@ -1,10 +1,3 @@
-/*
- * IIterativeActor.h
- *
- *  Created on: Mar 28, 2010
- *      Author: samael
- */
-
 #ifndef IITERATIVEACTOR_H_
 #define IITERATIVEACTOR_H_
 

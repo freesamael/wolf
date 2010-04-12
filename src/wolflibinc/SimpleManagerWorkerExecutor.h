@@ -1,10 +1,3 @@
-/*
- * SimpleManagerWorkerExecutor.h
- *
- *  Created on: Apr 4, 2010
- *      Author: samael
- */
-
 #ifndef SIMPLEMANAGERWORKEREXECUTOR_H_
 #define SIMPLEMANAGERWORKEREXECUTOR_H_
 

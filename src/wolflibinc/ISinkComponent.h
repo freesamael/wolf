@@ -1,10 +1,3 @@
-/*
- * ISinkComponent.h
- *
- *  Created on: Mar 28, 2010
- *      Author: samael
- */
-
 #ifndef ISINKCOMPONENT_H_
 #define ISINKCOMPONENT_H_
 
@@ -14,6 +7,11 @@
 namespace wfe
 {
 
+/**
+ * \interface ISinkComponent
+ *
+ * Represents all objects with input ports.
+ */
 class ISinkComponent
 {
 public:

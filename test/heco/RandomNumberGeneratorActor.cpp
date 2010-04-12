@@ -34,6 +34,6 @@ void RandomNumberGeneratorActor::fire()
 	int n = 1000;
 	*reinterpret_cast<int *>(sm->buffer()) = n;
 	sm->store();
-	_outports[0]->channel()->write(sm);
+	_outports[0]->channel()->setSharedMemory(sm);
 	cout << "Number Generated = " << n << endl;
 }

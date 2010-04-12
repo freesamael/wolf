@@ -1,6 +1,5 @@
 /**
  * \file HelperMacros.h
- *
  * Defines helper macros.
  */
 

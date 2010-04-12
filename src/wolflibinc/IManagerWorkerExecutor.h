@@ -1,10 +1,3 @@
-/*
- * IManagerWorkerExecutor.h
- *
- *  Created on: Apr 4, 2010
- *      Author: samael
- */
-
 #ifndef IMANAGERWORKEREXECUTOR_H_
 #define IMANAGERWORKEREXECUTOR_H_
 

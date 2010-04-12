@@ -1,10 +1,3 @@
-/*
- * RunnerAgent.h
- *
- *  Created on: Apr 1, 2010
- *      Author: samael
- */
-
 #ifndef RUNNERAGENT_H_
 #define RUNNERAGENT_H_
 

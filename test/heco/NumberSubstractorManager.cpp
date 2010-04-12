@@ -38,9 +38,9 @@ void NumberSubstractorManager::prefire()
 	_state = RUNNING;
 
 	_sm = D2MCE::instance()->createSharedMemory("submem",
-			_inports[0]->channel()->read()->size());
+			_inports[0]->channel()->sharedMemory()->size());
 	_sm->lock();
-	memcpy(_sm->buffer(), _inports[0]->channel()->read()->buffer(),
+	memcpy(_sm->buffer(), _inports[0]->channel()->sharedMemory()->buffer(),
 			_sm->size());
 	_sm->store();
 	_sm->unlock();
@@ -62,6 +62,6 @@ void NumberSubstractorManager::postfire()
 	cout << "Manager: postfire()" << endl;
 	D2MCE::instance()->barrier((unsigned)D2MCE::instance()->getNumberOfNodes());
 	_sm->load();
-	_outports[0]->channel()->write(_sm);
+	_outports[0]->channel()->setSharedMemory(_sm);
 	_state = FINISHED;
 }

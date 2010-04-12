@@ -9,6 +9,7 @@
 
 namespace wfe
 {
+	/// Use StateString[IActor::state()] to fetch the name of state.
 	const char *IActor::StateString[] =
 			{"Not Ready", "Ready", "Running", "Finished", "Terminated"};
 }

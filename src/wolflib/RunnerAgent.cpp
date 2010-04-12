@@ -97,7 +97,7 @@ RunnerAgent::~RunnerAgent()
  * Setup runner agent.
  */
 bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
-		const string &appname, unsigned timeout)
+		const string &appname, unsigned int timeout)
 {
 	if (_state != NOT_READY)
 		return false;

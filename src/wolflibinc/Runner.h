@@ -1,10 +1,3 @@
-/*
- * Runner.h
- *
- *  Created on: Apr 1, 2010
- *      Author: samael
- */
-
 #ifndef RUNNER_H_
 #define RUNNER_H_
 

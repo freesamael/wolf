@@ -1,10 +1,3 @@
-/*
- * AbstractManagerActor.h
- *
- *  Created on: Mar 28, 2010
- *      Author: samael
- */
-
 #ifndef ABSTRACTMANAGERACTOR_H_
 #define ABSTRACTMANAGERACTOR_H_
 

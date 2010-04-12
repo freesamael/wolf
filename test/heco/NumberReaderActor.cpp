@@ -22,7 +22,7 @@ IActor::State NumberReaderActor::state()
 
 void NumberReaderActor::fire()
 {
-	SharedMemory *sm = _inports[0]->channel()->read();
+	SharedMemory *sm = _inports[0]->channel()->sharedMemory();
 	int n = *reinterpret_cast<int *>(sm->buffer());
 	cout << "Number Loaded = " << n << endl;
 }
