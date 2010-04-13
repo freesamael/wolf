@@ -1,8 +1,7 @@
-/*
- * StringHelperTestSuite.cpp
- *
- *  Created on: Mar 6, 2010
- *      Author: samael
+/**
+ * \file StringHelperTestSuite.cpp
+ * \date Mar 6, 2010
+ * \author samael
  */
 
 #include <string>

@@ -1,8 +1,7 @@
-/*
- * StringHelper.h
- *
- *  Created on: Mar 6, 2010
- *      Author: samael
+/**
+ * \file StringHelper.h
+ * \date Mar 6, 2010
+ * \author samael
  */
 
 #ifndef STRINGHELPER_H_

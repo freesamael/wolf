@@ -1,8 +1,7 @@
-/*
- * TLVMessageCreatorTestSuite.h
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file TLVMessageCreatorTestSuite.h
+ * \date Mar 30, 2010
+ * \author samael
  */
 
 #ifndef TLVMESSAGECREATORTESTSUITE_H_

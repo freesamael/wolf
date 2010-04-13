@@ -1,8 +1,7 @@
-/*
- * TCPSocket.h
- *
- *  Created on: Mar 8, 2010
- *      Author: samael
+/**
+ * \file TCPSocket.h
+ * \date Mar 8, 2010
+ * \author samael
  */
 
 #ifndef TCPSOCKET_H_
@@ -15,9 +14,9 @@ namespace cml
 {
 
 /**
- * Represents TCP sockets. If a TCPSocket is created by accept(), it's managed
- * by the master socket who creates it, and the master socket will destroy it
- * on destruction of the master socket.
+ * TCP sockets representation. If a TCPSocket is created by accept(), it's
+ * managed by the master socket who creates it, and the master socket will
+ * destroy it on destruction of the master socket.
  *
  * \see AbstractSocket
  */

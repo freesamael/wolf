@@ -1,8 +1,7 @@
-/*
- * TLVUInt32Creator.h
- *
- *  Created on: Mar 29, 2010
- *      Author: samael
+/**
+ * \file TLVUInt32Creator.h
+ * \date Mar 29, 2010
+ * \author samael
  */
 
 #ifndef TLVUINT32CREATOR_H_

@@ -1,8 +1,7 @@
-/*
- * TLVArrayCreator.h
- *
- *  Created on: Apr 8, 2010
- *      Author: samael
+/**
+ * \file TLVArrayCreator.h
+ * \date Apr 8, 2010
+ * \author samael
  */
 
 #ifndef TLVARRAYCREATOR_H_

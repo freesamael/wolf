@@ -1,8 +1,7 @@
-/*
- * TLVSharedMemoryInfo.cpp
- *
- *  Created on: Apr 8, 2010
- *      Author: samael
+/**
+ * \file TLVSharedMemoryInfo.cpp
+ * \date Apr 8, 2010
+ * \author samael
  */
 
 #include <vector>

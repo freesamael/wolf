@@ -1,15 +1,14 @@
-/*
- * SharedMemory.cpp
- *
- *  Created on: Mar 18, 2010
- *      Author: samael
+/**
+ * \file SharedMemory.cpp
+ * \date Mar 18, 2010
+ * \author samael
  */
 
 #include "SharedMemory.h"
 
 using namespace std;
 
-namespace cml
+namespace wfe
 {
 
 /**

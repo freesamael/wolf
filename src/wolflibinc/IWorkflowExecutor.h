@@ -1,3 +1,9 @@
+/**
+ * \file IWorkflowExecutor.h
+ * \date Mar 25, 2010
+ * \author samael
+ */
+
 #ifndef IWORKFLOWEXECUTOR_H_
 #define IWORKFLOWEXECUTOR_H_
 

@@ -1,8 +1,7 @@
-/*
- * SingletonAutoDestructor.h
- *
- *  Created on: Apr 7, 2010
- *      Author: samael
+/**
+ * \file SingletonAutoDestructor.h
+ * \date Apr 7, 2010
+ * \author samael
  */
 
 #ifndef SINGLETONAUTODESTRUCTOR_H_

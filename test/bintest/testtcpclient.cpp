@@ -1,8 +1,7 @@
-/*
- * testtcpclient.cpp
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file testtcpclient.cpp
+ * \date Mar 30, 2010
+ * \author samael
  */
 
 #include <iostream>

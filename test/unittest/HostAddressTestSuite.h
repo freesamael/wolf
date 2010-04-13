@@ -1,8 +1,7 @@
-/*
- * HostAddressTestSuite.h
- *
- *  Created on: Apr 5, 2010
- *      Author: samael
+/**
+ * \file HostAddressTestSuite.h
+ * \date Apr 5, 2010
+ * \author samael
  */
 
 #ifndef HOSTADDRESSTESTSUITE_H_

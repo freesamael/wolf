@@ -1,30 +1,33 @@
+/**
+ * \file Channel.h
+ * \date Mar 22, 2010
+ * \author samael
+ */
+
 #ifndef CHANNEL_H_
 #define CHANNEL_H_
 
-#include <string>
-#include <SharedMemory.h>
+#include <vector>
+#include <pthread.h>
+#include "IDrop.h"
 
 namespace wfe
 {
 
+class SinkPort;
 class Channel
 {
 public:
-	typedef enum State {
-		EMPTY,
-		WRITTEN
-	} State;
-	static const char *StateString[];
-
-	Channel(const std::string &name): _name(name), _smem(NULL) {}
-	inline State state() const { return (!_smem) ? EMPTY : WRITTEN; }
-	inline const std::string& name() const { return _name; }
-	inline cml::SharedMemory* sharedMemory() { return _smem; }
-	inline void setSharedMemory(cml::SharedMemory *mem) { _smem = mem; }
+	Channel() { pthread_mutex_init(&_mutex, NULL); }
+	~Channel() { pthread_mutex_destroy(&_mutex); }
+	inline const std::vector<SinkPort *>& readers() { return _readers; }
+	void attachReader(SinkPort *port);
+	void detachReader(SinkPort *port);
+	void write(IDrop *item);
 
 private:
-	std::string _name;
-	cml::SharedMemory *_smem;
+	pthread_mutex_t _mutex;
+	std::vector<SinkPort *> _readers;
 };
 
 }

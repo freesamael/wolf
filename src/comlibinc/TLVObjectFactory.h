@@ -1,8 +1,7 @@
-/*
- * TLVObjectFactory.h
- *
- *  Created on: Mar 10, 2010
- *      Author: samael
+/**
+ * \file TLVObjectFactory.h
+ * \date Mar 10, 2010
+ * \author samael
  */
 
 #ifndef TLVOBJECTFACTORY_H_

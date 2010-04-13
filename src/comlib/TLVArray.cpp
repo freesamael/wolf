@@ -1,8 +1,7 @@
-/*
- * TLVArray.cpp
- *
- *  Created on: Apr 8, 2010
- *      Author: samael
+/**
+ * \file TLVArray.cpp
+ * \date Apr 8, 2010
+ * \author samael
  */
 
 #include <cstring>

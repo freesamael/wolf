@@ -1,8 +1,7 @@
-/*
- * Thread.h
- *
- *  Created on: Mar 9, 2010
- *      Author: samael
+/**
+ * \file Thread.h
+ * \date Mar 9, 2010
+ * \author samael
  */
 
 #ifndef THREAD_H_

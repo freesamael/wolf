@@ -1,3 +1,9 @@
+/**
+ * \file ConnectedSocketState.h
+ * \date Apr 5, 2010
+ * \author samael
+ */
+
 #ifndef CONNECTEDSOCKETSTATE_H_
 #define CONNECTEDSOCKETSTATE_H_
 
@@ -7,7 +13,7 @@ namespace cml
 {
 
 /**
- * Implements connected state.
+ * ConnectedSocketState implements connected state.
  *
  * \see ISocketState
  */

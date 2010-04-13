@@ -1,8 +1,7 @@
-/*
- * TCPSocketTestSuite.h
- *
- *  Created on: Apr 6, 2010
- *      Author: samael
+/**
+ * \file TCPSocketTestSuite.h
+ * \date Apr 6, 2010
+ * \author samael
  */
 
 #ifndef TCPSOCKETTESTSUITE_H_

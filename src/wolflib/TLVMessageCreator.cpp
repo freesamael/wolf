@@ -1,8 +1,7 @@
-/*
- * TLVMessageCreator.cpp
- *
- *  Created on: Mar 29, 2010
- *      Author: samael
+/**
+ * \file TLVMessageCreator.cpp
+ * \date Mar 29, 2010
+ * \author samael
  */
 
 #include <cstdio>
@@ -19,7 +18,7 @@ using namespace cml;
 namespace wfe
 {
 
-/**
+/*
  * The nested TLV blocks look like:\n
  * -------------------------------------------------------\n
  * |    |      | ------------------- ----(Optional)----- |\n

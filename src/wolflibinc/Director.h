@@ -1,3 +1,9 @@
+/**
+ * \file Director.h
+ * \date Mar 22, 2010
+ * \author samael
+ */
+
 #ifndef DIRECTOR_H_
 #define DIRECTOR_H_
 
@@ -17,7 +23,7 @@ public:
 	bool addActor(IActor *actor);
 	bool removeActor(IActor *actor);
 	Channel* createChannel(const std::string &name);
-	Channel* findChannel(const std::string &name);
+//	Channel* findChannel(const std::string &name);
 	void execute();
 
 private:

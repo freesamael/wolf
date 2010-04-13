@@ -1,8 +1,7 @@
-/*
- * ITLVBlock.h
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file ITLVBlock.h
+ * \date Mar 30, 2010
+ * \author samael
  */
 
 #ifndef ITLVBLOCK_H_
@@ -14,8 +13,8 @@ namespace cml
 /**
  * \interface ITLVBlock
  *
- * Defines the interface of Type-Length-Value (TLV) block. This system uses a
- * TLV format with 16 bits type field and 16 bits length field.
+ * ITLVBlock defines the interface of Type-Length-Value (TLV) block. This system
+ * uses a TLV format with 16 bits type field and 16 bits length field.
  */
 class ITLVBlock
 {

@@ -1,8 +1,7 @@
-/*
- * SimpleActiveSocketState.cpp
- *
- *  Created on: Apr 6, 2010
- *      Author: samael
+/**
+ * \file SimpleActiveSocketState.cpp
+ * \date Apr 6, 2010
+ * \author samael
  */
 
 #include <cstdio>

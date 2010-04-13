@@ -1,8 +1,7 @@
-/*
- * TLVSharedMemoryInfoCreator.cpp
- *
- *  Created on: Apr 8, 2010
- *      Author: samael
+/**
+ * \file TLVSharedMemoryInfoCreator.cpp
+ * \date Apr 8, 2010
+ * \author samael
  */
 
 #include <cstdio>

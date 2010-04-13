@@ -1,8 +1,7 @@
-/*
- * main.cpp
- *
- *  Created on: Mar 6, 2010
- *      Author: samael
+/**
+ * \file main.cpp
+ * \date Mar 6, 2010
+ * \author samael
  */
 
 #include <cppunit/TextTestRunner.h>

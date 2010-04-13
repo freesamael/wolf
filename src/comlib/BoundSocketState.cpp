@@ -1,8 +1,7 @@
-/*
- * BoundSocketState.cpp
- *
- *  Created on: Apr 5, 2010
- *      Author: samael
+/**
+ * \file BoundSocketState.cpp
+ * \date Apr 5, 2010
+ * \author samael
  */
 
 #include <cstdio>

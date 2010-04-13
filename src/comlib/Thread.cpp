@@ -1,8 +1,7 @@
-/*
- * Thread.cpp
- *
- *  Created on: Mar 9, 2010
- *      Author: samael
+/**
+ * \file Thread.cpp
+ * \date Mar 9, 2010
+ * \author samael
  */
 
 #include <cstdio>

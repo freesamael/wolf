@@ -1,8 +1,7 @@
-/*
- * StringHelper.cpp
- *
- *  Created on: Mar 6, 2010
- *      Author: samael
+/**
+ * \file StringHelper.cpp
+ * \date Mar 6, 2010
+ * \author samael
  */
 
 #include <cstring>

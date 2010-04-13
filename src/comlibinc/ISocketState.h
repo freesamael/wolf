@@ -1,8 +1,7 @@
-/*
- * ISocketState.h
- *
- *  Created on: Apr 5, 2010
- *      Author: samael
+/**
+ * \file ISocketState.h
+ * \date Apr 5, 2010
+ * \author: samael
  */
 
 #ifndef ISOCKETSTATE_H_

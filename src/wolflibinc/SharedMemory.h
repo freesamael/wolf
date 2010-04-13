@@ -1,8 +1,7 @@
-/*
- * SharedMemory.h
- *
- *  Created on: Mar 18, 2010
- *      Author: samael
+/**
+ * \file SharedMemory.h
+ * \date Mar 18, 2010
+ * \author samael
  */
 
 #ifndef SHAREDMEMORY_H_
@@ -11,13 +10,13 @@
 #include <string>
 #include <d2mce/d2mce.h>
 
-namespace cml
+namespace wfe
 {
 
 /**
- * Represents a piece of shared memory on D2MCE tuple space. A SharedMemory
- * should be constructed by D2MCE::createSharedMemory() and the lifetime is
- * managed by D2MCE.
+ * SharedMemory represents a piece of shared memory on D2MCE tuple space. A
+ * SharedMemory should be constructed by D2MCE::createSharedMemory() and the
+ * lifetime is managed by D2MCE.
  */
 class SharedMemory
 {

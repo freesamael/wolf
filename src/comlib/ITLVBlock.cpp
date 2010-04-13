@@ -1,8 +1,7 @@
-/*
- * ITLVBlock.cpp
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file ITLVBlock.cpp
+ * \date Mar 30, 2010
+ * \author samael
  */
 
 #include "ITLVBlock.h"

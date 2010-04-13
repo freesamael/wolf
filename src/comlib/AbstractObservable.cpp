@@ -1,8 +1,7 @@
-/*
- * AbstractObservable.cpp
- *
- *  Created on: Apr 11, 2010
- *      Author: samael
+/**
+ * \file AbstractObservable.cpp
+ * \date Apr 11, 2010
+ * \author samael
  */
 
 #include "AbstractObservable.h"
@@ -13,7 +12,7 @@ namespace cml
 {
 
 /**
- * Attach an observer. If it's already attached, this function takes no effect.
+ * Attach an observer. It takes no effect if the observer is already attached.
  */
 void AbstractObservable::attach(IObserver *o)
 {
@@ -24,8 +23,8 @@ void AbstractObservable::attach(IObserver *o)
 }
 
 /**
- * Detach an observer. If no proper observer found, this function takes no
- * effect.
+ * Detach an observer. It takes no effect if the observer was not attached
+ * before.
  */
 void AbstractObservable::detach(IObserver *o)
 {

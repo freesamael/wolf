@@ -1,8 +1,7 @@
-/*
- * Process.h
- *
- *  Created on: Mar 12, 2010
- *      Author: samael
+/**
+ * \file Process.h
+ * \date Mar 12, 2010
+ * \author samael
  */
 
 #ifndef PROCESS_H_

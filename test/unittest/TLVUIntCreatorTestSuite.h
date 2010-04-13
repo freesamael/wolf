@@ -1,8 +1,7 @@
-/*
- * TLVUIntCreatorTestSuite.h
- *
- *  Created on: Apr 6, 2010
- *      Author: samael
+/**
+ * \file TLVUIntCreatorTestSuite.h
+ * \date Apr 6, 2010
+ * \author samael
  */
 
 #ifndef TLVUINTCREATORTESTSUITE_H_

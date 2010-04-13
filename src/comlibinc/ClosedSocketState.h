@@ -1,3 +1,9 @@
+/**
+ * \file ClosedSocketState.h
+ * \date Apr 5, 2010
+ * \author samael
+ */
+
 #ifndef CLOSEDSOCKETSTATE_H_
 #define CLOSEDSOCKETSTATE_H_
 
@@ -7,7 +13,7 @@ namespace cml
 {
 
 /**
- * Implements closed state.
+ * ClosedSocketState implements closed state.
  *
  * \see ISocketState
  */

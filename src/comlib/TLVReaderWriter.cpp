@@ -1,8 +1,7 @@
-/*
- * TLVReaderWriter.cpp
- *
- *  Created on: Mar 11, 2010
- *      Author: samael
+/**
+ * \file TLVReaderWriter.cpp
+ * \date Mar 11, 2010
+ * \author samael
  */
 
 #include <cstdio>
@@ -42,7 +41,7 @@ TLVReaderWriter::~TLVReaderWriter()
  */
 ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 {
-	char hdrbuf[ITLVBlock::szHeader];
+	char *hdrbuf = new char[ITLVBlock::szHeader];
 	int ret;
 	SharedTLVBlock *tmpblk = NULL;
 	StandardTLVBlock blk;
@@ -57,9 +56,11 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 
 	// Read header.
 	if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
+		delete hdrbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Data read is too small to be a TLV block.\n");
+		delete hdrbuf;
 		return NULL;
 	}
 
@@ -71,6 +72,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 			blk.length()) {
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Expected %u bytes but %u bytes read.\n",
 				blk.plainSize(), ret);
+		delete hdrbuf;
 		delete tmpblk;
 		return NULL;
 	}
@@ -80,8 +82,8 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	if (!obj)
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Unable to construct TLV object.\n");
 
+	delete hdrbuf;
 	delete tmpblk;
-
 	return obj;
 }
 

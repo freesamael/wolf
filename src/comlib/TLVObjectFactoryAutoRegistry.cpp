@@ -1,8 +1,7 @@
-/*
- * TLVObjectFactoryAutoRegistor.cpp
- *
- *  Created on: Apr 4, 2010
- *      Author: samael
+/**
+ * \file TLVObjectFactoryAutoRegistry.cpp
+ * \date Apr 4, 2010
+ * \author samael
  */
 
 #include "TLVObjectFactoryAutoRegistry.h"

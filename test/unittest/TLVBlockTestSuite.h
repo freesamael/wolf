@@ -1,8 +1,7 @@
-/*
- * TLVBlockTestSuite.h
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file TLVBlockTestSuite.h
+ * \date Mar 30, 2010
+ * \author samael
  */
 
 #ifndef TLVBLOCKTESTSUITE_H_

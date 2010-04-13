@@ -1,8 +1,7 @@
-/*
- * UDPSocketTestSuite.cpp
- *
- *  Created on: Apr 6, 2010
- *      Author: samael
+/**
+ * \file UDPSocketTestSuite.cpp
+ * \date Apr 6, 2010
+ * \author samael
  */
 
 #include <cstring>

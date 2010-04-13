@@ -1,8 +1,7 @@
-/*
- * testexec.cpp
- *
- *  Created on: Apr 5, 2010
- *      Author: samael
+/**
+ * \file testexec.cpp
+ * \date Apr 5, 2010
+ * \author samael
  */
 
 #include <string>

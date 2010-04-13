@@ -1,8 +1,7 @@
-/*
- * TLVString.h
- *
- *  Created on: Mar 10, 2010
- *      Author: samael
+/**
+ * \file TLVString.h
+ * \date Mar 10, 2010
+ * \author samael
  */
 
 #ifndef TLVSTRING_H_

@@ -1,8 +1,7 @@
-/*
- * HostAddress.cpp
- *
- *  Created on: Mar 8, 2010
- *      Author: samael
+/**
+ * \file HostAddress.cpp
+ * \date Mar 8, 2010
+ * \author samael
  */
 
 #include "HostAddress.h"

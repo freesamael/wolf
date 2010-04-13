@@ -1,8 +1,7 @@
-/*
- * TLVArrayTestSuite.h
- *
- *  Created on: Apr 8, 2010
- *      Author: samael
+/**
+ * \file TLVArrayTestSuite.h
+ * \date Apr 8, 2010
+ * \author samael
  */
 
 #ifndef TLVARRAYTESTSUITE_H_

@@ -1,8 +1,7 @@
-/*
- * ProcessTestSuite.h
- *
- *  Created on: Mar 13, 2010
- *      Author: samael
+/**
+ * \file ProcessTestSuite.h
+ * \date Mar 13, 2010
+ * \author samael
  */
 
 #ifndef PROCESSTESTSUITE_H_

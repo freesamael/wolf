@@ -1,8 +1,7 @@
-/*
- * testudpbroadcast.cpp
- *
- *  Created on: Mar 31, 2010
- *      Author: samael
+/**
+ * \file testudpbroadcast.cpp
+ * \date Mar 31, 2010
+ * \author samael
  */
 
 #include <UDPSocket.h>

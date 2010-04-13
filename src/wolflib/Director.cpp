@@ -1,8 +1,7 @@
-/*
- * Director.cpp
- *
- *  Created on: Mar 22, 2010
- *      Author: samael
+/**
+ * \file Director.cpp
+ * \date Mar 22, 2010
+ * \author samael
  */
 
 #include <deque>
@@ -70,10 +69,11 @@ bool Director::removeActor(IActor *actor)
 Channel* Director::createChannel(const string &name)
 {
 	Channel *c;
-	if ((c = findChannel(name)))
-		return c;
+//	if ((c = findChannel(name)))
+//		return c;
 
-	c = new Channel(name);
+//	c = new Channel(name);
+	c = new Channel();
 	_channels.push_back(c);
 	return c;
 }
@@ -84,13 +84,13 @@ Channel* Director::createChannel(const string &name)
  * \return
  * Proper channel or NULL if nothing found.
  */
-Channel* Director::findChannel(const string &name)
-{
-	for (int i = 0; i < (int)_channels.size(); i++)
-		if (_channels[i]->name() == name)
-			return _channels[i];
-	return NULL;
-}
+//Channel* Director::findChannel(const string &name)
+//{
+//	for (int i = 0; i < (int)_channels.size(); i++)
+//		if (_channels[i]->name() == name)
+//			return _channels[i];
+//	return NULL;
+//}
 
 void Director::execute()
 {

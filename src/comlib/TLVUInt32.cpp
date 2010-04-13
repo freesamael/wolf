@@ -1,8 +1,7 @@
-/*
- * TLVUInt32.cpp
- *
- *  Created on: Mar 29, 2010
- *      Author: samael
+/**
+ * \file TLVUInt32.cpp
+ * \date Mar 29, 2010
+ * \author samael
  */
 
 #include <cstring>

@@ -1,8 +1,7 @@
-/*
- * HostAddressTestSuite.cpp
- *
- *  Created on: Apr 5, 2010
- *      Author: samael
+/**
+ * \file HostAddressTestSuite.cpp
+ * \date Apr 5, 2010
+ * \author samael
  */
 
 #include <string>

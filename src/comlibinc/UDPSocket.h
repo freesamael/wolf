@@ -1,8 +1,7 @@
-/*
- * UDPSocket.h
- *
- *  Created on: Mar 8, 2010
- *      Author: samael
+/**
+ * \file UDPSocket.h
+ * \date Mar 8, 2010
+ * \author samael
  */
 
 #ifndef UDPSOCKET_H_
@@ -14,7 +13,7 @@ namespace cml
 {
 
 /**
- * Represents UDP sockets.
+ * It represents UDP sockets.
  *
  * \see AbstractSocket
  */

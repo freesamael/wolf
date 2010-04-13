@@ -1,8 +1,7 @@
-/*
- * TLVStringTestSuite.h
- *
- *  Created on: Mar 11, 2010
- *      Author: samael
+/**
+ * \file TLVStringTestSuite.h
+ * \date Mar 11, 2010
+ * \author samael
  */
 
 #ifndef TLVSTRINGTESTSUITE_H_

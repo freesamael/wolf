@@ -1,8 +1,7 @@
-/*
- * TLVMessageTestSuite.cpp
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file TLVMessageTestSuite.cpp
+ * \date Mar 30, 2010
+ * \author samael
  */
 
 #include "TLVMessageTestSuite.h"

@@ -1,8 +1,7 @@
-/*
- * TLVSharedMemoryInfoCreatorTestSuite.h
- *
- *  Created on: Apr 8, 2010
- *      Author: samael
+/**
+ * \file TLVSharedMemoryInfoCreatorTestSuite.h
+ * \date Apr 8, 2010
+ * \author samael
  */
 
 #ifndef TLVSHAREDMEMORYINFOCREATORTESTSUITE_H_

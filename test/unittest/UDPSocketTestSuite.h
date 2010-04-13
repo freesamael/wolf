@@ -1,8 +1,7 @@
-/*
- * UDPSocketTestSuite.h
- *
- *  Created on: Apr 6, 2010
- *      Author: samael
+/**
+ * \file UDPSocketTestSuite.h
+ * \date Apr 6, 2010
+ * \author samael
  */
 
 #ifndef UDPSOCKETTESTSUITE_H_

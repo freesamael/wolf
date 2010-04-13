@@ -1,8 +1,7 @@
-/*
- * testd2mce.cpp
- *
- *  Created on: Apr 10, 2010
- *      Author: samael
+/**
+ * \file testd2mce.cpp
+ * \date Apr 10, 2010
+ * \author samael
  */
 
 #include <iostream>
@@ -10,7 +9,7 @@
 #include <unistd.h>
 
 using namespace std;
-using namespace cml;
+using namespace wfe;
 
 int main()
 {

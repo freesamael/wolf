@@ -1,8 +1,7 @@
-/*
- * StringHelperTestSuite.h
- *
- *  Created on: Mar 6, 2010
- *      Author: samael
+/**
+ * \file StringHelperTestSuite.h
+ * \date Mar 6, 2010
+ * \author samael
  */
 
 #ifndef STRINGHELPERTESTSUITE_H_

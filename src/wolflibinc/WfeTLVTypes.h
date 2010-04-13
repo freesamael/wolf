@@ -1,7 +1,8 @@
 /**
  * \file WfeTLVTypes.h
- * Defines all TLV types used in namespace wfe.
+ * This file defines all TLV types used in namespace wfe.
  */
+
 #ifndef WFETLVTYPES_H_
 #define WFETLVTYPES_H_
 

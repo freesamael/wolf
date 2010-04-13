@@ -1,8 +1,7 @@
-/*
- * TLVString.cpp
- *
- *  Created on: Mar 10, 2010
- *      Author: samael
+/**
+ * \file TLVString.cpp
+ * \date Mar 10, 2010
+ * \author samael
  */
 
 #include <cstdio>

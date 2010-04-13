@@ -1,8 +1,7 @@
-/*
- * ITLVObject.h
- *
- *  Created on: Mar 10, 2010
- *      Author: samael
+/**
+ * \file ITLVObject.h
+ * \date Mar 10, 2010
+ * \author samael
  */
 
 #ifndef ITLVOBJECT_H_

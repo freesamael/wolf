@@ -1,8 +1,7 @@
-/*
- * Socket.cpp
- *
- *  Created on: Mar 8, 2010
- *      Author: samael
+/**
+ * \file AbstractSocket.cpp
+ * \date Mar 8, 2010
+ * \author samael
  */
 
 #include <cstdio>

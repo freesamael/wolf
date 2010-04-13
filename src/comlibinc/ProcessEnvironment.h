@@ -1,8 +1,7 @@
-/*
- * ProcessEnvironment.h
- *
- *  Created on: Mar 12, 2010
- *      Author: samael
+/**
+ * \file ProcessEnvironment.h
+ * \date Mar 12, 2010
+ * \author samael
  */
 
 #ifndef PROCESSENVIRONMENT_H_

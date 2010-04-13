@@ -1,8 +1,7 @@
-/*
- * ConnectedSocketState.cpp
- *
- *  Created on: Apr 5, 2010
- *      Author: samael
+/**
+ * \file ConnectedSocketState.cpp
+ * \date Apr 5, 2010
+ * \author samael
  */
 
 #include <cstdio>

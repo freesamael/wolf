@@ -1,8 +1,7 @@
-/*
- * TLVStringCreator.h
- *
- *  Created on: Mar 11, 2010
- *      Author: samael
+/**
+ * \file TLVStringCreator.h
+ * \date Mar 11, 2010
+ * \author samael
  */
 
 #ifndef TLVSTRINGCREATOR_H_

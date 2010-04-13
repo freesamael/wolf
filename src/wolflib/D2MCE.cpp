@@ -1,18 +1,17 @@
-/*
- * D2MCE.cpp
- *
- *  Created on: Mar 17, 2010
- *      Author: samael
+/**
+ * \file D2MCE.cpp
+ * \date Mar 17, 2010
+ * \author samael
  */
 
 #include "D2MCE.h"
 #include "SharedMemory.h"
-#include "SingletonAutoDestructor.h"
-#include "HelperMacros.h"
+#include <SingletonAutoDestructor.h>
+#include <HelperMacros.h>
 
 using namespace std;
 
-namespace cml
+namespace wfe
 {
 
 SINGLETON_REGISTRATION(D2MCE);

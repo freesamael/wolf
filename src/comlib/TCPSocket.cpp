@@ -1,8 +1,7 @@
-/*
- * TCPSocket.cpp
- *
- *  Created on: Mar 8, 2010
- *      Author: samael
+/**
+ * \file TCPSocket.cpp
+ * \date Mar 8, 2010
+ * \author samael
  */
 
 #include <cstdio>

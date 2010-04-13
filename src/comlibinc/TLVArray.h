@@ -1,8 +1,7 @@
-/*
- * TLVArray.h
- *
- *  Created on: Apr 8, 2010
- *      Author: samael
+/**
+ * \file TLVArray.h
+ * \date Apr 8, 2010
+ * \author samael
  */
 
 #ifndef TLVARRAY_H_

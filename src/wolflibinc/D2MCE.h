@@ -1,3 +1,9 @@
+/**
+ * \file D2MCE.h
+ * \date Mar 17, 2010
+ * \author samael
+ */
+
 #ifndef D2MCE_H_
 #define D2MCE_H_
 
@@ -6,7 +12,7 @@
 #include <d2mce/d2mce.h>
 #include "SharedMemory.h"
 
-namespace cml
+namespace wfe
 {
 
 /**

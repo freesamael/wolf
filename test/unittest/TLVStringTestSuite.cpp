@@ -1,8 +1,7 @@
-/*
- * TLVStringTestSuite.cpp
- *
- *  Created on: Mar 11, 2010
- *      Author: samael
+/**
+ * \file TLVStringTestSuite.cpp
+ * \date Mar 11, 2010
+ * \author samael
  */
 
 #include <cstring>

@@ -1,12 +1,11 @@
-/*
- * TLVObjectFactoryAutoRegistor.h
- *
- *  Created on: Apr 4, 2010
- *      Author: samael
+/**
+ * \file TLVObjectFactoryAutoRegistry.h
+ * \date Apr 4, 2010
+ * \author samael
  */
 
-#ifndef TLVOBJECTFACTORYAUTOREGISTOR_H_
-#define TLVOBJECTFACTORYAUTOREGISTOR_H_
+#ifndef TLVOBJECTFACTORYAUTOREGISTRY_H_
+#define TLVOBJECTFACTORYAUTOREGISTRY_H_
 
 #include <typeinfo>
 #include <string>

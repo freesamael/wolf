@@ -1,8 +1,7 @@
-/*
- * IActor.cpp
- *
- *  Created on: Mar 28, 2010
- *      Author: samael
+/**
+ * \file IActor.cpp
+ * \date Mar 28, 2010
+ * \author samael
  */
 
 #include "IActor.h"

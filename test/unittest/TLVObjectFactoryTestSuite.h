@@ -1,8 +1,7 @@
-/*
- * TLVObjectFactoryTestSuite.h
- *
- *  Created on: Apr 6, 2010
- *      Author: samael
+/**
+ * \file TLVObjectFactoryTestSuite.h
+ * \date Apr 6, 2010
+ * \author samael
  */
 
 #ifndef TLVOBJECTFACTORYTESTSUITE_H_

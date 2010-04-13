@@ -1,3 +1,9 @@
+/**
+ * \file HostAddress.h
+ * \date Mar 8, 2010
+ * \author samael
+ */
+
 #ifndef HOSTADDRESS_H_
 #define HOSTADDRESS_H_
 

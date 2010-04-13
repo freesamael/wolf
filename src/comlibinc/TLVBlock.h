@@ -1,8 +1,7 @@
-/*
- * TLVBlock.h
- *
- *  Created on: Mar 10, 2010
- *      Author: samael
+/**
+ * \file TLVBlock.h
+ * \date Mar 10, 2010
+ * \author samael
  */
 
 #ifndef TLVBLOCK_H_

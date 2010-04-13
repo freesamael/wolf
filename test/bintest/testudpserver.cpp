@@ -1,8 +1,7 @@
-/*
- * udpserver.cpp
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file udpserver.cpp
+ * \date Mar 30, 2010
+ * \author samael
  */
 
 #include <iostream>

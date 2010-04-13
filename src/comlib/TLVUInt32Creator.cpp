@@ -1,8 +1,7 @@
-/*
- * TLVUInt32Creator.cpp
- *
- *  Created on: Mar 29, 2010
- *      Author: samael
+/**
+ * \file TLVUInt32Creator.cpp
+ * \date Mar 29, 2010
+ * \author samael
  */
 
 #include <cstdio>

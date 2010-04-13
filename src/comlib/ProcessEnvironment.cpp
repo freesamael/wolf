@@ -1,8 +1,7 @@
-/*
- * ProcessEnvironment.cpp
- *
- *  Created on: Mar 12, 2010
- *      Author: samael
+/**
+ * \file ProcessEnvironment.cpp
+ * \date Mar 12, 2010
+ * \author samael
  */
 
 #include <iostream>

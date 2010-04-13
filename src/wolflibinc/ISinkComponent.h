@@ -1,8 +1,14 @@
+/**
+ * \file ISinkComponent.h
+ * \date Mar 28, 2010
+ * \author samael
+ */
+
 #ifndef ISINKCOMPONENT_H_
 #define ISINKCOMPONENT_H_
 
 #include <vector>
-#include "Port.h"
+#include "SinkPort.h"
 
 namespace wfe
 {
@@ -16,7 +22,10 @@ class ISinkComponent
 {
 public:
 	virtual ~ISinkComponent() {}
-	virtual const std::vector<Port *>& inports() = 0;
+	/// Add a sink port and return the port added.
+	virtual SinkPort* addSinkPort() = 0;
+	/// Get all sink ports.
+	virtual const std::vector<SinkPort *>& sinkPorts() = 0;
 };
 
 }

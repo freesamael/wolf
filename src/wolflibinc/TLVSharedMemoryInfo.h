@@ -1,3 +1,9 @@
+/**
+ * \file TLVSharedMemoryInfo.h
+ * \date Apr 8, 2010
+ * \author samael
+ */
+
 #ifndef TLVSHAREDMEMORYINFO_H_
 #define TLVSHAREDMEMORYINFO_H_
 

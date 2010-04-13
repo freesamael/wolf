@@ -1,8 +1,7 @@
-/*
- * TLVBlockTestSuite.cpp
- *
- *  Created on: Mar 30, 2010
- *      Author: samael
+/**
+ * \file TLVBlockTestSuite.cpp
+ * \date Mar 30, 2010
+ * \author samael
  */
 
 #include <vector>

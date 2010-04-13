@@ -1,8 +1,7 @@
-/*
- * ProcessTestSuite.cpp
- *
- *  Created on: Mar 13, 2010
- *      Author: samael
+/**
+ * \file ProcessTestSuite.cpp
+ * \date Mar 13, 2010
+ * \author samael
  */
 
 #include <cstdlib>

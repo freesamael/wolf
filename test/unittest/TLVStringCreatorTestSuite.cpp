@@ -1,8 +1,7 @@
-/*
- * TLVStringCreatorTestSuite.cpp
- *
- *  Created on: Mar 11, 2010
- *      Author: samael
+/**
+ * \file TLVStringCreatorTestSuite.cpp
+ * \date Mar 11, 2010
+ * \author samael
  */
 
 #include "TLVStringCreatorTestSuite.h"

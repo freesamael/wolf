@@ -1,3 +1,9 @@
+/**
+ * \file BoundSocketState.h
+ * \date Apr 5, 2010
+ * \author: samael
+ */
+
 #ifndef BOUNDSOCKETSTATE_H_
 #define BOUNDSOCKETSTATE_H_
 
@@ -7,7 +13,7 @@ namespace cml
 {
 
 /**
- * Implements bound state.
+ * BoundSocketState implements bound state.
  *
  * \see ISocketState
  */

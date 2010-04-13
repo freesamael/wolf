@@ -1,8 +1,7 @@
-/*
- * TLVUIntCreatorTestSuite.cpp
- *
- *  Created on: Apr 6, 2010
- *      Author: samael
+/**
+ * \file TLVUIntCreatorTestSuite.cpp
+ * \date Apr 6, 2010
+ * \author samael
  */
 
 #include <TLVUInt16.h>

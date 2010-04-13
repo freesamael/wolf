@@ -1,8 +1,7 @@
-/*
- * TLVStringCreator.cpp
- *
- *  Created on: Mar 11, 2010
- *      Author: samael
+/**
+ * \file TLVStringCreator.cpp
+ * \date Mar 11, 2010
+ * \author samael
  */
 
 #include <cstring>

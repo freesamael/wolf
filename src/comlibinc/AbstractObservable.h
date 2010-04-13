@@ -1,3 +1,9 @@
+/**
+ * \file AbstractObservable.h
+ * \date Apr 11, 2010
+ * \author samael
+ */
+
 #ifndef ABSTRACTOBSERVABLE_H_
 #define ABSTRACTOBSERVABLE_H_
 

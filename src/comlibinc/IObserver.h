@@ -1,3 +1,9 @@
+/**
+ * \file IObserver.h
+ * \date Apr 11, 2010
+ * \author samael
+ */
+
 #ifndef IOBSERVER_H_
 #define IOBSERVER_H_
 
@@ -9,7 +15,7 @@ class AbstractObservable;
 /**
  * \interface IObserver
  *
- * Defines the interface for all observer objects.
+ * IObserver defines the interface for all observer objects.
  */
 class IObserver
 {

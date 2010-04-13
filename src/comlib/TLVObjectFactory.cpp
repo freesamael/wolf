@@ -1,8 +1,7 @@
-/*
- * TLVObjectFactory.cpp
- *
- *  Created on: Mar 10, 2010
- *      Author: samael
+/**
+ * \file TLVObjectFactory.cpp
+ * \date Mar 10, 2010
+ * \author samael
  */
 
 #include <cstdio>

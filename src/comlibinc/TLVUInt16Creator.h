@@ -1,8 +1,7 @@
-/*
- * TLVUInt16Creator.h
- *
- *  Created on: Mar 29, 2010
- *      Author: samael
+/**
+ * \file TLVUInt16Creator.h
+ * \date Mar 29, 2010
+ * \author samael
  */
 
 #ifndef TLVUINT16CREATOR_H_

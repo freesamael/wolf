@@ -1,5 +1,11 @@
-#ifndef SOCKET_H_
-#define SOCKET_H_
+/**
+ * \file AbstractSocket.h
+ * \date Mar 8, 2010
+ * \author samael
+ */
+
+#ifndef ABSTRACTSOCKET_H_
+#define ABSTRACTSOCKET_H_
 
 #include <pthread.h>
 #include "HostAddress.h"
@@ -49,4 +55,4 @@ protected:
 
 }
 
-#endif /* SOCKET_H_ */
+#endif /* ABSTRACTSOCKET_H_ */
