@@ -93,16 +93,7 @@ Channel* Director::findChannel(const string &name)
 
 void Director::execute()
 {
-	// setup
-	for (int i = 0; i < (int)_actors.size(); i++)
-		_actors[i]->setup();
-
-	// iterate
 	_exest->execute(_actors);
-
-	// wrap up
-	for (int i = 0; i < (int)_actors.size(); i++)
-		_actors[i]->wrapup();
 }
 
 }

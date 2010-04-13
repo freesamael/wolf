@@ -14,6 +14,19 @@ namespace wfe
 
 void SimpleWorkflowExecutor::execute(const vector<IActor *> &actors)
 {
+	setup(actors);
+	iterate(actors);
+	wrapup(actors);
+}
+
+void SimpleWorkflowExecutor::setup(const vector<IActor *> &actors)
+{
+	for (int i = 0; i < (int)actors.size(); i++)
+		actors[i]->setup();
+}
+
+void SimpleWorkflowExecutor::iterate(const vector<IActor *> &actors)
+{
 	deque<IActor *> qready;
 	vector<IActor *> vwait = actors;
 	vector<IActor *>::iterator iter;
@@ -46,6 +59,12 @@ void SimpleWorkflowExecutor::execute(const vector<IActor *> &actors)
 				iter++;
 		}
 	}
+}
+
+void SimpleWorkflowExecutor::wrapup(const vector<IActor *> &actors)
+{
+	for (int i = 0; i < (int)actors.size(); i++)
+		actors[i]->wrapup();
 }
 
 }

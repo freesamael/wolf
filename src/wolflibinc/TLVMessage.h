@@ -28,9 +28,7 @@ public:
 	static const unsigned short EMPTY;
 	static const unsigned short HELLO_MASTER;
 	static const unsigned short HELLO_SLAVE;
-	static const unsigned short LOAD_ACTOR;
 	static const unsigned short RUN_ACTOR;
-	static const unsigned short SHUTDOWN;
 
 	TLVMessage(unsigned short c = EMPTY, ITLVObject *param = NULL):
 		_cmd(c), _param(param) {}

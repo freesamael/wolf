@@ -5,67 +5,44 @@
  */
 
 #include "ManagerActor.h"
+#include "RunnerAgent.h"
 
 namespace wfe
 {
 
-ManagerActor::ManagerActor(IWorkerActor *worker):
-		_worker(worker), _firecond(true)
+IActor::State ManagerActor::state()
 {
-	_worker->initialize(this);
-}
-
-ManagerActor::~ManagerActor()
-{
-	 _worker->finalize(this);
-	 for (int i = 0; i < (int)_sinp.size(); i++)
-		 delete _sinp[i];
-	 for (int i = 0; i < (int)_srcp.size(); i++)
-		 delete _srcp[i];
-}
-
-void ManagerActor::setup()
-{
-
-}
-
-void ManagerActor::wrapup()
-{
-
-}
-
-bool ManagerActor::testfire()
-{
-	return _firecond;
+	if (_state == NOT_READY) {
+		bool ready = true;
+		for (int i = 0; i < (int)sinkPorts().size(); i++)
+			ready &= !sinkPorts()[i]->isEmpty();
+		if (ready)
+			_state = READY;
+	}
+	return _state;
 }
 
 void ManagerActor::prefire()
 {
-
+	_state = RUNNING;
 }
 
 void ManagerActor::fire()
 {
-
+	RunnerAgent::instance()->sendActor(_worker);
 }
 
 void ManagerActor::postfire()
 {
 	_firecond = false;
+	_state = FINISHED;
 }
 
-SinkPort* ManagerActor::addSinkPort()
+void ManagerActor::reset()
 {
-	SinkPort *p = new SinkPort(this);
-	_sinp.push_back(p);
-	return p;
-}
-
-SourcePort* ManagerActor::addSourcePort()
-{
-	SourcePort *p = new SourcePort(this);
-	_srcp.push_back(p);
-	return p;
+	_worker->reset();
+	_state = NOT_READY;
+	_firecond = true;
 }
 
 }

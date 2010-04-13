@@ -8,36 +8,34 @@
 #define MANAGERACTOR_H_
 
 #include "IActor.h"
-#include "ISinkComponent.h"
-#include "ISourceComponent.h"
 #include "IWorkerActor.h"
 
 namespace wfe
 {
 
-class ManagerActor: public IActor, public ISinkComponent,
-		public ISourceComponent
+class ManagerActor: public IActor
 {
 public:
-	ManagerActor(IWorkerActor *worker);
-	~ManagerActor();
+	ManagerActor(IWorkerActor *worker):
+		_worker(worker), _state(NOT_READY), _firecond(true) {}
 	State state();
-	void setup();
-	void wrapup();
-	bool testfire();
+	inline void setup() { _worker->initialize(this); }
+	inline void wrapup() { _worker->finalize(this); }
+	inline bool testfire() { return _firecond; }
 	void prefire();
 	void fire();
 	void postfire();
 	void reset();
 	SinkPort* addSinkPort();
 	SourcePort* addSourcePort();
-	inline const std::vector<SinkPort *>& sinkPorts() { return _sinp; }
-	inline const std::vector<SourcePort *>& sourcePorts() { return _srcp; }
+	inline const std::vector<SinkPort *>& sinkPorts()
+			{ return _worker->sinkPorts(); }
+	inline const std::vector<SourcePort *>& sourcePorts()
+			{ return _worker->sourcePorts(); }
 
 private:
 	IWorkerActor *_worker;
-	std::vector<SinkPort *> _sinp;
-	std::vector<SourcePort *> _srcp;
+	State _state;
 	bool _firecond;
 };
 
