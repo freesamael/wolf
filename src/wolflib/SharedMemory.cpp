@@ -23,6 +23,9 @@ SharedMemory::SharedMemory(string name, size_t size):
 	_buf = (char *)d2mce_malloc(name.c_str(), size);
 }
 
+/**
+ * Clone the shared memory. It's done by D2MCE::createSharedMemory().
+ */
 IDrop* SharedMemory::clone() const
 {
 	SharedMemory *sm = D2MCE::instance()->createSharedMemory(_name, _size);
