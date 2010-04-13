@@ -29,7 +29,7 @@ public:
 void ChannelTestSuite::testAttachDetach()
 {
 	SinkPort p1(NULL), p2(NULL), p3(NULL);
-	Channel ch;
+	Channel ch("test");
 
 	ch.attachReader(&p1);
 	ch.attachReader(&p2);
@@ -53,7 +53,7 @@ void ChannelTestSuite::testWrite()
 {
 	SinkPort p1(NULL), p2(NULL);
 	FakeDrop d1, d2, d3, d4;
-	Channel ch;
+	Channel ch("test");
 
 	ch.attachReader(&p1);
 	ch.attachReader(&p2);

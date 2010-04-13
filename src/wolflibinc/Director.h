@@ -23,7 +23,7 @@ public:
 	bool addActor(IActor *actor);
 	bool removeActor(IActor *actor);
 	Channel* createChannel(const std::string &name);
-//	Channel* findChannel(const std::string &name);
+	Channel* findChannel(const std::string &name);
 	void execute();
 
 private:
