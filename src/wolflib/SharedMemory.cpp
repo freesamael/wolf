@@ -4,7 +4,9 @@
  * \author samael
  */
 
+#include <cstring>
 #include "SharedMemory.h"
+#include "D2MCE.h"
 
 using namespace std;
 
@@ -19,6 +21,13 @@ SharedMemory::SharedMemory(string name, size_t size):
 {
 	d2mce_mutex_init(&_mutex, (name + "_mutex").c_str());
 	_buf = (char *)d2mce_malloc(name.c_str(), size);
+}
+
+IDrop* SharedMemory::clone() const
+{
+	SharedMemory *sm = D2MCE::instance()->createSharedMemory(_name, _size);
+	memcpy(sm->buffer(), _buf, _size);
+	return sm;
 }
 
 }

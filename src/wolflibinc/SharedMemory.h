@@ -9,6 +9,7 @@
 
 #include <string>
 #include <d2mce/d2mce.h>
+#include "IDrop.h"
 
 namespace wfe
 {
@@ -18,7 +19,7 @@ namespace wfe
  * SharedMemory should be constructed by D2MCE::createSharedMemory() and the
  * lifetime is managed by D2MCE.
  */
-class SharedMemory
+class SharedMemory: public IDrop
 {
 public:
 	SharedMemory(std::string name, size_t size);
@@ -33,6 +34,7 @@ public:
 		return (d2mce_mload(_buf, offset, length) == 1); }
 	inline bool mstore(unsigned int offset, unsigned int length) {
 		return (d2mce_mstore(_buf, offset, length) == 1); }
+	IDrop* clone() const;
 
 private:
 	const std::string _name;
