@@ -5,6 +5,7 @@
  */
 
 #include <deque>
+#include <HelperMacros.h>
 #include "Director.h"
 #include "Channel.h"
 #include "RunnerAgent.h"
@@ -88,6 +89,7 @@ Channel* Director::findChannel(const string &name)
 
 void Director::execute()
 {
+	PINFO("Executing the actors.");
 	_exest->execute(_actors);
 }
 

@@ -42,8 +42,9 @@ void BoundSocketState::release()
 
 bool BoundSocketState::close(AbstractSocket *sock)
 {
+	PINFO("Closing Socket.");
 	if (::close(sock->sockfd()) != 0) {
-		perror("BoundSocketState::close(): close");
+		perror("Error: BoundSocketState::close(): close");
 		return false;
 	}
 
@@ -57,13 +58,15 @@ TCPSocket* BoundSocketState::accept(AbstractSocket *sock)
 	unsigned addlen = sizeof(inaddr);
 	int insock;
 
+	PINFO("Waiting for incoming connections.");
 	if ((insock = ::accept(sock->sockfd(), (struct sockaddr *)&inaddr,
 			&addlen)) < 0) {
 		if (!(sock->isNonblock() && (errno == EAGAIN || errno == EWOULDBLOCK)))
-			perror("BoundSocketState::accept()");
+			perror("Error: BoundSocketState::accept()");
 		return NULL;
 	}
 
+	PINFO("Got an incoming connection.")
 	TCPSocket *tcpsock = new TCPSocket(insock);
 	tcpsock->changeState(ConnectedSocketState::instance());
 
@@ -74,7 +77,7 @@ ssize_t BoundSocketState::recvfrom(AbstractSocket *sock, char *buf, size_t size,
 		HostAddress *addr, unsigned short *port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		fprintf(stderr, "BoundSocketState::recvfrom(): Error: recvfrom is only suitable for UDP sockets.\n");
+		PERR << "recvfrom is only suitable for UDP sockets.\n";
 		return -1;
 	}
 
@@ -82,9 +85,10 @@ ssize_t BoundSocketState::recvfrom(AbstractSocket *sock, char *buf, size_t size,
 	struct sockaddr_in inaddr;
 	socklen_t alen = sizeof(inaddr);
 
+	PINFO("Receiving an incoming message.");
 	if ((result = ::recvfrom(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
-		perror("BoundSocketState::recvfrom()");
+		perror("Error: BoundSocketState::recvfrom()");
 	}
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
@@ -97,7 +101,7 @@ ssize_t BoundSocketState::sendto(AbstractSocket *sock, const char *buf,
 		size_t size, const HostAddress &addr, unsigned short port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		fprintf(stderr, "BoundSocketState::sendto(): Error: sendto is only suitable for UDP sockets.\n");
+		PERR << "sendto is only suitable for UDP sockets.\n";
 		return -1;
 	}
 
@@ -110,9 +114,10 @@ ssize_t BoundSocketState::sendto(AbstractSocket *sock, const char *buf,
 	inaddr.sin_addr.s_addr = addr.toInetAddr();
 	inaddr.sin_port = htons(port);
 
+	PINFO("Sending an outgoing message.");
 	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, sizeof(inaddr))) < 0) {
-		perror("BoundSocketState::sendto()");
+		perror("Error: BoundSocketState::sendto()");
 	}
 
 	return result;

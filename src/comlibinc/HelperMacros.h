@@ -6,6 +6,9 @@
 #ifndef HELPERMACROS_H_
 #define HELPERMACROS_H_
 
+#include <cstdio>
+#include <iostream>
+
 /**
  * \def TYPENAME(type)
  * Get the name of type in string.
@@ -33,5 +36,17 @@
  */
 #define SINGLETON_REGISTRATION( type ) \
 	static cml::SingletonAutoDestructor< type > CONCATE(autodes, __LINE__)
+
+/// Print an error message.
+#define PERR \
+	std::cerr << "Error: " << __PRETTY_FUNCTION__ << ": " << __LINE__ << ": "
+
+#ifdef DEBUG
+/// Print an info message.
+#define PINFO(str) \
+	printf("Info: %s: %d: %s\n", __PRETTY_FUNCTION__, __LINE__, str);
+#else
+#define PINFO(str)
+#endif /* DEBUG */
 
 #endif /* HELPERMACROS_H_ */

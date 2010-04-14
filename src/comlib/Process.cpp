@@ -41,7 +41,7 @@ void Process::start(const string &program, const string &args)
 		else
 			execve(program.c_str(), argv,
 					_env.toNullTerminatedArray());
-		perror("Process::start()");
+		perror("Error: Process::start()");
 	}
 
 	// Cleanup duplicated data.

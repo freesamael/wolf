@@ -10,6 +10,7 @@
 #include "TLVBlock.h"
 #include "ITLVObject.h"
 #include "TLVObjectFactory.h"
+#include "HelperMacros.h"
 
 #define SZ_MAXBUF	8192	///< Max buffer size used in recvfrom().
 
@@ -50,16 +51,18 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 			dynamic_cast<TCPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		fprintf(stderr, "TLVReaderWriter::read(): Error: No active TCP socket found.\n");
+		PERR << "No active TCP socket found.\n";
 		return NULL;
 	}
+
+	PINFO("Reading a message from TCP socket.");
 
 	// Read header.
 	if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
 		delete [] hdrbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
-		fprintf(stderr, "TLVReaderWriter::read(): Error: Data read is too small to be a TLV block.\n");
+		PERR << "Data read is too small to be a TLV block.\n";
 		delete [] hdrbuf;
 		return NULL;
 	}
@@ -70,8 +73,8 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	blk.setLength(tmpblk->length());
 	if ((ret = activesock->read(blk.value(), blk.length())) !=
 			blk.length()) {
-		fprintf(stderr, "TLVReaderWriter::read(): Error: Expected %u bytes but %u bytes read.\n",
-				blk.plainSize(), ret);
+		PERR << "Expected " << blk.plainSize() << " bytes but " << ret <<
+				" bytes read.\n";
 		delete [] hdrbuf;
 		delete tmpblk;
 		return NULL;
@@ -80,7 +83,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	// Construct TLV object.
 	obj = TLVObjectFactory::instance()->createTLVObject(blk);
 	if (!obj)
-		fprintf(stderr, "TLVReaderWriter::read(): Error: Unable to construct TLV object.\n");
+		PERR << "Unable to construct TLV object.\n";
 
 	delete [] hdrbuf;
 	delete tmpblk;
@@ -108,22 +111,23 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 			dynamic_cast<TCPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		fprintf(stderr, "TLVReaderWriter::write(): Error: No active TCP socket found.\n");
+		PERR << "No active TCP socket found.\n";
 		return false;
 	}
 
 	if (blk) {
+		PINFO("Sending a message to TCP socket.");
 		ret = activesock->write(blk->plainBuffer(), blk->plainSize());
 		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
-				fprintf(stderr, "TLVReaderWriter::write(): Error: Expected %u bytes but %u bytes written.",
-						blk->plainSize(), ret);
+				PERR << "Expected " << blk->plainSize() << " bytes but " <<
+						ret << " bytes written.\n";
 			} else {
-				fprintf(stderr, "TLVReaderWriter::read(): Error: Fail to write.\n");
+				PERR << "Fail to write.\n";
 			}
 		}
 	} else {
-		fprintf(stderr, "TLVReaderWriter::write(): Error: Unable to create TLV block from given object.\n");
+		PERR << "Unable to create TLV block from given object.\n";
 	}
 
 	delete blk;
@@ -160,9 +164,11 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 			dynamic_cast<UDPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: No active UDP socket found.\n");
+		PERR << "No active UDP socket found.\n";
 		return NULL;
 	}
+
+	PINFO("Reading a message from UDP socket.");
 
 	// Read datagram.
 	localbuf = new char[SZ_MAXBUF];
@@ -171,7 +177,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 		delete [] localbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
-		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: Data read is too small to be a TLV block.\n");
+		PERR << "Data read is too small to be a TLV block.\n";
 		delete [] localbuf;
 		return NULL;
 	}
@@ -181,8 +187,8 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 	blk.setType(tmpblk->type());
 	blk.setLength(tmpblk->length());
 	if (ret != blk.plainSize()) {
-		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: Expected %u bytes but %u bytes read.\n",
-				blk.plainSize(), ret);
+		PERR << "Expected " << blk.plainSize() << " bytes but " << ret <<
+				" bytes read.\n";
 		delete tmpblk;
 		return NULL;
 	} else {
@@ -192,7 +198,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
 	// Construct TLV object.
 	obj = TLVObjectFactory::instance()->createTLVObject(blk);
 	if (!obj)
-		fprintf(stderr, "TLVReaderWriter::recvfrom(): Error: Unable to construct TLV object.\n");
+		PERR << "Unable to construct TLV object.\n";
 
 	delete tmpblk;
 	delete [] localbuf;
@@ -229,23 +235,24 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 			dynamic_cast<UDPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		fprintf(stderr, "TLVReaderWriter::sendto(): Error: No active UDP socket found.\n");
+		PERR << "No active UDP socket found.\n";
 		return false;
 	}
 
 	if (blk) {
+		PINFO("Sending a message to UDP socket.");
 		ret = activesock->sendto(blk->plainBuffer(), blk->plainSize(),
 				addr, port);
 		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
-				fprintf(stderr, "TLVReaderWriter::sendto(): Error: Expected %u bytes but %u bytes written.",
-						blk->plainSize(), ret);
+				PERR << "Expected " << blk->plainSize() << " bytes but " <<
+						ret << " bytes written.\n";
 			} else {
-				fprintf(stderr, "TLVReaderWriter::sendto(): Error: Fail to write.\n");
+				PERR<< "Fail to write.\n";
 			}
 		}
 	} else {
-		fprintf(stderr, "TLVReaderWriter::sendto(): Error: Unable to create TLV block from given object.\n");
+		PERR << "Unable to create TLV block from given object.\n";
 	}
 
 	delete blk;

@@ -5,6 +5,7 @@
  */
 
 #include <deque>
+#include <HelperMacros.h>
 #include "SimpleWorkflowExecutor.h"
 
 using namespace std;
@@ -42,6 +43,7 @@ void SimpleWorkflowExecutor::iterate(const vector<AbstractActor *> &actors)
 
 	// Execute one actor.
 	while (qready.size() > 0) {
+		PINFO("Iterating a actor");
 		// Iterate until testfire() fails.
 		do {
 			qready.front()->prefire();

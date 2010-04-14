@@ -59,7 +59,7 @@ bool UDPSocket::setBroadcast(bool bcast)
 	int broadcast = (bcast) ? 1 : 0;
 	if (setsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
 			sizeof(broadcast)) < 0) {
-		perror("UDPSocket::setBroadcast()");
+		perror("Error: UDPSocket::setBroadcast()");
 		return false;
 	}
 	return true;
@@ -76,7 +76,7 @@ bool UDPSocket::canBroadcast() const
 	int broadcast;
 	socklen_t len = sizeof(broadcast);
 	if (getsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, &len) < 0) {
-		perror("UDPSocket::canBroadcast()");
+		perror("Error: UDPSocket::canBroadcast()");
 		return false;
 	}
 	return broadcast;

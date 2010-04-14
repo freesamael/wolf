@@ -48,8 +48,9 @@ bool SimpleActiveSocketState::activeOpen(AbstractSocket *sock,
 	inaddr.sin_port = htons(port);
 
 	// Perform connection.
+	PINFO("Connecting to a remote host.");
 	if (connect(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
-		perror("SimpleActiveSocketState::activeOpen()");
+		perror("Error: SimpleActiveSocketState::activeOpen()");
 		return false;
 	}
 
@@ -68,15 +69,17 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 	inaddr.sin_port = htons(port);
 
 	// Perform binding.
+	PINFO("Binding a port.");
 	if (bind(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
-		perror("SimpleActiveSocketState::passiveOpen()");
+		perror("Error: SimpleActiveSocketState::passiveOpen()");
 		return false;
 	}
 
 	// Perform listen if it's a TCP socket.
 	if ((dynamic_cast<TCPSocket *>(sock))) {
+		PINFO("Listening for connections.\n");
 		if (listen(sock->sockfd(), qlen) < 0) {
-			perror("SimpleActiveSocketState::passiveOpen()");
+			perror("Error: SimpleActiveSocketState::passiveOpen()");
 			return false;
 		}
 	}
@@ -87,8 +90,9 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 
 bool SimpleActiveSocketState::close(AbstractSocket *sock)
 {
+	PINFO("Closing the socket.");
 	if (::close(sock->sockfd()) != 0) {
-		perror("ConnectedSocketState::close(): close");
+		perror("Error: ConnectedSocketState::close(): close");
 		return false;
 	}
 
@@ -100,7 +104,7 @@ ssize_t SimpleActiveSocketState::recvfrom(AbstractSocket *sock, char *buf,
 		size_t size, HostAddress *addr, unsigned short *port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		fprintf(stderr, "SimpleActiveSocketState::recvfrom(): Error: recvfrom is only suitable for UDP sockets.\n");
+		PERR << "recvfrom is only suitable for UDP sockets.\n";
 		return -1;
 	}
 
@@ -108,9 +112,10 @@ ssize_t SimpleActiveSocketState::recvfrom(AbstractSocket *sock, char *buf,
 	struct sockaddr_in inaddr;
 	socklen_t alen = sizeof(inaddr);
 
+	PINFO("Receiving an incoming message.");
 	if ((result = ::recvfrom(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
-		perror("SimpleActiveSocketState::recvfrom()");
+		perror("Error: SimpleActiveSocketState::recvfrom()");
 	}
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
@@ -123,7 +128,7 @@ ssize_t SimpleActiveSocketState::sendto(AbstractSocket *sock, const char *buf,
 		size_t size, const HostAddress &addr, unsigned short port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		fprintf(stderr, "SimpleActiveSocketState::sendto(): Error: sendto is only suitable for UDP sockets.\n");
+		PERR << "sendto is only suitable for UDP sockets.\n";
 		return -1;
 	}
 
@@ -136,9 +141,10 @@ ssize_t SimpleActiveSocketState::sendto(AbstractSocket *sock, const char *buf,
 	inaddr.sin_addr.s_addr = addr.toInetAddr();
 	inaddr.sin_port = htons(port);
 
+	PINFO("Sending an outgoing message.");
 	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr,	sizeof(inaddr))) < 0) {
-		perror("SimpleActiveSocketState::sendto()");
+		perror("Error: SimpleActiveSocketState::sendto()");
 	}
 
 	return result;

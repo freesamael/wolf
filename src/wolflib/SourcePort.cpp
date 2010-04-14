@@ -5,6 +5,7 @@
  */
 
 #include <cstdio>
+#include <HelperMacros.h>
 #include "SourcePort.h"
 #include "Channel.h"
 
@@ -19,7 +20,7 @@ void SourcePort::writeChannel(IDrop *item)
 	if (_channel) {
 		_channel->write(item);
 	} else {
-		fprintf(stderr, "SourcePort::writeChannel(): Error: No channel attached.\n");
+		PERR << "No channel attached.\n";
 	}
 }
 

@@ -133,6 +133,7 @@ string TLVObjectFactory::lookupTypeName(unsigned short id)
  */
 ITLVObject* TLVObjectFactory::createTLVObject(const string &type_name)
 {
+	PINFO("Creating an object.");
 	map<string, ITLVObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(type_name)) != _creators.end())
 		return iter->second->create();
@@ -144,6 +145,7 @@ ITLVObject* TLVObjectFactory::createTLVObject(const string &type_name)
  */
 ITLVObject* TLVObjectFactory::createTLVObject(unsigned short type_id)
 {
+	PINFO("Creating an object.");
 	return createTLVObject(lookupTypeName(type_id));
 }
 
@@ -155,13 +157,13 @@ ITLVObject* TLVObjectFactory::createTLVObject(unsigned short type_id)
  */
 ITLVObject* TLVObjectFactory::createTLVObject(const ITLVBlock &blk)
 {
+	PINFO("Creating an object.");
 	map<string, ITLVObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(lookupTypeName(blk.type()))) !=
 			_creators.end()) {
 		return iter->second->create(blk);
 	}
-	fprintf(stderr, "TLVObjectFactory::createTLVObject(): Error: No suitable creator found for type %u.\n",
-			blk.type());
+	PERR << "No suitable creator found for type" << blk.type() << ".\n";
 	return NULL;
 }
 

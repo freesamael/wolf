@@ -50,13 +50,14 @@ public:
 				TLVReaderWriter tcprw(tsock);
 				TLVMessage *msg;
 				if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
-					fprintf(stderr, "RunnerAgent::setup(): Error: Invalid incoming message.\n");
+					PERR << "Invalid incoming message.\n";
 				} else if (msg->command() != TLVMessage::HELLO_SLAVE) {
-					fprintf(stderr, "RunnerAgent::setup(): Error: Expected command %s but got %s.\n",
-							TLVMessage::CommandString[TLVMessage::HELLO_SLAVE],
-							TLVMessage::CommandString[msg->command()]);
+					PERR << "Expected command " <<
+							TLVMessage::CommandString[TLVMessage::HELLO_SLAVE] <<
+							"but got " <<
+							TLVMessage::CommandString[msg->command()] << ".\n";
 				} else {
-					printf("Info: Got one runner.\n");
+					PINFO("Got one runner.");
 					_ssocks->push_back(tsock);
 				}
 				delete msg;
@@ -113,7 +114,8 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 #ifdef ENABLE_D2MCE
 	// Join D2MCE computing group.
 	D2MCE::instance()->join(appname);
-	printf("%d nodes inside the group, node id = %d.\n",
+	printf("Info: %s: %d: %d nodes inside the group, node id = %d.\n",
+			__PRETTY_FUNCTION__, __LINE__,
 			D2MCE::instance()->getNumberOfNodes(),
 			D2MCE::instance()->nodeId());
 #endif
@@ -132,7 +134,7 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 	athread.join();
 
 	if (_ssocks.size() == 0) {
-		fprintf(stderr, "RunnerAgent::setup(): Error: No runner found.\n");
+		PERR << "No runner found.\n";
 		return false;
 	}
 

@@ -8,6 +8,7 @@
 #include "TLVArrayCreator.h"
 #include "TLVBlock.h"
 #include "TLVObjectFactory.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -33,7 +34,7 @@ ITLVObject* TLVArrayCreator::create(const ITLVBlock &blk) const
 		// Get object.
 		ITLVObject *obj = TLVObjectFactory::instance()->createTLVObject(*sblk);
 		if (!obj)
-			fprintf(stderr, "TLVArrayCreator::create(): Error: Fail to construct an element inside the TLV blocks.\n");
+			PERR << "Fail to construct an element inside the TLV blocks.\n";
 		else
 			array->elements().push_back(obj);
 	} while (sblk->plainSize() + offset < blk.length());

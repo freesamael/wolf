@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <sys/time.h>
 #include "Thread.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -32,14 +33,15 @@ Thread::~Thread()
  */
 bool Thread::start()
 {
+	PINFO("Starting the thread.");
 	if (_tid == 0) {
 		if (pthread_create(&_tid, NULL, _thread_caller, this) != 0) {
-			perror("Thread::start()");
+			perror("Error: Thread::start()");
 			return false;
 		}
 		return true;
 	}
-	fprintf(stderr, "Thread::start(): Error: Thread %d is already started\n", (int)_tid);
+	PERR << "Thread " << _tid << " is already started.\n";
 	return false;
 }
 
@@ -52,7 +54,7 @@ bool Thread::start()
 bool Thread::join()
 {
 	if (pthread_join(_tid, NULL) != 0) {
-		perror("Thread::join()");
+		perror("Error: Thread::join()");
 		return false;
 	}
 	return true;
@@ -82,7 +84,7 @@ bool Thread::join(unsigned timeout)
 	if (_running) {
 		// Wait.
 		if (pthread_cond_timedwait(&_rcnd, &_rcnd_mutex, &tout) != 0) {
-			perror("Thread::join(): Condtion waiting");
+			perror("Error: Thread::join(): Condtion waiting");
 			return false;
 		}
 	}
@@ -116,7 +118,7 @@ void* Thread::_thread_caller(void *param)
 	th->run();
 	th->_running = false;
 	if (pthread_cond_broadcast(&th->_rcnd) != 0)
-		perror("Thread::_thread_caller()");
+		perror("Error: Thread::_thread_caller()");
 	return NULL;
 }
 

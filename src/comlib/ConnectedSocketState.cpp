@@ -39,13 +39,15 @@ void ConnectedSocketState::release()
 
 bool ConnectedSocketState::close(AbstractSocket *sock)
 {
+	PINFO("Shutting down a socket.");
 	if (shutdown(sock->sockfd(), SHUT_RDWR) != 0) {
-		perror("ConnectedSocketState::close(): shutdown");
+		perror("Error: ConnectedSocketState::close(): shutdown");
 		return false;
 	}
 
+	PINFO("Closing a socket.");
 	if (::close(sock->sockfd()) != 0) {
-		perror("ConnectedSocketState::close(): close");
+		perror("Error: ConnectedSocketState::close(): close");
 		return false;
 	}
 
@@ -57,7 +59,7 @@ ssize_t ConnectedSocketState::read(AbstractSocket *sock, char *buf, size_t size)
 {
 	ssize_t result;
 	if ((result = ::read(sock->sockfd(), buf, size)) < 0)
-		perror("ConnectedSocketState::read()");
+		perror("Error: ConnectedSocketState::read()");
 	return result;
 }
 
@@ -66,7 +68,7 @@ ssize_t ConnectedSocketState::write(AbstractSocket *sock, const char *buf,
 {
 	ssize_t result;
 	if ((result = ::write(sock->sockfd(), buf, size)) < 0)
-		perror("ConnectedSocketState::write()");
+		perror("Error: ConnectedSocketState::write()");
 	return result;
 
 }

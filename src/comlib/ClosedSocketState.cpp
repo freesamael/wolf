@@ -41,6 +41,7 @@ void ClosedSocketState::release()
 bool ClosedSocketState::activeOpen(AbstractSocket *sock,
 		const HostAddress &addr, unsigned short port)
 {
+	PINFO("Actively opening a socket.");
 	if (open(sock))
 		return sock->activeOpen(addr, port);
 	return false;
@@ -49,6 +50,7 @@ bool ClosedSocketState::activeOpen(AbstractSocket *sock,
 bool ClosedSocketState::passiveOpen(AbstractSocket *sock,
 		unsigned short port, int qlen)
 {
+	PINFO("Passively opening a socket");
 	if (open(sock))
 		return sock->passiveOpen(port, qlen);
 	return false;
@@ -65,13 +67,14 @@ bool ClosedSocketState::open(AbstractSocket *sock)
 	else if (dynamic_cast<TCPSocket *>(sock))
 		type = SOCK_STREAM;
 	else {
-		fprintf(stderr, "ClosedSocketState::open(): Error: Unsupported type.\n");
+		PERR << "Unsupported type.\n";
 		return false;
 	}
 
 	// Initialize.
+	PINFO("Opening a socket.");
 	if ((sockfd = socket(AF_INET, type, 0)) < 0) {
-		perror("ClosedSocketState::open()");
+		perror("Error: ClosedSocketState::open()");
 		return false;
 	}
 	sock->setSockfd(sockfd);

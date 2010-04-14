@@ -10,6 +10,7 @@
 #include <TLVBlock.h>
 #include <TLVUInt16.h>
 #include <TLVObjectFactory.h>
+#include <HelperMacros.h>
 #include "TLVMessageCreator.h"
 
 using namespace std;
@@ -39,7 +40,7 @@ ITLVObject* TLVMessageCreator::create(const ITLVBlock &blk) const
 	cmd = dynamic_cast<TLVUInt16 *>(TLVObjectFactory::instance()->
 			createTLVObject(*cmdblk));
 	if (!cmd) {
-		fprintf(stderr, "TLVMessageCreator::create(): Error: Unable to construct command.\n");
+		PERR << "Unable to construct command.\n";
 		return NULL;
 	}
 

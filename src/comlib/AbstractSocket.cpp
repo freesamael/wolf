@@ -16,6 +16,7 @@
 #include "TLVBlock.h"
 #include "ClosedSocketState.h"
 #include "SimpleActiveSocketState.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
@@ -41,7 +42,7 @@ AbstractSocket::~AbstractSocket()
 {
 	_state->close(this);
 	if (pthread_mutex_destroy(&_mutex) != 0)
-		perror("AbstractSocket::~AbstractSocket(): Destroying mutex");
+		perror("Error: AbstractSocket::~AbstractSocket(): Destroying mutex");
 }
 
 /**
@@ -119,7 +120,7 @@ bool AbstractSocket::setNonblock(bool nonblk)
 
 	// Get arg.
 	if ((arg = fcntl(_sockfd, F_GETFL, NULL)) < 0) {
-		perror("AbstractSocket::setNonblock(): Getting flags");
+		perror("Error: AbstractSocket::setNonblock(): Getting flags");
 		return false;
 	}
 
@@ -131,7 +132,7 @@ bool AbstractSocket::setNonblock(bool nonblk)
 
 	// Set arg.
 	if ((fcntl(_sockfd, F_SETFL, arg)) < 0) {
-		perror("AbstractSocket::setNonblock(): Setting flags");
+		perror("Error: AbstractSocket::setNonblock(): Setting flags");
 		return false;
 	}
 	return true;
@@ -146,7 +147,7 @@ bool AbstractSocket::isNonblock() const
 
 	// Get arg.
 	if ((arg = fcntl(_sockfd, F_GETFL, NULL)) < 0) {
-		perror("AbstractSocket::isNonblock()");
+		perror("Error: AbstractSocket::isNonblock()");
 		return false;
 	}
 
@@ -162,11 +163,11 @@ bool AbstractSocket::isNonblock() const
 bool AbstractSocket::setTTL(int ttl)
 {
 	if (ttl < 1) {
-		fprintf(stderr, "AbstractSocket::setTTL(): Error: TTL must greater or equal to 1.\n");
+		PERR << "TTL must greater or equal to 1.\n";
 		return false;
 	}
 	if (setsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {
-		perror("AbstractSocket::setTTL()");
+		perror("Error: AbstractSocket::setTTL()");
 		return false;
 	}
 	return true;
@@ -180,7 +181,7 @@ int AbstractSocket::TTL() const
 	int ttl;
 	socklen_t len = sizeof(ttl);
 	if (getsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, &len) < 0) {
-		perror("AbstractSocket::TTL()");
+		perror("Error: AbstractSocket::TTL()");
 		return -1;
 	}
 	return ttl;

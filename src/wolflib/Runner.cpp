@@ -9,6 +9,7 @@
 #include <cstdio>
 #include <UDPSocket.h>
 #include <TLVReaderWriter.h>
+#include <HelperMacros.h>
 #include "Runner.h"
 #include "D2MCE.h"
 #include "AbstractWorkerActor.h"
@@ -23,23 +24,23 @@ void Runner::run(unsigned short runner_port, unsigned short master_port,
 		const string &appname)
 {
 	HostAddress addr;
-	printf("Info: Waiting for runner agent notification.\n");
+	PINFO("Waiting for master notification.");
 	if (!(addr = getMasterAddr(runner_port)).isValid()) {
-		fprintf(stderr, "Runner::run(): Error: Runner fails, exit now.\n");
+		PERR << "Runner fails, exit now.\n";
 		return;
 	}
 
 	TCPSocket sock;
-	printf("Info: Connection to the master node... ");
+	PINFO("Connection to the master node");
 	if (!connectToMaster(&sock, addr, master_port)) {
-		fprintf(stderr, "Runner::run(): Error: Runner fails, exit now.\n");
+		PERR << "Runner fails, exit now.\n";
 		return;
 	}
-	printf("Connected.\n");
+	PINFO("Connected.\n");
 
 #ifdef ENABLE_D2MCE
 	if (!joinGroup(appname)) {
-		fprintf(stderr, "Runner::run(): Error: Runner fails, exit now.\n");
+		PERR << "Runner fails, exit now.\n";
 		return;
 	}
 #endif
@@ -61,14 +62,15 @@ HostAddress Runner::getMasterAddr(unsigned short runner_port)
 
 	usock.passiveOpen(runner_port);
 	if (!(inmsg = dynamic_cast<TLVMessage *>(udprw.recvfrom(&inaddr, &inport)))) {
-		fprintf(stderr, "Runner::run(): Error: Invalid incoming message.\n");
+		PERR << "Invalid incoming message.\n";
 		return HostAddress();
 	}
 
 	if (inmsg->command() != TLVMessage::HELLO_MASTER) {
-		fprintf(stderr, "Runner::run(): Error: Expected command %s but got %s.\n",
-				TLVMessage::CommandString[TLVMessage::HELLO_MASTER],
-				TLVMessage::CommandString[inmsg->command()]);
+		PERR << "Expected command " <<
+				TLVMessage::CommandString[TLVMessage::HELLO_MASTER] <<
+				" but got " << TLVMessage::CommandString[inmsg->command()] <<
+				".\n";
 		return HostAddress();
 	}
 
@@ -86,7 +88,7 @@ bool Runner::connectToMaster(TCPSocket *sock, const HostAddress &addr,
 {
 	TLVReaderWriter tcprw(sock);
 	if (!sock->activeOpen(addr, master_port)) {
-		fprintf(stderr, "Runner::run(): Unable to connect to the master node.\n");
+		PERR << "Unable to connect to the master node.\n";
 		return false;
 	}
 
@@ -105,7 +107,8 @@ bool Runner::joinGroup(const string &appname)
 //		return false;
 //	}
 	D2MCE::instance()->join(appname);
-	printf("%d nodes inside the group, node id = %d.\n",
+	printf("Info: %s: %d, %d nodes inside the group, node id = %d.\n",
+			__PRETTY_FUNCTION__, __LINE__,
 			D2MCE::instance()->getNumberOfNodes(),
 			D2MCE::instance()->nodeId());
 
@@ -121,7 +124,7 @@ bool Runner::processCommand(TLVMessage *cmd)
 	if (cmd->command() == TLVMessage::RUN_ACTOR) {
 		AbstractWorkerActor *actor;
 		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
-			fprintf(stderr, "Runner::run(): Error: Invalid parameter.\n");
+			PERR << "Invalid parameter.\n";
 			return false;
 		}
 		actor->setup();
@@ -134,8 +137,8 @@ bool Runner::processCommand(TLVMessage *cmd)
 		actor->wrapup();
 		delete actor;
 	} else {
-		fprintf(stderr, "Runner::run(): Error: Unexpected command \"%s\".\n",
-				TLVMessage::CommandString[cmd->command()]);
+		PERR << "Unexpected command \"" <<
+				TLVMessage::CommandString[cmd->command()] << "\".\n";
 		return false;
 	}
 	return true;
@@ -153,11 +156,11 @@ void Runner::runnerLoop(TCPSocket *sock)
 
 	while ((inobj = tcprw.read())) {
 		if (!(inmsg = dynamic_cast<TLVMessage *>(inobj))) {
-			fprintf(stderr, "Runner::run(): Error: Invalid incoming message.\n");
+			PERR << "Invalid incoming message.\n";
 			delete inobj;
 		} else {
 			if (!processCommand(inmsg)) {
-				fprintf(stderr, "Runner::run(): Error: One command failed to execute.\n");
+				PERR << "One command failed to execute.\n";
 			}
 			delete inmsg;
 		}

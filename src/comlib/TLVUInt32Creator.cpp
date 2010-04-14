@@ -8,6 +8,7 @@
 #include <arpa/inet.h>
 #include "TLVUInt32Creator.h"
 #include "TLVBlock.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -20,7 +21,7 @@ ITLVObject* TLVUInt32Creator::create(const ITLVBlock &blk) const
 		TLVUInt32 *obj = new TLVUInt32(ntohl(*nv));
 		return obj;
 	}
-	fprintf(stderr, "TLVUInt32Creator::create(): Error: TLV length unmatched.\n");
+	PERR << "TLV length unmatched.\n";
 	return NULL;
 }
 

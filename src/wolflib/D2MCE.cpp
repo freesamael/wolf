@@ -4,10 +4,10 @@
  * \author samael
  */
 
-#include "D2MCE.h"
-#include "SharedMemory.h"
 #include <SingletonAutoDestructor.h>
 #include <HelperMacros.h>
+#include "D2MCE.h"
+#include "SharedMemory.h"
 
 using namespace std;
 
@@ -20,11 +20,13 @@ D2MCE *D2MCE::_instance = NULL;
 
 D2MCE::D2MCE()
 {
+	PINFO("Initialing d2mce.");
 	d2mce_init();
 }
 
 D2MCE::~D2MCE()
 {
+	PINFO("Finalizing d2mce.");
 	for (int i = 0; i < (int)_smems.size(); i++)
 		delete _smems[i];
 	d2mce_finalize();
@@ -54,6 +56,7 @@ void D2MCE::release()
  */
 bool D2MCE::join(string appname, string groupname)
 {
+	PINFO("Join d2mce computing group.");
 	_nodeid = d2mce_join(appname.c_str(), groupname.c_str(), D2MCE_GROUP_ANY);
 	return (d2mce_barrier_init(&_barrier, "barrier") > 0 && _nodeid > 0);
 }
@@ -69,6 +72,7 @@ bool D2MCE::join(string appname, string groupname)
  */
 bool D2MCE::barrier(unsigned int nnodes)
 {
+	PINFO("Barrier.");
 	return (d2mce_barrier(&_barrier, nnodes) == 1);
 }
 
@@ -88,6 +92,7 @@ int D2MCE::getNumberOfNodes() const
  */
 SharedMemory* D2MCE::createSharedMemory(const string &name, size_t size)
 {
+	PINFO("Creating a shared memory.");
 	SharedMemory *mem = new SharedMemory(name, size);
 	_smems.push_back(mem);
 	return mem;
