@@ -1,14 +1,14 @@
 /**
- * \file IWorkerActor.h
+ * \file AbstractWorkerActor.h
  * \date Apr 13, 2010
  * \author samael
  */
 
-#ifndef IWORKERACTOR_H_
-#define IWORKERACTOR_H_
+#ifndef ABSTRACTWORKERACTOR_H_
+#define ABSTRACTWORKERACTOR_H_
 
 #include <ITLVObject.h>
-#include "IActor.h"
+#include "AbstractActor.h"
 
 namespace wfe
 {
@@ -16,7 +16,7 @@ namespace wfe
 class ManagerActor;
 
 /**
- * In addition to the methods IActor defined, IWorkerActor adds initialize()
+ * In addition to the methods AbstractActor defined, AbstractWorkerActor adds initialize()
  * to setup the ManagerActor it belongs to, and finalize() to wrap up the
  * ManagerActor. Note that the methods initialize() and finalize() are called
  * on the director host, and the whole execution, including setup, iteration
@@ -32,10 +32,10 @@ class ManagerActor;
  * method. Afterward, it might use finalize() to write the result to output
  * ports attached on the manager.
  */
-class IWorkerActor: public IActor, public cml::ITLVObject
+class AbstractWorkerActor: public AbstractActor, public cml::ITLVObject
 {
 public:
-	virtual ~IWorkerActor() {}
+	virtual ~AbstractWorkerActor() {}
 	/// Setup the ManagerActor it belongs to.
 	virtual void initialize(ManagerActor *manager) = 0;
 	/// Wrap up the ManagerActor it belongs to.
@@ -44,4 +44,4 @@ public:
 
 }
 
-#endif /* IWORKERACTOR_H_ */
+#endif /* ABSTRACTWORKERACTOR_H_ */

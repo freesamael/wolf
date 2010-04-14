@@ -20,14 +20,14 @@ class Director
 public:
 	Director(IWorkflowExecutor *exest): _exest(exest){}
 	~Director();
-	bool addActor(IActor *actor);
-	bool removeActor(IActor *actor);
+	bool addActor(AbstractActor *actor);
+	bool removeActor(AbstractActor *actor);
 	Channel* createChannel(const std::string &name);
 	Channel* findChannel(const std::string &name);
 	void execute();
 
 private:
-	std::vector<IActor *> _actors;
+	std::vector<AbstractActor *> _actors;
 	std::vector<Channel *> _channels;
 	IWorkflowExecutor *_exest;
 };

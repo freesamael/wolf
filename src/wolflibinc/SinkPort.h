@@ -21,9 +21,10 @@ namespace wfe
 class SinkPort: public IPort
 {
 public:
-	SinkPort(IActor *owner, Channel *ch = NULL):
+	SinkPort(AbstractActor *owner, Channel *ch = NULL):
 		_owner(owner), _channel(ch) {}
-	inline IActor* owner() const { return _owner; }
+	inline Type type() const { return SINK; }
+	inline AbstractActor* owner() const { return _owner; }
 	inline Channel* channel() const { return _channel; }
 	inline void setChannel(Channel *ch) { _channel = ch; }
 	inline bool isEmpty() const { return _queue.empty(); }
@@ -31,7 +32,7 @@ public:
 	IDrop* readPort();
 
 private:
-	IActor *_owner;
+	AbstractActor *_owner;
 	Channel *_channel;
 	std::deque<IDrop *> _queue;
 	pthread_mutex_t _mutex;

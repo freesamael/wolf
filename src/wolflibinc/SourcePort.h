@@ -19,15 +19,16 @@ namespace wfe
 class SourcePort: public IPort
 {
 public:
-	SourcePort(IActor *owner, Channel *ch = NULL):
+	SourcePort(AbstractActor *owner, Channel *ch = NULL):
 		_owner(owner), _channel(ch) {}
-	inline IActor* owner() const { return _owner; }
+	inline Type type() const { return SOURCE; }
+	inline AbstractActor* owner() const { return _owner; }
 	inline Channel* channel() const { return _channel; }
 	inline void setChannel(Channel *ch) { _channel = ch; }
 	void writeChannel(IDrop *item);
 
 private:
-	IActor *_owner;
+	AbstractActor *_owner;
 	Channel *_channel;
 };
 

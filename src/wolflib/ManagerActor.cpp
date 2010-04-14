@@ -10,7 +10,7 @@
 namespace wfe
 {
 
-IActor::State ManagerActor::state()
+AbstractActor::State ManagerActor::state()
 {
 	if (_state == NOT_READY) {
 		bool ready = true;

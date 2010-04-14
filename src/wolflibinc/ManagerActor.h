@@ -7,16 +7,16 @@
 #ifndef MANAGERACTOR_H_
 #define MANAGERACTOR_H_
 
-#include "IActor.h"
-#include "IWorkerActor.h"
+#include "AbstractActor.h"
+#include "AbstractWorkerActor.h"
 
 namespace wfe
 {
 
-class ManagerActor: public IActor
+class ManagerActor: public AbstractActor
 {
 public:
-	ManagerActor(IWorkerActor *worker):
+	ManagerActor(AbstractWorkerActor *worker):
 		_worker(worker), _state(NOT_READY), _firecond(true) {}
 	State state();
 	inline void setup() { _worker->initialize(this); }
@@ -34,7 +34,7 @@ public:
 			{ return _worker->sourcePorts(); }
 
 private:
-	IWorkerActor *_worker;
+	AbstractWorkerActor *_worker;
 	State _state;
 	bool _firecond;
 };

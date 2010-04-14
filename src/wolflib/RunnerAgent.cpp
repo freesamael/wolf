@@ -147,7 +147,7 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
  * \param[in] rsock
  * Socket of runner to send actor to, or NULL for all runners.
  */
-bool RunnerAgent::sendActor(IWorkerActor *actor, TCPSocket *rsock)
+bool RunnerAgent::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 {
 	if (_state != READY)
 		return false;

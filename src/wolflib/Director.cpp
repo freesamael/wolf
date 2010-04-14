@@ -7,7 +7,7 @@
 #include <deque>
 #include "Director.h"
 #include "Channel.h"
-#include "IActor.h"
+#include "AbstractActor.h"
 
 using namespace std;
 
@@ -30,9 +30,9 @@ Director::~Director()
  * \note
  * Director takes the ownership of actors, and will delete/free them.
  */
-bool Director::addActor(IActor *actor)
+bool Director::addActor(AbstractActor *actor)
 {
-	vector<IActor *>::iterator iter;
+	vector<AbstractActor *>::iterator iter;
 	for (iter = _actors.begin(); iter != _actors.end(); iter++) {
 		if (*iter == actor)
 			return false;
@@ -50,9 +50,9 @@ bool Director::addActor(IActor *actor)
  * \note
  * Director won't delete the given actor.
  */
-bool Director::removeActor(IActor *actor)
+bool Director::removeActor(AbstractActor *actor)
 {
-	vector<IActor *>::iterator iter;
+	vector<AbstractActor *>::iterator iter;
 	for (iter = _actors.begin(); iter != _actors.end(); iter++) {
 		if (*iter == actor) {
 			_actors.erase(iter);

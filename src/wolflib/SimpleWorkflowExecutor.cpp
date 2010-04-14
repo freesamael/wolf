@@ -12,28 +12,28 @@ using namespace std;
 namespace wfe
 {
 
-void SimpleWorkflowExecutor::execute(const vector<IActor *> &actors)
+void SimpleWorkflowExecutor::execute(const vector<AbstractActor *> &actors)
 {
 	setup(actors);
 	iterate(actors);
 	wrapup(actors);
 }
 
-void SimpleWorkflowExecutor::setup(const vector<IActor *> &actors)
+void SimpleWorkflowExecutor::setup(const vector<AbstractActor *> &actors)
 {
 	for (int i = 0; i < (int)actors.size(); i++)
 		actors[i]->setup();
 }
 
-void SimpleWorkflowExecutor::iterate(const vector<IActor *> &actors)
+void SimpleWorkflowExecutor::iterate(const vector<AbstractActor *> &actors)
 {
-	deque<IActor *> qready;
-	vector<IActor *> vwait = actors;
-	vector<IActor *>::iterator iter;
+	deque<AbstractActor *> qready;
+	vector<AbstractActor *> vwait = actors;
+	vector<AbstractActor *>::iterator iter;
 
 	// Put ready actors into ready queue.
 	for (iter = vwait.begin(); iter != vwait.end();) {
-		if ((*iter)->state() == IActor::READY) {
+		if ((*iter)->state() == AbstractActor::READY) {
 			qready.push_back(*iter);
 			vwait.erase(iter);
 		} else
@@ -52,7 +52,7 @@ void SimpleWorkflowExecutor::iterate(const vector<IActor *> &actors)
 
 		// Put ready actors into ready queue.
 		for (iter = vwait.begin(); iter != vwait.end();) {
-			if ((*iter)->state() == IActor::READY) {
+			if ((*iter)->state() == AbstractActor::READY) {
 				qready.push_back(*iter);
 				vwait.erase(iter);
 			} else
@@ -61,7 +61,7 @@ void SimpleWorkflowExecutor::iterate(const vector<IActor *> &actors)
 	}
 }
 
-void SimpleWorkflowExecutor::wrapup(const vector<IActor *> &actors)
+void SimpleWorkflowExecutor::wrapup(const vector<AbstractActor *> &actors)
 {
 	for (int i = 0; i < (int)actors.size(); i++)
 		actors[i]->wrapup();

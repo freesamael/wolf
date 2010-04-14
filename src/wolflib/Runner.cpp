@@ -11,7 +11,7 @@
 #include <TLVReaderWriter.h>
 #include "Runner.h"
 #include "D2MCE.h"
-#include "IWorkerActor.h"
+#include "AbstractWorkerActor.h"
 
 using namespace std;
 using namespace cml;
@@ -114,8 +114,8 @@ bool Runner::joinGroup(const string &appname)
 bool Runner::processCommand(TLVMessage *cmd)
 {
 	if (cmd->command() == TLVMessage::RUN_ACTOR) {
-		IWorkerActor *actor;
-		if (!(actor = dynamic_cast<IWorkerActor *>(cmd->parameter()))) {
+		AbstractWorkerActor *actor;
+		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
 			fprintf(stderr, "Runner::run(): Error: Invalid parameter.\n");
 			return false;
 		}

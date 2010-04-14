@@ -11,7 +11,7 @@
 #include <string>
 #include <pthread.h>
 #include <TCPSocket.h>
-#include "IWorkerActor.h"
+#include "AbstractWorkerActor.h"
 
 namespace wfe
 {
@@ -28,7 +28,7 @@ public:
 	static void release();
 	bool setup(unsigned short runner_port, unsigned short master_port, const
 			std::string &appname, unsigned int timeout = 2);
-	bool sendActor(IWorkerActor *actor, cml::TCPSocket *rsock = NULL);
+	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
 	/// Get the state of the agent.
 	inline State state() const { return _state; }
 	/// Get the sockets of runners.

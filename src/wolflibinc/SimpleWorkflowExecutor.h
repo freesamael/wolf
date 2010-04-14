@@ -15,12 +15,12 @@ namespace wfe
 class SimpleWorkflowExecutor: public IWorkflowExecutor
 {
 public:
-	void execute(const std::vector<IActor *> &actors);
+	void execute(const std::vector<AbstractActor *> &actors);
 
 private:
-	void setup(const std::vector<IActor *> &actors);
-	void iterate(const std::vector<IActor *> &actors);
-	void wrapup(const std::vector<IActor *> &actors);
+	void setup(const std::vector<AbstractActor *> &actors);
+	void iterate(const std::vector<AbstractActor *> &actors);
+	void wrapup(const std::vector<AbstractActor *> &actors);
 };
 
 }
