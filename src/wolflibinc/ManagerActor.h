@@ -18,8 +18,8 @@ public:
 	ManagerActor(AbstractWorkerActor *worker):
 		_worker(worker), _state(NOT_READY) { _worker->initializeManager(this); }
 	~ManagerActor() { _worker->finalizeManager(this);}
-	inline void setup() { _worker->setupManager(this); _state = RUNNING; }
-	inline void wrapup() { _worker->wrapupManager(this); _state = FINISHED; }
+	inline void prefire() { _worker->setupManager(this); _state = RUNNING; }
+	inline void postfire() { _worker->wrapupManager(this); _state = FINISHED; }
 	State state();
 	void fire();
 
