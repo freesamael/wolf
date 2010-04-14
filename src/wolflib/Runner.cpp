@@ -120,12 +120,12 @@ bool Runner::processCommand(TLVMessage *cmd)
 			return false;
 		}
 		actor->setup();
-		while (actor->testfire()) {
+		do {
 			/// TODO: Add the power-aware load balancing feature.
 			actor->prefire();
 			actor->fire();
 			actor->postfire();
-		}
+		} while (actor->testfire());
 		actor->wrapup();
 		delete actor;
 	} else {

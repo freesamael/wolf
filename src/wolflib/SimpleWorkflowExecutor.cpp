@@ -43,11 +43,11 @@ void SimpleWorkflowExecutor::iterate(const vector<AbstractActor *> &actors)
 	// Execute one actor.
 	while (qready.size() > 0) {
 		// Iterate until testfire() fails.
-		while (qready.front()->testfire()) {
+		do {
 			qready.front()->prefire();
 			qready.front()->fire();
 			qready.front()->postfire();
-		}
+		} while (qready.front()->testfire());
 		qready.pop_front();
 
 		// Put ready actors into ready queue.
