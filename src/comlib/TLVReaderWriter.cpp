@@ -56,11 +56,11 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 
 	// Read header.
 	if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
-		delete hdrbuf;
+		delete [] hdrbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Data read is too small to be a TLV block.\n");
-		delete hdrbuf;
+		delete [] hdrbuf;
 		return NULL;
 	}
 
@@ -72,7 +72,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 			blk.length()) {
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Expected %u bytes but %u bytes read.\n",
 				blk.plainSize(), ret);
-		delete hdrbuf;
+		delete [] hdrbuf;
 		delete tmpblk;
 		return NULL;
 	}
@@ -82,7 +82,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	if (!obj)
 		fprintf(stderr, "TLVReaderWriter::read(): Error: Unable to construct TLV object.\n");
 
-	delete hdrbuf;
+	delete [] hdrbuf;
 	delete tmpblk;
 	return obj;
 }
