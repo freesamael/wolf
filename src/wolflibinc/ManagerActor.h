@@ -7,7 +7,6 @@
 #ifndef MANAGERACTOR_H_
 #define MANAGERACTOR_H_
 
-#include "AbstractActor.h"
 #include "AbstractWorkerActor.h"
 
 namespace wfe

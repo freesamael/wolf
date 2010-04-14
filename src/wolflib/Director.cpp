@@ -7,7 +7,7 @@
 #include <deque>
 #include "Director.h"
 #include "Channel.h"
-#include "AbstractActor.h"
+#include "RunnerAgent.h"
 
 using namespace std;
 
@@ -16,9 +16,10 @@ namespace wfe
 
 Director::~Director()
 {
-	for (int i = 0; i < (int)_actors.size(); i++) {
-		delete _actors[i];
-	}
+	/// TODO: decide the lifetime management of actors.
+//	for (int i = 0; i < (int)_actors.size(); i++) {
+//		delete _actors[i];
+//	}
 }
 
 /**
@@ -26,9 +27,6 @@ Director::~Director()
  *
  * \return
  * True on success, false if it already exists inside the director.
- *
- * \note
- * Director takes the ownership of actors, and will delete/free them.
  */
 bool Director::addActor(AbstractActor *actor)
 {
@@ -46,9 +44,6 @@ bool Director::addActor(AbstractActor *actor)
  *
  * \return
  * True on success, false if not found.
- *
- * \note
- * Director won't delete the given actor.
  */
 bool Director::removeActor(AbstractActor *actor)
 {
@@ -94,6 +89,12 @@ Channel* Director::findChannel(const string &name)
 void Director::execute()
 {
 	_exest->execute(_actors);
+}
+
+void Director::execute(unsigned short runner_port, unsigned short master_port,
+		const string &name)
+{
+	RunnerAgent::instance()->setup(runner_port, master_port, name);
 }
 
 }
