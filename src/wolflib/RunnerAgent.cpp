@@ -56,6 +56,7 @@ public:
 							TLVMessage::CommandString[TLVMessage::HELLO_SLAVE],
 							TLVMessage::CommandString[msg->command()]);
 				} else {
+					printf("Info: Got one runner.\n");
 					_ssocks->push_back(tsock);
 				}
 				delete msg;
@@ -109,11 +110,13 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 	athread.setparam(&_msock, &_ssocks);
 	athread.start();
 
+#ifdef ENABLE_D2MCE
 	// Join D2MCE computing group.
 	D2MCE::instance()->join(appname);
 	printf("%d nodes inside the group, node id = %d.\n",
 			D2MCE::instance()->getNumberOfNodes(),
 			D2MCE::instance()->nodeId());
+#endif
 
 	// Broadcast notification.
 	UDPSocket usock;

@@ -23,21 +23,26 @@ void Runner::run(unsigned short runner_port, unsigned short master_port,
 		const string &appname)
 {
 	HostAddress addr;
+	printf("Info: Waiting for runner agent notification.\n");
 	if (!(addr = getMasterAddr(runner_port)).isValid()) {
 		fprintf(stderr, "Runner::run(): Error: Runner fails, exit now.\n");
 		return;
 	}
 
 	TCPSocket sock;
+	printf("Info: Connection to the master node... ");
 	if (!connectToMaster(&sock, addr, master_port)) {
 		fprintf(stderr, "Runner::run(): Error: Runner fails, exit now.\n");
 		return;
 	}
+	printf("Connected.\n");
 
+#ifdef ENABLE_D2MCE
 	if (!joinGroup(appname)) {
 		fprintf(stderr, "Runner::run(): Error: Runner fails, exit now.\n");
 		return;
 	}
+#endif
 
 	runnerLoop(&sock);
 }
