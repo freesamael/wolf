@@ -36,10 +36,11 @@ class AbstractWorkerActor: public AbstractActor, public cml::ITLVObject
 {
 public:
 	virtual ~AbstractWorkerActor() {}
-	/// Setup the ManagerActor it belongs to.
-	virtual void initialize(ManagerActor *manager) = 0;
-	/// Wrap up the ManagerActor it belongs to.
-	virtual void finalize(ManagerActor *manager) = 0;
+	virtual State state() { return READY; }
+	virtual void initializeManager(ManagerActor *manager) {}
+	virtual void finalizeManager(ManagerActor *manager) {}
+	virtual void setupManager(ManagerActor *manager) {}
+	virtual void wrapupManager(ManagerActor *manager) {}
 };
 
 }

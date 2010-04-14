@@ -16,26 +16,16 @@ class ManagerActor: public AbstractActor
 {
 public:
 	ManagerActor(AbstractWorkerActor *worker):
-		_worker(worker), _state(NOT_READY), _firecond(true) {}
+		_worker(worker), _state(NOT_READY) { _worker->initializeManager(this); }
+	~ManagerActor() { _worker->finalizeManager(this);}
+	inline void setup() { _worker->setupManager(this); _state = RUNNING; }
+	inline void wrapup() { _worker->wrapupManager(this); _state = FINISHED; }
 	State state();
-	inline void setup() { _worker->initialize(this); }
-	inline void wrapup() { _worker->finalize(this); }
-	inline bool testfire() { return _firecond; }
-	void prefire();
 	void fire();
-	void postfire();
-	void reset();
-	SinkPort* addSinkPort();
-	SourcePort* addSourcePort();
-	inline const std::vector<SinkPort *>& sinkPorts()
-			{ return _worker->sinkPorts(); }
-	inline const std::vector<SourcePort *>& sourcePorts()
-			{ return _worker->sourcePorts(); }
 
 private:
 	AbstractWorkerActor *_worker;
 	State _state;
-	bool _firecond;
 };
 
 }

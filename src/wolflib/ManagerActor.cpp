@@ -22,27 +22,9 @@ AbstractActor::State ManagerActor::state()
 	return _state;
 }
 
-void ManagerActor::prefire()
-{
-	_state = RUNNING;
-}
-
 void ManagerActor::fire()
 {
 	RunnerAgent::instance()->sendActor(_worker);
-}
-
-void ManagerActor::postfire()
-{
-	_firecond = false;
-	_state = FINISHED;
-}
-
-void ManagerActor::reset()
-{
-	_worker->reset();
-	_state = NOT_READY;
-	_firecond = true;
 }
 
 }
