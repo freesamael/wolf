@@ -37,6 +37,10 @@ int main()
 	d.addActor(&a2);
 	d.addActor(&a3);
 
+//	HelloWorker w1;
+//	ManagerActor a1(&w1);
+//	d.addActor(&a1);
+
 	d.execute(6655, 8877, "heco");
 
 	return 0;

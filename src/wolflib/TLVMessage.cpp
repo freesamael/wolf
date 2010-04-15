@@ -26,12 +26,13 @@ TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE, TLVMessageCreator);
 const unsigned short TLVMessage::TLVType = 10;
 
 const char *TLVMessage::CommandString[] = {
-		"Empty", "Hello Master", "Hello Slave", "Run Actor"
+		"Empty", "Shutdown", "Hello Master", "Hello Slave", "Run Actor"
 };
 const unsigned short TLVMessage::EMPTY = 0;
-const unsigned short TLVMessage::HELLO_MASTER = 1;
-const unsigned short TLVMessage::HELLO_SLAVE = 2;
-const unsigned short TLVMessage::RUN_ACTOR = 3;
+const unsigned short TLVMessage::SHUTDOWN = 1;
+const unsigned short TLVMessage::HELLO_MASTER = 2;
+const unsigned short TLVMessage::HELLO_SLAVE = 3;
+const unsigned short TLVMessage::RUN_ACTOR = 4;
 
 StandardTLVBlock* TLVMessage::toTLVBlock() const
 {

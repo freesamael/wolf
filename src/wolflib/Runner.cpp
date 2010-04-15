@@ -53,6 +53,7 @@ void Runner::run(unsigned short runner_port, unsigned short master_port,
 	}
 #endif
 
+	_endf = false;
 	runnerLoop(&sock);
 }
 
@@ -114,12 +115,13 @@ bool Runner::joinGroup(const string &appname)
 //		fprintf(stderr, "Runner::run(): Unable to join group.\n");
 //		return false;
 //	}
+#ifdef ENABLE_D2MCE
 	D2MCE::instance()->join(appname);
 	printf("Info: %s: %d: %d nodes inside the group, node id = %d.\n",
 			__PRETTY_FUNCTION__, __LINE__,
 			D2MCE::instance()->getNumberOfNodes(),
 			D2MCE::instance()->nodeId());
-
+#endif /* ENABLE_D2MCE */
 	return true;
 }
 
@@ -145,6 +147,8 @@ bool Runner::processCommand(TLVMessage *cmd)
 		} while (actor->testfire());
 		actor->wrapup();
 		delete actor;
+	} else if (cmd->command() == TLVMessage::SHUTDOWN) {
+		_endf = true;
 	} else {
 		PERR << "Unexpected command \"" <<
 				TLVMessage::CommandString[cmd->command()] << "\".\n";
@@ -163,7 +167,9 @@ void Runner::runnerLoop(TCPSocket *sock)
 	ITLVObject *inobj;
 	TLVMessage *inmsg = NULL;
 
-	while ((inobj = tcprw.read())) {
+	while (!_endf && inobj) {
+		if (!(inobj = tcprw.read()))
+			break; // End of file.
 		if (!(inmsg = dynamic_cast<TLVMessage *>(inobj))) {
 			PERR << "Invalid incoming message.\n";
 			delete inobj;
