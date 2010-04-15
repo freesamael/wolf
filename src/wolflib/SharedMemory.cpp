@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#ifdef ENABLE_D2MCE
 #include <cstring>
 #include "SharedMemory.h"
 #include "D2MCE.h"
@@ -34,3 +35,5 @@ IDrop* SharedMemory::clone() const
 }
 
 }
+
+#endif /* ENABLE_D2MCE */

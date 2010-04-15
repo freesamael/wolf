@@ -50,14 +50,21 @@ void Counter::managerPrefire(ManagerActor *manager)
 
 	// Generate memory info.
 	_meminfo = new TLVSharedMemoryInfo(_mem->name(), _mem->size());
+	printf("%s: Meminfo: name = %s, size = %d\n", __PRETTY_FUNCTION__,
+			_meminfo->name().c_str(), (int)_meminfo->size());
 }
 
 void Counter::managerPostfire(ManagerActor *manager)
 {
+	unsigned nodes = D2MCE::instance()->getNumberOfNodes();
+	printf("%s: Barrier for %u nodes.\n", __PRETTY_FUNCTION__, nodes);
+	D2MCE::instance()->barrier(nodes);
+	printf("%s: Barrier passed.\n", __PRETTY_FUNCTION__);
+
 	// Load memory.
 	_mem->load();
 	int *num = (int *)_mem->buffer();
-	printf("%s: Num = %d %d %d %d", __PRETTY_FUNCTION__,
+	printf("%s: Num = %d %d %d %d\n", __PRETTY_FUNCTION__,
 			num[0], num[1], num[2], num[3]);
 
 	// Write port.
@@ -80,11 +87,19 @@ void Counter::fire()
 	_mem->lock();
 	_mem->load();
 	int *num = (int *)_mem->buffer();
-	printf("%s: Num = %d %d %d %d", __PRETTY_FUNCTION__,
+	printf("%s: Num = %d %d %d %d\n", __PRETTY_FUNCTION__,
 			num[0], num[1], num[2], num[3]);
 	num[index]++;
 	_mem->store();
 	_mem->unlock();
+}
+
+void Counter::postfire()
+{
+	unsigned int nodes = D2MCE::instance()->getNumberOfNodes();
+	printf("%s: Barrier for %u nodes.\n", __PRETTY_FUNCTION__, nodes);
+	D2MCE::instance()->barrier(nodes);
+	printf("%s: Barrier passed.\n", __PRETTY_FUNCTION__);
 }
 
 StandardTLVBlock* Counter::toTLVBlock() const

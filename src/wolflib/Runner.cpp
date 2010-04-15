@@ -8,6 +8,7 @@
 #include <string>
 #include <typeinfo>
 #include <cstdio>
+#include <cstdlib>
 #include <unistd.h>
 #include <sys/time.h>
 #include <UDPSocket.h>
@@ -114,7 +115,7 @@ bool Runner::joinGroup(const string &appname)
 //		return false;
 //	}
 	D2MCE::instance()->join(appname);
-	printf("Info: %s: %d, %d nodes inside the group, node id = %d.\n",
+	printf("Info: %s: %d: %d nodes inside the group, node id = %d.\n",
 			__PRETTY_FUNCTION__, __LINE__,
 			D2MCE::instance()->getNumberOfNodes(),
 			D2MCE::instance()->nodeId());

@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#ifdef ENABLE_D2MCE
 #ifndef SHAREDMEMORY_H_
 #define SHAREDMEMORY_H_
 
@@ -46,3 +47,4 @@ private:
 }
 
 #endif /* SHAREDMEMORY_H_ */
+#endif /* ENABLE_D2MCE */

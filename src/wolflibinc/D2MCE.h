@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#ifdef ENABLE_D2MCE
 #ifndef D2MCE_H_
 #define D2MCE_H_
 
@@ -14,7 +15,6 @@
 
 namespace wfe
 {
-
 /**
  * A wrapper for D2MCE.
  */
@@ -42,3 +42,4 @@ private:
 }
 
 #endif /* D2MCE_H_ */
+#endif /* ENABLE_D2MCE */

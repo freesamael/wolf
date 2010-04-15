@@ -6,6 +6,8 @@
 
 #include <cstdio>
 #include <typeinfo>
+#include <string>
+#include <sstream>
 #include "TLVObjectFactory.h"
 #include "ITLVObjectCreator.h"
 #include "TLVBlock.h"
@@ -157,7 +159,9 @@ ITLVObject* TLVObjectFactory::createTLVObject(unsigned short type_id)
  */
 ITLVObject* TLVObjectFactory::createTLVObject(const ITLVBlock &blk)
 {
-	PINFO("Creating an object.");
+	stringstream str;
+	str << "Creating an object, type id = " << blk.type() << ".";
+	PINFO(str.str().c_str());
 	map<string, ITLVObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(lookupTypeName(blk.type()))) !=
 			_creators.end()) {

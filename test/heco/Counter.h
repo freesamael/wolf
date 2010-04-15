@@ -20,6 +20,7 @@ public:
 	void managerPostfire(wfe::ManagerActor *manager);
 	void setup();
 	void fire();
+	void postfire();
 	cml::StandardTLVBlock* toTLVBlock() const;
 	void setMeminfo(wfe::TLVSharedMemoryInfo *meminfo) { _meminfo = meminfo; }
 

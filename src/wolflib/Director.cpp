@@ -31,6 +31,10 @@ Director::~Director()
  */
 bool Director::addActor(AbstractActor *actor)
 {
+	if (dynamic_cast<AbstractWorkerActor *>(actor)) {
+		PERR << "Worker actors are not supposed to be added into the Director.\n";
+		return false;
+	}
 	vector<AbstractActor *>::iterator iter;
 	for (iter = _actors.begin(); iter != _actors.end(); iter++) {
 		if (*iter == actor)

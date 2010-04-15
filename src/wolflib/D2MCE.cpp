@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#ifdef ENABLE_D2MCE
 #include <SingletonAutoDestructor.h>
 #include <HelperMacros.h>
 #include "D2MCE.h"
@@ -113,3 +114,5 @@ SharedMemory* D2MCE::findSharedMemory(const string &name)
 }
 
 }
+
+#endif /* ENABLE_D2MCE */
