@@ -21,6 +21,8 @@ Director::~Director()
 //	for (int i = 0; i < (int)_actors.size(); i++) {
 //		delete _actors[i];
 //	}
+	// Release RunnerAgent
+	RunnerAgent::release();
 }
 
 /**
