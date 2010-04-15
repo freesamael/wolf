@@ -23,6 +23,7 @@ void Channel::attachReader(SinkPort *port)
 			return;
 	}
 	_readers.push_back(port);
+	port->setChannel(this);
 }
 
 /**

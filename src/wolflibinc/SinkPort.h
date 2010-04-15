@@ -26,8 +26,8 @@ public:
 	inline Type type() const { return SINK; }
 	inline AbstractActor* owner() const { return _owner; }
 	inline Channel* channel() const { return _channel; }
-	inline void setChannel(Channel *ch) { _channel = ch; }
 	inline bool isEmpty() const { return _queue.empty(); }
+	void setChannel(Channel *ch);
 	void writePort(IDrop *item);
 	IDrop* readPort();
 

@@ -5,6 +5,7 @@
  */
 
 #include "SinkPort.h"
+#include "Channel.h"
 
 namespace wfe
 {
@@ -31,6 +32,14 @@ IDrop* SinkPort::readPort()
 		_queue.pop_front();
 	}
 	return item;
+}
+
+void SinkPort::setChannel(Channel *ch)
+{
+	if (_channel != ch) {
+		_channel = ch;
+		_channel->attachReader(this);
+	}
 }
 
 }
