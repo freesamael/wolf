@@ -31,6 +31,7 @@ D2MCE::~D2MCE()
 	for (int i = 0; i < (int)_smems.size(); i++)
 		delete _smems[i];
 	d2mce_finalize();
+	PINFO("d2mce finalized.");
 }
 
 D2MCE* D2MCE::instance()
