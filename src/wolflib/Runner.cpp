@@ -148,6 +148,7 @@ bool Runner::processCommand(TLVMessage *cmd)
 		actor->wrapup();
 		delete actor;
 	} else if (cmd->command() == TLVMessage::SHUTDOWN) {
+		PINFO("Ending runner.");
 		_endf = true;
 	} else {
 		PERR << "Unexpected command \"" <<
@@ -167,7 +168,7 @@ void Runner::runnerLoop(TCPSocket *sock)
 	ITLVObject *inobj;
 	TLVMessage *inmsg = NULL;
 
-	while (!_endf && inobj) {
+	while (!_endf) {
 		if (!(inobj = tcprw.read()))
 			break; // End of file.
 		if (!(inmsg = dynamic_cast<TLVMessage *>(inobj))) {
