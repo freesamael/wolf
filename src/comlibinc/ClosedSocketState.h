@@ -45,9 +45,6 @@ public:
 	/// Unsupported operation with dummy implementation.
 	inline ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
 			const HostAddress &addr, unsigned short port) { return -1; }
-	/// Unsupported operation with dummy implementation.
-	inline HostAddress currentAddress(AbstractSocket *sock)
-		{ return HostAddress(); }
 
 private:
 	ClosedSocketState(): _statestr("Closed") {}

@@ -8,7 +8,6 @@
 #define CONNECTEDSOCKETSTATE_H_
 
 #include "ISocketState.h"
-#include "AbstractSocket.h"
 
 namespace cml
 {
@@ -28,8 +27,6 @@ public:
 	bool close(AbstractSocket *sock);
 	ssize_t read(AbstractSocket *sock, char *buf, size_t size);
 	ssize_t write(AbstractSocket *sock, const char *buf, size_t size);
-	inline HostAddress currentAddress(AbstractSocket *sock)
-		{ return AbstractSocket::getSocketName(sock->sockfd()); }
 
 	/// Unsupported operation with dummy implementation.
 	inline bool open(AbstractSocket *sock) { return false; }

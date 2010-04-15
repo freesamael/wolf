@@ -187,11 +187,12 @@ int AbstractSocket::TTL() const
 	return ttl;
 }
 
-HostAddress AbstractSocket::getSocketName(int sockfd)
+HostAddress AbstractSocket::currentAddress() const
 {
 	sockaddr_in inaddr;
 	socklen_t len = sizeof(inaddr);
-	if (!getsockname(sockfd, (sockaddr *)&inaddr, &len)) {
+
+	if (getsockname(_sockfd, (sockaddr *)&inaddr, &len)) {
 		perror("Error: AbstractSocket::getSocketName()");
 		return HostAddress();
 	}

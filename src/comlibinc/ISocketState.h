@@ -81,11 +81,6 @@ public:
 	virtual ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
 			const HostAddress &addr, unsigned short port) = 0;
 
-	/// Get the address that the socket currently used/bound.
-	/// \return Current address used, or an invalid HostAddress if it's not
-	/// bound in any address yet.
-	virtual HostAddress currentAddress(AbstractSocket *sock) = 0;
-
 	/// Get the state name.
 	virtual const std::string& name() const = 0;
 };

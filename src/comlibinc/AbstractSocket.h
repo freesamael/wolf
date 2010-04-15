@@ -37,15 +37,14 @@ public:
 	bool isNonblock() const;
 	bool setTTL(int ttl);
 	int TTL() const;
+	HostAddress currentAddress() const;
 
 	inline void changeState(ISocketState *state) { _state = state; }
 	inline const ISocketState* state() const { return _state; }
 	inline void setSockfd(int sock) { _sockfd = sock; }
 	inline int sockfd() const { return _sockfd; }
-	inline HostAddress currentAddress() { return _state->currentAddress(this); }
 
 	// Static helpers.
-	static HostAddress getSocketName(int sockfd);
 	static HostAddress getHostByName(const std::string &host);
 	static unsigned short getServiceByName(const std::string &service);
 

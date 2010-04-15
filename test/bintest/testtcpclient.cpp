@@ -19,6 +19,7 @@ int main()
     TCPSocket sock;
     TLVReaderWriter rw(&sock);
     sock.activeOpen("127.0.0.1", 5566);
+    cout << "local address: " << sock.currentAddress().toString() << endl;
 
     do {
         cin >> str;

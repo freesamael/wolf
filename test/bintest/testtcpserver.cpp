@@ -20,6 +20,8 @@ int main()
     TCPSocket *ssock = msock.accept();
     TLVReaderWriter rw(ssock);
     ITLVObject *obj;
+    cout << "local address: " << msock.currentAddress().toString() << endl;
+    cout << "local address: " << ssock->currentAddress().toString() << endl;
 
 	// Read in.
 	while ((obj = rw.read())) {
