@@ -61,6 +61,8 @@ void SimpleWorkflowExecutor::iterate(const vector<AbstractActor *> &actors)
 				iter++;
 		}
 	}
+
+	PINFO("Execution loop ends.");
 }
 
 void SimpleWorkflowExecutor::wrapup(const vector<AbstractActor *> &actors)

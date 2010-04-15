@@ -129,6 +129,7 @@ bool Runner::joinGroup(const string &appname)
  */
 bool Runner::processCommand(TLVMessage *cmd)
 {
+	PINFO("Processing a command.");
 	if (cmd->command() == TLVMessage::RUN_ACTOR) {
 		AbstractWorkerActor *actor;
 		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
@@ -173,6 +174,7 @@ void Runner::runnerLoop(TCPSocket *sock)
 			delete inmsg;
 		}
 	}
+	PINFO("Runner loop ends.");
 }
 
 }
