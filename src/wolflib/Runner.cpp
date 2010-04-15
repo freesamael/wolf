@@ -42,8 +42,10 @@ void Runner::run(unsigned short runner_port, unsigned short master_port,
 	PINFO(((string)"Connected with address = " + sock.currentAddress().toString()).c_str());
 
 #ifdef ENABLE_D2MCE
+	// Random back-off.
 	srand((unsigned)sock.currentAddress().toInetAddr());
 	usleep((rand() % 30) * 33000); // sleep 0 ~ 1s, granularity 33ms.
+	// Join.
 	if (!joinGroup(appname)) {
 		PERR << "Runner fails, exit now.\n";
 		return;
