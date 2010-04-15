@@ -43,6 +43,7 @@ D2MCE* D2MCE::instance()
 
 void D2MCE::release()
 {
+	PINFO("Releasing D2MCE.");
 	delete _instance;
 	_instance = NULL;
 }
