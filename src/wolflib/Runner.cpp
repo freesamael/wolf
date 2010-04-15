@@ -5,8 +5,10 @@
  */
 
 #include <iostream>
+#include <string>
 #include <typeinfo>
 #include <cstdio>
+#include <sys/time.h>
 #include <UDPSocket.h>
 #include <TLVReaderWriter.h>
 #include <HelperMacros.h>
@@ -36,9 +38,10 @@ void Runner::run(unsigned short runner_port, unsigned short master_port,
 		PERR << "Runner fails, exit now.\n";
 		return;
 	}
-	PINFO("Connected.\n");
+	PINFO(((string)"Connected with address = " + sock.currentAddress().toString()).c_str());
 
 #ifdef ENABLE_D2MCE
+
 	if (!joinGroup(appname)) {
 		PERR << "Runner fails, exit now.\n";
 		return;

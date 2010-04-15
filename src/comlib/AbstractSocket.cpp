@@ -187,12 +187,23 @@ int AbstractSocket::TTL() const
 	return ttl;
 }
 
+HostAddress AbstractSocket::getSocketName(int sockfd)
+{
+	sockaddr_in inaddr;
+	socklen_t len = sizeof(inaddr);
+	if (!getsockname(sockfd, (sockaddr *)&inaddr, &len)) {
+		perror("Error: AbstractSocket::getSocketName()");
+		return HostAddress();
+	}
+	return HostAddress(inaddr.sin_addr.s_addr);
+}
+
 /**
  * Get host address by host name (e.g. "www.google.com").
  */
 HostAddress AbstractSocket::getHostByName(const string &host)
 {
-	struct hostent *phe;
+	hostent *phe;
 
 	if ((phe = gethostbyname(host.c_str()))) {
 		in_addr addr;
@@ -207,7 +218,7 @@ HostAddress AbstractSocket::getHostByName(const string &host)
  */
 unsigned short AbstractSocket::getServiceByName(const string &service)
 {
-	struct servent *pse;
+	servent *pse;
 
 	if ((pse = getservbyname(service.c_str(), NULL))) {
 		return pse->s_port;

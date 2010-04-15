@@ -8,6 +8,7 @@
 #define BOUNDSOCKETSTATE_H_
 
 #include "ISocketState.h"
+#include "AbstractSocket.h"
 
 namespace cml
 {
@@ -30,6 +31,8 @@ public:
 			HostAddress *addr, unsigned short *port);
 	ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
 			const HostAddress &addr, unsigned short port);
+	inline HostAddress currentAddress(AbstractSocket *sock)
+			{ return AbstractSocket::getSocketName(sock->sockfd()); }
 
 	/// Unsupported operation with dummy implementation.
 	inline bool open(AbstractSocket *sock) { return false; }

@@ -20,7 +20,7 @@ D2MCE *D2MCE::_instance = NULL;
 
 D2MCE::D2MCE()
 {
-	PINFO("Initialing d2mce.");
+	PINFO("Initializing d2mce.");
 	d2mce_init();
 }
 

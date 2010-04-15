@@ -62,7 +62,7 @@ public:
 				}
 				delete msg;
 			}
-			usleep(20000);
+			usleep(tsock ? 0 : 50000);
 		}
 	}
 	void stop() { _stop = true; }
