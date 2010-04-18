@@ -4,17 +4,18 @@
  * \author samael
  */
 
-#ifdef ENABLE_D2MCE
 #ifndef SHAREDMEMORY_H_
 #define SHAREDMEMORY_H_
 
 #include <string>
-#include <d2mce/d2mce.h>
 #include "IDrop.h"
 
 namespace wfe
 {
 
+#ifndef DISABLE_D2MCE
+
+#include <d2mce/d2mce.h>
 /**
  * SharedMemory represents a piece of shared memory on D2MCE tuple space. A
  * SharedMemory should be constructed by D2MCE::createSharedMemory() and the
@@ -44,7 +45,31 @@ private:
 	size_t _size;
 };
 
+#else
+
+/**
+ * A dummy class used to make compiler happy.
+ */
+class SharedMemory: public IDrop
+{
+public:
+	SharedMemory(std::string name, size_t size) {}
+	inline const std::string& name() const { static std::string s; return s; }
+	inline size_t size() const { return 0; }
+	inline char* buffer() { return NULL; }
+	inline bool lock() { return false; }
+	inline bool unlock() { return false; }
+	inline bool load() { return false; }
+	inline bool store() { return false; }
+	inline bool mload(unsigned int offset, unsigned int length) {
+		return false; }
+	inline bool mstore(unsigned int offset, unsigned int length) {
+		return false; }
+	IDrop* clone() const { return NULL; }
+};
+
+#endif /* DISABLE_D2MCE */
+
 }
 
 #endif /* SHAREDMEMORY_H_ */
-#endif /* ENABLE_D2MCE */

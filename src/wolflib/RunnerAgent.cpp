@@ -112,14 +112,14 @@ bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
 	athread.setparam(&_msock, &_ssocks);
 	athread.start();
 
-#ifdef ENABLE_D2MCE
+#ifndef DISABLE_D2MCE
 	// Join D2MCE computing group.
 	D2MCE::instance()->join(appname);
 //	printf("Info: %s: %d: %d nodes inside the group, node id = %d.\n",
 //			__PRETTY_FUNCTION__, __LINE__,
 //			D2MCE::instance()->getNumberOfNodes(),
 //			D2MCE::instance()->nodeId());
-#endif
+#endif /* DISABLE_D2MCE */
 
 	// Broadcast notification.
 	UDPSocket usock;

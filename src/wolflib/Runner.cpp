@@ -42,8 +42,9 @@ void Runner::run(unsigned short runner_port, unsigned short master_port,
 	}
 	PINFO(((string)"Connected with address = " + sock.currentAddress().toString()).c_str());
 
-#ifdef ENABLE_D2MCE
-	// Random back-off.
+#ifndef DISABLE_D2MCE
+	// Random back-off. It's just a workaround for the problem that multiple
+	// nodes joining at the same time might cause failure.
 	srand((unsigned)sock.currentAddress().toInetAddr());
 	usleep((rand() % 30) * 33000); // sleep 0 ~ 1s, granularity 33ms.
 	// Join.
@@ -51,7 +52,7 @@ void Runner::run(unsigned short runner_port, unsigned short master_port,
 		PERR << "Runner fails, exit now.\n";
 		return;
 	}
-#endif
+#endif /* DISABLE_D2MCE */
 
 	_endf = false;
 	runnerLoop(&sock);
@@ -115,13 +116,13 @@ bool Runner::joinGroup(const string &appname)
 //		fprintf(stderr, "Runner::run(): Unable to join group.\n");
 //		return false;
 //	}
-#ifdef ENABLE_D2MCE
+#ifndef DISABLE_D2MCE
 	D2MCE::instance()->join(appname);
 	printf("Info: %s: %d: %d nodes inside the group, node id = %d.\n",
 			__PRETTY_FUNCTION__, __LINE__,
 			D2MCE::instance()->getNumberOfNodes(),
 			D2MCE::instance()->nodeId());
-#endif /* ENABLE_D2MCE */
+#endif /* DISABLE_D2MCE */
 	return true;
 }
 

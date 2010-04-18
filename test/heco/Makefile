@@ -4,9 +4,9 @@ HECO_RUNNER = ${WOLF_BINDIR}/heco_runner
 HECO_RUNNER_O = ${HECO_SRCDIR}/heco_runner.o
 HECO_COM_OBJS := ${filter-out ${HECO_O} ${HECO_RUNNER_O},${patsubst %.cpp,%.o,${wildcard ${HECO_SRCDIR}/*.cpp}}}
 
-${HECO}: CXXFLAGS += -I${COMLIB_INCDIR} -I${WOLFLIB_INCDIR} -I${D2MCE_INCDIR}
-${HECO}: LIBS += -lwolf -ld2mce -lpthread
-${HECO}: LDFLAGS += -L${WOLF_LIBDIR} -L${D2MCE_LIBDIR}
+${HECO}: CXXFLAGS += -I${COMLIB_INCDIR} -I${WOLFLIB_INCDIR} ${D2MCE_CXXFLAGS}
+${HECO}: LIBS += -lwolf -lpthread ${D2MCE_LIBS}
+${HECO}: LDFLAGS += -L${WOLF_LIBDIR} ${D2MCE_LDFLAGS}
 
 ${HECO}: ${HECO_O} ${HECO_COM_OBJS} ${HECO_RUNNER}
 	${CXX} ${CXXFLAGS} -o $@ ${LDFLAGS} ${HECO_O} ${HECO_COM_OBJS} ${LIBS}
