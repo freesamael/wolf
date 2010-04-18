@@ -152,7 +152,7 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
  * \note
  * User should delete the returned object manually.
  */
-ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
+ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 		UDPSocket *socket)
 {
 	char *localbuf = NULL;
@@ -226,7 +226,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, unsigned short *port,
  * True on success, false otherwise.
  */
 bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
-		unsigned short port, UDPSocket *socket)
+		uint16_t port, UDPSocket *socket)
 {
 	bool success = false;
 	int ret;

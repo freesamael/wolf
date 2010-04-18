@@ -7,6 +7,7 @@
 #ifndef ABSTRACTSOCKET_H_
 #define ABSTRACTSOCKET_H_
 
+#include <cstdint>
 #include <pthread.h>
 #include "HostAddress.h"
 #include "ITLVObject.h"
@@ -27,8 +28,8 @@ public:
 	virtual ~AbstractSocket();
 
 	bool open();
-	bool activeOpen(const HostAddress &addr, unsigned short port);
-	bool passiveOpen(unsigned short port, int qlen = 10);
+	bool activeOpen(const HostAddress &addr, uint16_t port);
+	bool passiveOpen(uint16_t port, int qlen = 10);
 	bool close();
 	ssize_t read(char *buf, size_t size);
 	ssize_t write(const char *buf, size_t size);
@@ -46,7 +47,7 @@ public:
 
 	// Static helpers.
 	static HostAddress getHostByName(const std::string &host);
-	static unsigned short getServiceByName(const std::string &service);
+	static uint16_t getServiceByName(const std::string &service);
 
 protected:
 	int _sockfd;

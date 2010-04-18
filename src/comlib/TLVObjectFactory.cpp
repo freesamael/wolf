@@ -60,9 +60,9 @@ void TLVObjectFactory::release()
  * \param id
  * ID used in TLV type.
  */
-void TLVObjectFactory::registerType(const std::string &name, unsigned short id)
+void TLVObjectFactory::registerType(const std::string &name, uint16_t id)
 {
-	map<string, unsigned short>::iterator iter;
+	map<string, uint16_t>::iterator iter;
 
 	// Erase registered one if any.
 	if ((iter = _typeids.find(name)) != _typeids.end())
@@ -103,9 +103,9 @@ void TLVObjectFactory::registerCreator(const std::string &name,
  * \return
  * Type id or TLV_TYPE_INVALID if nothing found.
  */
-unsigned short TLVObjectFactory::lookupTypeId(const string &name)
+uint16_t TLVObjectFactory::lookupTypeId(const string &name)
 {
-	map<string, unsigned short>::iterator iter;
+	map<string, uint16_t>::iterator iter;
 	if ((iter = _typeids.find(name)) != _typeids.end())
 		return iter->second;
 	return TLV_TYPE_INVALID;
@@ -117,9 +117,9 @@ unsigned short TLVObjectFactory::lookupTypeId(const string &name)
  * \return
  * Typename or empty string if nothing found.
  */
-string TLVObjectFactory::lookupTypeName(unsigned short id)
+string TLVObjectFactory::lookupTypeName(uint16_t id)
 {
-	map<string, unsigned short>::iterator iter;
+	map<string, uint16_t>::iterator iter;
 	for (iter = _typeids.begin(); iter != _typeids.end(); iter++) {
 		if (iter->second == id)
 			return iter->first;
@@ -145,7 +145,7 @@ ITLVObject* TLVObjectFactory::createTLVObject(const string &type_name)
 /**
  * Overloaded creation function.
  */
-ITLVObject* TLVObjectFactory::createTLVObject(unsigned short type_id)
+ITLVObject* TLVObjectFactory::createTLVObject(uint16_t type_id)
 {
 	PINFO("Creating an object.");
 	return createTLVObject(lookupTypeName(type_id));

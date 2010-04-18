@@ -20,7 +20,7 @@ namespace cml
  * TLVBlock takes the ownership of it's own buffer, and deletes it on
  * destruction.
  */
-StandardTLVBlock::StandardTLVBlock(unsigned short type, unsigned short length)
+StandardTLVBlock::StandardTLVBlock(uint16_t type, uint16_t length)
 {
 	_buf = new char[length + szHeader];
 	_writetype(type);
@@ -35,7 +35,7 @@ StandardTLVBlock::~StandardTLVBlock()
 /**
  * Set TLV type.
  */
-void StandardTLVBlock::setType(unsigned short type)
+void StandardTLVBlock::setType(uint16_t type)
 {
 	_writetype(type);
 }
@@ -43,9 +43,9 @@ void StandardTLVBlock::setType(unsigned short type)
 /**
  * Set length and allocate proper buffer.
  */
-void StandardTLVBlock::setLength(unsigned short len)
+void StandardTLVBlock::setLength(uint16_t len)
 {
-	unsigned short tp = type();
+	uint16_t tp = type();
 	delete [] _buf;
 	_buf = new char[len + szHeader];
 
@@ -56,18 +56,18 @@ void StandardTLVBlock::setLength(unsigned short len)
 /**
  * Write type into buffer.
  */
-void StandardTLVBlock::_writetype(unsigned short type)
+void StandardTLVBlock::_writetype(uint16_t type)
 {
-	unsigned short ntype = htons(type);
+	uint16_t ntype = htons(type);
 	memcpy(_buf, &ntype, szType);
 }
 
 /**
  * Write length into buffer.
  */
-void StandardTLVBlock::_writelength(unsigned short length)
+void StandardTLVBlock::_writelength(uint16_t length)
 {
-	unsigned short nlen = htons(length);
+	uint16_t nlen = htons(length);
 	memcpy(_buf + szType, &nlen, szLength);
 }
 
@@ -81,13 +81,13 @@ StandardTLVBlock* StandardTLVBlock::concate(const vector<const ITLVBlock*> &bloc
 {
 	StandardTLVBlock *blk = new StandardTLVBlock();
 
-	unsigned short tlen = 0;
+	uint16_t tlen = 0;
 	for (int i = 0; i < (int)blocks.size(); i++)
 		tlen += blocks[i]->plainSize();
 
 	blk->setLength(tlen);
 
-	unsigned short offset = 0;
+	uint16_t offset = 0;
 	for (int i = 0; i < (int)blocks.size(); i++) {
 		memcpy(&blk->value()[offset], blocks[i]->plainBuffer(),
 				blocks[i]->plainSize());

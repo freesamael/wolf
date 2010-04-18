@@ -19,12 +19,12 @@ class Runner
 {
 public:
 	/// Execute the runner with given ports and application name.
-	void run(unsigned short runner_port, unsigned short master_port, const
+	void run(uint16_t runner_port, uint16_t master_port, const
 			std::string &appname);
 private:
-	cml::HostAddress getMasterAddr(unsigned short runner_port);
+	cml::HostAddress getMasterAddr(uint16_t runner_port);
 	bool connectToMaster(cml::TCPSocket *sock, const cml::HostAddress &addr,
-			unsigned short master_port);
+			uint16_t master_port);
 	bool joinGroup(const std::string &appname);
 	bool processCommand(TLVMessage *msg);
 	void runnerLoop(cml::TCPSocket *sock);

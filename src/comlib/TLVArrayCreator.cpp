@@ -22,7 +22,7 @@ ITLVObject* TLVArrayCreator::create(const ITLVBlock &blk) const
 		return array;
 
 	// Non-empty case.
-	unsigned short offset = 0;
+	uint16_t offset = 0;
 	SharedTLVBlock *sblk = NULL;
 
 	do {

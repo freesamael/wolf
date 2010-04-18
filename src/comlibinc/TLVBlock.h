@@ -25,20 +25,20 @@ namespace cml
 class StandardTLVBlock: public ITLVBlock
 {
 public:
-	StandardTLVBlock(unsigned short type = TLV_TYPE_INVALID,
-			unsigned short length = 0);
+	StandardTLVBlock(uint16_t type = TLV_TYPE_INVALID,
+			uint16_t length = 0);
 	~StandardTLVBlock();
 
 	// Getters.
-	inline unsigned short type() const {
-		return ntohs(((unsigned short *)_buf)[0]); }
-	inline unsigned short length() const {
-		return ntohs(((unsigned short *)_buf)[1]); }
-	inline unsigned short plainSize() const { return length() + szHeader; }
+	inline uint16_t type() const {
+		return ntohs(((uint16_t *)_buf)[0]); }
+	inline uint16_t length() const {
+		return ntohs(((uint16_t *)_buf)[1]); }
+	inline uint16_t plainSize() const { return length() + szHeader; }
 
 	// Setters.
-	void setType(unsigned short type);
-	void setLength(unsigned short len);
+	void setType(uint16_t type);
+	void setLength(uint16_t len);
 
 	// Buffer.
 	inline char* plainBuffer() { return _buf; }
@@ -52,8 +52,8 @@ public:
 	static StandardTLVBlock* concate(const std::vector<const ITLVBlock*> &blocks);
 
 private:
-	void _writetype(unsigned short type);
-	void _writelength(unsigned short length);
+	void _writetype(uint16_t type);
+	void _writelength(uint16_t length);
 	char *_buf;
 };
 
@@ -68,11 +68,11 @@ class SharedTLVBlock: public ITLVBlock
 {
 public:
 	SharedTLVBlock(const char *shared_buf): _buf(shared_buf) {}
-	inline unsigned short type() const {
-		return ntohs(((unsigned short *)_buf)[0]); }
-	inline unsigned short length() const {
-		return ntohs(((unsigned short *)_buf)[1]); }
-	inline unsigned short plainSize() const { return length() + szHeader; }
+	inline uint16_t type() const {
+		return ntohs(((uint16_t *)_buf)[0]); }
+	inline uint16_t length() const {
+		return ntohs(((uint16_t *)_buf)[1]); }
+	inline uint16_t plainSize() const { return length() + szHeader; }
 	inline const char* plainBuffer() const { return _buf; }
 	inline const char* value() const {
 		return (!length()) ? NULL : &_buf[szHeader]; }

@@ -19,16 +19,15 @@ namespace cml
 
 TLV_OBJECT_REGISTRATION(TLVUInt32, TLV_TYPE_UINT32, TLVUInt32Creator);
 
-const unsigned short TLVUInt32::Size = ITLVBlock::szHeader +
-		sizeof(unsigned int);
+const uint16_t TLVUInt32::Size = ITLVBlock::szHeader + sizeof(uint32_t);
 
 StandardTLVBlock* TLVUInt32::toTLVBlock() const
 {
 	StandardTLVBlock *blk = new StandardTLVBlock();
-	unsigned int nv = htonl(_value);
+	uint32_t nv = htonl(_value);
 
 	blk->setType(TLV_TYPE_UINT32);
-	blk->setLength(sizeof(unsigned int));
+	blk->setLength(sizeof(uint32_t));
 	memcpy(blk->value(), &nv, blk->length());
 
 	return blk;

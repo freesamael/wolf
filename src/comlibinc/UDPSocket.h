@@ -23,9 +23,9 @@ public:
 	UDPSocket() { open(); }
 	UDPSocket(int sock): AbstractSocket(sock) {}
 	ssize_t recvfrom(char *buf, size_t size, HostAddress *addr,
-			unsigned short *port);
+			uint16_t *port);
 	ssize_t sendto(const char *buf, size_t size, const HostAddress &addr,
-			unsigned short port);
+			uint16_t port);
 	bool setBroadcast(bool bcast);
 	bool canBroadcast() const;
 };

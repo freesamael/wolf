@@ -39,7 +39,7 @@ void ClosedSocketState::release()
 }
 
 bool ClosedSocketState::activeOpen(AbstractSocket *sock,
-		const HostAddress &addr, unsigned short port)
+		const HostAddress &addr, uint16_t port)
 {
 	PINFO("Actively opening a socket.");
 	if (open(sock))
@@ -48,7 +48,7 @@ bool ClosedSocketState::activeOpen(AbstractSocket *sock,
 }
 
 bool ClosedSocketState::passiveOpen(AbstractSocket *sock,
-		unsigned short port, int qlen)
+		uint16_t port, int qlen)
 {
 	PINFO("Passively opening a socket");
 	if (open(sock))

@@ -29,10 +29,10 @@ public:
 	bool write(const ITLVObject &obj, TCPSocket *socket = NULL);
 
 	// UDP read/write.
-	ITLVObject* recvfrom(HostAddress *addr, unsigned short *port,
+	ITLVObject* recvfrom(HostAddress *addr, uint16_t *port,
 			UDPSocket *socket = NULL);
 	bool sendto(const ITLVObject &obj, const HostAddress &addr,
-			unsigned short port, UDPSocket *socket = NULL);
+			uint16_t port, UDPSocket *socket = NULL);
 
 private:
 	AbstractSocket *_socket;

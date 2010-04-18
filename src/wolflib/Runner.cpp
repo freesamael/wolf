@@ -24,7 +24,7 @@ using namespace cml;
 namespace wfe
 {
 
-void Runner::run(unsigned short runner_port, unsigned short master_port,
+void Runner::run(uint16_t runner_port, uint16_t master_port,
 		const string &appname)
 {
 	HostAddress addr;
@@ -62,13 +62,13 @@ void Runner::run(unsigned short runner_port, unsigned short master_port,
  * \internal
  * Listen and wait for master broadcasting a ADD_MASTER message.
  */
-HostAddress Runner::getMasterAddr(unsigned short runner_port)
+HostAddress Runner::getMasterAddr(uint16_t runner_port)
 {
 	UDPSocket usock;
 	TLVReaderWriter udprw(&usock);
 	TLVMessage *inmsg;
 	HostAddress inaddr;
-	unsigned short inport;
+	uint16_t inport;
 
 	usock.passiveOpen(runner_port);
 	if (!(inmsg = dynamic_cast<TLVMessage *>(udprw.recvfrom(&inaddr, &inport)))) {
@@ -94,7 +94,7 @@ HostAddress Runner::getMasterAddr(unsigned short runner_port)
  * Connect to the master node.
  */
 bool Runner::connectToMaster(TCPSocket *sock, const HostAddress &addr,
-		unsigned short master_port)
+		uint16_t master_port)
 {
 	TLVReaderWriter tcprw(sock);
 	if (!sock->activeOpen(addr, master_port)) {

@@ -23,7 +23,7 @@ namespace cml
 class TLVObjectFactoryAutoRegistry
 {
 public:
-	TLVObjectFactoryAutoRegistry(const std::string &type, unsigned short id,
+	TLVObjectFactoryAutoRegistry(const std::string &type, uint16_t id,
 			ITLVObjectCreator *creator);
 };
 

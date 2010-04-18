@@ -55,7 +55,7 @@ bool BoundSocketState::close(AbstractSocket *sock)
 TCPSocket* BoundSocketState::accept(AbstractSocket *sock)
 {
 	struct sockaddr_in inaddr;
-	unsigned addlen = sizeof(inaddr);
+	socklen_t addlen = sizeof(inaddr);
 	int insock;
 
 	PINFO("Waiting for incoming connections.");
@@ -74,7 +74,7 @@ TCPSocket* BoundSocketState::accept(AbstractSocket *sock)
 }
 
 ssize_t BoundSocketState::recvfrom(AbstractSocket *sock, char *buf, size_t size,
-		HostAddress *addr, unsigned short *port)
+		HostAddress *addr, uint16_t *port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
 		PERR << "recvfrom is only suitable for UDP sockets.\n";
@@ -98,7 +98,7 @@ ssize_t BoundSocketState::recvfrom(AbstractSocket *sock, char *buf, size_t size,
 }
 
 ssize_t BoundSocketState::sendto(AbstractSocket *sock, const char *buf,
-		size_t size, const HostAddress &addr, unsigned short port)
+		size_t size, const HostAddress &addr, uint16_t port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
 		PERR << "sendto is only suitable for UDP sockets.\n";

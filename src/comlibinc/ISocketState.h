@@ -8,6 +8,7 @@
 #define ISOCKETSTATE_H_
 
 #include <string>
+#include <cstdint>
 #include "HostAddress.h"
 
 namespace cml
@@ -45,12 +46,12 @@ public:
 	/// It can be called after open(), or called directly without open().
 	/// \return True on success, false otherwise.
 	virtual bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
-			unsigned short port) = 0;
+			uint16_t port) = 0;
 
 	/// Passively open the socket, which means bind or listen on specific port.
 	/// It can be called after open(), or called directly without open().
 	/// \return True on success, false otherwise.
-	virtual bool passiveOpen(AbstractSocket *sock, unsigned short port,
+	virtual bool passiveOpen(AbstractSocket *sock, uint16_t port,
 			int qlen = 10) = 0;
 
 	/// Shutdown and close the socket.
@@ -74,12 +75,12 @@ public:
 	/// Receive an incoming message.
 	/// \return Size of bytes received, or -1 for error.
 	virtual ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
-			HostAddress *addr, unsigned short *port) = 0;
+			HostAddress *addr, uint16_t *port) = 0;
 
 	/// Send a message to given host.
 	/// \return Size of bytes sent, or -1 for error.
 	virtual ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
-			const HostAddress &addr, unsigned short port) = 0;
+			const HostAddress &addr, uint16_t port) = 0;
 
 	/// Get the state name.
 	virtual const std::string& name() const = 0;

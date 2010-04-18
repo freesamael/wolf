@@ -10,10 +10,10 @@ namespace cml
 {
 
 /// Size of type field.
-const unsigned short ITLVBlock::szType = sizeof(unsigned short);
+const uint16_t ITLVBlock::szType = sizeof(uint16_t);
 /// Size of length field.
-const unsigned short ITLVBlock::szLength = sizeof(unsigned short);
+const uint16_t ITLVBlock::szLength = sizeof(uint16_t);
 /// Size of a header (type + length).
-const unsigned short ITLVBlock::szHeader = sizeof(unsigned short) * 2;
+const uint16_t ITLVBlock::szHeader = sizeof(uint16_t) * 2;
 
 }

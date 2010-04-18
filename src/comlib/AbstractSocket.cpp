@@ -62,7 +62,7 @@ bool AbstractSocket::open()
  * \return
  * True on success, false otherwise.
  */
-bool AbstractSocket::activeOpen(const HostAddress &addr, unsigned short port)
+bool AbstractSocket::activeOpen(const HostAddress &addr, uint16_t port)
 {
 	return _state->activeOpen(this, addr, port);
 }
@@ -73,7 +73,7 @@ bool AbstractSocket::activeOpen(const HostAddress &addr, unsigned short port)
  * \return
  * True on success, false otherwise.
  */
-bool AbstractSocket::passiveOpen(unsigned short port, int qlen)
+bool AbstractSocket::passiveOpen(uint16_t port, int qlen)
 {
 	return _state->passiveOpen(this, port, qlen);
 }
@@ -217,7 +217,7 @@ HostAddress AbstractSocket::getHostByName(const string &host)
 /**
  * Get port number by service name (e.g. "http").
  */
-unsigned short AbstractSocket::getServiceByName(const string &service)
+uint16_t AbstractSocket::getServiceByName(const string &service)
 {
 	servent *pse;
 

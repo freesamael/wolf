@@ -100,7 +100,7 @@ void RunnerAgent::release()
 /**
  * Setup the agent. It must be called before other agent operations.
  */
-bool RunnerAgent::setup(unsigned short runner_port, unsigned short master_port,
+bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
 		const string &appname, unsigned int timeout)
 {
 	if (_state != NOT_READY)

@@ -7,6 +7,7 @@
 #ifndef TLVMESSAGE_H_
 #define TLVMESSAGE_H_
 
+#include <cstdint>
 #include "ITLVObject.h"
 
 namespace wfe
@@ -19,28 +20,28 @@ namespace wfe
 class TLVMessage: public cml::ITLVObject
 {
 public:
-	static const unsigned short TLVType;
+	static const uint16_t TLVType;
 	/**
 	 * Enumeration of commands. To ensure the size and value of commands, we
-	 * use constant unsigned short instead of C++ 'enum' here.
+	 * use constant uint16_t instead of C++ 'enum' here.
 	 */
 	static const char *CommandString[];
-	static const unsigned short EMPTY;
-	static const unsigned short SHUTDOWN;
-	static const unsigned short HELLO_MASTER;
-	static const unsigned short HELLO_SLAVE;
-	static const unsigned short RUN_ACTOR;
+	static const uint16_t EMPTY;
+	static const uint16_t SHUTDOWN;
+	static const uint16_t HELLO_MASTER;
+	static const uint16_t HELLO_SLAVE;
+	static const uint16_t RUN_ACTOR;
 
-	TLVMessage(unsigned short c = EMPTY, ITLVObject *param = NULL):
+	TLVMessage(uint16_t c = EMPTY, ITLVObject *param = NULL):
 		_cmd(c), _param(param) {}
-	inline unsigned short command() const { return _cmd; }
+	inline uint16_t command() const { return _cmd; }
 	inline ITLVObject* parameter() const { return _param; }
-	inline void setCommand(unsigned short c) { _cmd = c; }
+	inline void setCommand(uint16_t c) { _cmd = c; }
 	inline void setParameter(ITLVObject *param) { _param = param; }
 	cml::StandardTLVBlock* toTLVBlock() const;
 
 private:
-	unsigned short _cmd;
+	uint16_t _cmd;
 	ITLVObject *_param;
 };
 

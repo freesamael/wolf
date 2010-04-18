@@ -27,19 +27,19 @@ class TLVObjectFactory
 public:
 	static TLVObjectFactory* instance();
 	static void release();
-	void registerType(const std::string &name, unsigned short id);
+	void registerType(const std::string &name, uint16_t id);
 	void registerCreator(const std::string &name, ITLVObjectCreator *creator);
-	unsigned short lookupTypeId(const std::string &name);
-	std::string lookupTypeName(unsigned short id);
+	uint16_t lookupTypeId(const std::string &name);
+	std::string lookupTypeName(uint16_t id);
 	ITLVObject* createTLVObject(const std::string &type_name);
-	ITLVObject* createTLVObject(unsigned short type_id);
+	ITLVObject* createTLVObject(uint16_t type_id);
 	ITLVObject* createTLVObject(const ITLVBlock &blk);
 
 private:
 	TLVObjectFactory();
 	~TLVObjectFactory();
 	static TLVObjectFactory *_instance;
-	std::map<std::string, unsigned short> _typeids;
+	std::map<std::string, uint16_t> _typeids;
 	std::map<std::string, ITLVObjectCreator *> _creators;
 };
 

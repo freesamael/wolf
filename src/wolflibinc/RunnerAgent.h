@@ -26,7 +26,7 @@ public:
 	static const char *StateString[];
 	static RunnerAgent* instance();
 	static void release();
-	bool setup(unsigned short runner_port, unsigned short master_port, const
+	bool setup(uint16_t runner_port, uint16_t master_port, const
 			std::string &appname, unsigned int timeout = 2);
 	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
 	/// Get the state of the agent.

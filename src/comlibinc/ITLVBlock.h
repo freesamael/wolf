@@ -7,6 +7,8 @@
 #ifndef ITLVBLOCK_H_
 #define ITLVBLOCK_H_
 
+#include <cstdint>
+
 namespace cml
 {
 
@@ -19,12 +21,12 @@ namespace cml
 class ITLVBlock
 {
 public:
-	static const unsigned short szType, szLength, szHeader;
+	static const uint16_t szType, szLength, szHeader;
 
 	virtual ~ITLVBlock() {}
-	virtual unsigned short type() const = 0;
-	virtual unsigned short length() const = 0;
-	virtual unsigned short plainSize() const = 0; ///< Size of plain buffer.
+	virtual uint16_t type() const = 0;
+	virtual uint16_t length() const = 0;
+	virtual uint16_t plainSize() const = 0; ///< Size of plain buffer.
 	virtual const char* plainBuffer() const = 0; ///< Plain buffer including header.
 	virtual const char* value() const = 0;
 };

@@ -38,7 +38,7 @@ void SimpleActiveSocketState::release()
 }
 
 bool SimpleActiveSocketState::activeOpen(AbstractSocket *sock,
-		const HostAddress &addr, unsigned short port)
+		const HostAddress &addr, uint16_t port)
 {
 	// Clear and set address/port.
 	sockaddr_in inaddr;
@@ -59,7 +59,7 @@ bool SimpleActiveSocketState::activeOpen(AbstractSocket *sock,
 }
 
 bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
-		unsigned short port, int qlen)
+		uint16_t port, int qlen)
 {
 	// Clear and set inet address/port.
 	sockaddr_in inaddr;
@@ -101,7 +101,7 @@ bool SimpleActiveSocketState::close(AbstractSocket *sock)
 }
 
 ssize_t SimpleActiveSocketState::recvfrom(AbstractSocket *sock, char *buf,
-		size_t size, HostAddress *addr, unsigned short *port)
+		size_t size, HostAddress *addr, uint16_t *port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
 		PERR << "recvfrom is only suitable for UDP sockets.\n";
@@ -125,7 +125,7 @@ ssize_t SimpleActiveSocketState::recvfrom(AbstractSocket *sock, char *buf,
 }
 
 ssize_t SimpleActiveSocketState::sendto(AbstractSocket *sock, const char *buf,
-		size_t size, const HostAddress &addr, unsigned short port)
+		size_t size, const HostAddress &addr, uint16_t port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
 		PERR << "sendto is only suitable for UDP sockets.\n";

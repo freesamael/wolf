@@ -27,17 +27,17 @@ public:
 	bool close(AbstractSocket *sock);
 	TCPSocket* accept(AbstractSocket *sock);
 	ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
-			HostAddress *addr, unsigned short *port);
+			HostAddress *addr, uint16_t *port);
 	ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
-			const HostAddress &addr, unsigned short port);
+			const HostAddress &addr, uint16_t port);
 
 	/// Unsupported operation with dummy implementation.
 	inline bool open(AbstractSocket *sock) { return false; }
 	/// Unsupported operation with dummy implementation.
 	inline bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
-				unsigned short port) { return false; }
+				uint16_t port) { return false; }
 	/// Unsupported operation with dummy implementation.
-	inline bool passiveOpen(AbstractSocket *sock, unsigned short port,
+	inline bool passiveOpen(AbstractSocket *sock, uint16_t port,
 			int qlen = 10) { return false; }
 	/// Unsupported operation with dummy implementation.
 	inline ssize_t read(AbstractSocket *sock, char *buf, size_t size)

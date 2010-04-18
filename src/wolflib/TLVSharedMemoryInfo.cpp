@@ -26,7 +26,7 @@ StandardTLVBlock* TLVSharedMemoryInfo::toTLVBlock() const
 {
 	vector<const ITLVBlock*> blocks;
 	blocks.push_back(TLVString(_name).toTLVBlock());
-	blocks.push_back(TLVUInt32((unsigned int)_size).toTLVBlock());
+	blocks.push_back(TLVUInt32((uint32_t)_size).toTLVBlock());
 
 	StandardTLVBlock *blk = StandardTLVBlock::concate(blocks);
 	blk->setType(TLV_TYPE_SMINFO);

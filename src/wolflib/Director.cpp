@@ -99,7 +99,7 @@ void Director::execute()
 	_exest->execute(_actors);
 }
 
-void Director::execute(unsigned short runner_port, unsigned short master_port,
+void Director::execute(uint16_t runner_port, uint16_t master_port,
 		const string &name)
 {
 	RunnerAgent::instance()->setup(runner_port, master_port, name);

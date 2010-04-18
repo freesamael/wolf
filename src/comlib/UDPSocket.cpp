@@ -28,7 +28,7 @@ namespace cml
  * is discarded.
  */
 ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
-		unsigned short *port)
+		uint16_t *port)
 {
 	return _state->recvfrom(this, buf, size, addr, port);
 }
@@ -40,7 +40,7 @@ ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
  * Size written. On error, return -1.
  */
 ssize_t UDPSocket::sendto(const char *buf, size_t size, const HostAddress &addr,
-		unsigned short port)
+		uint16_t port)
 {
 	pthread_mutex_lock(&_mutex);
 	ssize_t result = _state->sendto(this, buf, size, addr, port);

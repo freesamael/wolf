@@ -23,16 +23,16 @@ namespace wfe
 
 TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE, TLVMessageCreator);
 
-const unsigned short TLVMessage::TLVType = 10;
+const uint16_t TLVMessage::TLVType = 10;
 
 const char *TLVMessage::CommandString[] = {
 		"Empty", "Shutdown", "Hello Master", "Hello Slave", "Run Actor"
 };
-const unsigned short TLVMessage::EMPTY = 0;
-const unsigned short TLVMessage::SHUTDOWN = 1;
-const unsigned short TLVMessage::HELLO_MASTER = 2;
-const unsigned short TLVMessage::HELLO_SLAVE = 3;
-const unsigned short TLVMessage::RUN_ACTOR = 4;
+const uint16_t TLVMessage::EMPTY = 0;
+const uint16_t TLVMessage::SHUTDOWN = 1;
+const uint16_t TLVMessage::HELLO_MASTER = 2;
+const uint16_t TLVMessage::HELLO_SLAVE = 3;
+const uint16_t TLVMessage::RUN_ACTOR = 4;
 
 StandardTLVBlock* TLVMessage::toTLVBlock() const
 {

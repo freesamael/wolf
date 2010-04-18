@@ -25,14 +25,14 @@ public:
 	inline const std::string& name() const { return _statestr; }
 
 	bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
-			unsigned short port);
-	bool passiveOpen(AbstractSocket *sock, unsigned short port,
+			uint16_t port);
+	bool passiveOpen(AbstractSocket *sock, uint16_t port,
 			int qlen = 10);
 	bool close(AbstractSocket *sock);
 	ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
-			const HostAddress &addr, unsigned short port);
+			const HostAddress &addr, uint16_t port);
 	ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
-			HostAddress *addr, unsigned short *port);
+			HostAddress *addr, uint16_t *port);
 
 	/// Unsupported operation with dummy implementation.
 	inline bool open(AbstractSocket *sock) { return false; }

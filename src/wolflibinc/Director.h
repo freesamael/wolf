@@ -25,7 +25,7 @@ public:
 	Channel* createChannel(const std::string &name);
 	Channel* findChannel(const std::string &name);
 	void execute();
-	void execute(unsigned short runner_port, unsigned short master_port,
+	void execute(uint16_t runner_port, uint16_t master_port,
 			const std::string &name);
 
 private:

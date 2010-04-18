@@ -7,6 +7,7 @@
 #ifndef TLVUINT32_H_
 #define TLVUINT32_H_
 
+#include <cstdint>
 #include "ITLVObject.h"
 
 namespace cml
@@ -18,15 +19,15 @@ namespace cml
 class TLVUInt32: public ITLVObject
 {
 public:
-	static const unsigned short Size;
+	static const uint16_t Size;
 
-	TLVUInt32(unsigned int value = 0): _value(value) {}
-	unsigned int value() const { return _value; }
-	void setValue(unsigned int v) { _value = v; }
+	TLVUInt32(uint32_t value = 0): _value(value) {}
+	uint32_t value() const { return _value; }
+	void setValue(uint32_t v) { _value = v; }
 	StandardTLVBlock* toTLVBlock() const;
 
 private:
-	unsigned int _value;
+	uint32_t _value;
 };
 
 }

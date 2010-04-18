@@ -17,7 +17,7 @@ ITLVObject* TLVUInt16Creator::create(const ITLVBlock &blk) const
 {
 	// Length should always be 2 bytes.
 	if (blk.length() == 2) {
-		unsigned short *nv = (unsigned short *)blk.value();
+		uint16_t *nv = (uint16_t *)blk.value();
 		TLVUInt16 *obj = new TLVUInt16(ntohs(*nv));
 		return obj;
 	}

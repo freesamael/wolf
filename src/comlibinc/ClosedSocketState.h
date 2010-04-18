@@ -26,8 +26,8 @@ public:
 
 	bool open(AbstractSocket *sock);
 	bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
-				unsigned short port);
-	bool passiveOpen(AbstractSocket *sock, unsigned short port,	int qlen = 10);
+				uint16_t port);
+	bool passiveOpen(AbstractSocket *sock, uint16_t port,	int qlen = 10);
 
 	/// Unsupported operation with dummy implementation.
 	inline bool close(AbstractSocket *sock) { return false; }
@@ -41,10 +41,10 @@ public:
 			{ return -1; }
 	/// Unsupported operation with dummy implementation.
 	inline ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
-			HostAddress *addr, unsigned short *port) { return -1; }
+			HostAddress *addr, uint16_t *port) { return -1; }
 	/// Unsupported operation with dummy implementation.
 	inline ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
-			const HostAddress &addr, unsigned short port) { return -1; }
+			const HostAddress &addr, uint16_t port) { return -1; }
 
 private:
 	ClosedSocketState(): _statestr("Closed") {}
