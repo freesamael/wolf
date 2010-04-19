@@ -50,12 +50,12 @@ public:
 				TLVReaderWriter tcprw(tsock);
 				TLVMessage *msg;
 				if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
-					PERR << "Invalid incoming message.\n";
+					PERR("Invalid incoming message.");
 				} else if (msg->command() != TLVMessage::HELLO_SLAVE) {
-					PERR << "Expected command " <<
+					PERR("Expected command " <<
 							TLVMessage::CommandString[TLVMessage::HELLO_SLAVE] <<
 							"but got " <<
-							TLVMessage::CommandString[msg->command()] << ".\n";
+							TLVMessage::CommandString[msg->command()] << ".");
 				} else {
 					PINFO("Got one runner.");
 					_ssocks->push_back(tsock);
@@ -115,10 +115,9 @@ bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
 #ifndef DISABLE_D2MCE
 	// Join D2MCE computing group.
 	D2MCE::instance()->join(appname);
-//	printf("Info: %s: %d: %d nodes inside the group, node id = %d.\n",
-//			__PRETTY_FUNCTION__, __LINE__,
-//			D2MCE::instance()->getNumberOfNodes(),
-//			D2MCE::instance()->nodeId());
+	PINFO(D2MCE::instance()->getNumberOfNodes() <<
+			" nodes inside the group, node id = " <<
+			D2MCE::instance()->nodeId() << ".");
 #endif /* DISABLE_D2MCE */
 
 	// Broadcast notification.
@@ -135,7 +134,7 @@ bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
 	athread.join();
 
 	if (_ssocks.size() == 0) {
-		PERR << "No runner found.\n";
+		PERR("No runner found.");
 		return false;
 	}
 

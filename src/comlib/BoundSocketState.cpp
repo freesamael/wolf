@@ -66,7 +66,7 @@ TCPSocket* BoundSocketState::accept(AbstractSocket *sock)
 		return NULL;
 	}
 
-	PINFO("Got an incoming connection.")
+	PINFO("Got an incoming connection.");
 	TCPSocket *tcpsock = new TCPSocket(insock);
 	tcpsock->changeState(ConnectedSocketState::instance());
 
@@ -77,7 +77,7 @@ ssize_t BoundSocketState::recvfrom(AbstractSocket *sock, char *buf, size_t size,
 		HostAddress *addr, uint16_t *port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		PERR << "recvfrom is only suitable for UDP sockets.\n";
+		PERR("recvfrom is only suitable for UDP sockets.");
 		return -1;
 	}
 
@@ -101,7 +101,7 @@ ssize_t BoundSocketState::sendto(AbstractSocket *sock, const char *buf,
 		size_t size, const HostAddress &addr, uint16_t port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		PERR << "sendto is only suitable for UDP sockets.\n";
+		PERR("sendto is only suitable for UDP sockets.");
 		return -1;
 	}
 

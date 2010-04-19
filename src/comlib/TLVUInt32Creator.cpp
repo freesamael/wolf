@@ -21,7 +21,7 @@ ITLVObject* TLVUInt32Creator::create(const ITLVBlock &blk) const
 		TLVUInt32 *obj = new TLVUInt32(ntohl(*nv));
 		return obj;
 	}
-	PERR << "TLV length unmatched.\n";
+	PERR("TLV length unmatched.");
 	return NULL;
 }
 

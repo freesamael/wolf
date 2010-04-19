@@ -51,7 +51,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 			dynamic_cast<TCPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		PERR << "No active TCP socket found.\n";
+		PERR("No active TCP socket found.");
 		return NULL;
 	}
 
@@ -62,7 +62,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 		delete [] hdrbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
-		PERR << "Data read is too small to be a TLV block.\n";
+		PERR("Data read is too small to be a TLV block.");
 		delete [] hdrbuf;
 		return NULL;
 	}
@@ -73,8 +73,8 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	blk.setLength(tmpblk->length());
 	if ((ret = activesock->read(blk.value(), blk.length())) !=
 			blk.length()) {
-		PERR << "Expected " << blk.plainSize() << " bytes but " << ret <<
-				" bytes read.\n";
+		PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
+				" bytes read.");
 		delete [] hdrbuf;
 		delete tmpblk;
 		return NULL;
@@ -83,7 +83,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	// Construct TLV object.
 	obj = TLVObjectFactory::instance()->createTLVObject(blk);
 	if (!obj)
-		PERR << "Unable to construct TLV object.\n";
+		PERR("Unable to construct TLV object.");
 
 	delete [] hdrbuf;
 	delete tmpblk;
@@ -111,7 +111,7 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 			dynamic_cast<TCPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		PERR << "No active TCP socket found.\n";
+		PERR("No active TCP socket found.");
 		return false;
 	}
 
@@ -120,14 +120,14 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 		ret = activesock->write(blk->plainBuffer(), blk->plainSize());
 		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
-				PERR << "Expected " << blk->plainSize() << " bytes but " <<
-						ret << " bytes written.\n";
+				PERR("Expected " << blk->plainSize() << " bytes but " <<
+						ret << " bytes written.");
 			} else {
-				PERR << "Fail to write.\n";
+				PERR("Fail to write.");
 			}
 		}
 	} else {
-		PERR << "Unable to create TLV block from given object.\n";
+		PERR("Unable to create TLV block from given object.");
 	}
 
 	delete blk;
@@ -164,7 +164,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 			dynamic_cast<UDPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		PERR << "No active UDP socket found.\n";
+		PERR("No active UDP socket found.");
 		return NULL;
 	}
 
@@ -177,7 +177,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 		delete [] localbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
-		PERR << "Data read is too small to be a TLV block.\n";
+		PERR("Data read is too small to be a TLV block.");
 		delete [] localbuf;
 		return NULL;
 	}
@@ -187,8 +187,8 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 	blk.setType(tmpblk->type());
 	blk.setLength(tmpblk->length());
 	if (ret != blk.plainSize()) {
-		PERR << "Expected " << blk.plainSize() << " bytes but " << ret <<
-				" bytes read.\n";
+		PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
+				" bytes read.");
 		delete tmpblk;
 		return NULL;
 	} else {
@@ -198,7 +198,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 	// Construct TLV object.
 	obj = TLVObjectFactory::instance()->createTLVObject(blk);
 	if (!obj)
-		PERR << "Unable to construct TLV object.\n";
+		PERR("Unable to construct TLV object.");
 
 	delete tmpblk;
 	delete [] localbuf;
@@ -235,7 +235,7 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 			dynamic_cast<UDPSocket *>(_socket) : socket;
 
 	if (!activesock) {
-		PERR << "No active UDP socket found.\n";
+		PERR("No active UDP socket found.");
 		return false;
 	}
 
@@ -245,14 +245,14 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 				addr, port);
 		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
-				PERR << "Expected " << blk->plainSize() << " bytes but " <<
-						ret << " bytes written.\n";
+				PERR("Expected " << blk->plainSize() << " bytes but " <<
+						ret << " bytes written.");
 			} else {
-				PERR<< "Fail to write.\n";
+				PERR("Fail to write.");
 			}
 		}
 	} else {
-		PERR << "Unable to create TLV block from given object.\n";
+		PERR("Unable to create TLV block from given object.");
 	}
 
 	delete blk;

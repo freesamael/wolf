@@ -20,20 +20,20 @@ namespace wfe
 ITLVObject* TLVSharedMemoryInfoCreator::create(const ITLVBlock &blk) const
 {
 	if (blk.length() < ITLVBlock::szHeader * 2) {
-		PERR << "TLV block size is too small.\n";
+		PERR("TLV block size is too small.");
 		return NULL;
 	}
 
 	// Get name.
 	SharedTLVBlock nblk(blk.value());
 	if (blk.length() < nblk.plainSize() + TLVUInt32::Size) {
-		PERR << "TLV block size is too small.\n";
+		PERR("TLV block size is too small.");
 		return NULL;
 	}
 	TLVString *name;
 	if (!(name = dynamic_cast<TLVString *>(TLVObjectFactory::instance()->
 			createTLVObject(nblk)))) {
-		PERR << "Unable to construct name string from TLV block.\n";
+		PERR("Unable to construct name string from TLV block.");
 		return NULL;
 	}
 
@@ -42,7 +42,7 @@ ITLVObject* TLVSharedMemoryInfoCreator::create(const ITLVBlock &blk) const
 	TLVUInt32 *u32;
 	if (!(u32 = dynamic_cast<TLVUInt32 *>(TLVObjectFactory::instance()->
 			createTLVObject(sblk)))) {
-		PERR << "Unable to construct size value from TLV block.\n";
+		PERR("Unable to construct size value from TLV block.");
 		return NULL;
 	}
 

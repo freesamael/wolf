@@ -21,7 +21,7 @@ ITLVObject* TLVUInt16Creator::create(const ITLVBlock &blk) const
 		TLVUInt16 *obj = new TLVUInt16(ntohs(*nv));
 		return obj;
 	}
-	PERR << "Error: TLV length unmatched.\n";
+	PERR("Error: TLV length unmatched.");
 	return NULL;
 }
 

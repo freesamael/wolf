@@ -40,7 +40,7 @@ void Counter::managerPrefire(ManagerActor *manager)
 	// Load memory.
 	_mem = dynamic_cast<SharedMemory *>(sinkPorts()[0]->readPort());
 	if (!_mem) {
-		PERR << "Invalid type.\n";
+		PERR("Invalid type.");
 		return;
 	}
 	_mem->load();
@@ -80,7 +80,7 @@ void Counter::fire()
 {
 	int index = D2MCE::instance()->nodeId() - 1;
 	if (index < 0) {
-		PERR << "Unexpected node id.\n";
+		PERR("Unexpected node id.");
 		return;
 	}
 

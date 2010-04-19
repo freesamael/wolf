@@ -19,7 +19,7 @@ ITLVObject* CounterCreator::create(const ITLVBlock &blk) const
 	TLVSharedMemoryInfo *info;
 	if (!(info = dynamic_cast<TLVSharedMemoryInfo *>(TLVObjectFactory::instance()->
 			createTLVObject(sblk)))) {
-		PERR << "Invalid type.\n";
+		PERR("Invalid type.");
 		return NULL;
 	}
 	printf("%s: Meminfo: name = %s, size = %d\n", __PRETTY_FUNCTION__,

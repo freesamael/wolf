@@ -67,7 +67,7 @@ bool ClosedSocketState::open(AbstractSocket *sock)
 	else if (dynamic_cast<TCPSocket *>(sock))
 		type = SOCK_STREAM;
 	else {
-		PERR << "Unsupported type.\n";
+		PERR("Unsupported type.");
 		return false;
 	}
 

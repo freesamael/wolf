@@ -41,7 +41,7 @@ bool Thread::start()
 		}
 		return true;
 	}
-	PERR << "Thread " << _tid << " is already started.\n";
+	PERR("Thread " << _tid << " is already started.");
 	return false;
 }
 

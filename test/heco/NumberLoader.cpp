@@ -27,7 +27,7 @@ void NumberLoader::fire()
 {
 	SharedMemory *mem;
 	if (!(mem = dynamic_cast<SharedMemory *>(sinkPorts()[0]->readPort()))) {
-		PERR << "Invalid type.\n";
+		PERR("Invalid type.");
 	}
 	int *num = (int *)mem->buffer();
 	printf("%s: Num = %d %d %d %d\n", __PRETTY_FUNCTION__,

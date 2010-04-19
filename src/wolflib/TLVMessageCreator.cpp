@@ -40,7 +40,7 @@ ITLVObject* TLVMessageCreator::create(const ITLVBlock &blk) const
 	cmd = dynamic_cast<TLVUInt16 *>(TLVObjectFactory::instance()->
 			createTLVObject(*cmdblk));
 	if (!cmd) {
-		PERR << "Unable to construct command.\n";
+		PERR("Unable to construct command.");
 		return NULL;
 	}
 

@@ -159,15 +159,13 @@ ITLVObject* TLVObjectFactory::createTLVObject(uint16_t type_id)
  */
 ITLVObject* TLVObjectFactory::createTLVObject(const ITLVBlock &blk)
 {
-	stringstream str;
-	str << "Creating an object, type id = " << blk.type() << ".";
-	PINFO(str.str().c_str());
+	PINFO("Creating an object, type id = " << blk.type() << ".");
 	map<string, ITLVObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(lookupTypeName(blk.type()))) !=
 			_creators.end()) {
 		return iter->second->create(blk);
 	}
-	PERR << "No suitable creator found for type" << blk.type() << ".\n";
+	PERR("No suitable creator found for type" << blk.type());
 	return NULL;
 }
 

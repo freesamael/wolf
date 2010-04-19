@@ -163,7 +163,7 @@ bool AbstractSocket::isNonblock() const
 bool AbstractSocket::setTTL(int ttl)
 {
 	if (ttl < 1) {
-		PERR << "TTL must greater or equal to 1.\n";
+		PERR("TTL must greater or equal to 1.");
 		return false;
 	}
 	if (setsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) < 0) {

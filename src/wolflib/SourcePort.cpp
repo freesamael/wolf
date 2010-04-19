@@ -20,7 +20,7 @@ void SourcePort::writeChannel(IDrop *item)
 	if (_channel) {
 		_channel->write(item);
 	} else {
-		PERR << "No channel attached.\n";
+		PERR("No channel attached.");
 	}
 }
 

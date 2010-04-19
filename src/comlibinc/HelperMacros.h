@@ -38,13 +38,15 @@
 	static cml::SingletonAutoDestructor< type > CONCATE(autodes, __LINE__)
 
 /// Print an error message.
-#define PERR \
-	std::cerr << "Error: " << __PRETTY_FUNCTION__ << ": " << __LINE__ << ": "
+#define PERR(str) \
+	std::cerr << "Error: " << __PRETTY_FUNCTION__ << ": " << __LINE__ << ": " \
+	<< str << std::endl
 
 #ifdef DEBUG
 /// Print an info message.
 #define PINFO(str) \
-	printf("Info: %s: %d: %s\n", __PRETTY_FUNCTION__, __LINE__, str);
+	std::cout << "Info: " << __PRETTY_FUNCTION__ << ": " << __LINE__ << ": " \
+	<< str << std::endl
 #else
 #define PINFO(str)
 #endif /* DEBUG */

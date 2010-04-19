@@ -30,17 +30,17 @@ void Runner::run(uint16_t runner_port, uint16_t master_port,
 	HostAddress addr;
 	PINFO("Waiting for master notification.");
 	if (!(addr = getMasterAddr(runner_port)).isValid()) {
-		PERR << "Runner fails, exit now.\n";
+		PERR("Runner fails, exit now.");
 		return;
 	}
 
 	TCPSocket sock;
 	PINFO("Connection to the master node");
 	if (!connectToMaster(&sock, addr, master_port)) {
-		PERR << "Runner fails, exit now.\n";
+		PERR("Runner fails, exit now.");
 		return;
 	}
-	PINFO(((string)"Connected with address = " + sock.currentAddress().toString()).c_str());
+	PINFO("Connected with address = " << sock.currentAddress().toString());
 
 #ifndef DISABLE_D2MCE
 	// Random back-off. It's just a workaround for the problem that multiple
@@ -49,7 +49,7 @@ void Runner::run(uint16_t runner_port, uint16_t master_port,
 	usleep((rand() % 30) * 33000); // sleep 0 ~ 1s, granularity 33ms.
 	// Join.
 	if (!joinGroup(appname)) {
-		PERR << "Runner fails, exit now.\n";
+		PERR("Runner fails, exit now.");
 		return;
 	}
 #endif /* DISABLE_D2MCE */
@@ -72,15 +72,14 @@ HostAddress Runner::getMasterAddr(uint16_t runner_port)
 
 	usock.passiveOpen(runner_port);
 	if (!(inmsg = dynamic_cast<TLVMessage *>(udprw.recvfrom(&inaddr, &inport)))) {
-		PERR << "Invalid incoming message.\n";
+		PERR("Invalid incoming message.");
 		return HostAddress();
 	}
 
 	if (inmsg->command() != TLVMessage::HELLO_MASTER) {
-		PERR << "Expected command " <<
+		PERR("Expected command " <<
 				TLVMessage::CommandString[TLVMessage::HELLO_MASTER] <<
-				" but got " << TLVMessage::CommandString[inmsg->command()] <<
-				".\n";
+				" but got " << TLVMessage::CommandString[inmsg->command()]);
 		return HostAddress();
 	}
 
@@ -98,7 +97,7 @@ bool Runner::connectToMaster(TCPSocket *sock, const HostAddress &addr,
 {
 	TLVReaderWriter tcprw(sock);
 	if (!sock->activeOpen(addr, master_port)) {
-		PERR << "Unable to connect to the master node.\n";
+		PERR("Unable to connect to the master node.");
 		return false;
 	}
 
@@ -118,10 +117,9 @@ bool Runner::joinGroup(const string &appname)
 //	}
 #ifndef DISABLE_D2MCE
 	D2MCE::instance()->join(appname);
-	printf("Info: %s: %d: %d nodes inside the group, node id = %d.\n",
-			__PRETTY_FUNCTION__, __LINE__,
-			D2MCE::instance()->getNumberOfNodes(),
-			D2MCE::instance()->nodeId());
+	PINFO(D2MCE::instance()->getNumberOfNodes() <<
+			"nodes inside the group, node id = " << D2MCE::instance()->nodeId()
+			<< ".");
 #endif /* DISABLE_D2MCE */
 	return true;
 }
@@ -136,7 +134,7 @@ bool Runner::processCommand(TLVMessage *cmd)
 	if (cmd->command() == TLVMessage::RUN_ACTOR) {
 		AbstractWorkerActor *actor;
 		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
-			PERR << "Invalid parameter.\n";
+			PERR("Invalid parameter.");
 			return false;
 		}
 		actor->setup();
@@ -152,8 +150,8 @@ bool Runner::processCommand(TLVMessage *cmd)
 		PINFO("Ending runner.");
 		_endf = true;
 	} else {
-		PERR << "Unexpected command \"" <<
-				TLVMessage::CommandString[cmd->command()] << "\".\n";
+		PERR("Unexpected command \"" <<
+				TLVMessage::CommandString[cmd->command()] << "\".");
 		return false;
 	}
 	return true;
@@ -173,11 +171,11 @@ void Runner::runnerLoop(TCPSocket *sock)
 		if (!(inobj = tcprw.read()))
 			break; // End of file.
 		if (!(inmsg = dynamic_cast<TLVMessage *>(inobj))) {
-			PERR << "Invalid incoming message.\n";
+			PERR("Invalid incoming message.");
 			delete inobj;
 		} else {
 			if (!processCommand(inmsg)) {
-				PERR << "One command failed to execute.\n";
+				PERR("One command failed to execute.");
 			}
 			delete inmsg;
 		}

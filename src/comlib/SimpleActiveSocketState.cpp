@@ -77,7 +77,7 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 
 	// Perform listen if it's a TCP socket.
 	if ((dynamic_cast<TCPSocket *>(sock))) {
-		PINFO("Listening for connections.\n");
+		PINFO("Listening for connections.");
 		if (listen(sock->sockfd(), qlen) < 0) {
 			perror("Error: SimpleActiveSocketState::passiveOpen()");
 			return false;
@@ -104,7 +104,7 @@ ssize_t SimpleActiveSocketState::recvfrom(AbstractSocket *sock, char *buf,
 		size_t size, HostAddress *addr, uint16_t *port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		PERR << "recvfrom is only suitable for UDP sockets.\n";
+		PERR("recvfrom is only suitable for UDP sockets.");
 		return -1;
 	}
 
@@ -128,7 +128,7 @@ ssize_t SimpleActiveSocketState::sendto(AbstractSocket *sock, const char *buf,
 		size_t size, const HostAddress &addr, uint16_t port)
 {
 	if (!(dynamic_cast<UDPSocket *>(sock))) {
-		PERR << "sendto is only suitable for UDP sockets.\n";
+		PERR("sendto is only suitable for UDP sockets.");
 		return -1;
 	}
 
