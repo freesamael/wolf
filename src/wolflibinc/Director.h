@@ -19,7 +19,6 @@ class Director
 {
 public:
 	Director(IWorkflowExecutor *exest): _exest(exest){}
-	~Director();
 	bool addActor(AbstractActor *actor);
 	bool removeActor(AbstractActor *actor);
 	Channel* createChannel(const std::string &name);

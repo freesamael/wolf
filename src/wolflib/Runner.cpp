@@ -54,7 +54,7 @@ void Runner::run(uint16_t runner_port, uint16_t master_port,
 	}
 #endif /* DISABLE_D2MCE */
 
-	_endf = false;
+	_endflag = false;
 	runnerLoop(&sock);
 }
 
@@ -143,7 +143,7 @@ bool Runner::processCommand(TLVMessage *cmd)
 		delete actor;
 	} else if (cmd->command() == TLVMessage::SHUTDOWN) {
 		PINFO("Ending runner.");
-		_endf = true;
+		_endflag = true;
 	} else {
 		PERR("Unexpected command \"" <<
 				TLVMessage::CommandString[cmd->command()] << "\".");
@@ -162,7 +162,7 @@ void Runner::runnerLoop(TCPSocket *sock)
 	ITLVObject *inobj;
 	TLVMessage *inmsg = NULL;
 
-	while (!_endf) {
+	while (!_endflag) {
 		if (!(inobj = tcprw.read()))
 			break; // End of file.
 		if (!(inmsg = dynamic_cast<TLVMessage *>(inobj))) {

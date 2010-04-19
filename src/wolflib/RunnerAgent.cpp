@@ -144,6 +144,28 @@ bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
 }
 
 /**
+ * Tell the runners to shutdown. It should be perform before program exits.
+ */
+bool RunnerAgent::shutdown()
+{
+	if (_state != READY)
+		return false;
+
+	// Construct command.
+	TLVMessage msg;
+	msg.setCommand(TLVMessage::SHUTDOWN);
+
+	// Shutdown all runners.
+	bool success = true;
+	for (int i = 0; i < (int)_ssocks.size(); i++) {
+		TLVReaderWriter rw(_ssocks[i]);
+		success &= rw.write(msg);
+	}
+	_state = NOT_READY;
+	return success;
+}
+
+/**
  * Send an worker actor to runners to execute.
  *
  * \param[in] actor

@@ -15,16 +15,6 @@ using namespace std;
 namespace wfe
 {
 
-Director::~Director()
-{
-	/// TODO: decide the lifetime management of actors.
-//	for (int i = 0; i < (int)_actors.size(); i++) {
-//		delete _actors[i];
-//	}
-	// Release RunnerAgent
-	RunnerAgent::release();
-}
-
 /**
  * Add an actor into the director to execute.
  *
@@ -102,8 +92,14 @@ void Director::execute()
 void Director::execute(uint16_t runner_port, uint16_t master_port,
 		const string &name)
 {
-	RunnerAgent::instance()->setup(runner_port, master_port, name);
+	if (!RunnerAgent::instance()->setup(runner_port, master_port, name)) {
+		PERR("Unable to setup RunnerAgent.");
+		return;
+	}
 	_exest->execute(_actors);
+	if (!RunnerAgent::instance()->shutdown()) {
+		PERR("Shutdown failed.");
+	}
 }
 
 }

@@ -28,7 +28,7 @@ private:
 	bool joinGroup(const std::string &appname);
 	bool processCommand(TLVMessage *msg);
 	void runnerLoop(cml::TCPSocket *sock);
-	bool _endf;
+	bool _endflag;
 };
 
 }

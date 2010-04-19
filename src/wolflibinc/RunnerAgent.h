@@ -28,6 +28,7 @@ public:
 	static void release();
 	bool setup(uint16_t runner_port, uint16_t master_port, const
 			std::string &appname, unsigned int timeout = 2);
+	bool shutdown();
 	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
 	/// Get the state of the agent.
 	inline State state() const { return _state; }
