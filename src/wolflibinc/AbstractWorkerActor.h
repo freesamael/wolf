@@ -16,13 +16,13 @@ namespace wfe
 class ManagerActor;
 
 /**
- * In addition to the methods AbstractActor defined, AbstractWorkerActor adds initialize()
- * to setup the ManagerActor it belongs to, and finalize() to wrap up the
- * ManagerActor. Note that the methods initialize() and finalize() are called
- * on the director host, and the whole execution, including setup, iteration
+ * In addition to the methods AbstractActor defined, AbstractWorkerActor adds
+ * initialize() to setup the ManagerActor it belongs to, and finalize() to wrap
+ * up the ManagerActor. Note that the methods initialize() and finalize() are
+ * called on the master host, and the execution, including setup, iteration
  * and wrapup phases happen on a runner host after the worker actor migrated
- * onto it. If a worker actor is going to be reset, it will happen on director
- * host.
+ * onto it. If a worker actor is going to be reset, it will be done on the
+ * master host.
  *
  * As a typical scenario, a worker actor might setup its manager within
  * initialize(), migrates to the runner, allocates DSM shared memory in setup(),

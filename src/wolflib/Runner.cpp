@@ -111,10 +111,6 @@ bool Runner::connectToMaster(TCPSocket *sock, const HostAddress &addr,
  */
 bool Runner::joinGroup(const string &appname)
 {
-//	if (!D2MCE::instance()->join(appname)) {
-//		fprintf(stderr, "Runner::run(): Unable to join group.\n");
-//		return false;
-//	}
 #ifndef DISABLE_D2MCE
 	D2MCE::instance()->join(appname);
 	PINFO(D2MCE::instance()->getNumberOfNodes() <<
@@ -139,7 +135,6 @@ bool Runner::processCommand(TLVMessage *cmd)
 		}
 		actor->setup();
 		do {
-			/// TODO: Add the power-aware load balancing feature.
 			actor->prefire();
 			actor->fire();
 			actor->postfire();
