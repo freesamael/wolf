@@ -42,29 +42,6 @@ private:
 };
 
 #else
-
-/**
- * A dummy d2mce class used to make compiler happy.
- */
-class D2MCE
-{
-public:
-	inline static D2MCE *instance() { return NULL; }
-	inline static void release() {}
-	inline bool join(std::string appname, std::string groupname = "default") {
-		return false; }
-	inline bool barrier(unsigned int nnodes) { return false; }
-	inline int nodeId() const { return 0; }
-	inline int getNumberOfNodes() const { return 0; }
-	inline SharedMemory* createSharedMemory(const std::string &name,
-		size_t size) { return NULL; }
-	inline SharedMemory* findSharedMemory(const std::string &name) {
-		return NULL; }
-
-private:
-	D2MCE() {}
-};
-
 #endif /* DISABLE_D2MCE */
 
 }

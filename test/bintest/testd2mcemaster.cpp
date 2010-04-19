@@ -13,6 +13,7 @@ using namespace wfe;
 
 int main()
 {
+#ifndef DISABLE_D2MCE
 	D2MCE::instance()->join("test");
 	cout << "Node ID = " << D2MCE::instance()->nodeId() << endl;
 
@@ -26,5 +27,6 @@ int main()
 	sm->unlock();
 
 	D2MCE::instance()->barrier(2);
+#endif
 	return 0;
 }
