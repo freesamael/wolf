@@ -8,19 +8,25 @@
 #define THREAD_H_
 
 #include <pthread.h>
+#include "IRunnable.h"
 
 namespace cml
 {
 
 /**
- * A pthread wrapper.
+ * Thread represents an encapsulation of thread. It can be used in two ways - by
+ * construct a Thread with a given IRunnable, it executes IRunnable::run() in a
+ * separate thread when start() is called; alternatively, a user can write a
+ * subclass overriding run() to execute. In the later case, the IRunnable is
+ * ignored.
  */
 class Thread
 {
+	friend void* thread_caller(void*);
 public:
-	Thread();
+	Thread(IRunnable *runner = NULL);
 	virtual ~Thread();
-	virtual void run() = 0;
+	virtual inline void run() { if (_runner) _runner->run(); }
 	inline pthread_t threadID() const { return _tid; }
 	bool start();
 	bool join();
@@ -28,7 +34,7 @@ public:
 	bool cancel();
 
 private:
-	static void* _thread_caller(void *param);
+	IRunnable *_runner;
 	pthread_cond_t _rcnd;
 	pthread_mutex_t _rcnd_mutex;
 	pthread_t _tid;

@@ -13,8 +13,23 @@
 namespace cml
 {
 
-Thread::Thread():
-		_tid(0), _running(false)
+/**
+ * \internal
+ * A thread function adaptor.
+ */
+void* thread_caller(void *param)
+{
+	cml::Thread *th = reinterpret_cast<cml::Thread *>(param);
+	th->_running = true;
+	th->run();
+	th->_running = false;
+	if (pthread_cond_broadcast(&th->_rcnd) != 0)
+		perror("Error: Thread: run()");
+	return NULL;
+}
+
+Thread::Thread(IRunnable *runner):
+		_runner(runner), _tid(0), _running(false)
 {
 	int state;
 	pthread_mutex_init(&_rcnd_mutex, NULL);
@@ -35,7 +50,7 @@ bool Thread::start()
 {
 	PINFO("Starting the thread.");
 	if (_tid == 0) {
-		if (pthread_create(&_tid, NULL, _thread_caller, this) != 0) {
+		if (pthread_create(&_tid, NULL, thread_caller, this) != 0) {
 			perror("Error: Thread::start()");
 			return false;
 		}
@@ -84,7 +99,7 @@ bool Thread::join(unsigned timeout)
 	if (_running) {
 		// Wait.
 		if (pthread_cond_timedwait(&_rcnd, &_rcnd_mutex, &tout) != 0) {
-			perror("Error: Thread::join(): Condtion waiting");
+			perror("Error: Thread::join(): Condition waiting");
 			return false;
 		}
 	}
@@ -105,21 +120,6 @@ bool Thread::join(unsigned timeout)
 bool Thread::cancel()
 {
 	return !pthread_cancel(_tid);
-}
-
-/**
- * \internal
- * thread function adaptor.
- */
-void* Thread::_thread_caller(void *param)
-{
-	cml::Thread *th = reinterpret_cast<cml::Thread *>(param);
-	th->_running = true;
-	th->run();
-	th->_running = false;
-	if (pthread_cond_broadcast(&th->_rcnd) != 0)
-		perror("Error: Thread::_thread_caller()");
-	return NULL;
 }
 
 }
