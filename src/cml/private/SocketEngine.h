@@ -8,6 +8,8 @@
 #ifndef SOCKETENGINE_H_
 #define SOCKETENGINE_H_
 
+#include "HelperMacros.h"
+
 namespace cml
 {
 
@@ -16,6 +18,7 @@ namespace cml
  */
 class SocketEngine
 {
+	SINGLETON(SocketEngine);
 public:
 
 };

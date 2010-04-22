@@ -8,6 +8,7 @@
 #define BOUNDSOCKETSTATE_H_
 
 #include "ISocketState.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -19,9 +20,8 @@ namespace cml
  */
 class BoundSocketState: public ISocketState
 {
+	SINGLETON(BoundSocketState);
 public:
-	static BoundSocketState* instance();
-	static void release();
 	inline const std::string& name() const { return _statestr; }
 
 	bool close(AbstractSocket *sock);
@@ -50,7 +50,6 @@ public:
 
 private:
 	BoundSocketState(): _statestr("Bound") {}
-	static BoundSocketState *_instance;
 	std::string _statestr;
 };
 

@@ -8,6 +8,7 @@
 #define SIMPLEACTIVESOCKETSTATE_H_
 
 #include "ISocketState.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -19,9 +20,8 @@ namespace cml
  */
 class SimpleActiveSocketState: public ISocketState
 {
+	SINGLETON(SimpleActiveSocketState);
 public:
-	static SimpleActiveSocketState* instance();
-	static void release();
 	inline const std::string& name() const { return _statestr; }
 
 	bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
@@ -47,7 +47,6 @@ public:
 
 private:
 	SimpleActiveSocketState(): _statestr("Active") {}
-	static SimpleActiveSocketState *_instance;
 	std::string _statestr;
 };
 

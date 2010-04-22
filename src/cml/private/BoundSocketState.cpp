@@ -16,7 +16,7 @@
 #include "UDPSocket.h"
 #include "TCPSocket.h"
 #include "SingletonAutoDestructor.h"
-#include "HelperMacros.h"
+#include "SocketEngine.h"
 
 using namespace std;
 
@@ -24,21 +24,8 @@ namespace cml
 {
 
 SINGLETON_REGISTRATION(BoundSocketState);
-
-BoundSocketState *BoundSocketState::_instance = NULL;
-
-BoundSocketState* BoundSocketState::instance()
-{
-	if (!_instance)
-		_instance = new BoundSocketState();
-	return _instance;
-}
-
-void BoundSocketState::release()
-{
-	delete _instance;
-	_instance = NULL;
-}
+SINGLETON_DEPENDS(BoundSocketState, SocketEngine);
+SINGLETON_REGISTRATION_END();
 
 bool BoundSocketState::close(AbstractSocket *sock)
 {

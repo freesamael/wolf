@@ -9,6 +9,7 @@
 
 #include <string>
 #include <vector>
+#include <HelperMacros.h>
 #include "SharedMemory.h"
 
 namespace wfe
@@ -22,9 +23,8 @@ namespace wfe
  */
 class D2MCE
 {
+	SINGLETON(D2MCE);
 public:
-	static D2MCE *instance();
-	static void release();
 	bool join(std::string appname, std::string groupname = "default");
 	bool barrier(unsigned int nnodes);
 	int nodeId() const { return _nodeid; }
@@ -35,7 +35,6 @@ public:
 private:
 	D2MCE();
 	~D2MCE();
-	static D2MCE *_instance;
 	int _nodeid;
 	d2mce_barrier_t _barrier;
 	std::vector<SharedMemory*> _smems;

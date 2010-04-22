@@ -15,7 +15,6 @@
 #include "TLVUInt16Creator.h"
 #include "TLVUInt32Creator.h"
 #include "SingletonAutoDestructor.h"
-#include "HelperMacros.h"
 
 using namespace std;
 
@@ -23,8 +22,7 @@ namespace cml
 {
 
 SINGLETON_REGISTRATION(TLVObjectFactory);
-
-TLVObjectFactory* TLVObjectFactory::_instance = NULL;
+SINGLETON_REGISTRATION_END();
 
 TLVObjectFactory::TLVObjectFactory()
 {
@@ -35,19 +33,6 @@ TLVObjectFactory::~TLVObjectFactory()
 	map<string, ITLVObjectCreator *>::iterator iter;
 	for (iter = _creators.begin(); iter != _creators.end(); iter++)
 		delete iter->second;
-}
-
-TLVObjectFactory* TLVObjectFactory::instance()
-{
-	if (!_instance)
-		_instance = new TLVObjectFactory();
-	return _instance;
-}
-
-void TLVObjectFactory::release()
-{
-	delete _instance;
-	_instance = NULL;
 }
 
 /**

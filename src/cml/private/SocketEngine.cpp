@@ -7,3 +7,5 @@
 
 #include "SocketEngine.h"
 
+SINGLETON_REGISTRATION(SocketEngine);
+SINGLETON_REGISTRATION_END();

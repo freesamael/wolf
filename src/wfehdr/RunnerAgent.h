@@ -9,8 +9,8 @@
 
 #include <vector>
 #include <string>
-#include <pthread.h>
 #include <TCPSocket.h>
+#include <HelperMacros.h>
 #include "AbstractWorkerActor.h"
 
 namespace wfe
@@ -18,14 +18,13 @@ namespace wfe
 
 class RunnerAgent
 {
+	SINGLETON(RunnerAgent);
 public:
 	typedef enum State {
 		NOT_READY,
 		READY
 	} State;
 	static const char *StateString[];
-	static RunnerAgent* instance();
-	static void release();
 	bool setup(uint16_t runner_port, uint16_t master_port, const
 			std::string &appname, unsigned int timeout = 2);
 	bool shutdown();
@@ -38,8 +37,6 @@ public:
 
 private:
 	RunnerAgent(): _state(NOT_READY) {}
-	static RunnerAgent* _instance;
-	static pthread_mutex_t _mutex;
 	State _state;
 	cml::TCPSocket _msock;
 	std::vector<cml::TCPSocket *> _ssocks;

@@ -13,7 +13,6 @@
 #include "ClosedSocketState.h"
 #include "TCPSocket.h"
 #include "SingletonAutoDestructor.h"
-#include "HelperMacros.h"
 
 using namespace std;
 
@@ -21,21 +20,7 @@ namespace cml
 {
 
 SINGLETON_REGISTRATION(ConnectedSocketState);
-
-ConnectedSocketState *ConnectedSocketState::_instance = NULL;
-
-ConnectedSocketState* ConnectedSocketState::instance()
-{
-	if (!_instance)
-		_instance = new ConnectedSocketState();
-	return _instance;
-}
-
-void ConnectedSocketState::release()
-{
-	delete _instance;
-	_instance = NULL;
-}
+SINGLETON_REGISTRATION_END();
 
 bool ConnectedSocketState::close(AbstractSocket *sock)
 {

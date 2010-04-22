@@ -20,7 +20,7 @@ class SingletonAutoDestructor
 {
 public:
 	~SingletonAutoDestructor()
-		{ PINFO("Releasing" << TYPENAME(T)); T::release(); }
+		{ PINFO("Releasing " << TYPENAME(T)); T::release(); }
 };
 
 }

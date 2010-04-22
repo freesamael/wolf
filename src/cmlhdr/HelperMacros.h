@@ -7,6 +7,7 @@
 #define HELPERMACROS_H_
 
 #include <cstdio>
+#include <vector>
 #include <iostream>
 #include <typeinfo>
 
@@ -27,16 +28,72 @@
  * \def TLV_OBJECT_REGISTRATION(type, id, creator)
  * Register a TLV object to TLVObjectFactory with given id and creator.
  */
-#define TLV_OBJECT_REGISTRATION( type, id, creator ) \
-	static cml::TLVObjectFactoryAutoRegistry CONCATE(autoreg, __LINE__)( \
-			typeid(type).name(), id, new creator() )
+#define TLV_OBJECT_REGISTRATION(type, id, creator) \
+	static cml::TLVObjectFactoryAutoRegistry CONCATE(autoreg, __LINE__)(\
+			typeid(type).name(), id, new creator())
+
+/**
+ * \def SINGLETON(type)
+ * Declare a singleton type.
+ */
+#define SINGLETON(type) \
+	public: \
+		static type* instance(); \
+		static void release() { SINGLETON_RELEASE_BODY(); } \
+		inline void registerDep(void (*rls)()) { _deps.push_back(rls); } \
+	private: \
+		void releaseDeps() { SINGLETON_RELEASE_DEPS_BODY(); } \
+		static type* _instance; \
+		std::vector<void (*)()> _deps
+
+/**
+ * \def SINGLETON_RELEASE_BODY()
+ * The body of release() function.
+ */
+#define SINGLETON_RELEASE_BODY() \
+	if (_instance) { \
+		PINFO("Releasing"); \
+		_instance->releaseDeps(); \
+		delete _instance; \
+		_instance = NULL; \
+	} \
+	return
+
+/**
+ * \def SINGLETON_RELEASE_DEPS_BODY()
+ * The body of releaseDeps() function.
+ */
+#define SINGLETON_RELEASE_DEPS_BODY() \
+	for (unsigned i = 0; i < _deps.size(); i++) \
+		(*_deps[i])()
 
 /**
  * \def SINGLETON_REGISTRATION(type)
- * Define a singleton object. The object must have release() method.
+ * Register a singleton object.
  */
-#define SINGLETON_REGISTRATION( type ) \
-	static cml::SingletonAutoDestructor< type > CONCATE(autodes, __LINE__)
+#define SINGLETON_REGISTRATION(type) \
+	static cml::SingletonAutoDestructor< type > CONCATE(autodes, __LINE__); \
+	type* type::_instance = NULL; \
+	type* type::instance() { \
+		if (!_instance) { \
+			_instance = new type()
+
+/**
+ * \def SINGLETON_DEPENDS(self_type, dep_type)
+ * Declare that self_type depends on dep_type. It affects the destruction
+ * sequence.
+ */
+#define SINGLETON_DEPENDS(self_type, dep_type) \
+			dep_type::instance()->registerDep(&self_type::release)
+
+/**
+ * \def SINGLETON_REGISTRATION_END()
+ * The end clause of singleton registration.
+ */
+#define SINGLETON_REGISTRATION_END() \
+		} \
+		return _instance; \
+	}
 
 /// Print an error message.
 #define PERR(str) \

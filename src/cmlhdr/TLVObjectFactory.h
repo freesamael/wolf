@@ -12,6 +12,7 @@
 #include "ITLVObject.h"
 #include "ITLVObjectCreator.h"
 #include "ITLVBlock.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -24,9 +25,8 @@ namespace cml
  */
 class TLVObjectFactory
 {
+	SINGLETON(TLVObjectFactory);
 public:
-	static TLVObjectFactory* instance();
-	static void release();
 	void registerType(const std::string &name, uint16_t id);
 	void registerCreator(const std::string &name, ITLVObjectCreator *creator);
 	uint16_t lookupTypeId(const std::string &name);
@@ -38,7 +38,6 @@ public:
 private:
 	TLVObjectFactory();
 	~TLVObjectFactory();
-	static TLVObjectFactory *_instance;
 	std::map<std::string, uint16_t> _typeids;
 	std::map<std::string, ITLVObjectCreator *> _creators;
 };

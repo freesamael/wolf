@@ -8,6 +8,7 @@
 #define CLOSEDSOCKETSTATE_H_
 
 #include "ISocketState.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -19,9 +20,8 @@ namespace cml
  */
 class ClosedSocketState: public ISocketState
 {
+	SINGLETON(ClosedSocketState);
 public:
-	static ClosedSocketState* instance();
-	static void release();
 	inline const std::string& name() const { return _statestr; }
 
 	bool open(AbstractSocket *sock);
@@ -49,7 +49,6 @@ public:
 private:
 	ClosedSocketState(): _statestr("Closed") {}
 	bool _initialize(AbstractSocket *sock);
-	static ClosedSocketState *_instance;
 	std::string _statestr;
 };
 

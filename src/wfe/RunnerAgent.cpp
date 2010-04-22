@@ -11,7 +11,6 @@
 #include <TLVReaderWriter.h>
 #include <Thread.h>
 #include <SingletonAutoDestructor.h>
-#include <HelperMacros.h>
 #include "D2MCE.h"
 #include "RunnerAgent.h"
 #include "TLVMessage.h"
@@ -23,10 +22,9 @@ namespace wfe
 {
 
 SINGLETON_REGISTRATION(RunnerAgent);
+SINGLETON_REGISTRATION_END();
 
 const char *RunnerAgent::StateString[] = { "Not Ready", "Ready" };
-RunnerAgent *RunnerAgent::_instance = NULL;
-pthread_mutex_t RunnerAgent::_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 /**
  * \internal
@@ -72,29 +70,6 @@ private:
 	TCPSocket *_msock;
 	vector<TCPSocket *> *_ssocks;
 };
-
-/**
- * Get the instance of the agent.
- */
-RunnerAgent* RunnerAgent::instance()
-{
-	pthread_mutex_lock(&_mutex);
-	if (!_instance)
-		_instance = new RunnerAgent();
-	pthread_mutex_unlock(&_mutex);
-	return _instance;
-}
-
-/**
- * Release the instance.
- */
-void RunnerAgent::release()
-{
-	pthread_mutex_lock(&_mutex);
-	delete _instance;
-	_instance = NULL;
-	pthread_mutex_unlock(&_mutex);
-}
 
 /**
  * Setup the agent. It must be called before other agent operations.

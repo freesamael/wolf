@@ -6,7 +6,6 @@
 
 #ifndef DISABLE_D2MCE
 #include <SingletonAutoDestructor.h>
-#include <HelperMacros.h>
 #include "D2MCE.h"
 #include "SharedMemory.h"
 
@@ -16,8 +15,7 @@ namespace wfe
 {
 
 SINGLETON_REGISTRATION(D2MCE);
-
-D2MCE *D2MCE::_instance = NULL;
+SINGLETON_REGISTRATION_END();
 
 D2MCE::D2MCE()
 {
@@ -32,19 +30,6 @@ D2MCE::~D2MCE()
 		delete _smems[i];
 	d2mce_finalize();
 	PINFO("d2mce finalized.");
-}
-
-D2MCE* D2MCE::instance()
-{
-	if (_instance == NULL)
-		_instance = new D2MCE();
-	return _instance;
-}
-
-void D2MCE::release()
-{
-	delete _instance;
-	_instance = NULL;
 }
 
 /**
