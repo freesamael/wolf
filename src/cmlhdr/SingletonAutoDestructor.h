@@ -7,6 +7,8 @@
 #ifndef SINGLETONAUTODESTRUCTOR_H_
 #define SINGLETONAUTODESTRUCTOR_H_
 
+#include "HelperMacros.h"
+
 namespace cml
 {
 
@@ -17,7 +19,8 @@ template <class T>
 class SingletonAutoDestructor
 {
 public:
-	~SingletonAutoDestructor() { T::release(); }
+	~SingletonAutoDestructor()
+		{ PINFO("Releasing" << TYPENAME(T)); T::release(); }
 };
 
 }

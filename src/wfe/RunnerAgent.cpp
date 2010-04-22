@@ -90,7 +90,6 @@ RunnerAgent* RunnerAgent::instance()
  */
 void RunnerAgent::release()
 {
-	PINFO("Releasing RunnerAgent.");
 	pthread_mutex_lock(&_mutex);
 	delete _instance;
 	_instance = NULL;

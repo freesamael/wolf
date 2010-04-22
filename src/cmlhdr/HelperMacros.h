@@ -8,6 +8,7 @@
 
 #include <cstdio>
 #include <iostream>
+#include <typeinfo>
 
 /**
  * \def TYPENAME(type)
