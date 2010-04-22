@@ -14,8 +14,8 @@
 #include "ITLVObject.h"
 #include "TLVObjectFactory.h"
 #include "TLVBlock.h"
-#include "ClosedSocketState.h"
-#include "SimpleActiveSocketState.h"
+#include "private/ClosedSocketState.h"
+#include "private/SimpleActiveSocketState.h"
 #include "HelperMacros.h"
 
 using namespace std;
