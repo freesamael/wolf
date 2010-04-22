@@ -24,7 +24,7 @@ void* thread_caller(void *param)
 	th->run();
 	th->_running = false;
 	if (pthread_cond_broadcast(&th->_rcnd) != 0)
-		perror("Error: Thread: run()");
+		perror("Error: thread_caller()");
 	return NULL;
 }
 
