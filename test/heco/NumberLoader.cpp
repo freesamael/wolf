@@ -4,7 +4,7 @@
  * \author samael
  */
 
-#include <cstdio>
+#include <iostream>
 #include <SharedMemory.h>
 #include <HelperMacros.h>
 #include "NumberLoader.h"
