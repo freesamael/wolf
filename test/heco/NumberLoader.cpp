@@ -30,7 +30,7 @@ void NumberLoader::fire()
 		PERR("Invalid type.");
 	}
 	int *num = (int *)mem->buffer();
-	printf("%s: Num = %d %d %d %d\n", __PRETTY_FUNCTION__,
-			num[0], num[1], num[2], num[3]);
+	PINFO("Num = " << num[0] << ", " << num[1] << ", " <<  num[2] <<
+			", " << num[3]);
 	_state = FINISHED;
 }

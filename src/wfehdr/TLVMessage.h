@@ -7,7 +7,7 @@
 #ifndef TLVMESSAGE_H_
 #define TLVMESSAGE_H_
 
-#include <cstdint>
+#include <stdint.h>
 #include "ITLVObject.h"
 
 namespace wfe
