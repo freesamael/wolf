@@ -15,7 +15,7 @@ else
 CXXFLAGS += -DDISABLE_D2MCE
 endif
 
-CXXFLAGS += -g3 -O0 -Wall -std=c++0x -pedantic
+CXXFLAGS += -g3 -O0 -Wall -ansi -pedantic
 
 WOLF_SRCDIR = ${PWD}/src
 WOLF_BINDIR = ${PWD}/bin
