@@ -7,6 +7,8 @@
 #ifndef BOUNDSOCKETSTATE_H_
 #define BOUNDSOCKETSTATE_H_
 
+#include <vector>
+#include <iostream>
 #include "ISocketState.h"
 #include "HelperMacros.h"
 

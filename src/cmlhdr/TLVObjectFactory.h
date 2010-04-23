@@ -9,6 +9,8 @@
 
 #include <map>
 #include <string>
+#include <vector>
+#include <iostream>
 #include "ITLVObject.h"
 #include "ITLVObjectCreator.h"
 #include "ITLVBlock.h"

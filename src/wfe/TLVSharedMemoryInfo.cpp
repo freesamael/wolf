@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <typeinfo>
 #include <vector>
 #include <TLVBlock.h>
 #include <TLVString.h>

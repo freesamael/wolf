@@ -4,7 +4,7 @@
  * \author samael
  */
 
-#include <cstdio>
+#include <iostream>
 #include <HelperMacros.h>
 #include "SourcePort.h"
 #include "Channel.h"

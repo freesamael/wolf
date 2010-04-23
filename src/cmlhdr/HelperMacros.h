@@ -6,14 +6,12 @@
 #ifndef HELPERMACROS_H_
 #define HELPERMACROS_H_
 
-#include <cstdio>
-#include <vector>
-#include <iostream>
-#include <typeinfo>
-
 /**
  * \def TYPENAME(type)
  * Get the name of type in string.
+ *
+ * \note
+ * \#include \<typeinfo\>
  */
 #define TYPENAME(type) (typeid(type).name())
 
@@ -27,6 +25,10 @@
 /**
  * \def TLV_OBJECT_REGISTRATION(type, id, creator)
  * Register a TLV object to TLVObjectFactory with given id and creator.
+ *
+ * \note
+ * \#include \<typeinfo\> <br>
+ * \#include \<TLVObjectFactoryAutoRegistry.h\>
  */
 #define TLV_OBJECT_REGISTRATION(type, id, creator) \
 	static cml::TLVObjectFactoryAutoRegistry CONCATE(autoreg, __LINE__)(\
@@ -35,6 +37,10 @@
 /**
  * \def SINGLETON(type)
  * Declare a singleton type.
+ *
+ * \note
+ * \#include \<vector\> <br>
+ * \#include \<iostream\>
  */
 #define SINGLETON(type) \
 	public: \
@@ -70,6 +76,9 @@
 /**
  * \def SINGLETON_REGISTRATION(type)
  * Register a singleton object.
+ *
+ * \note
+ * \#include \<SingletonAutoDestructor.h\>
  */
 #define SINGLETON_REGISTRATION(type) \
 	static cml::SingletonAutoDestructor< type > CONCATE(autodes, __LINE__); \
@@ -95,13 +104,25 @@
 		return _instance; \
 	}
 
-/// Print an error message.
+/**
+ * \def PERR(str)
+ * Print an error message. str is a stream in "a << b << c" format.
+ *
+ * \note
+ * \#include \<iostream\>
+ */
 #define PERR(str) \
 	std::cerr << "Error: " << __PRETTY_FUNCTION__ << ": " << __LINE__ << ": " \
 	<< str << std::endl
 
 #ifdef DEBUG
-/// Print an info message.
+/**
+ * \def PINFO(str)
+ * Print an info message. str is a stream in "a << b << c" format.
+ *
+ * \note
+ * \#include \<iostream\>
+ */
 #define PINFO(str) \
 	std::cout << "Info: " << __PRETTY_FUNCTION__ << ": " << __LINE__ << ": " \
 	<< str << std::endl

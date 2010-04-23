@@ -5,6 +5,7 @@
  */
 
 #include <deque>
+#include <iostream>
 #include <HelperMacros.h>
 #include "Director.h"
 #include "Channel.h"

@@ -16,7 +16,6 @@
 #include "UDPSocket.h"
 #include "TCPSocket.h"
 #include "SingletonAutoDestructor.h"
-#include "SocketEngine.h"
 
 using namespace std;
 
@@ -24,7 +23,6 @@ namespace cml
 {
 
 SINGLETON_REGISTRATION(BoundSocketState);
-SINGLETON_DEPENDS(BoundSocketState, SocketEngine);
 SINGLETON_REGISTRATION_END();
 
 bool BoundSocketState::close(AbstractSocket *sock)

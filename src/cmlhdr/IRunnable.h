@@ -1,8 +1,7 @@
-/*
- * IRunnable.h
- *
- *  Created on: Apr 21, 2010
- *      Author: samael
+/**
+ * \file IRunnable.h
+ * \date Apr 21, 2010
+ * \author samael
  */
 
 #ifndef IRUNNABLE_H_

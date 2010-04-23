@@ -4,8 +4,6 @@
  * \author samael
  */
 
-#include <cstdio>
-#include <errno.h>
 #include "TCPSocket.h"
 
 namespace cml

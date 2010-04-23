@@ -4,7 +4,6 @@
  * \author samael
  */
 
-#include <HelperMacros.h>
 #include "ManagerActor.h"
 #include "RunnerAgent.h"
 

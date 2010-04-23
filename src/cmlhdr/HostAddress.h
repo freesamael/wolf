@@ -7,10 +7,10 @@
 #ifndef HOSTADDRESS_H_
 #define HOSTADDRESS_H_
 
+#include <string>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <arpa/inet.h>
-#include <string>
 
 namespace cml
 {

@@ -4,7 +4,7 @@
  * \author samael
  */
 
-#include <cstring>
+#include <typeinfo>
 #include "TLVArray.h"
 #include "TLVArrayCreator.h"
 #include "TLVObjectFactoryAutoRegistry.h"

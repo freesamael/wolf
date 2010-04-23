@@ -4,7 +4,6 @@
  * \author samael
  */
 
-#include <cstdio>
 #include <sys/time.h>
 #include <unistd.h>
 #include <UDPSocket.h>

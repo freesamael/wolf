@@ -7,6 +7,8 @@
 #ifndef SIMPLEACTIVESOCKETSTATE_H_
 #define SIMPLEACTIVESOCKETSTATE_H_
 
+#include <vector>
+#include <iostream>
 #include "ISocketState.h"
 #include "HelperMacros.h"
 

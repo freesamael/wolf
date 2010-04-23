@@ -8,7 +8,7 @@
 #define ISOCKETSTATE_H_
 
 #include <string>
-#include <cstdint>
+#include <stdint.h>
 #include "HostAddress.h"
 
 namespace cml

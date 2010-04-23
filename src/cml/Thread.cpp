@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <iostream>
 #include <cstdio>
 #include <errno.h>
 #include <sys/time.h>

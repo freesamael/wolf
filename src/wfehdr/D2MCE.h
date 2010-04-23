@@ -7,6 +7,7 @@
 #ifndef D2MCE_H_
 #define D2MCE_H_
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <HelperMacros.h>

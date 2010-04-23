@@ -7,7 +7,7 @@
 #ifndef ABSTRACTSOCKET_H_
 #define ABSTRACTSOCKET_H_
 
-#include <cstdint>
+#include <stdint.h>
 #include <pthread.h>
 #include "HostAddress.h"
 #include "ITLVObject.h"

@@ -7,6 +7,7 @@
 #ifndef RUNNERAGENT_H_
 #define RUNNERAGENT_H_
 
+#include <iostream>
 #include <vector>
 #include <string>
 #include <TCPSocket.h>

@@ -7,6 +7,8 @@
 #ifndef CLOSEDSOCKETSTATE_H_
 #define CLOSEDSOCKETSTATE_H_
 
+#include <vector>
+#include <iostream>
 #include "ISocketState.h"
 #include "HelperMacros.h"
 

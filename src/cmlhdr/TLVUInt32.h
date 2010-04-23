@@ -7,7 +7,7 @@
 #ifndef TLVUINT32_H_
 #define TLVUINT32_H_
 
-#include <cstdint>
+#include <stdint.h>
 #include "ITLVObject.h"
 
 namespace cml

@@ -7,6 +7,8 @@
 #ifndef SINGLETONAUTODESTRUCTOR_H_
 #define SINGLETONAUTODESTRUCTOR_H_
 
+#include <iostream>
+#include <typeinfo>
 #include "HelperMacros.h"
 
 namespace cml

@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <iostream>
 #include <deque>
 #include <HelperMacros.h>
 #include "SimpleWorkflowExecutor.h"

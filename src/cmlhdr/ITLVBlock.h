@@ -7,7 +7,7 @@
 #ifndef ITLVBLOCK_H_
 #define ITLVBLOCK_H_
 
-#include <cstdint>
+#include <stdint.h>
 
 namespace cml
 {
