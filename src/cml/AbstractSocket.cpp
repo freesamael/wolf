@@ -17,6 +17,8 @@
 #include "TLVBlock.h"
 #include "private/ClosedSocketState.h"
 #include "private/SimpleActiveSocketState.h"
+#include "private/BoundSocketState.h"
+#include "private/ConnectedSocketState.h"
 #include "HelperMacros.h"
 
 using namespace std;
@@ -226,6 +228,19 @@ uint16_t AbstractSocket::getServiceByName(const string &service)
 		return pse->s_port;
 	}
 	return 0;
+}
+
+/**
+ * Register a release() function of a singleton object to all singleton socket
+ * objects. It's used by SINGLETON_DEPENDS_SOCKET() macro, and is not supposed
+ * to be called manually by users.
+ */
+void AbstractSocket::registerSocketDependant(void (*rls)())
+{
+	ClosedSocketState::instance()->registerDependant(rls);
+	SimpleActiveSocketState::instance()->registerDependant(rls);
+	BoundSocketState::instance()->registerDependant(rls);
+	ConnectedSocketState::instance()->registerDependant(rls);
 }
 
 }

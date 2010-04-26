@@ -46,9 +46,9 @@
 	public: \
 		static type* instance(); \
 		static void release() { SINGLETON_RELEASE_BODY(); } \
-		inline void registerDep(void (*rls)()) { _deps.push_back(rls); } \
+		inline void registerDependant(void (*rls)()) { _deps.push_back(rls); } \
 	private: \
-		void releaseDeps() { SINGLETON_RELEASE_DEPS_BODY(); } \
+		void releaseDependants() { SINGLETON_RELEASE_DEPS_BODY(); } \
 		static type* _instance; \
 		std::vector<void (*)()> _deps
 
@@ -59,7 +59,7 @@
 #define SINGLETON_RELEASE_BODY() \
 	if (_instance) { \
 		PINFO("Releasing"); \
-		_instance->releaseDeps(); \
+		_instance->releaseDependants(); \
 		delete _instance; \
 		_instance = NULL; \
 	} \
@@ -93,7 +93,17 @@
  * sequence.
  */
 #define SINGLETON_DEPENDS(self_type, dep_type) \
-			dep_type::instance()->registerDep(&self_type::release)
+			dep_type::instance()->registerDependant(&self_type::release)
+
+/**
+ * \def SINGLETON_DEPENDS_SOCKET(self_type)
+ * Declare that self_type depends on socket objects.
+ *
+ * \note
+ * \#include \<AbstractSocket.h\>
+ */
+#define SINGLETON_DEPENDS_SOCKET(self_type) \
+			AbstractSocket::registerSocketDependant(&self_type::release)
 
 /**
  * \def SINGLETON_REGISTRATION_END()

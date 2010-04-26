@@ -21,6 +21,7 @@ namespace wfe
 {
 
 SINGLETON_REGISTRATION(RunnerAgent);
+SINGLETON_DEPENDS_SOCKET(RunnerAgent);
 SINGLETON_REGISTRATION_END();
 
 const char *RunnerAgent::StateString[] = { "Not Ready", "Ready" };

@@ -48,6 +48,7 @@ public:
 	// Static helpers.
 	static HostAddress getHostByName(const std::string &host);
 	static uint16_t getServiceByName(const std::string &service);
+	static void registerSocketDependant(void (*rls)());
 
 protected:
 	int _sockfd;
