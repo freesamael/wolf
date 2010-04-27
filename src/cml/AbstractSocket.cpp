@@ -29,19 +29,16 @@ namespace cml
 AbstractSocket::AbstractSocket():
 		_sockfd(0), _mutex(), _state(ClosedSocketState::instance())
 {
-	pthread_mutex_init(&_mutex, NULL);
 }
 
 AbstractSocket::AbstractSocket(const AbstractSocket &sock):
 		_sockfd(sock._sockfd), _mutex(), _state(sock._state)
 {
-	pthread_mutex_init(&_mutex, NULL);
 }
 
 AbstractSocket::AbstractSocket(int sock):
 		_sockfd(sock), _mutex(),_state(SimpleActiveSocketState::instance())
 {
-	pthread_mutex_init(&_mutex, NULL);
 }
 
 /**
@@ -50,8 +47,6 @@ AbstractSocket::AbstractSocket(int sock):
 AbstractSocket::~AbstractSocket()
 {
 	_state->close(this);
-	if (pthread_mutex_destroy(&_mutex) != 0)
-		perror("Error: AbstractSocket::~AbstractSocket(): Destroying mutex");
 }
 
 /**
@@ -121,9 +116,9 @@ ssize_t AbstractSocket::read(char *buf, size_t size)
  */
 ssize_t AbstractSocket::write(const char *buf, size_t size)
 {
-	pthread_mutex_lock(&_mutex);
+	_mutex.lock();
 	ssize_t result = _state->write(this, buf, size);
-	pthread_mutex_unlock(&_mutex);
+	_mutex.unlock();
 	return result;
 }
 

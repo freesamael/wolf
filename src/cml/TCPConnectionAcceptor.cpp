@@ -22,7 +22,9 @@ void TCPConnectionAcceptor::run()
 	while (!_done) {
 		TCPSocket *sock;
 		if ((sock = _server->accept())) {
+			_mutex.lock();
 			_ssock = sock;
+			_mutex.unlock();
 			notify();
 		}
 		usleep(sock ? 0 : 50000);

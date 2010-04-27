@@ -49,7 +49,7 @@ void Channel::detachReader(SinkPort *port)
  */
 void Channel::write(IDrop *item)
 {
-	pthread_mutex_lock(&_mutex);
+	_mutex.lock();
 	if (!_readers.empty()) {
 		// Fit 1st ~ (N - 1)th reader.
 		for (unsigned i = 0; i < _readers.size() - 1; i++) {
@@ -59,7 +59,7 @@ void Channel::write(IDrop *item)
 		// Fit last reader.
 		_readers[_readers.size() - 1]->writePort(item);
 	}
-	pthread_mutex_unlock(&_mutex);
+	_mutex.unlock();
 }
 
 }

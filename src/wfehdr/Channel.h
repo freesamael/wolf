@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include <pthread.h>
+#include <Mutex.h>
 #include "IDrop.h"
 
 namespace wfe
@@ -20,8 +20,8 @@ class Channel
 {
 public:
 	Channel(const std::string &name = ""):
-		_name(name), _mutex(), _readers() { pthread_mutex_init(&_mutex, NULL); }
-	~Channel() { pthread_mutex_destroy(&_mutex); }
+		_name(name), _mutex(), _readers() { }
+	~Channel() { }
 	inline const std::string& name() const { return _name; }
 	inline const std::vector<SinkPort *>& readers() { return _readers; }
 	void attachReader(SinkPort *port);
@@ -30,7 +30,7 @@ public:
 
 private:
 	std::string _name;
-	pthread_mutex_t _mutex;
+	cml::Mutex _mutex;
 	std::vector<SinkPort *> _readers;
 };
 

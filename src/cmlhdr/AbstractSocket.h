@@ -8,10 +8,10 @@
 #define ABSTRACTSOCKET_H_
 
 #include <stdint.h>
-#include <pthread.h>
 #include "HostAddress.h"
 #include "ITLVObject.h"
 #include "ISocketState.h"
+#include "Mutex.h"
 
 namespace cml
 {
@@ -54,7 +54,7 @@ public:
 
 protected:
 	int _sockfd;
-	pthread_mutex_t _mutex;
+	Mutex _mutex;
 	ISocketState *_state;
 };
 

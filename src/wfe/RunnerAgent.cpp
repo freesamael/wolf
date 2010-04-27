@@ -82,7 +82,7 @@ bool RunnerAgent::shutdown()
 		return false;
 
 	// Construct command.
-	TLVMessage msg;	athread.setparam(&_msock, &_runnersocks);
+	TLVMessage msg;
 
 	msg.setCommand(TLVMessage::SHUTDOWN);
 
@@ -142,8 +142,10 @@ void RunnerAgent::update(AbstractObservable *o)
 	}
 
 	// Check socket.
-	TCPSocket *sock;
-	if (!(sock = ca->lastAcceptedSocket())) {
+	ca->mutexLock();
+	TCPSocket *sock = ca->lastAcceptedSocket();
+	ca->mutexUnlock();
+	if (!sock) {
 		PERR("No socket object found.");
 		return;
 	}
