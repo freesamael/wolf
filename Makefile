@@ -15,11 +15,7 @@ else
 CXXFLAGS += -DDISABLE_D2MCE
 endif
 
-CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra -Wabi -Wctor-dtor-privacy \
--Wnon-virtual-dtor -Wstrict-null-sentinel -Woverloaded-virtual -Wsign-promo \
--Wformat=2 -Winit-self -Wmissing-include-dirs -Wswitch-default -Wswitch-enum \
--Wfloat-equal -Wlarger-than=128 -Wcast-qual -Wcast-align -Wlogical-op \
--Wmissing-declarations -Winline -Woverlength-strings 
+CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra 
 
 WOLF_SRCDIR = ${PWD}/src
 WOLF_BINDIR = ${PWD}/bin

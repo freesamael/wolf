@@ -8,7 +8,6 @@
 #define SINKPORT_H_
 
 #include <deque>
-#include <pthread.h>
 #include "IPort.h"
 #include "IDrop.h"
 
@@ -22,9 +21,9 @@ class SinkPort: public IPort
 {
 public:
 	SinkPort(AbstractActor *owner, Channel *ch = NULL):
-		_owner(owner), _channel(ch) {}
+		_owner(owner), _channel(ch), _queue() {}
 	SinkPort(const SinkPort &p):
-		_owner(p._owner), _channel(p._channel) {}
+		_owner(p._owner), _channel(p._channel), _queue() {}
 	SinkPort& operator=(const SinkPort &p)
 		{ _owner = p._owner; _channel = p._channel; return *this; }
 	inline Type type() const { return SINK; }
@@ -39,7 +38,6 @@ private:
 	AbstractActor *_owner;
 	Channel *_channel;
 	std::deque<IDrop *> _queue;
-	pthread_mutex_t _mutex;
 };
 
 }

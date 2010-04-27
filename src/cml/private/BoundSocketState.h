@@ -49,10 +49,8 @@ public:
 	inline ssize_t write(AbstractSocket *UNUSED(sock), const char *UNUSED(buf),
 			size_t UNUSED(size)) { return -1; }
 
-
-
 private:
-	BoundSocketState(): _statestr("Bound") {}
+	BoundSocketState(): SINGLETON_MEMBER_INITLST, _statestr("Bound") {}
 	std::string _statestr;
 };
 

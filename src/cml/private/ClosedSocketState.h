@@ -51,7 +51,7 @@ public:
 			uint16_t UNUSED(port)) { return -1; }
 
 private:
-	ClosedSocketState(): _statestr("Closed") {}
+	ClosedSocketState(): SINGLETON_MEMBER_INITLST, _statestr("Closed") {}
 	bool _initialize(AbstractSocket *sock);
 	std::string _statestr;
 };

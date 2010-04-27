@@ -19,7 +19,7 @@ namespace cml
 class ProcessEnvironment
 {
 public:
-	ProcessEnvironment() {}
+	ProcessEnvironment(): _envmap() {}
 	ProcessEnvironment(const ProcessEnvironment &env):
 		_envmap(env._envmap) {}
 	inline bool isEmpty() const { return _envmap.empty(); }

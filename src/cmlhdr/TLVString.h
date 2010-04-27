@@ -19,7 +19,7 @@ namespace cml
 class TLVString: public ITLVObject
 {
 public:
-	TLVString() {}
+	TLVString(): _str() {}
 	TLVString(const char *str): _str(str) {}
 	TLVString(const std::string &str): _str(str) {}
 	StandardTLVBlock* toTLVBlock() const;

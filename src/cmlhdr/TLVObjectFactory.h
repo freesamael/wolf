@@ -38,7 +38,7 @@ public:
 	ITLVObject* createTLVObject(const ITLVBlock &blk);
 
 private:
-	TLVObjectFactory();
+	TLVObjectFactory(): SINGLETON_MEMBER_INITLST, _typeids(), _creators() {}
 	~TLVObjectFactory();
 	std::map<std::string, uint16_t> _typeids;
 	std::map<std::string, ITLVObjectCreator *> _creators;

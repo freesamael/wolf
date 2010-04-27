@@ -20,7 +20,7 @@ class Channel
 {
 public:
 	Channel(const std::string &name = ""):
-		_name(name) { pthread_mutex_init(&_mutex, NULL); }
+		_name(name), _mutex(), _readers() { pthread_mutex_init(&_mutex, NULL); }
 	~Channel() { pthread_mutex_destroy(&_mutex); }
 	inline const std::string& name() const { return _name; }
 	inline const std::vector<SinkPort *>& readers() { return _readers; }

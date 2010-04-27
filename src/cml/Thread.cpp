@@ -30,7 +30,8 @@ void* thread_caller(void *param)
 }
 
 Thread::Thread(IRunnable *runner):
-		_runner(runner), _tid(0), _running(false)
+		_runner(runner), _rcnd(), _rcnd_mutex(),
+		_tid(0), _running(false)
 {
 	int state;
 	pthread_mutex_init(&_rcnd_mutex, NULL);
@@ -39,7 +40,8 @@ Thread::Thread(IRunnable *runner):
 }
 
 Thread::Thread(const Thread &thread):
-		_runner(thread._runner), _tid(0), _running(false)
+		_runner(thread._runner), _rcnd(), _rcnd_mutex(),
+		_tid(0), _running(false)
 {
 	int state;
 	pthread_mutex_init(&_rcnd_mutex, NULL);

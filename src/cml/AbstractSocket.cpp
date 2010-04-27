@@ -27,19 +27,19 @@ namespace cml
 {
 
 AbstractSocket::AbstractSocket():
-		_state(ClosedSocketState::instance())
+		_sockfd(0), _mutex(), _state(ClosedSocketState::instance())
 {
 	pthread_mutex_init(&_mutex, NULL);
 }
 
 AbstractSocket::AbstractSocket(const AbstractSocket &sock):
-		_sockfd(sock._sockfd), _state(sock._state)
+		_sockfd(sock._sockfd), _mutex(), _state(sock._state)
 {
 	pthread_mutex_init(&_mutex, NULL);
 }
 
 AbstractSocket::AbstractSocket(int sock):
-		_sockfd(sock), _state(SimpleActiveSocketState::instance())
+		_sockfd(sock), _mutex(),_state(SimpleActiveSocketState::instance())
 {
 	pthread_mutex_init(&_mutex, NULL);
 }

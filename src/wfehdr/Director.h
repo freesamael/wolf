@@ -19,7 +19,10 @@ class Channel;
 class Director
 {
 public:
-	Director(IWorkflowExecutor *exest): _exest(exest){}
+	Director(IWorkflowExecutor *exest): _actors(), _channels(), _exest(exest){}
+	Director(const Director &dir);
+	~Director();
+	Director& operator=(const Director &dir);
 	bool addActor(AbstractActor *actor);
 	bool removeActor(AbstractActor *actor);
 	Channel* createChannel(const std::string &name);

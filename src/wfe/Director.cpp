@@ -16,6 +16,41 @@ using namespace std;
 namespace wfe
 {
 
+Director::~Director()
+{
+	for (unsigned i = 0; i < _channels.size(); i++)
+		delete _channels[i];
+}
+
+/**
+ * Nothing can stop you to copy contruct a Directory. However, it's very usual
+ * and they share the same executor, so be careful of the lifetime.
+ */
+Director::Director(const Director &dir):
+		_actors(dir._actors), _channels(), _exest(dir._exest)
+{
+	for (unsigned i = 0; i < dir._channels.size(); i++)
+		createChannel(dir._channels[i]->name());
+}
+
+/**
+ * Assignment. It duplicates all channels from assigner by creating channels
+ * with the same name.
+ */
+Director& Director::operator=(const Director &dir)
+{
+	_actors = dir._actors;
+	_exest = dir._exest;
+
+	// Clear old channels and duplicate channels from assigner.
+	for (unsigned i = 0; i < _channels.size(); i++)
+		delete _channels[i];
+	_channels.clear();
+	for (unsigned i = 0; i < dir._channels.size(); i++)
+		createChannel(dir._channels[i]->name());
+	return *this;
+}
+
 /**
  * Add an actor into the director to execute.
  *

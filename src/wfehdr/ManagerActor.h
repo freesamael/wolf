@@ -7,6 +7,8 @@
 #ifndef MANAGERACTOR_H_
 #define MANAGERACTOR_H_
 
+#include <iostream>
+#include <HelperMacros.h>
 #include "AbstractWorkerActor.h"
 #include "Channel.h"
 
@@ -18,7 +20,11 @@ class ManagerActor: public AbstractActor
 public:
 	ManagerActor(AbstractWorkerActor *worker): _worker(worker),
 		_state(NOT_READY) { _worker->managerInitialization(this); }
+	ManagerActor(const ManagerActor &mgr): _worker(mgr._worker),
+		_state(NOT_READY) { _worker->managerInitialization(this); }
 	~ManagerActor() { _worker->managerFinalization(this);}
+	ManagerActor& operator=(const ManagerActor &UNUSED(mgr))
+	{ PERR("You should not use assignment on ManagerActor."); return *this; }
 
 	inline void prefire() { _state = RUNNING; _worker->managerPrefire(this); }
 	inline void postfire() { _state = FINISHED; _worker->managerPostfire(this); }

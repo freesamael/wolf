@@ -21,7 +21,7 @@ namespace wfe
 class TLVSharedMemoryInfo: public cml::ITLVObject
 {
 public:
-	TLVSharedMemoryInfo(): _size(0) {}
+	TLVSharedMemoryInfo(): _name(), _size(0) {}
 	TLVSharedMemoryInfo(const std::string &name, size_t size):
 		_name(name), _size(size) {}
 	inline const std::string& name() const { return _name; }

@@ -37,7 +37,8 @@ public:
 			{ return _ssocks; }
 
 private:
-	RunnerAgent(): _state(NOT_READY) {}
+	RunnerAgent(): SINGLETON_MEMBER_INITLST,
+		_state(NOT_READY), _msock(), _ssocks() {}
 	State _state;
 	cml::TCPSocket _msock;
 	std::vector<cml::TCPSocket *> _ssocks;

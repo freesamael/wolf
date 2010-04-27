@@ -20,7 +20,8 @@ namespace wfe
 SINGLETON_REGISTRATION(D2MCE);
 SINGLETON_REGISTRATION_END();
 
-D2MCE::D2MCE()
+D2MCE::D2MCE():
+		SINGLETON_MEMBER_INITLST, _nodeid(0), _barrier(), _bufs(), _mutexes()
 {
 	PINFO("Initializing d2mce.");
 	d2mce_init();

@@ -50,9 +50,8 @@ public:
 			size_t UNUSED(size), const HostAddress &UNUSED(addr),
 			uint16_t UNUSED(port)) { return -1; }
 
-
 private:
-	ConnectedSocketState(): _statestr("Connected") {}
+	ConnectedSocketState(): SINGLETON_MEMBER_INITLST, _statestr("Connected") {}
 	std::string _statestr;
 };
 

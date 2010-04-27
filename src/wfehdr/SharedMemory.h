@@ -18,8 +18,7 @@ namespace wfe
 #include <d2mce/d2mce.h>
 /**
  * SharedMemory represents a piece of shared memory on D2MCE tuple space. A
- * SharedMemory should be constructed by D2MCE::createSharedMemory() and the
- * lifetime is managed by D2MCE.
+ * SharedMemory should be constructed by D2MCE::createSharedMemory().
  */
 class SharedMemory: public IDrop
 {
@@ -27,6 +26,8 @@ public:
 	SharedMemory(const std::string &name, char *buf, size_t size,
 		d2mce_mutex_t *mutex):
 		_name(name), _buf(buf), _size(size), _mutex(mutex) {}
+	/// The clone created still share the same buffer and mutex the original
+	/// SharedMemory uses.
 	SharedMemory(const SharedMemory &sm):
 		_name(sm._name), _buf(sm._buf), _size(sm._size), _mutex(sm._mutex) {}
 	SharedMemory& operator=(const SharedMemory &sm);

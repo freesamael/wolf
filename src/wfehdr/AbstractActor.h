@@ -44,6 +44,7 @@ public:
 	} State;
 	/// Name of states in string.
 	static const char *StateString[];
+	AbstractActor(): _sinkp(), _srcp() {}
 	virtual ~AbstractActor() {}
 	/// Get the state of the actor.
 	virtual State state() = 0;

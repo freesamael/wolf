@@ -21,10 +21,6 @@ namespace cml
 SINGLETON_REGISTRATION(TLVObjectFactory);
 SINGLETON_REGISTRATION_END();
 
-TLVObjectFactory::TLVObjectFactory()
-{
-}
-
 TLVObjectFactory::~TLVObjectFactory()
 {
 	map<string, ITLVObjectCreator *>::iterator iter;

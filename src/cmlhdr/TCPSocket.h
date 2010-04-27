@@ -23,8 +23,8 @@ namespace cml
 class TCPSocket: public AbstractSocket
 {
 public:
-	TCPSocket() {}
-	TCPSocket(int sock): AbstractSocket(sock) {}
+	TCPSocket():_ssocks() {}
+	TCPSocket(int sock): AbstractSocket(sock), _ssocks() {}
 	~TCPSocket();
 	TCPSocket* accept();
 

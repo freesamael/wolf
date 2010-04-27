@@ -48,7 +48,7 @@ public:
 			size_t UNUSED(size)) { return -1; }
 
 private:
-	SimpleActiveSocketState(): _statestr("Active") {}
+	SimpleActiveSocketState(): SINGLETON_MEMBER_INITLST, _statestr("Active") {}
 	std::string _statestr;
 };
 

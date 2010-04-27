@@ -39,46 +39,47 @@
  * \#include \<TLVObjectFactoryAutoRegistry.h\>
  */
 #define TLV_OBJECT_REGISTRATION(type, id, creator) \
-	static cml::TLVObjectFactoryAutoRegistry CONCATE(autoreg, __LINE__)(\
+	static cml::TLVObjectFactoryAutoRegistry CONCATE(autoreg, __LINE__)( \
 			typeid(type).name(), id, new creator())
 
 /**
  * \def SINGLETON(type)
- * Declare a singleton type. The class must have a private default constructor.
+ * Declare a singleton type. The class should have a private default constructor
+ * and should put SINGLETON_MEM_INITLST within the member initialization list.
  *
  * \note
  * \#include \<vector\> <br>
  * \#include \<iostream\>
  */
-#define SINGLETON(type) \
-	public: \
-		static type* instance(); \
-		static void release() { SINGLETON_RELEASE_BODY(); } \
+#define SINGLETON(type)                                                        \
+	public:                                                                    \
+		static type* instance();                                               \
+		static void release() { SINGLETON_RELEASE_BODY(); }                    \
 		inline void registerDependant(void (*rls)()) { _deps.push_back(rls); } \
-	private: \
-		void releaseDependants() { SINGLETON_RELEASE_DEPS_BODY(); } \
-		static type* _instance; \
+	private:                                                                   \
+		void releaseDependants() { SINGLETON_RELEASE_DEPS_BODY(); }            \
+		static type* _instance;                                                \
 		std::vector<void (*)()> _deps
 
 /**
  * \def SINGLETON_RELEASE_BODY()
  * The body of release() function.
  */
-#define SINGLETON_RELEASE_BODY() \
-	if (_instance) { \
-		PINFO("Releasing"); \
-		_instance->releaseDependants(); \
-		delete _instance; \
-		_instance = NULL; \
-	} \
+#define SINGLETON_RELEASE_BODY()                                               \
+	if (_instance) {                                                           \
+		PINFO("Releasing");                                                    \
+		_instance->releaseDependants();                                        \
+		delete _instance;                                                      \
+		_instance = NULL;                                                      \
+	}                                                                          \
 	return
 
-/**
+/**constructor
  * \def SINGLETON_RELEASE_DEPS_BODY()
  * The body of releaseDeps() function.
  */
-#define SINGLETON_RELEASE_DEPS_BODY() \
-	for (unsigned i = 0; i < _deps.size(); i++) \
+#define SINGLETON_RELEASE_DEPS_BODY()                                          \
+	for (unsigned i = 0; i < _deps.size(); i++)                                \
 		(*_deps[i])()
 
 /**
@@ -88,11 +89,11 @@
  * \note
  * \#include \<SingletonAutoDestructor.h\>
  */
-#define SINGLETON_REGISTRATION(type) \
-	static cml::SingletonAutoDestructor< type > CONCATE(autodes, __LINE__); \
-	type* type::_instance = NULL; \
-	type* type::instance() { \
-		if (!_instance) { \
+#define SINGLETON_REGISTRATION(type)                                           \
+	static cml::SingletonAutoDestructor< type > CONCATE(autodes, __LINE__);    \
+	type* type::_instance = NULL;                                              \
+	type* type::instance() {                                                   \
+		if (!_instance) {                                                      \
 			_instance = new type()
 
 /**
@@ -100,7 +101,7 @@
  * Declare that self_type depends on dep_type. It affects the destruction
  * sequence.
  */
-#define SINGLETON_DEPENDS(self_type, dep_type) \
+#define SINGLETON_DEPENDS(self_type, dep_type)                                 \
 			dep_type::instance()->registerDependant(&self_type::release)
 
 /**
@@ -110,17 +111,25 @@
  * \note
  * \#include \<AbstractSocket.h\>
  */
-#define SINGLETON_DEPENDS_SOCKET(self_type) \
+#define SINGLETON_DEPENDS_SOCKET(self_type)                                    \
 			AbstractSocket::registerSocketDependant(&self_type::release)
 
 /**
  * \def SINGLETON_REGISTRATION_END()
  * The end clause of singleton registration.
  */
-#define SINGLETON_REGISTRATION_END() \
-		} \
-		return _instance; \
-	}
+#define SINGLETON_REGISTRATION_END()                                           \
+		}                                                                      \
+		return _instance;                                                      \
+	}                                                                          \
+	typedef int DummyTypeDefForSemiColonEnding__
+
+/**
+ * Initialize members singleton macros need. It should be put within
+ * (and should be the first item in) the initialization list of the constructor.
+ */
+#define SINGLETON_MEMBER_INITLST \
+	_deps()
 
 /**
  * \def PERR(str)

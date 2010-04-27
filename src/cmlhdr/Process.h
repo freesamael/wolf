@@ -23,7 +23,7 @@ namespace cml
 class Process
 {
 public:
-	Process(): _proc(0) {}
+	Process(): _proc(0), _env() {}
 	void setProcessEnvironment(const ProcessEnvironment &env) { _env = env; }
 	inline ProcessEnvironment processEnvironment() const { return _env; }
 	void start(const std::string &program, const std::string &args = "");

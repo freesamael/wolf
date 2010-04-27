@@ -20,14 +20,16 @@ namespace cml
  * TLVBlock takes the ownership of it's own buffer, and deletes it on
  * destruction.
  */
-StandardTLVBlock::StandardTLVBlock(uint16_t type, uint16_t length)
+StandardTLVBlock::StandardTLVBlock(uint16_t type, uint16_t length):
+		_buf(NULL)
 {
 	_buf = new char[length + szHeader];
 	_writetype(type);
 	_writelength(length);
 }
 
-StandardTLVBlock::StandardTLVBlock(const StandardTLVBlock &blk)
+StandardTLVBlock::StandardTLVBlock(const StandardTLVBlock &blk):
+		_buf(NULL)
 {
 	_buf = new char[blk.plainSize()];
 	memcpy(_buf, blk.plainBuffer(), blk.plainSize());

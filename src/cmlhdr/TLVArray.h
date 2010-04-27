@@ -23,6 +23,7 @@ namespace cml
 class TLVArray: public ITLVObject
 {
 public:
+	TLVArray(): _elem() {}
 	std::vector<ITLVObject *>& elements() { return _elem; }
 	StandardTLVBlock* toTLVBlock() const;
 
