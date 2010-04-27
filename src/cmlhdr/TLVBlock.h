@@ -27,6 +27,7 @@ class StandardTLVBlock: public ITLVBlock
 public:
 	StandardTLVBlock(uint16_t type = TLV_TYPE_INVALID,
 			uint16_t length = 0);
+	StandardTLVBlock(const StandardTLVBlock &blk);
 	~StandardTLVBlock();
 
 	// Getters.
@@ -48,6 +49,8 @@ public:
 	inline const char* value() const {
 		return (!length()) ? NULL : &_buf[szHeader]; }
 
+	StandardTLVBlock& operator=(const StandardTLVBlock &blk);
+
 	// Static helpers.
 	static StandardTLVBlock* concate(const std::vector<const ITLVBlock*> &blocks);
 
@@ -68,6 +71,7 @@ class SharedTLVBlock: public ITLVBlock
 {
 public:
 	SharedTLVBlock(const char *shared_buf): _buf(shared_buf) {}
+	SharedTLVBlock(const SharedTLVBlock &blk): _buf(blk._buf) {}
 	inline uint16_t type() const {
 		return ntohs(((uint16_t *)_buf)[0]); }
 	inline uint16_t length() const {
@@ -76,6 +80,8 @@ public:
 	inline const char* plainBuffer() const { return _buf; }
 	inline const char* value() const {
 		return (!length()) ? NULL : &_buf[szHeader]; }
+	inline SharedTLVBlock& operator=(const SharedTLVBlock &blk)
+		{ _buf = blk._buf; return *this; }
 
 private:
 	const char *_buf;

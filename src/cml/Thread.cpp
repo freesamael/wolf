@@ -38,6 +38,15 @@ Thread::Thread(IRunnable *runner):
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &state);
 }
 
+Thread::Thread(const Thread &thread):
+		_runner(thread._runner), _tid(0), _running(false)
+{
+	int state;
+	pthread_mutex_init(&_rcnd_mutex, NULL);
+	pthread_cond_init(&_rcnd, NULL);
+	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &state);
+}
+
 Thread::~Thread()
 {
 	pthread_cond_destroy(&_rcnd);
@@ -121,6 +130,15 @@ bool Thread::join(unsigned timeout)
 bool Thread::cancel()
 {
 	return !pthread_cancel(_tid);
+}
+
+/**
+ * Operator =
+ */
+Thread& Thread::operator=(const Thread &thread)
+{
+	_runner = thread._runner;
+	return *this;
 }
 
 }

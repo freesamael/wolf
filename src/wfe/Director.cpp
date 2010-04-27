@@ -78,7 +78,7 @@ Channel* Director::createChannel(const string &name)
  */
 Channel* Director::findChannel(const string &name)
 {
-	for (int i = 0; i < (int)_channels.size(); i++)
+	for (unsigned i = 0; i < _channels.size(); i++)
 		if (_channels[i]->name() == name)
 			return _channels[i];
 	return NULL;

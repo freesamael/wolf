@@ -24,8 +24,10 @@ class AbstractSocket
 {
 public:
 	AbstractSocket();
+	AbstractSocket(const AbstractSocket &sock);
 	AbstractSocket(int sock);
 	virtual ~AbstractSocket();
+	AbstractSocket& operator=(const AbstractSocket &sock);
 
 	bool open();
 	bool activeOpen(const HostAddress &addr, uint16_t port);

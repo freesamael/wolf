@@ -34,6 +34,10 @@ public:
 
 	TLVMessage(uint16_t c = EMPTY, ITLVObject *param = NULL):
 		_cmd(c), _param(param) {}
+	TLVMessage(const TLVMessage &msg):
+		_cmd(msg._cmd), _param(msg._param) {}
+	TLVMessage& operator=(const TLVMessage &msg)
+		{ _cmd = msg._cmd; _param = msg._param; return *this; }
 	inline uint16_t command() const { return _cmd; }
 	inline ITLVObject* parameter() const { return _param; }
 	inline void setCommand(uint16_t c) { _cmd = c; }

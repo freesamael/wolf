@@ -15,13 +15,15 @@ namespace wfe
 {
 
 /**
- * Allocate a piece of shared memory on DSM.
+ * Operator =
  */
-SharedMemory::SharedMemory(string name, size_t size):
-		_name(name), _size(size)
+SharedMemory& SharedMemory::operator=(const SharedMemory &sm)
 {
-	d2mce_mutex_init(&_mutex, (name + "_mutex").c_str());
-	_buf = (char *)d2mce_malloc(name.c_str(), size);
+	_name = sm._name;
+	_buf = sm._buf;
+	_size = sm._size;
+	_mutex = sm._mutex;
+	return *this;
 }
 
 /**
@@ -29,9 +31,7 @@ SharedMemory::SharedMemory(string name, size_t size):
  */
 IDrop* SharedMemory::clone() const
 {
-	SharedMemory *sm = D2MCE::instance()->createSharedMemory(_name, _size);
-	memcpy(sm->buffer(), _buf, _size);
-	return sm;
+	return new SharedMemory(*this);
 }
 
 }

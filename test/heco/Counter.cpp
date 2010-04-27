@@ -35,7 +35,7 @@ Counter::~Counter()
 	delete _meminfo;
 }
 
-void Counter::managerPrefire(ManagerActor *manager)
+void Counter::managerPrefire(ManagerActor *UNUSED(manager))
 {
 	// Load memory.
 	_mem = dynamic_cast<SharedMemory *>(sinkPorts()[0]->readPort());
@@ -54,7 +54,7 @@ void Counter::managerPrefire(ManagerActor *manager)
 			_meminfo->name().c_str(), (int)_meminfo->size());
 }
 
-void Counter::managerPostfire(ManagerActor *manager)
+void Counter::managerPostfire(ManagerActor *UNUSED(manager))
 {
 	unsigned nodes = D2MCE::instance()->getNumberOfNodes();
 	printf("%s: Barrier for %u nodes.\n", __PRETTY_FUNCTION__, nodes);
@@ -73,7 +73,7 @@ void Counter::managerPostfire(ManagerActor *manager)
 
 void Counter::setup()
 {
-	_mem = D2MCE::instance()->createSharedMemory(_meminfo->name(), _meminfo->size());
+	_mem = D2MCE::instance()->createSharedMemory(_meminfo->size(), _meminfo->name());
 }
 
 void Counter::fire()

@@ -18,7 +18,7 @@ namespace wfe
  */
 void Channel::attachReader(SinkPort *port)
 {
-	for (int i = 0; i < (int)_readers.size(); i++) {
+	for (unsigned i = 0; i < _readers.size(); i++) {
 		if (_readers[i] == port)
 			return;
 	}
@@ -52,7 +52,7 @@ void Channel::write(IDrop *item)
 	pthread_mutex_lock(&_mutex);
 	if (!_readers.empty()) {
 		// Fit 1st ~ (N - 1)th reader.
-		for (int i = 0; i < (int)_readers.size() - 1; i++) {
+		for (unsigned i = 0; i < _readers.size() - 1; i++) {
 			_readers[i]->writePort(item->clone());
 		}
 

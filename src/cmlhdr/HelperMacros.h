@@ -6,6 +6,14 @@
 #ifndef HELPERMACROS_H_
 #define HELPERMACROS_H_
 
+#ifndef UNUSED
+#ifdef __GNUC__
+#define UNUSED(x) x __attribute__((unused))
+#else
+#define UNUSED(x) x
+#endif /* __GNUC__ */
+#endif /* UNUSED */
+
 /**
  * \def TYPENAME(type)
  * Get the name of type in string.
@@ -36,7 +44,7 @@
 
 /**
  * \def SINGLETON(type)
- * Declare a singleton type.
+ * Declare a singleton type. The class must have a private default constructor.
  *
  * \note
  * \#include \<vector\> <br>

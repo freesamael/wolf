@@ -16,7 +16,7 @@ namespace cml
  */
 void AbstractObservable::attach(IObserver *o)
 {
-	for (int i = 0; i < (int)_obsrvs.size(); i++)
+	for (unsigned i = 0; i < _obsrvs.size(); i++)
 		if (_obsrvs[i] == o)
 			return;
 	_obsrvs.push_back(o);
@@ -42,7 +42,7 @@ void AbstractObservable::detach(IObserver *o)
  */
 void AbstractObservable::notify()
 {
-	for (int i = 0; i < (int)_obsrvs.size(); i++)
+	for (unsigned i = 0; i < _obsrvs.size(); i++)
 		_obsrvs[i]->update(this);
 }
 

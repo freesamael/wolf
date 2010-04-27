@@ -21,6 +21,10 @@ class SourcePort: public IPort
 public:
 	SourcePort(AbstractActor *owner, Channel *ch = NULL):
 		_owner(owner), _channel(ch) {}
+	SourcePort(const SourcePort &p):
+		_owner(p._owner), _channel(p._channel) {}
+	SourcePort& operator=(const SourcePort &p)
+		{ _owner = p._owner; _channel = p._channel; return *this; }
 	inline Type type() const { return SOURCE; }
 	inline AbstractActor* owner() const { return _owner; }
 	inline Channel* channel() const { return _channel; }

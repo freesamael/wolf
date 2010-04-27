@@ -20,7 +20,7 @@ int main()
 	D2MCE::instance()->barrier(2);
 
 	usleep(50);
-	SharedMemory *sm = D2MCE::instance()->createSharedMemory("mem", sizeof(int));
+	SharedMemory *sm = D2MCE::instance()->createSharedMemory(sizeof(int));
 	cout << "Memory Address = " << hex << (unsigned)sm << endl;
 	sm->lock();
 	sm->load();

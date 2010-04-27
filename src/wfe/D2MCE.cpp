@@ -5,6 +5,9 @@
  */
 
 #ifndef DISABLE_D2MCE
+#include <cstdlib>
+#include <cstring>
+#include <sstream>
 #include <SingletonAutoDestructor.h>
 #include "D2MCE.h"
 #include "SharedMemory.h"
@@ -26,8 +29,8 @@ D2MCE::D2MCE()
 D2MCE::~D2MCE()
 {
 	PINFO("Finalizing d2mce.");
-	for (int i = 0; i < (int)_smems.size(); i++)
-		delete _smems[i];
+	for (unsigned i = 0; i < _mutexes.size(); i++)
+		free(_mutexes[i]);
 	d2mce_finalize();
 	PINFO("d2mce finalized.");
 }
@@ -72,31 +75,31 @@ int D2MCE::getNumberOfNodes() const
 }
 
 /**
- * Create a piece of shared memory with given size and name.
- *
- * \note
- * D2MCE takes the ownership of shared memory and will delete/free the memory.
+ * Create a piece of shared memory with given size. If the name was not given,
+ * it's decided by D2MCE automatically.
  */
-SharedMemory* D2MCE::createSharedMemory(const string &name, size_t size)
+SharedMemory* D2MCE::createSharedMemory(size_t size, const string &name)
 {
-	PINFO("Creating a shared memory.");
-	SharedMemory *mem = new SharedMemory(name, size);
-	_smems.push_back(mem);
-	return mem;
-}
+	d2mce_mutex_t *mutex = (d2mce_mutex_t *)malloc(sizeof(d2mce_mutex_t));
+	stringstream memname;
+	stringstream mutexname;
 
-/**
- * Find a piece of shared memory with given name.
- *
- * \return
- * Proper shared memory, or NULL if not found.
- */
-SharedMemory* D2MCE::findSharedMemory(const string &name)
-{
-	for (int i = 0; i < (int)_smems.size(); i++)
-		if (_smems[i]->name() == name)
-			return _smems[i];
-	return NULL;
+	// Set name and mutex name.
+	if (name.empty())
+		memname << "m_" << _bufs.size();
+	else
+		memname << name;
+	mutexname << memname << "_mux";
+	PINFO("Creating shared memory with name = " << memname << ", mutex name = "
+			<< mutexname << ", and size = " << size);
+
+	// Allocate memory and initialize mutex.
+	memset(mutex, 0, sizeof(d2mce_mutex_t));
+	d2mce_mutex_init(mutex, mutexname.str().c_str());
+	_bufs.push_back((char *)d2mce_malloc(memname.str().c_str(), size));
+	_mutexes.push_back(mutex);
+
+	return new SharedMemory(memname.str(), _bufs.back(), size, _mutexes.back());
 }
 
 }

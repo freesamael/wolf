@@ -25,7 +25,7 @@ StandardTLVBlock* TLVArray::toTLVBlock() const
 {
 	// Generate all blocks of elements.
 	vector<const ITLVBlock *> blocks;
-	for (int i = 0; i < (int)_elem.size(); i++)
+	for (unsigned i = 0; i < _elem.size(); i++)
 		blocks.push_back(_elem[i]->toTLVBlock());
 
 	// Concatenate blocks.
@@ -33,7 +33,7 @@ StandardTLVBlock* TLVArray::toTLVBlock() const
 	blk->setType(TLV_TYPE_ARRAY);
 
 	// Cleanup.
-	for (int i = 0; i < (int)blocks.size(); i++)
+	for (unsigned i = 0; i < blocks.size(); i++)
 		delete blocks[i];
 
 	return blk;

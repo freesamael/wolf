@@ -32,21 +32,23 @@ public:
 	bool passiveOpen(AbstractSocket *sock, uint16_t port,	int qlen = 10);
 
 	/// Unsupported operation with dummy implementation.
-	inline bool close(AbstractSocket *sock) { return false; }
+	inline bool close(AbstractSocket *UNUSED(sock)) { return false; }
 	/// Unsupported operation with dummy implementation.
-	inline TCPSocket* accept(AbstractSocket *sock) { return NULL; }
+	inline TCPSocket* accept(AbstractSocket *UNUSED(sock)) { return NULL; }
 	/// Unsupported operation with dummy implementation.
-	inline ssize_t read(AbstractSocket *sock, char *buf, size_t size)
-			{ return -1; }
+	inline ssize_t read(AbstractSocket *UNUSED(sock), char *UNUSED(buf),
+			size_t UNUSED(size)) { return -1; }
 	/// Unsupported operation with dummy implementation.
-	inline ssize_t write(AbstractSocket *sock, const char *buf, size_t size)
-			{ return -1; }
+	inline ssize_t write(AbstractSocket *UNUSED(sock), const char *UNUSED(buf),
+			size_t UNUSED(size)) { return -1; }
 	/// Unsupported operation with dummy implementation.
-	inline ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
-			HostAddress *addr, uint16_t *port) { return -1; }
+	inline ssize_t recvfrom(AbstractSocket *UNUSED(sock), char *UNUSED(buf),
+			size_t UNUSED(size), HostAddress *UNUSED(addr),
+			uint16_t *UNUSED(port)) { return -1; }
 	/// Unsupported operation with dummy implementation.
-	inline ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
-			const HostAddress &addr, uint16_t port) { return -1; }
+	inline ssize_t sendto(AbstractSocket *UNUSED(sock), const char *UNUSED(buf),
+			size_t UNUSED(size), const HostAddress &UNUSED(addr),
+			uint16_t UNUSED(port)) { return -1; }
 
 private:
 	ClosedSocketState(): _statestr("Closed") {}

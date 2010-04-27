@@ -131,7 +131,7 @@ bool RunnerAgent::shutdown()
 
 	// Shutdown all runners.
 	bool success = true;
-	for (int i = 0; i < (int)_ssocks.size(); i++) {
+	for (unsigned i = 0; i < _ssocks.size(); i++) {
 		TLVReaderWriter rw(_ssocks[i]);
 		success &= rw.write(msg);
 	}
@@ -165,7 +165,7 @@ bool RunnerAgent::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 
 	// Send to all runners.
 	bool success = true;
-	for (int i = 0; i < (int)_ssocks.size(); i++) {
+	for (unsigned i = 0; i < _ssocks.size(); i++) {
 		TLVReaderWriter rw(_ssocks[i]);
 		success &= rw.write(msg);
 	}

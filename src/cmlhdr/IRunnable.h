@@ -17,6 +17,7 @@ namespace cml
 class IRunnable
 {
 public:
+	virtual ~IRunnable() {}
 	virtual void run() = 0;
 };
 

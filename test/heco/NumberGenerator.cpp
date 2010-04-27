@@ -15,7 +15,7 @@ using namespace wfe;
 void NumberGenerator::prefire()
 {
 	_state = RUNNING;
-	_item = D2MCE::instance()->createSharedMemory("num", 4 * sizeof(int));
+	_item = D2MCE::instance()->createSharedMemory(4 * sizeof(int));
 }
 
 void NumberGenerator::fire()

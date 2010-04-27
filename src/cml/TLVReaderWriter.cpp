@@ -18,15 +18,6 @@ using namespace std;
 namespace cml
 {
 
-TLVReaderWriter::TLVReaderWriter(AbstractSocket *socket):
-		_socket(socket)
-{
-}
-
-TLVReaderWriter::~TLVReaderWriter()
-{
-}
-
 /**
  * Read a TLV object from given TCP socket.
  *

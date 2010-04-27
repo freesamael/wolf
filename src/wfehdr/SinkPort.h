@@ -23,6 +23,10 @@ class SinkPort: public IPort
 public:
 	SinkPort(AbstractActor *owner, Channel *ch = NULL):
 		_owner(owner), _channel(ch) {}
+	SinkPort(const SinkPort &p):
+		_owner(p._owner), _channel(p._channel) {}
+	SinkPort& operator=(const SinkPort &p)
+		{ _owner = p._owner; _channel = p._channel; return *this; }
 	inline Type type() const { return SINK; }
 	inline AbstractActor* owner() const { return _owner; }
 	inline Channel* channel() const { return _channel; }

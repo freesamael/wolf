@@ -8,6 +8,7 @@
 #define ABSTRACTWORKERACTOR_H_
 
 #include <ITLVObject.h>
+#include <HelperMacros.h>
 #include "AbstractActor.h"
 
 namespace wfe
@@ -37,10 +38,10 @@ class AbstractWorkerActor: public AbstractActor, public cml::ITLVObject
 public:
 	virtual ~AbstractWorkerActor() {}
 	virtual State state() { return READY; }
-	virtual void managerInitialization(ManagerActor *manager) {}
-	virtual void managerFinalization(ManagerActor *manager) {}
-	virtual void managerPrefire(ManagerActor *manager) {}
-	virtual void managerPostfire(ManagerActor *manager) {}
+	virtual void managerInitialization(ManagerActor *UNUSED(manager)) {}
+	virtual void managerFinalization(ManagerActor *UNUSED(manager)) {}
+	virtual void managerPrefire(ManagerActor *UNUSED(manager)) {}
+	virtual void managerPostfire(ManagerActor *UNUSED(manager)) {}
 };
 
 }

@@ -25,6 +25,7 @@ class Thread
 	friend void* thread_caller(void*);
 public:
 	Thread(IRunnable *runner = NULL);
+	Thread(const Thread &thread);
 	virtual ~Thread();
 	virtual inline void run() { if (_runner) _runner->run(); }
 	inline pthread_t threadID() const { return _tid; }
@@ -32,6 +33,8 @@ public:
 	bool join();
 	bool join(unsigned timeout);
 	bool cancel();
+
+	Thread& operator=(const Thread &thread);
 
 private:
 	IRunnable *_runner;

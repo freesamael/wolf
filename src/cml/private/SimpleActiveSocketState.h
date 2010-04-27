@@ -37,15 +37,15 @@ public:
 			HostAddress *addr, uint16_t *port);
 
 	/// Unsupported operation with dummy implementation.
-	inline bool open(AbstractSocket *sock) { return false; }
+	inline bool open(AbstractSocket *UNUSED(sock)) { return false; }
 	/// Unsupported operation with dummy implementation.
-	inline TCPSocket* accept(AbstractSocket *sock) { return NULL; }
+	inline TCPSocket* accept(AbstractSocket *UNUSED(sock)) { return NULL; }
 	/// Unsupported operation with dummy implementation.
-	inline ssize_t read(AbstractSocket *sock, char *buf, size_t size)
-			{ return -1; }
+	inline ssize_t read(AbstractSocket *UNUSED(sock), char *UNUSED(buf),
+			size_t UNUSED(size)) { return -1; }
 	/// Unsupported operation with dummy implementation.
-	inline ssize_t write(AbstractSocket *sock, const char *buf, size_t size)
-			{ return -1; }
+	inline ssize_t write(AbstractSocket *UNUSED(sock), const char *UNUSED(buf),
+			size_t UNUSED(size)) { return -1; }
 
 private:
 	SimpleActiveSocketState(): _statestr("Active") {}

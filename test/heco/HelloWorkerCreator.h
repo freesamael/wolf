@@ -8,13 +8,14 @@
 #define HELLOWORKERCREATOR_H_
 
 #include <ITLVObjectCreator.h>
+#include <HelperMacros.h>
 #include "HelloWorker.h"
 
 class HelloWorkerCreator: public cml::ITLVObjectCreator
 {
 public:
 	inline cml::ITLVObject* create() const { return new HelloWorker(); }
-	inline cml::ITLVObject* create(const cml::ITLVBlock &blk) const
+	inline cml::ITLVObject* create(const cml::ITLVBlock &UNUSED(blk)) const
 			{ return create(); }
 };
 

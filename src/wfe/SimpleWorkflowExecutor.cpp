@@ -23,7 +23,7 @@ void SimpleWorkflowExecutor::execute(const vector<AbstractActor *> &actors)
 
 void SimpleWorkflowExecutor::setup(const vector<AbstractActor *> &actors)
 {
-	for (int i = 0; i < (int)actors.size(); i++)
+	for (unsigned i = 0; i < actors.size(); i++)
 		actors[i]->setup();
 }
 
@@ -68,7 +68,7 @@ void SimpleWorkflowExecutor::iterate(const vector<AbstractActor *> &actors)
 
 void SimpleWorkflowExecutor::wrapup(const vector<AbstractActor *> &actors)
 {
-	for (int i = 0; i < (int)actors.size(); i++)
+	for (unsigned i = 0; i < actors.size(); i++)
 		actors[i]->wrapup();
 }
 

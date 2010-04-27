@@ -21,8 +21,10 @@ namespace cml
 class TLVReaderWriter
 {
 public:
-	TLVReaderWriter(AbstractSocket *socket = NULL);
-	~TLVReaderWriter();
+	TLVReaderWriter(AbstractSocket *socket = NULL): _socket(socket) {}
+	TLVReaderWriter(const TLVReaderWriter &rw): _socket(rw._socket) {}
+	TLVReaderWriter& operator=(const TLVReaderWriter &rw)
+		{ _socket = rw._socket; return *this; }
 
 	// TCP read/write.
 	ITLVObject* read(TCPSocket *socket = NULL);

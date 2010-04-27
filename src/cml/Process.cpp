@@ -45,7 +45,7 @@ void Process::start(const string &program, const string &args)
 	}
 
 	// Cleanup duplicated data.
-	for (int i = 0; i <= (int)args.size(); i++)
+	for (unsigned i = 0; i <= args.size(); i++)
 		free(argv[i]);
 	delete [] argv;
 }
@@ -65,7 +65,7 @@ char** Process::constructArgs(const std::string &program,
 
 	// Fill arguments.
 	argv[0] = strdup(program.c_str());
-	for (int i = 1; i <= (int)args.size(); i++)
+	for (unsigned i = 1; i <= args.size(); i++)
 		argv[i] = strdup(args[i - 1].c_str());
 	argv[args.size() + 1] = NULL;
 

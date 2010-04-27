@@ -14,7 +14,7 @@ AbstractActor::State ManagerActor::state()
 {
 	if (_state == NOT_READY) {
 		bool ready = true;
-		for (int i = 0; i < (int)sinkPorts().size(); i++)
+		for (unsigned i = 0; i < sinkPorts().size(); i++)
 			ready &= !sinkPorts()[i]->isEmpty();
 		if (ready)
 			_state = READY;

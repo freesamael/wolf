@@ -32,6 +32,12 @@ AbstractSocket::AbstractSocket():
 	pthread_mutex_init(&_mutex, NULL);
 }
 
+AbstractSocket::AbstractSocket(const AbstractSocket &sock):
+		_sockfd(sock._sockfd), _state(sock._state)
+{
+	pthread_mutex_init(&_mutex, NULL);
+}
+
 AbstractSocket::AbstractSocket(int sock):
 		_sockfd(sock), _state(SimpleActiveSocketState::instance())
 {
@@ -46,6 +52,16 @@ AbstractSocket::~AbstractSocket()
 	_state->close(this);
 	if (pthread_mutex_destroy(&_mutex) != 0)
 		perror("Error: AbstractSocket::~AbstractSocket(): Destroying mutex");
+}
+
+/**
+ * Operator =
+ */
+AbstractSocket& AbstractSocket::operator=(const AbstractSocket &sock)
+{
+	_sockfd = sock._sockfd;
+	_state = sock._state;
+	return *this;
 }
 
 /**

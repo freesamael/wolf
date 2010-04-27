@@ -9,7 +9,7 @@
 
 using namespace CppUnit;
 
-int main(int argc, char *argv[])
+int main()
 {
 	TextTestRunner runner;
 	runner.addTest(TestFactoryRegistry::getRegistry().makeTest());

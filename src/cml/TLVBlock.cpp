@@ -27,6 +27,12 @@ StandardTLVBlock::StandardTLVBlock(uint16_t type, uint16_t length)
 	_writelength(length);
 }
 
+StandardTLVBlock::StandardTLVBlock(const StandardTLVBlock &blk)
+{
+	_buf = new char[blk.plainSize()];
+	memcpy(_buf, blk.plainBuffer(), blk.plainSize());
+}
+
 StandardTLVBlock::~StandardTLVBlock()
 {
 	delete [] _buf;
@@ -51,6 +57,17 @@ void StandardTLVBlock::setLength(uint16_t len)
 
 	_writetype(tp);
 	_writelength(len);
+}
+
+/**
+ * Operator =
+ */
+StandardTLVBlock& StandardTLVBlock::operator=(const StandardTLVBlock &blk)
+{
+	delete _buf;
+	_buf = new char[blk.plainSize()];
+	memcpy(_buf, blk.plainBuffer(), blk.plainSize());
+	return *this;
 }
 
 /**
@@ -82,13 +99,13 @@ StandardTLVBlock* StandardTLVBlock::concate(const vector<const ITLVBlock*> &bloc
 	StandardTLVBlock *blk = new StandardTLVBlock();
 
 	uint16_t tlen = 0;
-	for (int i = 0; i < (int)blocks.size(); i++)
+	for (unsigned i = 0; i < blocks.size(); i++)
 		tlen += blocks[i]->plainSize();
 
 	blk->setLength(tlen);
 
 	uint16_t offset = 0;
-	for (int i = 0; i < (int)blocks.size(); i++) {
+	for (unsigned i = 0; i < blocks.size(); i++) {
 		memcpy(&blk->value()[offset], blocks[i]->plainBuffer(),
 				blocks[i]->plainSize());
 		offset += blocks[i]->plainSize();

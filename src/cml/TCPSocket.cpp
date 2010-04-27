@@ -11,7 +11,7 @@ namespace cml
 
 TCPSocket::~TCPSocket()
 {
-	for (int i = 0; i < (int)_ssocks.size(); i++)
+	for (unsigned i = 0; i < _ssocks.size(); i++)
 		delete _ssocks[i];
 }
 

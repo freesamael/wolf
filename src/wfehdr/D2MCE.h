@@ -30,15 +30,15 @@ public:
 	bool barrier(unsigned int nnodes);
 	int nodeId() const { return _nodeid; }
 	int getNumberOfNodes() const;
-	SharedMemory* createSharedMemory(const std::string &name, size_t size);
-	SharedMemory* findSharedMemory(const std::string &name);
+	SharedMemory* createSharedMemory(size_t size, const std::string &name = "");
 
 private:
 	D2MCE();
 	~D2MCE();
 	int _nodeid;
 	d2mce_barrier_t _barrier;
-	std::vector<SharedMemory*> _smems;
+	std::vector<char*> _bufs;
+	std::vector<d2mce_mutex_t*> _mutexes;
 };
 
 #else
