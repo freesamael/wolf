@@ -12,12 +12,14 @@
 #include <string>
 #include <TCPSocket.h>
 #include <HelperMacros.h>
+#include <IObserver.h>
+#include <AbstractObservable.h>
 #include "AbstractWorkerActor.h"
 
 namespace wfe
 {
 
-class RunnerAgent
+class RunnerAgent: public cml::IObserver
 {
 	SINGLETON(RunnerAgent);
 public:
@@ -30,18 +32,20 @@ public:
 			std::string &appname, unsigned int timeout = 2);
 	bool shutdown();
 	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
+	void update(cml::AbstractObservable *o);
+
 	/// Get the state of the agent.
 	inline State state() const { return _state; }
 	/// Get the sockets of runners.
 	inline const std::vector<cml::TCPSocket *>& runners() const
-			{ return _ssocks; }
+			{ return _runnersocks; }
 
 private:
 	RunnerAgent(): SINGLETON_MEMBER_INITLST,
-		_state(NOT_READY), _msock(), _ssocks() {}
+		_state(NOT_READY), _msock(), _runnersocks() {}
 	State _state;
 	cml::TCPSocket _msock;
-	std::vector<cml::TCPSocket *> _ssocks;
+	std::vector<cml::TCPSocket *> _runnersocks;
 };
 
 }

@@ -20,7 +20,8 @@ class AbstractObservable;
 class IObserver
 {
 public:
-	void update(AbstractObservable *o);
+	virtual ~IObserver() {}
+	virtual void update(AbstractObservable *o) = 0;
 };
 
 }

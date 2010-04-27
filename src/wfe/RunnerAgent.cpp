@@ -10,6 +10,7 @@
 #include <TLVReaderWriter.h>
 #include <Thread.h>
 #include <SingletonAutoDestructor.h>
+#include <TCPConnectionAcceptor.h>
 #include "D2MCE.h"
 #include "RunnerAgent.h"
 #include "TLVMessage.h"
@@ -27,51 +28,6 @@ SINGLETON_REGISTRATION_END();
 const char *RunnerAgent::StateString[] = { "Not Ready", "Ready" };
 
 /**
- * \internal
- * The internal private class used to accept connections from runners.
- */
-class PrivateAcceptThread: public Thread
-{
-public:
-	PrivateAcceptThread(): _stop(false), _msock(NULL), _ssocks(NULL) {}
-	void setparam(TCPSocket *server, vector<TCPSocket *> *runners)
-	{
-		_msock = server;
-		_ssocks = runners;
-	}
-	void run()
-	{
-		_msock->setNonblock(true);
-		while (!_stop) {
-			TCPSocket *tsock;
-			if ((tsock = _msock->accept())) {
-				TLVReaderWriter tcprw(tsock);
-				TLVMessage *msg;
-				if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
-					PERR("Invalid incoming message.");
-				} else if (msg->command() != TLVMessage::HELLO_SLAVE) {
-					PERR("Expected command " <<
-							TLVMessage::CommandString[TLVMessage::HELLO_SLAVE] <<
-							"but got " <<
-							TLVMessage::CommandString[msg->command()] << ".");
-				} else {
-					PINFO("Got one runner.");
-					_ssocks->push_back(tsock);
-				}
-				delete msg;
-			}
-			usleep(tsock ? 0 : 50000);
-		}
-	}
-	void stop() { _stop = true; }
-
-private:
-	bool _stop;
-	TCPSocket *_msock;
-	vector<TCPSocket *> *_ssocks;
-};
-
-/**
  * Setup the agent. It must be called before other agent operations.
  */
 bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
@@ -81,9 +37,9 @@ bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
 		return false;
 
 	// Listen and wait for join message.
-	PrivateAcceptThread athread;
+	TCPConnectionAcceptor acptor(&_msock);
+	Thread athread(&acptor);
 	_msock.passiveOpen(master_port);
-	athread.setparam(&_msock, &_ssocks);
 	athread.start();
 
 #ifndef DISABLE_D2MCE
@@ -104,10 +60,10 @@ bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
 
 	// Wait until timed out.
 	sleep(timeout);
-	athread.stop();
+	acptor.setDone();
 	athread.join();
 
-	if (_ssocks.size() == 0) {
+	if (_runnersocks.size() == 0) {
 		PERR("No runner found.");
 		return false;
 	}
@@ -126,13 +82,14 @@ bool RunnerAgent::shutdown()
 		return false;
 
 	// Construct command.
-	TLVMessage msg;
+	TLVMessage msg;	athread.setparam(&_msock, &_runnersocks);
+
 	msg.setCommand(TLVMessage::SHUTDOWN);
 
 	// Shutdown all runners.
 	bool success = true;
-	for (unsigned i = 0; i < _ssocks.size(); i++) {
-		TLVReaderWriter rw(_ssocks[i]);
+	for (unsigned i = 0; i < _runnersocks.size(); i++) {
+		TLVReaderWriter rw(_runnersocks[i]);
 		success &= rw.write(msg);
 	}
 	_state = NOT_READY;
@@ -165,11 +122,47 @@ bool RunnerAgent::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 
 	// Send to all runners.
 	bool success = true;
-	for (unsigned i = 0; i < _ssocks.size(); i++) {
-		TLVReaderWriter rw(_ssocks[i]);
+	for (unsigned i = 0; i < _runnersocks.size(); i++) {
+		TLVReaderWriter rw(_runnersocks[i]);
 		success &= rw.write(msg);
 	}
 	return success;
+}
+
+/**
+ * Called by TCPConnectionAcceptor to accept an incoming runner connection.
+ */
+void RunnerAgent::update(AbstractObservable *o)
+{
+	// Check observable.
+	TCPConnectionAcceptor *ca;
+	if (!(ca = dynamic_cast<TCPConnectionAcceptor*>(o))) {
+		PERR("Invalid update call from a object that is not TCPConnectionAcceptor.");
+		return;
+	}
+
+	// Check socket.
+	TCPSocket *sock;
+	if (!(sock = ca->lastAcceptedSocket())) {
+		PERR("No socket object found.");
+		return;
+	}
+
+	// Check message.
+	TLVReaderWriter tcprw(sock);
+	TLVMessage *msg;
+	if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
+		PERR("Invalid incoming message.");
+	} else if (msg->command() != TLVMessage::HELLO_SLAVE) {
+		PERR("Expected command " <<
+				TLVMessage::CommandString[TLVMessage::HELLO_SLAVE] <<
+				"but got " <<
+				TLVMessage::CommandString[msg->command()] << ".");
+	} else {
+		PINFO("Got one runner.");
+		_runnersocks.push_back(sock);
+	}
+	delete msg;
 }
 
 }

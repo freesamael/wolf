@@ -21,9 +21,14 @@ namespace cml
 class AbstractObservable
 {
 public:
+	AbstractObservable(): _obsrvs() {}
+	AbstractObservable(const AbstractObservable &o): _obsrvs(o._obsrvs) {}
+	AbstractObservable& operator=(const AbstractObservable &o)
+		{ _obsrvs = o._obsrvs; return *this; }
+	virtual ~AbstractObservable() {}
 	void attach(IObserver *o);
 	void detach(IObserver *o);
-	inline void notify();
+	void notify();
 
 private:
 	std::vector<IObserver *> _obsrvs;

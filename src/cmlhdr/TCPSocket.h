@@ -27,6 +27,8 @@ public:
 	TCPSocket(int sock): AbstractSocket(sock), _ssocks() {}
 	~TCPSocket();
 	TCPSocket* accept();
+	inline const std::vector<TCPSocket *>& slaveSockets() const
+			{ return _ssocks; }
 
 private:
 	std::vector<TCPSocket *> _ssocks;
