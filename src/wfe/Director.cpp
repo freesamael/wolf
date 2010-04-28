@@ -128,12 +128,12 @@ void Director::execute()
 void Director::execute(uint16_t runner_port, uint16_t master_port,
 		const string &name)
 {
-	if (!RunnerAgent::instance()->setup(runner_port, master_port, name)) {
+	if (!Master::instance()->setup(runner_port, master_port, name)) {
 		PERR("Unable to setup RunnerAgent.");
 		return;
 	}
 	_exest->execute(_actors);
-	if (!RunnerAgent::instance()->shutdown()) {
+	if (!Master::instance()->shutdown()) {
 		PERR("Shutdown failed.");
 	}
 }

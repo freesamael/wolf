@@ -21,16 +21,16 @@ using namespace cml;
 namespace wfe
 {
 
-SINGLETON_REGISTRATION(RunnerAgent);
-SINGLETON_DEPENDS_SOCKET(RunnerAgent);
+SINGLETON_REGISTRATION(Master);
+SINGLETON_DEPENDS_SOCKET(Master);
 SINGLETON_REGISTRATION_END();
 
-const char *RunnerAgent::StateString[] = { "Not Ready", "Ready" };
+const char *Master::StateString[] = { "Not Ready", "Ready" };
 
 /**
  * Setup the agent. It must be called before other agent operations.
  */
-bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
+bool Master::setup(uint16_t runner_port, uint16_t master_port,
 		const string &appname, unsigned int timeout)
 {
 	if (_state != NOT_READY)
@@ -76,7 +76,7 @@ bool RunnerAgent::setup(uint16_t runner_port, uint16_t master_port,
 /**
  * Tell the runners to shutdown. It should be perform before program exits.
  */
-bool RunnerAgent::shutdown()
+bool Master::shutdown()
 {
 	if (_state != READY)
 		return false;
@@ -105,7 +105,7 @@ bool RunnerAgent::shutdown()
  * \param[in] rsock
  * Socket of runner to send actor to, or NULL for all runners.
  */
-bool RunnerAgent::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
+bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 {
 	if (_state != READY)
 		return false;
@@ -132,7 +132,7 @@ bool RunnerAgent::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 /**
  * Called by TCPConnectionAcceptor to accept an incoming runner connection.
  */
-void RunnerAgent::update(AbstractObservable *o)
+void Master::update(AbstractObservable *o)
 {
 	// Check observable.
 	TCPConnectionAcceptor *ca;

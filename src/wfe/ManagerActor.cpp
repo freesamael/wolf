@@ -24,7 +24,7 @@ AbstractActor::State ManagerActor::state()
 
 void ManagerActor::fire()
 {
-	RunnerAgent::instance()->sendActor(_worker);
+	Master::instance()->sendActor(_worker);
 }
 
 }

@@ -1,11 +1,11 @@
 /**
- * \file RunnerAgent.h
+ * \file Master.h
  * \date Apr 1, 2010
  * \author samael
  */
 
-#ifndef RUNNERAGENT_H_
-#define RUNNERAGENT_H_
+#ifndef MASTER_H_
+#define MASTER_H_
 
 #include <iostream>
 #include <vector>
@@ -19,9 +19,9 @@
 namespace wfe
 {
 
-class RunnerAgent: public cml::IObserver
+class Master: public cml::IObserver
 {
-	SINGLETON(RunnerAgent);
+	SINGLETON(Master);
 public:
 	typedef enum State {
 		NOT_READY,
@@ -41,7 +41,7 @@ public:
 			{ return _runnersocks; }
 
 private:
-	RunnerAgent(): SINGLETON_MEMBER_INITLST,
+	Master(): SINGLETON_MEMBER_INITLST,
 		_state(NOT_READY), _msock(), _runnersocks() {}
 	State _state;
 	cml::TCPSocket _msock;
@@ -50,4 +50,4 @@ private:
 
 }
 
-#endif /* RUNNERAGENT_H_ */
+#endif /* MASTER_H_ */
