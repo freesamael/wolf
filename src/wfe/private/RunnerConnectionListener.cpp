@@ -1,14 +1,14 @@
 /**
- * \file RunnerConnectionAcceptor.cpp
+ * \file RunnerConnectionListener.cpp
  * \date Apr 28, 2010
  * \author samael
  */
 
 #include <iostream>
-#include <TCPConnectionAcceptor.h>
+#include <TCPConnectionListener.h>
 #include <TLVReaderWriter.h>
 #include <Thread.h>
-#include "RunnerConnectionAcceptor.h"
+#include "RunnerConnectionListener.h"
 #include "TLVMessage.h"
 
 using namespace std;
@@ -17,45 +17,54 @@ using namespace cml;
 namespace wfe
 {
 
+RunnerConnectionListener::RunnerConnectionListener(TCPSocket *msock,
+		uint16_t master_port, vector<TCPSocket *> *runnersocks,
+		unsigned timeout):
+				_msock(msock), _runnersocks(runnersocks), _timeout(timeout),
+				_listener(_msock), _listhread(&_listener)
+{
+	msock->passiveOpen(master_port);
+}
+
 /**
  * Assignment.
  */
-RunnerConnectionAcceptor& RunnerConnectionAcceptor::operator=(const RunnerConnectionAcceptor &o)
+RunnerConnectionListener& RunnerConnectionListener::operator=(const RunnerConnectionListener &o)
 {
 	_msock = o._msock;
 	_runnersocks = o._runnersocks;
 	_timeout = o._timeout;
-	_acptor = o._acptor;
-	_acpthread = o._acpthread;
+	_listener = o._listener;
+	_listhread = o._listhread;
 	return *this;
 }
 
 /**
  * Start acceptor.
  */
-void RunnerConnectionAcceptor::start()
+void RunnerConnectionListener::start()
 {
-	_acpthread.start();
+	_listhread.start();
 }
 
 /**
  * Wait timeout seconds and stop acceptor.
  */
-bool RunnerConnectionAcceptor::join()
+bool RunnerConnectionListener::join()
 {
 	sleep(_timeout);
-	_acptor.setDone();
-	return _acpthread.join();
+	_listener.setDone();
+	return _listhread.join();
 }
 
 /**
  * Used to process the events from TCPConnectionAcceptor.
  */
-void RunnerConnectionAcceptor::update(AbstractObservable *o)
+void RunnerConnectionListener::update(AbstractObservable *o)
 {
 	// Check observable.
-	TCPConnectionAcceptor *ca;
-	if (!(ca = dynamic_cast<TCPConnectionAcceptor*>(o))) {
+	TCPConnectionListener *ca;
+	if (!(ca = dynamic_cast<TCPConnectionListener*>(o))) {
 		PERR("Invalid update call from a object that is not TCPConnectionAcceptor.");
 		return;
 	}

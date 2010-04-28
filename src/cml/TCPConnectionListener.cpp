@@ -1,11 +1,11 @@
 /**
- * \file TCPConnectionAcceptor.cpp
+ * \file TCPConnectionListener.cpp
  * \date Apr 27, 2010
  * \author samael
  */
 
 #include <unistd.h>
-#include "TCPConnectionAcceptor.h"
+#include "TCPConnectionListener.h"
 
 namespace cml
 {
@@ -15,7 +15,7 @@ namespace cml
  * and check for the next connection immediately. Otherwise, it sleeps for 50ms
  * before checking the next connection.
  */
-void TCPConnectionAcceptor::run()
+void TCPConnectionListener::run()
 {
 	_done = false;
 	_server->setNonblock(true);
@@ -34,7 +34,7 @@ void TCPConnectionAcceptor::run()
 /**
  * Assignment.
  */
-TCPConnectionAcceptor& TCPConnectionAcceptor::operator=(const TCPConnectionAcceptor &o)
+TCPConnectionListener& TCPConnectionListener::operator=(const TCPConnectionListener &o)
 {
 	AbstractObservable::operator=(o);
 	_server = o._server;

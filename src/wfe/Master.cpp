@@ -10,11 +10,10 @@
 #include <TLVReaderWriter.h>
 #include <Thread.h>
 #include <SingletonAutoDestructor.h>
-#include <TCPConnectionAcceptor.h>
 #include "D2MCE.h"
 #include "Master.h"
 #include "TLVMessage.h"
-#include "private/RunnerConnectionAcceptor.h"
+#include "private/RunnerConnectionListener.h"
 
 using namespace std;
 using namespace cml;
@@ -38,16 +37,15 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 		return false;
 
 	// Listen and wait for join message.
-	_msock.passiveOpen(master_port);
-	RunnerConnectionAcceptor acptor(&_msock, &_runnersocks, timeout);
-	acptor.start();
+	RunnerConnectionListener listener(&_msock, master_port, &_runnersocks, timeout);
+	listener.start();
 
 	// Join d2mce and broadcast notification.
-	_joinD2MCE(appname);
-	_broadcastHelloMessage(runner_port);
+	joinD2MCE(appname);
+	broadcastHelloMessage(runner_port);
 
 	// Check the runners.
-	acptor.join();
+	listener.join();
 	if (_runnersocks.size() == 0) {
 		PERR("No runner found.");
 		return false;
@@ -95,7 +93,7 @@ bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 		return false;
 
 	TLVMessage msg;
-	msg.setCommand(TLVMessage::RUN_ACTOR);
+	msg.setCommand(TLVMessage::ACTOR_RUN);
 	msg.setParameter(actor);
 
 	// Send to given runner.
@@ -117,7 +115,7 @@ bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
  * \internal
  * Join the D2MCE computing group.
  */
-void Master::_joinD2MCE(const string &appname)
+void Master::joinD2MCE(const string &appname)
 {
 #ifndef DISABLE_D2MCE
 	// Join D2MCE computing group.
@@ -131,7 +129,7 @@ void Master::_joinD2MCE(const string &appname)
 /**
  * Send hello message.
  */
-void Master::_broadcastHelloMessage(uint16_t runner_port)
+void Master::broadcastHelloMessage(uint16_t runner_port)
 {
 	UDPSocket usock;
 	TLVReaderWriter udprw(&usock);

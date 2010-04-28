@@ -1,11 +1,11 @@
 /**
- * \file TCPConnectionAcceptor.h
+ * \file TCPConnectionListener.h
  * \date Apr 27, 2010
  * \author samael
  */
 
-#ifndef TCPCONNECTIONACCEPTOR_H_
-#define TCPCONNECTIONACCEPTOR_H_
+#ifndef TCPCONNECTIONLISENTER_H_
+#define TCPCONNECTIONLISENTER_H_
 
 #include <TCPSocket.h>
 #include "AbstractObservable.h"
@@ -16,21 +16,21 @@ namespace cml
 {
 
 /**
- * An acceptor that continuously accept incoming connections on given
+ * A listener that continuously accept incoming connections on given
  * server socket until setDown() is called. It notifies all observers each
  * time a new connection is accepted, and clients can use lastAcceptedSocket()
  * to get the last socket accepted.
  */
-class TCPConnectionAcceptor: public AbstractObservable, public IRunnable
+class TCPConnectionListener: public AbstractObservable, public IRunnable
 {
 public:
-	TCPConnectionAcceptor(TCPSocket *server):
+	TCPConnectionListener(TCPSocket *server):
 		_mutex(), _done(false), _server(server), _ssock(NULL) {}
 	/// Note that the mutex won't be the same on copy construction.
-	TCPConnectionAcceptor(const TCPConnectionAcceptor &o):
+	TCPConnectionListener(const TCPConnectionListener &o):
 		AbstractObservable(o), _mutex(), _done(o._done), _server(o._server),
 		_ssock(o._ssock) {}
-	TCPConnectionAcceptor& operator=(const TCPConnectionAcceptor &o);
+	TCPConnectionListener& operator=(const TCPConnectionListener &o);
 	inline TCPSocket* lastAcceptedSocket() { return _ssock; }
 	inline bool isDone() const { return _done; }
 	inline void setDone() { _done = true; }
@@ -47,4 +47,4 @@ private:
 
 }
 
-#endif /* TCPCONNECTIONACCEPTOR_H_ */
+#endif /* TCPCONNECTIONLISENTER_H_ */

@@ -126,7 +126,7 @@ bool Runner::joinGroup(const string &appname)
 bool Runner::processCommand(TLVMessage *cmd)
 {
 	PINFO("Processing a command.");
-	if (cmd->command() == TLVMessage::RUN_ACTOR) {
+	if (cmd->command() == TLVMessage::ACTOR_RUN) {
 		AbstractWorkerActor *actor;
 		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
 			PERR("Invalid parameter.");

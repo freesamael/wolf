@@ -44,8 +44,8 @@ private:
 	// Private member functions.
 	Master(): SINGLETON_MEMBER_INITLST,
 		_state(NOT_READY), _msock(), _runnersocks() {}
-	void _joinD2MCE(const std::string &appname);
-	void _broadcastHelloMessage(uint16_t runner_port);
+	void joinD2MCE(const std::string &appname);
+	void broadcastHelloMessage(uint16_t runner_port);
 	// Private data members.
 	State _state;
 	cml::TCPSocket _msock;

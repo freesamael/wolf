@@ -30,7 +30,8 @@ public:
 	static const uint16_t SHUTDOWN;
 	static const uint16_t HELLO_MASTER;
 	static const uint16_t HELLO_SLAVE;
-	static const uint16_t RUN_ACTOR;
+	static const uint16_t ACTOR_RUN;
+	static const uint16_t ACTOR_FINISHED;
 
 	TLVMessage(uint16_t c = EMPTY, ITLVObject *param = NULL):
 		_cmd(c), _param(param) {}
