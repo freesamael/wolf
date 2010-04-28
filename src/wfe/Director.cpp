@@ -9,7 +9,7 @@
 #include <HelperMacros.h>
 #include "Director.h"
 #include "Channel.h"
-#include "RunnerAgent.h"
+#include "Master.h"
 
 using namespace std;
 

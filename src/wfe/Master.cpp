@@ -12,7 +12,7 @@
 #include <SingletonAutoDestructor.h>
 #include <TCPConnectionAcceptor.h>
 #include "D2MCE.h"
-#include "RunnerAgent.h"
+#include "Master.h"
 #include "TLVMessage.h"
 
 using namespace std;

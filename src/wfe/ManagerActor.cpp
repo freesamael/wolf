@@ -5,7 +5,7 @@
  */
 
 #include "ManagerActor.h"
-#include "RunnerAgent.h"
+#include "Master.h"
 
 namespace wfe
 {
