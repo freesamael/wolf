@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <string>
-#include <typeinfo>
 #include <cstdlib>
 #include <unistd.h>
 #include <sys/time.h>
@@ -15,7 +14,7 @@
 #include <HelperMacros.h>
 #include "Runner.h"
 #include "D2MCE.h"
-#include "AbstractWorkerActor.h"
+#include "private/CommandListener.h"
 
 using namespace std;
 using namespace cml;
@@ -40,21 +39,10 @@ void Runner::run(uint16_t runner_port, uint16_t master_port,
 		return;
 	}
 	PINFO("Connected with address = " << sock.currentAddress().toString());
+	joinGroup(&sock, appname);
 
-#ifndef DISABLE_D2MCE
-	// Random back-off. It's just a workaround for the problem that multiple
-	// nodes joining at the same time might cause failure.
-	srand((unsigned)sock.currentAddress().toInetAddr());
-	usleep((rand() % 30) * 33000); // sleep 0 ~ 1s, granularity 33ms.
-	// Join.
-	if (!joinGroup(appname)) {
-		PERR("Runner fails, exit now.");
-		return;
-	}
-#endif /* DISABLE_D2MCE */
-
-	_endflag = false;
-	runnerLoop(&sock);
+	CommandListener listener(&sock);
+	listener.run();
 }
 
 /**
@@ -108,73 +96,20 @@ bool Runner::connectToMaster(TCPSocket *sock, const HostAddress &addr,
  * \internal
  * Join the computing group.
  */
-bool Runner::joinGroup(const string &appname)
+void Runner::joinGroup(TCPSocket *sock, const string &appname)
 {
 #ifndef DISABLE_D2MCE
+	// Random back-off. It's just a workaround for the problem that multiple
+	// nodes joining at the same time might cause failure.
+	srand((unsigned)sock->currentAddress().toInetAddr());
+	usleep((rand() % 30) * 33000); // sleep 0 ~ 1s, granularity 33ms.
+
+	// Join
 	D2MCE::instance()->join(appname);
 	PINFO(D2MCE::instance()->getNumberOfNodes() <<
 			"nodes inside the group, node id = " << D2MCE::instance()->nodeId()
 			<< ".");
 #endif /* DISABLE_D2MCE */
-	return true;
-}
-
-/**
- * \internal
- * Process the command received.
- */
-bool Runner::processCommand(TLVMessage *cmd)
-{
-	PINFO("Processing a command.");
-	if (cmd->command() == TLVMessage::ACTOR_RUN) {
-		AbstractWorkerActor *actor;
-		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
-			PERR("Invalid parameter.");
-			return false;
-		}
-		actor->setup();
-		do {
-			actor->prefire();
-			actor->fire();
-			actor->postfire();
-		} while (actor->testfire());
-		actor->wrapup();
-		delete actor;
-	} else if (cmd->command() == TLVMessage::SHUTDOWN) {
-		PINFO("Ending runner.");
-		_endflag = true;
-	} else {
-		PERR("Unexpected command \"" <<
-				TLVMessage::CommandString[cmd->command()] << "\".");
-		return false;
-	}
-	return true;
-}
-
-/**
- * \internal
- * Core loop of runner.
- */
-void Runner::runnerLoop(TCPSocket *sock)
-{
-	TLVReaderWriter tcprw(sock);
-	ITLVObject *inobj;
-	TLVMessage *inmsg = NULL;
-
-	while (!_endflag) {
-		if (!(inobj = tcprw.read()))
-			break; // End of file.
-		if (!(inmsg = dynamic_cast<TLVMessage *>(inobj))) {
-			PERR("Invalid incoming message.");
-			delete inobj;
-		} else {
-			if (!processCommand(inmsg)) {
-				PERR("One command failed to execute.");
-			}
-			delete inmsg;
-		}
-	}
-	PINFO("Runner loop ends.");
 }
 
 }

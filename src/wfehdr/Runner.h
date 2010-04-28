@@ -25,7 +25,7 @@ private:
 	cml::HostAddress getMasterAddr(uint16_t runner_port);
 	bool connectToMaster(cml::TCPSocket *sock, const cml::HostAddress &addr,
 			uint16_t master_port);
-	bool joinGroup(const std::string &appname);
+	void joinGroup(cml::TCPSocket *sock, const std::string &appname);
 	bool processCommand(TLVMessage *msg);
 	void runnerLoop(cml::TCPSocket *sock);
 	bool _endflag;

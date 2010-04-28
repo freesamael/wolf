@@ -41,7 +41,7 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 	listener.start();
 
 	// Join d2mce and broadcast notification.
-	joinD2MCE(appname);
+	joinGroup(appname);
 	broadcastHelloMessage(runner_port);
 
 	// Check the runners.
@@ -115,7 +115,7 @@ bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
  * \internal
  * Join the D2MCE computing group.
  */
-void Master::joinD2MCE(const string &appname)
+void Master::joinGroup(const string &appname)
 {
 #ifndef DISABLE_D2MCE
 	// Join D2MCE computing group.
