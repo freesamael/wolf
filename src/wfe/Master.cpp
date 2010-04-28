@@ -1,5 +1,5 @@
 /**
- * \file RunnerAgent.cpp
+ * \file Master.cpp
  * \date Apr 1, 2010
  * \author samael
  */

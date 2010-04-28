@@ -129,7 +129,7 @@ void Director::execute(uint16_t runner_port, uint16_t master_port,
 		const string &name)
 {
 	if (!Master::instance()->setup(runner_port, master_port, name)) {
-		PERR("Unable to setup RunnerAgent.");
+		PERR("Unable to setup Master.");
 		return;
 	}
 	_exest->execute(_actors);
