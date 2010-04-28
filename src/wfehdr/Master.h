@@ -12,14 +12,15 @@
 #include <string>
 #include <TCPSocket.h>
 #include <HelperMacros.h>
-#include <IObserver.h>
-#include <AbstractObservable.h>
 #include "AbstractWorkerActor.h"
 
 namespace wfe
 {
 
-class Master: public cml::IObserver
+/**
+ * Master plays the middle man between runners and workflow executors.
+ */
+class Master
 {
 	SINGLETON(Master);
 public:
@@ -32,7 +33,6 @@ public:
 			std::string &appname, unsigned int timeout = 2);
 	bool shutdown();
 	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
-	void update(cml::AbstractObservable *o);
 
 	/// Get the state of the agent.
 	inline State state() const { return _state; }
@@ -41,8 +41,12 @@ public:
 			{ return _runnersocks; }
 
 private:
+	// Private member functions.
 	Master(): SINGLETON_MEMBER_INITLST,
 		_state(NOT_READY), _msock(), _runnersocks() {}
+	void _joinD2MCE(const std::string &appname);
+	void _broadcastHelloMessage(uint16_t runner_port);
+	// Private data members.
 	State _state;
 	cml::TCPSocket _msock;
 	std::vector<cml::TCPSocket *> _runnersocks;

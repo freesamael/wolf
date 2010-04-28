@@ -14,6 +14,7 @@
 #include "D2MCE.h"
 #include "Master.h"
 #include "TLVMessage.h"
+#include "private/RunnerConnectionAcceptor.h"
 
 using namespace std;
 using namespace cml;
@@ -28,7 +29,7 @@ SINGLETON_REGISTRATION_END();
 const char *Master::StateString[] = { "Not Ready", "Ready" };
 
 /**
- * Setup the agent. It must be called before other agent operations.
+ * Setup the master. It must be called before other operations.
  */
 bool Master::setup(uint16_t runner_port, uint16_t master_port,
 		const string &appname, unsigned int timeout)
@@ -37,37 +38,20 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 		return false;
 
 	// Listen and wait for join message.
-	TCPConnectionAcceptor acptor(&_msock);
-	Thread athread(&acptor);
 	_msock.passiveOpen(master_port);
-	athread.start();
+	RunnerConnectionAcceptor acptor(&_msock, &_runnersocks, timeout);
+	acptor.start();
 
-#ifndef DISABLE_D2MCE
-	// Join D2MCE computing group.
-	D2MCE::instance()->join(appname);
-	PINFO(D2MCE::instance()->getNumberOfNodes() <<
-			" nodes inside the group, node id = " <<
-			D2MCE::instance()->nodeId() << ".");
-#endif /* DISABLE_D2MCE */
+	// Join d2mce and broadcast notification.
+	_joinD2MCE(appname);
+	_broadcastHelloMessage(runner_port);
 
-	// Broadcast notification.
-	UDPSocket usock;
-	TLVReaderWriter udprw(&usock);
-	usock.setBroadcast(true);
-	usock.setTTL(1);
-	udprw.sendto(TLVMessage(TLVMessage::HELLO_MASTER),
-			HostAddress::BroadcastAddress, runner_port);
-
-	// Wait until timed out.
-	sleep(timeout);
-	acptor.setDone();
-	athread.join();
-
+	// Check the runners.
+	acptor.join();
 	if (_runnersocks.size() == 0) {
 		PERR("No runner found.");
 		return false;
 	}
-
 
 	_state = READY;
 	return true;
@@ -130,41 +114,31 @@ bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 }
 
 /**
- * Called by TCPConnectionAcceptor to accept an incoming runner connection.
+ * \internal
+ * Join the D2MCE computing group.
  */
-void Master::update(AbstractObservable *o)
+void Master::_joinD2MCE(const string &appname)
 {
-	// Check observable.
-	TCPConnectionAcceptor *ca;
-	if (!(ca = dynamic_cast<TCPConnectionAcceptor*>(o))) {
-		PERR("Invalid update call from a object that is not TCPConnectionAcceptor.");
-		return;
-	}
+#ifndef DISABLE_D2MCE
+	// Join D2MCE computing group.
+	D2MCE::instance()->join(appname);
+	PINFO(D2MCE::instance()->getNumberOfNodes() <<
+			" nodes inside the group, node id = " <<
+			D2MCE::instance()->nodeId() << ".");
+#endif /* DISABLE_D2MCE */
+}
 
-	// Check socket.
-	ca->mutexLock();
-	TCPSocket *sock = ca->lastAcceptedSocket();
-	ca->mutexUnlock();
-	if (!sock) {
-		PERR("No socket object found.");
-		return;
-	}
-
-	// Check message.
-	TLVReaderWriter tcprw(sock);
-	TLVMessage *msg;
-	if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
-		PERR("Invalid incoming message.");
-	} else if (msg->command() != TLVMessage::HELLO_SLAVE) {
-		PERR("Expected command " <<
-				TLVMessage::CommandString[TLVMessage::HELLO_SLAVE] <<
-				"but got " <<
-				TLVMessage::CommandString[msg->command()] << ".");
-	} else {
-		PINFO("Got one runner.");
-		_runnersocks.push_back(sock);
-	}
-	delete msg;
+/**
+ * Send hello message.
+ */
+void Master::_broadcastHelloMessage(uint16_t runner_port)
+{
+	UDPSocket usock;
+	TLVReaderWriter udprw(&usock);
+	usock.setBroadcast(true);
+	usock.setTTL(1);
+	udprw.sendto(TLVMessage(TLVMessage::HELLO_MASTER),
+			HostAddress::BroadcastAddress, runner_port);
 }
 
 }
