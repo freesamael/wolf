@@ -14,6 +14,7 @@ namespace cml
 
 class Mutex
 {
+	friend class WaitCondition;
 public:
 	Mutex(): _mutex() { pthread_mutex_init(&_mutex, NULL); }
 	~Mutex() { pthread_mutex_destroy(&_mutex); }

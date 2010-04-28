@@ -91,7 +91,7 @@ bool Thread::join()
  * Block wait until thread exits or timeout.
  *
  * \param timeout
- * Timeout in microsecond.
+ * Timeout in microseconds.
  *
  * \return
  * True on success, false on failure (including timeout).
