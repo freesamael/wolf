@@ -26,9 +26,7 @@ class RunnerConnectionListener: public cml::IObserver
 public:
 	RunnerConnectionListener(cml::TCPSocket *msock, uint16_t master_port,
 			std::vector<cml::TCPSocket *> *runnersocks, unsigned timeout);
-	RunnerConnectionListener(const RunnerConnectionListener &o):
-		_msock(o._msock), _runnersocks(o._runnersocks),
-		_timeout(o._timeout), _listener(_msock), _listhread(&_listener) {}
+	RunnerConnectionListener(const RunnerConnectionListener &o);
 	RunnerConnectionListener& operator=(const RunnerConnectionListener &o);
 
 	void start();

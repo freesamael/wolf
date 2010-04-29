@@ -34,7 +34,7 @@ void CommandListener::run()
 			if (!processCommand(inmsg)) {
 				PERR("One command failed to execute.");
 			} else {
-				// Return finish message.
+				PINFO("Returning finish message.");
 				TLVMessage rtn(TLVMessage::ACTOR_FINISHED);
 				tcprw.write(rtn);
 			}

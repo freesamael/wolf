@@ -4,8 +4,10 @@
  * \author samael
  */
 
+#include <iostream>
 #include <unistd.h>
 #include "TCPConnectionListener.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -22,6 +24,7 @@ void TCPConnectionListener::run()
 	while (!_done) {
 		TCPSocket *sock;
 		if ((sock = _server->accept())) {
+			PINFO("Got an incoming connection.");
 			_mutex.lock();
 			_ssock = sock;
 			_mutex.unlock();

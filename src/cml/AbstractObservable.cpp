@@ -4,7 +4,9 @@
  * \author samael
  */
 
+#include <iostream>
 #include "AbstractObservable.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
@@ -42,6 +44,7 @@ void AbstractObservable::detach(IObserver *o)
  */
 void AbstractObservable::notify()
 {
+	PINFO("Notifying all observers.");
 	for (unsigned i = 0; i < _obsrvs.size(); i++)
 		_obsrvs[i]->update(this);
 }

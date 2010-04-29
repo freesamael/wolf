@@ -90,9 +90,9 @@ SharedMemory* D2MCE::createSharedMemory(size_t size, const string &name)
 		memname << "m_" << _bufs.size();
 	else
 		memname << name;
-	mutexname << memname << "_mux";
-	PINFO("Creating shared memory with name = " << memname << ", mutex name = "
-			<< mutexname << ", and size = " << size);
+	mutexname << memname.str() << "_mux";
+	PINFO("Creating shared memory with name = " << memname.str() <<
+			", mutex name = " << mutexname.str() << ", and size = " << size);
 
 	// Allocate memory and initialize mutex.
 	memset(mutex, 0, sizeof(d2mce_mutex_t));

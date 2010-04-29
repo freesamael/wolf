@@ -24,6 +24,14 @@ RunnerConnectionListener::RunnerConnectionListener(TCPSocket *msock,
 				_listener(_msock), _listhread(&_listener)
 {
 	msock->passiveOpen(master_port);
+	_listener.attach(this);
+}
+
+RunnerConnectionListener::RunnerConnectionListener(const RunnerConnectionListener &o):
+		_msock(o._msock), _runnersocks(o._runnersocks),
+		_timeout(o._timeout), _listener(_msock), _listhread(&_listener)
+{
+	_listener.attach(this);
 }
 
 /**
@@ -36,6 +44,7 @@ RunnerConnectionListener& RunnerConnectionListener::operator=(const RunnerConnec
 	_timeout = o._timeout;
 	_listener = o._listener;
 	_listhread = o._listhread;
+	_listener.attach(this);
 	return *this;
 }
 
@@ -62,6 +71,8 @@ bool RunnerConnectionListener::join()
  */
 void RunnerConnectionListener::update(AbstractObservable *o)
 {
+	PINFO("Updating.");
+
 	// Check observable.
 	TCPConnectionListener *ca;
 	if (!(ca = dynamic_cast<TCPConnectionListener*>(o))) {
