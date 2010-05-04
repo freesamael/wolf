@@ -6,9 +6,11 @@
 
 #include "IPort.h"
 
+using namespace std;
+
 namespace wfe
 {
 
-const char *IPort::TypeString[] = { "Sink", "Source" };
+const string IPort::TypeString[] = { "Sink", "Source" };
 
 }

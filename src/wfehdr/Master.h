@@ -28,7 +28,7 @@ public:
 		NOT_READY,
 		READY
 	} State;
-	static const char *StateString[];
+	static const std::string StateString[];
 	bool setup(uint16_t runner_port, uint16_t master_port, const
 			std::string &appname, unsigned int timeout = 2);
 	bool shutdown();

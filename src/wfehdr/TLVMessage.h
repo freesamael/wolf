@@ -7,6 +7,7 @@
 #ifndef TLVMESSAGE_H_
 #define TLVMESSAGE_H_
 
+#include <string>
 #include <stdint.h>
 #include "ITLVObject.h"
 
@@ -25,7 +26,7 @@ public:
 	 * Enumeration of commands. To ensure the size and value of commands, we
 	 * use constant uint16_t instead of C++ 'enum' here.
 	 */
-	static const char *CommandString[];
+	static const std::string CommandString[];
 	static const uint16_t EMPTY;
 	static const uint16_t SHUTDOWN;
 	static const uint16_t HELLO_MASTER;

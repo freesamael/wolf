@@ -7,6 +7,8 @@
 #ifndef IPORT_H_
 #define IPORT_H_
 
+#include <string>
+
 namespace wfe
 {
 
@@ -27,7 +29,7 @@ public:
 		SOURCE
 	} Type;
 	/// Name of types in string.
-	static const char *TypeString[];
+	static const std::string TypeString[];
 	virtual ~IPort() {}
 	virtual Type type() const = 0;
 	virtual AbstractActor* owner() const = 0; ///< Get the owner of this port.

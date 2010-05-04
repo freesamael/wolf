@@ -7,6 +7,7 @@
 #ifndef ABSTRACTACTOR_H_
 #define ABSTRACTACTOR_H_
 
+#include <string>
 #include <vector>
 #include "SourcePort.h"
 #include "SinkPort.h"
@@ -43,7 +44,7 @@ public:
 		TERMINATED
 	} State;
 	/// Name of states in string.
-	static const char *StateString[];
+	static const std::string StateString[];
 	AbstractActor(): _sinkp(), _srcp() {}
 	virtual ~AbstractActor() {}
 	/// Get the state of the actor.

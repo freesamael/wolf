@@ -11,7 +11,7 @@ using namespace std;
 namespace wfe
 {
 
-const char *AbstractActor::StateString[] =
+const string AbstractActor::StateString[] =
 		{"Not Ready", "Ready", "Running", "Finished", "Terminated"};
 
 IPort* AbstractActor::addPort(IPort::Type type)

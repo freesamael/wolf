@@ -24,7 +24,7 @@ TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE, TLVMessageCreator);
 
 const uint16_t TLVMessage::TLVType = 10;
 
-const char *TLVMessage::CommandString[] = {
+const string TLVMessage::CommandString[] = {
 		"Empty", "Shutdown", "Hello Master", "Hello Slave",
 		"Actor Run", "Actor Finished"
 };

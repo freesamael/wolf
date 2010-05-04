@@ -5,7 +5,7 @@ HECO_SRCDIR = ${WOLF_TESTDIR}/heco
 include ${BINTEST_SRCDIR}/Makefile ${UNITTEST_SRCDIR}/Makefile \
 	${HECO_SRCDIR}/Makefile
 
-ifeq (${DSM}, yes)
+ifeq (${DSM}, y)
 test: ${BINTEST} ${UNITTEST} ${HECO}
 else
 test: ${BINTEST} ${UNITTEST}

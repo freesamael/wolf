@@ -25,7 +25,7 @@ SINGLETON_REGISTRATION(Master);
 SINGLETON_DEPENDS_SOCKET(Master);
 SINGLETON_REGISTRATION_END();
 
-const char *Master::StateString[] = { "Not Ready", "Ready" };
+const string Master::StateString[] = { "Not Ready", "Ready" };
 
 /**
  * Setup the master. It must be called before other operations.
