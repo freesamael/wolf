@@ -16,7 +16,7 @@ using namespace wfe;
 void TLVMessageCreatorTestSuite::testCreate()
 {
 	TLVMessageCreator creator;
-	TLVMessage msg(TLVMessage::RUN_ACTOR);
+	TLVMessage msg(TLVMessage::ACTOR_RUN);
 
 	StandardTLVBlock *blk = msg.toTLVBlock();
 	TLVMessage *omsg = dynamic_cast<TLVMessage *>(creator.create(*blk));

@@ -9,6 +9,7 @@
 
 #include <TCPSocket.h>
 #include "TLVMessage.h"
+#include "AbstractWorkerActor.h"
 
 namespace wfe
 {
@@ -23,7 +24,7 @@ public:
 	void run();
 
 private:
-	bool processCommand(TLVMessage *cmd);
+	AbstractWorkerActor* processCommand(TLVMessage *cmd);
 	bool _done;
 	cml::TCPSocket *_sock;
 };

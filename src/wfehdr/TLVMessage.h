@@ -14,8 +14,8 @@ namespace wfe
 {
 
 /**
- * @note TLVMessage takes the ownership of parameter, and deletes it on
- * destruction.
+ * @note TLVMessage does not take the ownership of parameter, so users need to
+ * delete/free the parameter manually if needed.
  */
 class TLVMessage: public cml::ITLVObject
 {
