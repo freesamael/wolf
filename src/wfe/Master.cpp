@@ -13,7 +13,7 @@
 #include "D2MCE.h"
 #include "Master.h"
 #include "TLVMessage.h"
-#include "private/RunnerConnectionListener.h"
+#include "internal/RunnerConnectionListener.h"
 
 using namespace std;
 using namespace cml;

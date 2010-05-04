@@ -15,10 +15,10 @@
 #include "ITLVObject.h"
 #include "TLVObjectFactory.h"
 #include "TLVBlock.h"
-#include "private/ClosedSocketState.h"
-#include "private/SimpleActiveSocketState.h"
-#include "private/BoundSocketState.h"
-#include "private/ConnectedSocketState.h"
+#include "internal/ClosedSocketState.h"
+#include "internal/SimpleActiveSocketState.h"
+#include "internal/BoundSocketState.h"
+#include "internal/ConnectedSocketState.h"
 #include "HelperMacros.h"
 
 using namespace std;

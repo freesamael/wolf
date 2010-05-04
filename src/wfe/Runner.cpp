@@ -14,7 +14,7 @@
 #include <HelperMacros.h>
 #include "Runner.h"
 #include "D2MCE.h"
-#include "private/CommandListener.h"
+#include "internal/CommandListener.h"
 
 using namespace std;
 using namespace cml;
