@@ -2,9 +2,9 @@
 CXX ?= ${CROSS_COMPILE}g++
 AR ?= ${CROSS_COMPILE}ar
 
-DSM ?= yes
+DSM ?= y
 
-ifeq (${DSM}, yes)
+ifeq (${DSM}, y)
 D2MCE_INSTDIR ?= /opt/d2mce/i386
 D2MCE_INCDIR ?= ${D2MCE_INSTDIR}/include
 D2MCE_LIBDIR ?= ${D2MCE_INSTDIR}/lib
@@ -15,7 +15,13 @@ else
 CXXFLAGS += -DDISABLE_D2MCE
 endif
 
-CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra 
+CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra
+
+COV ?= n
+ifeq (${COV}, y)
+CXXFLAGS += -ftest-coverage -fprofile-arcs
+LDFLAGS += -lgcov
+endif 
 
 WOLF_SRCDIR = ${PWD}/src
 WOLF_BINDIR = ${PWD}/bin
