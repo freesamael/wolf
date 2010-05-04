@@ -36,8 +36,8 @@ AbstractSocket::AbstractSocket(const AbstractSocket &sock):
 {
 }
 
-AbstractSocket::AbstractSocket(int sock):
-		_sockfd(sock), _mutex(),_state(SimpleActiveSocketState::instance())
+AbstractSocket::AbstractSocket(int sockfd):
+		_sockfd(sockfd), _mutex(),_state(SimpleActiveSocketState::instance())
 {
 }
 

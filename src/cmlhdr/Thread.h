@@ -33,6 +33,7 @@ public:
 	bool join();
 	bool join(unsigned timeout);
 	bool cancel();
+	bool isRunning() const { return _running; }
 
 	Thread& operator=(const Thread &thread);
 

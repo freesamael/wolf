@@ -25,7 +25,7 @@ class AbstractSocket
 public:
 	AbstractSocket();
 	AbstractSocket(const AbstractSocket &sock);
-	AbstractSocket(int sock);
+	AbstractSocket(int sockfd);
 	virtual ~AbstractSocket();
 	AbstractSocket& operator=(const AbstractSocket &sock);
 
@@ -44,7 +44,7 @@ public:
 
 	inline void changeState(ISocketState *state) { _state = state; }
 	inline const ISocketState* state() const { return _state; }
-	inline void setSockfd(int sock) { _sockfd = sock; }
+	inline void setSockfd(int sockfd) { _sockfd = sockfd; }
 	inline int sockfd() const { return _sockfd; }
 
 	// Static helpers.

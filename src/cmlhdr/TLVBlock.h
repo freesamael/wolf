@@ -72,6 +72,7 @@ class SharedTLVBlock: public ITLVBlock
 public:
 	SharedTLVBlock(const char *shared_buf): _buf(shared_buf) {}
 	SharedTLVBlock(const SharedTLVBlock &blk): _buf(blk._buf) {}
+	SharedTLVBlock(const StandardTLVBlock &blk): _buf(blk.plainBuffer()) {}
 	inline uint16_t type() const {
 		return ntohs(((uint16_t *)_buf)[0]); }
 	inline uint16_t length() const {
