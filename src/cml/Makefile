@@ -1,4 +1,4 @@
-COMLIB_OBJS := ${patsubst %.cpp,%.o,${wildcard ${COMLIB_SRCDIR}/*.cpp ${COMLIB_SRCDIR}/private/*.cpp}}
+COMLIB_OBJS := ${patsubst %.cpp,%.o,${wildcard ${COMLIB_SRCDIR}/*.cpp ${COMLIB_SRCDIR}/internal/*.cpp}}
 COMLIB = ${WOLF_LIBDIR}/libcom.a
 ${COMLIB}: CXXFLAGS += -Weffc++ -I${COMLIB_INCDIR} ${D2MCE_CXXFLAGS}
 
