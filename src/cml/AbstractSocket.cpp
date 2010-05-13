@@ -26,6 +26,11 @@ using namespace std;
 namespace cml
 {
 
+const string AbstractSocket::ClosedState = ClosedSocketState::instance()->name();
+const string AbstractSocket::ActiveState = SimpleActiveSocketState::instance()->name();
+const string AbstractSocket::BoundState = BoundSocketState::instance()->name();
+const string AbstractSocket::ConnectedState = ConnectedSocketState::instance()->name();
+
 AbstractSocket::AbstractSocket():
 		_sockfd(0), _mutex(), _state(ClosedSocketState::instance())
 {
