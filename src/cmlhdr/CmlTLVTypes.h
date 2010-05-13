@@ -1,6 +1,7 @@
 /**
  * \file CmlTLVTypes.h
  * Defines all TLV types used in namespace cml.
+ * Types 0 ~ 64 are reserved for common library.
  */
 
 #ifndef CMLTLVTYPES_H_

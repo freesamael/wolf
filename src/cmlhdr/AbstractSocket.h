@@ -7,6 +7,7 @@
 #ifndef ABSTRACTSOCKET_H_
 #define ABSTRACTSOCKET_H_
 
+#include <string>
 #include <stdint.h>
 #include "HostAddress.h"
 #include "ITLVObject.h"
@@ -23,6 +24,11 @@ namespace cml
 class AbstractSocket
 {
 public:
+	static const std::string ClosedState;
+	static const std::string ActiveState;
+	static const std::string BoundState;
+	static const std::string ConnectedState;
+
 	AbstractSocket();
 	AbstractSocket(const AbstractSocket &sock);
 	AbstractSocket(int sockfd);

@@ -139,8 +139,8 @@
  * \#include \<iostream\>
  */
 #define PERR(str) \
-	std::cerr << "Error: " << __PRETTY_FUNCTION__ << ": " << __LINE__ << ": " \
-	<< str << std::endl
+	std::cerr << "Error: " << str << ": " << __PRETTY_FUNCTION__ << ": " \
+	<< __LINE__ << std::endl
 
 #ifdef DEBUG
 /**
@@ -151,8 +151,8 @@
  * \#include \<iostream\>
  */
 #define PINFO(str) \
-	std::cout << "Info: " << __PRETTY_FUNCTION__ << ": " << __LINE__ << ": " \
-	<< str << std::endl
+	std::cout << "Info: " << str << ": " << __PRETTY_FUNCTION__ << ": " \
+	<< __LINE__ << std::endl
 #else
 #define PINFO(str)
 #endif /* DEBUG */
