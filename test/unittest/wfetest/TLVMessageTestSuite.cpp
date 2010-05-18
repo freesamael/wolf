@@ -22,7 +22,7 @@ void TLVMessageTestSuite::testToTLVBlock()
 	TLVMessage msg(TLVMessage::HELLO_MASTER);
 	StandardTLVBlock *blk = msg.toTLVBlock();
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_MESSAGE, blk->type());
+	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_MESSAGE_BASE, blk->type());
 	CPPUNIT_ASSERT_EQUAL(TLVUInt16::Size, blk->length());
 
 	delete blk;

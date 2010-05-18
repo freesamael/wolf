@@ -29,7 +29,7 @@ void TLVObjectFactoryTestSuite::testLookupId()
 			TLVObjectFactory::instance()->lookupTypeId(typeid(TLVUInt32).name()));
 	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_STRING,
 			TLVObjectFactory::instance()->lookupTypeId(typeid(TLVString).name()));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_MESSAGE,
+	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_MESSAGE_BASE,
 			TLVObjectFactory::instance()->lookupTypeId(typeid(TLVMessage).name()));
 }
 
@@ -42,7 +42,7 @@ void TLVObjectFactoryTestSuite::testLookupName()
 	CPPUNIT_ASSERT_EQUAL((string)typeid(TLVString).name(),
 			(string)TLVObjectFactory::instance()->lookupTypeName(TLV_TYPE_STRING));
 	CPPUNIT_ASSERT_EQUAL((string)typeid(TLVMessage).name(),
-			(string)TLVObjectFactory::instance()->lookupTypeName(TLV_TYPE_MESSAGE));
+			(string)TLVObjectFactory::instance()->lookupTypeName(TLV_TYPE_MESSAGE_BASE));
 }
 
 void TLVObjectFactoryTestSuite::testCreateById()
@@ -59,7 +59,7 @@ void TLVObjectFactoryTestSuite::testCreateById()
 	CPPUNIT_ASSERT_EQUAL(typeid(TLVString).name(), typeid(*obj).name());
 	delete obj;
 
-	obj = TLVObjectFactory::instance()->createTLVObject(TLV_TYPE_MESSAGE);
+	obj = TLVObjectFactory::instance()->createTLVObject(TLV_TYPE_MESSAGE_BASE);
 	CPPUNIT_ASSERT_EQUAL(typeid(TLVMessage).name(), typeid(*obj).name());
 	delete obj;
 }
