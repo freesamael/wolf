@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <cstring>
 #include <vector>
 #include <typeinfo>
 #include <TLVBlock.h>
@@ -20,9 +21,18 @@ using namespace std;
 namespace wfe
 {
 
-TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE, TLVMessageCreator);
-
-const uint16_t TLVMessage::TLVType = 10;
+TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE_BASE + TLVMessage::EMPTY,
+		TLVMessageCreator);
+TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE_BASE + TLVMessage::SHUTDOWN,
+		TLVMessageCreator);
+TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE_BASE + TLVMessage::HELLO_MASTER,
+		TLVMessageCreator);
+TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE_BASE + TLVMessage::HELLO_SLAVE,
+		TLVMessageCreator);
+TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE_BASE + TLVMessage::ACTOR_RUN,
+		TLVMessageCreator);
+TLV_OBJECT_REGISTRATION(TLVMessage, TLV_TYPE_MESSAGE_BASE + TLVMessage::ACTOR_FINISHED,
+		TLVMessageCreator);
 
 const string TLVMessage::CommandString[] = {
 		"Empty", "Shutdown", "Hello Master", "Hello Slave",
@@ -37,25 +47,19 @@ const uint16_t TLVMessage::ACTOR_FINISHED = 5;
 
 StandardTLVBlock* TLVMessage::toTLVBlock() const
 {
-	vector<const ITLVBlock *> blks;
-	StandardTLVBlock *cmd = NULL, *param = NULL;
-
-	// Create command block.
-	cmd = TLVUInt16(_cmd).toTLVBlock();
-	blks.push_back(cmd);
+	StandardTLVBlock *blk, *param = NULL;
 
 	// Create param block (if any).
 	if (_param) {
 		param = _param->toTLVBlock();
-		blks.push_back(param);
+		blk = new StandardTLVBlock(param->plainSize());
+		memcpy(blk->value(), param->plainBuffer(), blk->length());
+	} else {
+		blk = new StandardTLVBlock();
 	}
-
-	// Construct concatenated block.
-	StandardTLVBlock *blk = StandardTLVBlock::concate(blks);
-	blk->setType(TLV_TYPE_MESSAGE);
+	blk->setType(TLV_TYPE_MESSAGE_BASE + _cmd);
 
 	// Clean up.
-	delete cmd;
 	delete param;
 
 	return blk;

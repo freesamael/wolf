@@ -12,6 +12,7 @@
 #include <TLVObjectFactory.h>
 #include <HelperMacros.h>
 #include "TLVMessageCreator.h"
+#include "WfeTLVTypes.h"
 
 using namespace std;
 using namespace cml;
@@ -52,7 +53,9 @@ ITLVObject* TLVMessageCreator::create(const ITLVBlock &blk) const
 	}
 
 	// Construct message object.
-	TLVMessage *msg = new TLVMessage(cmd->value(), param);
+	PINFO("Got TLVMessage with command = " <<
+			TLVMessage::CommandString[blk.type() - TLV_TYPE_MESSAGE_BASE]);
+	TLVMessage *msg = new TLVMessage(blk.type() - TLV_TYPE_MESSAGE_BASE, param);
 
 	delete cmd;
 	delete cmdblk;

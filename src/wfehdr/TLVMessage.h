@@ -15,6 +15,8 @@ namespace wfe
 {
 
 /**
+ * TLVMessage represents the messages used for communications between runners
+ * and master.
  * @note TLVMessage does not take the ownership of parameter, so users need to
  * delete/free the parameter manually if needed.
  */
