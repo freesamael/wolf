@@ -21,18 +21,6 @@ using namespace std;
 using namespace cml;
 using namespace wfe;
 
-void TLVObjectFactoryTestSuite::testLookupId()
-{
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_UINT16,
-			TLVObjectFactory::instance()->lookupTypeId(typeid(TLVUInt16).name()));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_UINT32,
-			TLVObjectFactory::instance()->lookupTypeId(typeid(TLVUInt32).name()));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_STRING,
-			TLVObjectFactory::instance()->lookupTypeId(typeid(TLVString).name()));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_MESSAGE_BASE,
-			TLVObjectFactory::instance()->lookupTypeId(typeid(TLVMessage).name()));
-}
-
 void TLVObjectFactoryTestSuite::testLookupName()
 {
 	CPPUNIT_ASSERT_EQUAL((string)typeid(TLVUInt16).name(),

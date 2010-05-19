@@ -52,12 +52,12 @@ StandardTLVBlock* TLVMessage::toTLVBlock() const
 	// Create param block (if any).
 	if (_param) {
 		param = _param->toTLVBlock();
-		blk = new StandardTLVBlock(param->plainSize());
+		blk = new StandardTLVBlock(TLV_TYPE_MESSAGE_BASE + _cmd,
+				param->plainSize());
 		memcpy(blk->value(), param->plainBuffer(), blk->length());
 	} else {
-		blk = new StandardTLVBlock();
+		blk = new StandardTLVBlock(TLV_TYPE_MESSAGE_BASE + _cmd);
 	}
-	blk->setType(TLV_TYPE_MESSAGE_BASE + _cmd);
 
 	// Clean up.
 	delete param;

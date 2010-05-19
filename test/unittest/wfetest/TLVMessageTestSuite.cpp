@@ -22,8 +22,9 @@ void TLVMessageTestSuite::testToTLVBlock()
 	TLVMessage msg(TLVMessage::HELLO_MASTER);
 	StandardTLVBlock *blk = msg.toTLVBlock();
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_MESSAGE_BASE, blk->type());
-	CPPUNIT_ASSERT_EQUAL(TLVUInt16::Size, blk->length());
+	CPPUNIT_ASSERT_EQUAL((uint16_t)(TLV_TYPE_MESSAGE_BASE +
+			TLVMessage::HELLO_MASTER), blk->type());
+	CPPUNIT_ASSERT_EQUAL((uint16_t)0, blk->length());
 
 	delete blk;
 
@@ -31,8 +32,7 @@ void TLVMessageTestSuite::testToTLVBlock()
 	msg.setParameter(u32);
 	blk = msg.toTLVBlock();
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)(TLVUInt16::Size + TLVUInt32::Size),
-			blk->length());
+	CPPUNIT_ASSERT_EQUAL(TLVUInt32::Size, blk->length());
 
 	delete u32;
 	delete blk;

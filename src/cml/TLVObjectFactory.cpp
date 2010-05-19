@@ -29,25 +29,25 @@ TLVObjectFactory::~TLVObjectFactory()
 }
 
 /**
- * Register a net type corresponding to a host type. If the net type is already
- * registered, it overwrites the registered type.
- *
- * \param name
- * Type name, i.e. typeid(Class).name().
+ * Register a host type corresponding a TLV type id. If the id has already bound
+ * with a type, it overwrites the original type registered before.
  *
  * \param id
  * ID used in TLV type.
+ *
+ * \param name
+ * Type name, i.e. typeid(Class).name().
  */
-void TLVObjectFactory::registerType(const std::string &name, uint16_t id)
+void TLVObjectFactory::registerType(uint16_t id, const std::string &name)
 {
-	map<string, uint16_t>::iterator iter;
+	map<uint16_t, string>::iterator iter;
 
 	// Erase registered one if any.
-	if ((iter = _typeids.find(name)) != _typeids.end())
-		_typeids.erase(iter);
+	if ((iter = _typenames.find(id)) != _typenames.end())
+		_typenames.erase(iter);
 
 	// Register type.
-	_typeids[name] = id;
+	_typenames[id] = name;
 }
 
 /**
@@ -76,20 +76,6 @@ void TLVObjectFactory::registerCreator(const std::string &name,
 }
 
 /**
- * Get TLV type id by giving host typename (typeid().name()).
- *
- * \return
- * Type id or TLV_TYPE_INVALID if nothing found.
- */
-uint16_t TLVObjectFactory::lookupTypeId(const string &name)
-{
-	map<string, uint16_t>::iterator iter;
-	if ((iter = _typeids.find(name)) != _typeids.end())
-		return iter->second;
-	return TLV_TYPE_INVALID;
-}
-
-/**
  * Get host typename (typeid().name()) by giving TLV type id.
  *
  * \return
@@ -97,10 +83,10 @@ uint16_t TLVObjectFactory::lookupTypeId(const string &name)
  */
 string TLVObjectFactory::lookupTypeName(uint16_t id)
 {
-	map<string, uint16_t>::iterator iter;
-	for (iter = _typeids.begin(); iter != _typeids.end(); iter++) {
-		if (iter->second == id)
-			return iter->first;
+	map<uint16_t, string>::iterator iter;
+	for (iter = _typenames.begin(); iter != _typenames.end(); iter++) {
+		if (iter->first == id)
+			return iter->second;
 	}
 	return string();
 }
@@ -117,6 +103,7 @@ ITLVObject* TLVObjectFactory::createTLVObject(const string &type_name)
 	map<string, ITLVObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(type_name)) != _creators.end())
 		return iter->second->create();
+	PERR("No suite creator found.");
 	return NULL;
 }
 

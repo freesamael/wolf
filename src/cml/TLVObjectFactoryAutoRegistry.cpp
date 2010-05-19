@@ -13,7 +13,7 @@ namespace cml
 TLVObjectFactoryAutoRegistry::TLVObjectFactoryAutoRegistry(const std::string &type,
 		uint16_t id,ITLVObjectCreator *creator)
 {
-	TLVObjectFactory::instance()->registerType(type, id);
+	TLVObjectFactory::instance()->registerType(id, type);
 	TLVObjectFactory::instance()->registerCreator(type, creator);
 }
 

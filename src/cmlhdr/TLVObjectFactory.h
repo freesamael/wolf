@@ -29,18 +29,17 @@ class TLVObjectFactory
 {
 	SINGLETON(TLVObjectFactory);
 public:
-	void registerType(const std::string &name, uint16_t id);
+	void registerType(uint16_t id, const std::string &name);
 	void registerCreator(const std::string &name, ITLVObjectCreator *creator);
-	uint16_t lookupTypeId(const std::string &name);
 	std::string lookupTypeName(uint16_t id);
 	ITLVObject* createTLVObject(const std::string &type_name);
 	ITLVObject* createTLVObject(uint16_t type_id);
 	ITLVObject* createTLVObject(const ITLVBlock &blk);
 
 private:
-	TLVObjectFactory(): SINGLETON_MEMBER_INITLST, _typeids(), _creators() {}
+	TLVObjectFactory(): SINGLETON_MEMBER_INITLST, _typenames(), _creators() {}
 	~TLVObjectFactory();
-	std::map<std::string, uint16_t> _typeids;
+	std::map<uint16_t, std::string> _typenames;
 	std::map<std::string, ITLVObjectCreator *> _creators;
 };
 

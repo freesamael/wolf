@@ -15,7 +15,6 @@ using namespace CppUnit;
 class TLVObjectFactoryTestSuite: public TestCase
 {
 	CPPUNIT_TEST_SUITE(TLVObjectFactoryTestSuite);
-		CPPUNIT_TEST(testLookupId);
 		CPPUNIT_TEST(testLookupName);
 		CPPUNIT_TEST(testCreateById);
 		CPPUNIT_TEST(testCreateByName);
@@ -23,7 +22,6 @@ class TLVObjectFactoryTestSuite: public TestCase
 	CPPUNIT_TEST_SUITE_END();
 
 public:
-	void testLookupId();
 	void testLookupName();
 	void testCreateById();
 	void testCreateByName();
