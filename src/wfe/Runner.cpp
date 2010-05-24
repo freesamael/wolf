@@ -46,6 +46,36 @@ void Runner::run(uint16_t runner_port, uint16_t master_port,
 }
 
 /**
+ * Add an actor into the waiting queue for execution.
+ */
+void Runner::enqueue(AbstractWorkerActor *worker)
+{
+	_mutex.lock();
+	_wq.push_back(worker);
+	if (_wq.size() == 1)
+		_wcond.wakeOne();
+	_mutex.unlock();
+}
+
+/**
+ * Take an actor from the waiting queue. If no actors are in the queue, the
+ * caller will be blocked until available.
+ */
+AbstractWorkerActor* Runner::dequeue()
+{
+	AbstractWorkerActor *a;
+
+	_mutex.lock();
+	if (_wq.size() == 0)
+		_wcond.wait(&_mutex);
+	a = _wq.front();
+	_wq.pop_front();
+	_mutex.unlock();
+
+	return a;
+}
+
+/**
  * \internal
  * Listen and wait for master broadcasting a ADD_MASTER message.
  */

@@ -21,30 +21,38 @@ namespace cml
 void* thread_caller(void *param)
 {
 	cml::Thread *th = reinterpret_cast<cml::Thread *>(param);
+
+	pthread_mutex_lock(&th->_mutex);
 	th->_running = true;
+	pthread_mutex_unlock(&th->_mutex);
+
 	th->run();
+
+	pthread_mutex_lock(&th->_mutex);
 	th->_running = false;
+	pthread_mutex_unlock(&th->_mutex);
+
 	if (pthread_cond_broadcast(&th->_rcnd) != 0)
 		perror("Error: thread_caller()");
 	return NULL;
 }
 
 Thread::Thread(IRunnable *runner):
-		_runner(runner), _rcnd(), _rcnd_mutex(),
+		_runner(runner), _rcnd(), _mutex(),
 		_tid(0), _running(false)
 {
 	int state;
-	pthread_mutex_init(&_rcnd_mutex, NULL);
+	pthread_mutex_init(&_mutex, NULL);
 	pthread_cond_init(&_rcnd, NULL);
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &state);
 }
 
 Thread::Thread(const Thread &thread):
-		_runner(thread._runner), _rcnd(), _rcnd_mutex(),
+		_runner(thread._runner), _rcnd(), _mutex(),
 		_tid(0), _running(false)
 {
 	int state;
-	pthread_mutex_init(&_rcnd_mutex, NULL);
+	pthread_mutex_init(&_mutex, NULL);
 	pthread_cond_init(&_rcnd, NULL);
 	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &state);
 }
@@ -52,7 +60,7 @@ Thread::Thread(const Thread &thread):
 Thread::~Thread()
 {
 	pthread_cond_destroy(&_rcnd);
-	pthread_mutex_destroy(&_rcnd_mutex);
+	pthread_mutex_destroy(&_mutex);
 }
 
 /**
@@ -108,13 +116,15 @@ bool Thread::join(unsigned timeout)
 	tout.tv_sec = abs_tout.tv_sec;
 	tout.tv_nsec = abs_tout.tv_usec * 1000;
 
+	pthread_mutex_lock(&_mutex);
 	if (_running) {
 		// Wait.
-		if (pthread_cond_timedwait(&_rcnd, &_rcnd_mutex, &tout) != 0) {
+		if (pthread_cond_timedwait(&_rcnd, &_mutex, &tout) != 0) {
 			perror("Error: Thread::join(): Condition waiting");
 			return false;
 		}
 	}
+	pthread_mutex_unlock(&_mutex);
 
 	return true;
 }

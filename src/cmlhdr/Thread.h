@@ -40,7 +40,7 @@ public:
 private:
 	IRunnable *_runner;
 	pthread_cond_t _rcnd;
-	pthread_mutex_t _rcnd_mutex;
+	pthread_mutex_t _mutex;
 	pthread_t _tid;
 	bool _running;
 };

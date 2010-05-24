@@ -25,8 +25,8 @@ WaitCondition::~WaitCondition()
 }
 
 /**
- * Wait the condition. Return true on success (though pthread_cond_wait never
- * returns error).
+ * Unlock the mutex and wait for the condition. Return true on success
+ * (though pthread_cond_wait never returns error).
  */
 bool WaitCondition::wait(Mutex *mutex)
 {
@@ -34,7 +34,8 @@ bool WaitCondition::wait(Mutex *mutex)
 }
 
 /**
- * Wait the condition with given timeout time (specified in microseconds).
+ * Unlock the mutex and wait for the condition with given timeout time
+ * (specified in microseconds).
  *
  * \return
  * True on success.

@@ -14,6 +14,9 @@
 namespace wfe
 {
 
+/**
+ * Used by runner to process commands from master.
+ */
 class CommandListener
 {
 public:
