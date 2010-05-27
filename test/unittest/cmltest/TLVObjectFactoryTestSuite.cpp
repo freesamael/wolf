@@ -9,7 +9,7 @@
 #include <TLVUInt16.h>
 #include <TLVUInt32.h>
 #include <TLVString.h>
-#include <TLVMessage.h>
+#include <TLVCommand.h>
 #include <CmlTLVTypes.h>
 #include <TLVBlock.h>
 #include <WfeTLVTypes.h>
@@ -29,8 +29,8 @@ void TLVObjectFactoryTestSuite::testLookupName()
 			(string)TLVObjectFactory::instance()->lookupTypeName(TLV_TYPE_UINT32));
 	CPPUNIT_ASSERT_EQUAL((string)typeid(TLVString).name(),
 			(string)TLVObjectFactory::instance()->lookupTypeName(TLV_TYPE_STRING));
-	CPPUNIT_ASSERT_EQUAL((string)typeid(TLVMessage).name(),
-			(string)TLVObjectFactory::instance()->lookupTypeName(TLV_TYPE_MESSAGE_BASE));
+	CPPUNIT_ASSERT_EQUAL((string)typeid(TLVCommand).name(),
+			(string)TLVObjectFactory::instance()->lookupTypeName(TLV_TYPE_COMMAND_BASE));
 }
 
 void TLVObjectFactoryTestSuite::testCreateById()
@@ -47,8 +47,8 @@ void TLVObjectFactoryTestSuite::testCreateById()
 	CPPUNIT_ASSERT_EQUAL(typeid(TLVString).name(), typeid(*obj).name());
 	delete obj;
 
-	obj = TLVObjectFactory::instance()->createTLVObject(TLV_TYPE_MESSAGE_BASE);
-	CPPUNIT_ASSERT_EQUAL(typeid(TLVMessage).name(), typeid(*obj).name());
+	obj = TLVObjectFactory::instance()->createTLVObject(TLV_TYPE_COMMAND_BASE);
+	CPPUNIT_ASSERT_EQUAL(typeid(TLVCommand).name(), typeid(*obj).name());
 	delete obj;
 }
 
@@ -66,8 +66,8 @@ void TLVObjectFactoryTestSuite::testCreateByName()
 	CPPUNIT_ASSERT_EQUAL(typeid(TLVString).name(), typeid(*obj).name());
 	delete obj;
 
-	obj = TLVObjectFactory::instance()->createTLVObject(typeid(TLVMessage).name());
-	CPPUNIT_ASSERT_EQUAL(typeid(TLVMessage).name(), typeid(*obj).name());
+	obj = TLVObjectFactory::instance()->createTLVObject(typeid(TLVCommand).name());
+	CPPUNIT_ASSERT_EQUAL(typeid(TLVCommand).name(), typeid(*obj).name());
 	delete obj;
 }
 
@@ -91,9 +91,9 @@ void TLVObjectFactoryTestSuite::testCreateByTLVBlock()
 	delete obj;
 	delete blk;
 
-	blk = TLVMessage().toTLVBlock();
+	blk = TLVCommand().toTLVBlock();
 	obj = TLVObjectFactory::instance()->createTLVObject(*blk);
-	CPPUNIT_ASSERT_EQUAL(typeid(TLVMessage).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(typeid(TLVCommand).name(), typeid(*obj).name());
 	delete obj;
 	delete blk;
 }
