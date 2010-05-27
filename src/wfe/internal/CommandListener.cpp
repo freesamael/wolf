@@ -22,12 +22,12 @@ void CommandListener::run()
 {
 	TLVReaderWriter tcprw(_sock);
 	ITLVObject *inobj;
-	TLVMessage *inmsg = NULL;
+	TLVCommand *inmsg = NULL;
 
 	while (!_done) {
 		if (!(inobj = tcprw.read()))
 			break; // End of file.
-		if (!(inmsg = dynamic_cast<TLVMessage *>(inobj))) {
+		if (!(inmsg = dynamic_cast<TLVCommand *>(inobj))) {
 			PERR("Invalid incoming message.");
 			delete inobj;
 		} else {
@@ -42,10 +42,10 @@ void CommandListener::run()
  * Process command. Return true if the actor is successfully extracted and
  * executed.
  */
-void CommandListener::processCommand(TLVMessage *cmd)
+void CommandListener::processCommand(TLVCommand *cmd)
 {
 	PINFO("Processing a command.");
-	if (cmd->command() == TLVMessage::ACTOR_RUN) {
+	if (cmd->command() == TLVCommand::ACTOR_RUN) {
 		// Test parameter.
 		AbstractWorkerActor *actor;
 		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
@@ -53,12 +53,12 @@ void CommandListener::processCommand(TLVMessage *cmd)
 		}
 		// Add to waiting queue.
 		_parent->enqueue(actor);
-	} else if (cmd->command() == TLVMessage::SHUTDOWN) {
+	} else if (cmd->command() == TLVCommand::SHUTDOWN) {
 		PINFO("Ending runner.");
 		_done = true;
 	} else {
 		PERR("Unexpected command \"" <<
-				TLVMessage::CommandString[cmd->command()] << "\".");
+				TLVCommand::CommandString[cmd->command()] << "\".");
 	}
 }
 

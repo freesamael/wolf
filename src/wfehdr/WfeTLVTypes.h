@@ -8,6 +8,6 @@
 #define WFETLVTYPES_H_
 
 #define TLV_TYPE_SMINFO			65
-#define TLV_TYPE_MESSAGE_BASE	75
+#define TLV_TYPE_COMMAND_BASE	75
 
 #endif /* WFETLVTYPES_H_ */

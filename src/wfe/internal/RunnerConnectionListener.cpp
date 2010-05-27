@@ -9,7 +9,7 @@
 #include <TLVReaderWriter.h>
 #include <Thread.h>
 #include "RunnerConnectionListener.h"
-#include "TLVMessage.h"
+#include "TLVCommand.h"
 
 using namespace std;
 using namespace cml;
@@ -91,14 +91,14 @@ void RunnerConnectionListener::update(AbstractObservable *o)
 
 	// Check message.
 	TLVReaderWriter tcprw(sock);
-	TLVMessage *msg;
-	if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
+	TLVCommand *msg;
+	if (!(msg = dynamic_cast<TLVCommand *>(tcprw.read()))) {
 		PERR("Invalid incoming message.");
-	} else if (msg->command() != TLVMessage::HELLO_RUNNER) {
+	} else if (msg->command() != TLVCommand::HELLO_RUNNER) {
 		PERR("Expected command " <<
-				TLVMessage::CommandString[TLVMessage::HELLO_RUNNER] <<
+				TLVCommand::CommandString[TLVCommand::HELLO_RUNNER] <<
 				"but got " <<
-				TLVMessage::CommandString[msg->command()] << ".");
+				TLVCommand::CommandString[msg->command()] << ".");
 	} else {
 		PINFO("Got one runner.");
 		_runnersocks->push_back(sock);

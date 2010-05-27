@@ -57,18 +57,18 @@ bool Runner::waitMaster()
 {
 	UDPSocket usock;
 	TLVReaderWriter udprw(&usock);
-	TLVMessage *inmsg;
+	TLVCommand *inmsg;
 
 	usock.passiveOpen(_rport);
-	if (!(inmsg = dynamic_cast<TLVMessage *>(udprw.recvfrom(&_maddr, &_mport)))) {
+	if (!(inmsg = dynamic_cast<TLVCommand *>(udprw.recvfrom(&_maddr, &_mport)))) {
 		PERR("Invalid incoming message.");
 		return false;
 	}
 
-	if (inmsg->command() != TLVMessage::HELLO_MASTER) {
+	if (inmsg->command() != TLVCommand::HELLO_MASTER) {
 		PERR("Expected command " <<
-				TLVMessage::CommandString[TLVMessage::HELLO_MASTER] <<
-				" but got " << TLVMessage::CommandString[inmsg->command()]);
+				TLVCommand::CommandString[TLVCommand::HELLO_MASTER] <<
+				" but got " << TLVCommand::CommandString[inmsg->command()]);
 		return false;
 	}
 
@@ -87,7 +87,7 @@ bool Runner::connMaster()
 		return false;
 	}
 
-	TLVMessage outmsg(TLVMessage::HELLO_RUNNER);
+	TLVCommand outmsg(TLVCommand::HELLO_RUNNER);
 	return tcprw.write(outmsg);
 }
 

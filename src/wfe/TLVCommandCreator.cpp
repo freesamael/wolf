@@ -1,5 +1,5 @@
 /**
- * \file TLVMessageCreator.cpp
+ * \file TLVCommandCreator.cpp
  * \date Mar 29, 2010
  * \author samael
  */
@@ -11,7 +11,7 @@
 #include <TLVUInt16.h>
 #include <TLVObjectFactory.h>
 #include <HelperMacros.h>
-#include "TLVMessageCreator.h"
+#include "TLVCommandCreator.h"
 #include "WfeTLVTypes.h"
 
 using namespace std;
@@ -29,7 +29,7 @@ namespace wfe
  * -----------------------------------\n
  * The sub-TLV represents parameter (which is an optional field).
  */
-ITLVObject* TLVMessageCreator::create(const ITLVBlock &blk) const
+ITLVObject* TLVCommandCreator::create(const ITLVBlock &blk) const
 {
 	SharedTLVBlock *paramblk;
 	ITLVObject *param = NULL;
@@ -42,9 +42,9 @@ ITLVObject* TLVMessageCreator::create(const ITLVBlock &blk) const
 	}
 
 	// Construct message object.
-	PINFO("Got TLVMessage with command = " <<
-			TLVMessage::CommandString[blk.type() - TLV_TYPE_MESSAGE_BASE]);
-	TLVMessage *msg = new TLVMessage(blk.type() - TLV_TYPE_MESSAGE_BASE, param);
+	PINFO("Got TLVCommand with command = " <<
+			TLVCommand::CommandString[blk.type() - TLV_TYPE_COMMAND_BASE]);
+	TLVCommand *msg = new TLVCommand(blk.type() - TLV_TYPE_COMMAND_BASE, param);
 
 	return msg;
 }

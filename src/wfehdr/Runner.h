@@ -14,7 +14,7 @@
 #include <TCPSocket.h>
 #include <Mutex.h>
 #include <WaitCondition.h>
-#include "TLVMessage.h"
+#include "TLVCommand.h"
 #include "AbstractWorkerActor.h"
 
 namespace wfe

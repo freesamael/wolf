@@ -13,7 +13,7 @@
 #include <TLVUInt32.h>
 #include "D2MCE.h"
 #include "Master.h"
-#include "TLVMessage.h"
+#include "TLVCommand.h"
 #include "internal/RunnerConnectionListener.h"
 
 using namespace std;
@@ -56,10 +56,10 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 		TLVReaderWriter rw(_runnersocks[i]);
 		for (unsigned j = 0; i < i; j++) {
 			TLVUInt32 addr((uint32_t)_runnersocks[j]->peerAddress().toInetAddr());
-			TLVMessage msg(TLVMessage::RUNNER_ADD, &addr);
+			TLVCommand msg(TLVCommand::RUNNER_ADD, &addr);
 			rw.write(msg);
 		}
-		TLVMessage startmsg(TLVMessage::RUNNER_START);
+		TLVCommand startmsg(TLVCommand::RUNNER_START);
 		rw.write(startmsg);
 	}
 
@@ -76,9 +76,9 @@ bool Master::shutdown()
 		return false;
 
 	// Construct command.
-	TLVMessage msg;
+	TLVCommand msg;
 
-	msg.setCommand(TLVMessage::SHUTDOWN);
+	msg.setCommand(TLVCommand::SHUTDOWN);
 
 	// Shutdown all runners.
 	bool success = true;
@@ -104,8 +104,8 @@ bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 	if (_state != READY)
 		return false;
 
-	TLVMessage msg;
-	msg.setCommand(TLVMessage::ACTOR_RUN);
+	TLVCommand msg;
+	msg.setCommand(TLVCommand::ACTOR_RUN);
 	msg.setParameter(actor);
 
 	// Send to given runner.
@@ -147,7 +147,7 @@ void Master::broadcastHelloMessage(uint16_t runner_port)
 	TLVReaderWriter udprw(&usock);
 	usock.setBroadcast(true);
 	usock.setTTL(1);
-	udprw.sendto(TLVMessage(TLVMessage::HELLO_MASTER),
+	udprw.sendto(TLVCommand(TLVCommand::HELLO_MASTER),
 			HostAddress::BroadcastAddress, runner_port);
 }
 

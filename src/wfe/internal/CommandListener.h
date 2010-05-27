@@ -10,7 +10,7 @@
 #include <TCPSocket.h>
 #include <IRunnable.h>
 #include "Runner.h"
-#include "TLVMessage.h"
+#include "TLVCommand.h"
 #include "AbstractWorkerActor.h"
 
 namespace wfe
@@ -32,7 +32,7 @@ public:
 	void setDone() { _done = true; }
 
 private:
-	void processCommand(TLVMessage *cmd);
+	void processCommand(TLVCommand *cmd);
 	bool _done;
 	Runner *_parent;
 	cml::TCPSocket *_sock;
