@@ -9,12 +9,14 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <sys/time.h>
+#include <Thread.h>
 #include <UDPSocket.h>
 #include <TLVReaderWriter.h>
 #include <HelperMacros.h>
 #include "Runner.h"
 #include "D2MCE.h"
 #include "internal/CommandListener.h"
+#include "internal/ActorExecutor.h"
 
 using namespace std;
 using namespace cml;
@@ -22,27 +24,90 @@ using namespace cml;
 namespace wfe
 {
 
-void Runner::run(uint16_t runner_port, uint16_t master_port,
-		const string &appname)
+Runner::~Runner()
 {
-	HostAddress addr;
-	PINFO("Waiting for master notification.");
-	if (!(addr = getMasterAddr(runner_port)).isValid()) {
-		PERR("Runner fails, exit now.");
-		return;
+	delete _mhandle;
+	for (unsigned i = 0; i < _rhandles.size(); i++) {
+		delete _rhandles[i];
+	}
+}
+
+void Runner::run()
+{
+	// Preparation
+	if (!waitMaster()) return;
+	if (!connMaster()) return;
+	joinD2MCE();
+
+	// Start processing commands.
+	CommandListener cmdhandle(this, &_msock);
+	ActorExecutor actorhandle(this);
+	Thread cmdthread(&cmdhandle);
+	Thread actorthread(&actorhandle);
+	cmdthread.start();
+	actorthread.start();
+	cmdthread.join();
+	actorthread.join();
+}
+
+/**
+ * Wait for master hello message.
+ */
+bool Runner::waitMaster()
+{
+	UDPSocket usock;
+	TLVReaderWriter udprw(&usock);
+	TLVMessage *inmsg;
+
+	usock.passiveOpen(_rport);
+	if (!(inmsg = dynamic_cast<TLVMessage *>(udprw.recvfrom(&_maddr, &_mport)))) {
+		PERR("Invalid incoming message.");
+		return false;
 	}
 
-	TCPSocket sock;
-	PINFO("Connection to the master node");
-	if (!connectToMaster(&sock, addr, master_port)) {
-		PERR("Runner fails, exit now.");
-		return;
+	if (inmsg->command() != TLVMessage::HELLO_MASTER) {
+		PERR("Expected command " <<
+				TLVMessage::CommandString[TLVMessage::HELLO_MASTER] <<
+				" but got " << TLVMessage::CommandString[inmsg->command()]);
+		return false;
 	}
-	PINFO("Connected with address = " << sock.currentAddress().toString());
-	joinGroup(&sock, appname);
 
-	CommandListener listener(&sock);
-	listener.run();
+	delete inmsg;
+	return true;
+}
+
+/**
+ * Connect to master node.
+ */
+bool Runner::connMaster()
+{
+	TLVReaderWriter tcprw(&_msock);
+	if (!_msock.activeOpen(_maddr, _mport)) {
+		PERR("Unable to connect to the master node.");
+		return false;
+	}
+
+	TLVMessage outmsg(TLVMessage::HELLO_RUNNER);
+	return tcprw.write(outmsg);
+}
+
+/**
+ * Join the computing group.
+ */
+void Runner::joinD2MCE()
+{
+#ifndef DISABLE_D2MCE
+	// Random back-off. It's just a workaround for the problem that multiple
+	// nodes joining at the same time might cause failure.
+	srand((unsigned)_msock.currentAddress().toInetAddr());
+	usleep((rand() % 30) * 33000); // sleep 0 ~ 1s, granularity 33ms.
+
+	// Join
+	D2MCE::instance()->join(_appname);
+	PINFO(D2MCE::instance()->getNumberOfNodes() <<
+			"nodes inside the group, node id = " << D2MCE::instance()->nodeId()
+			<< ".");
+#endif /* DISABLE_D2MCE */
 }
 
 /**
@@ -59,87 +124,22 @@ void Runner::enqueue(AbstractWorkerActor *worker)
 
 /**
  * Take an actor from the waiting queue. If no actors are in the queue, the
- * caller will be blocked until available.
+ * caller will be blocked until available or return NULL if timed out.
  */
-AbstractWorkerActor* Runner::dequeue()
+AbstractWorkerActor* Runner::dequeue(unsigned timeout_us)
 {
 	AbstractWorkerActor *a;
 
 	_mutex.lock();
 	if (_wq.size() == 0)
-		_wcond.wait(&_mutex);
+		_wcond.wait(&_mutex, timeout_us);
+	if (_wq.size() == 0)
+		return NULL;
 	a = _wq.front();
 	_wq.pop_front();
 	_mutex.unlock();
 
 	return a;
-}
-
-/**
- * \internal
- * Listen and wait for master broadcasting a ADD_MASTER message.
- */
-HostAddress Runner::getMasterAddr(uint16_t runner_port)
-{
-	UDPSocket usock;
-	TLVReaderWriter udprw(&usock);
-	TLVMessage *inmsg;
-	HostAddress inaddr;
-	uint16_t inport;
-
-	usock.passiveOpen(runner_port);
-	if (!(inmsg = dynamic_cast<TLVMessage *>(udprw.recvfrom(&inaddr, &inport)))) {
-		PERR("Invalid incoming message.");
-		return HostAddress();
-	}
-
-	if (inmsg->command() != TLVMessage::HELLO_MASTER) {
-		PERR("Expected command " <<
-				TLVMessage::CommandString[TLVMessage::HELLO_MASTER] <<
-				" but got " << TLVMessage::CommandString[inmsg->command()]);
-		return HostAddress();
-	}
-
-	delete inmsg;
-
-	return inaddr;
-}
-
-/**
- * \internal
- * Connect to the master node.
- */
-bool Runner::connectToMaster(TCPSocket *sock, const HostAddress &addr,
-		uint16_t master_port)
-{
-	TLVReaderWriter tcprw(sock);
-	if (!sock->activeOpen(addr, master_port)) {
-		PERR("Unable to connect to the master node.");
-		return false;
-	}
-
-	TLVMessage outmsg(TLVMessage::HELLO_SLAVE);
-	return tcprw.write(outmsg);
-}
-
-/**
- * \internal
- * Join the computing group.
- */
-void Runner::joinGroup(TCPSocket *sock, const string &appname)
-{
-#ifndef DISABLE_D2MCE
-	// Random back-off. It's just a workaround for the problem that multiple
-	// nodes joining at the same time might cause failure.
-	srand((unsigned)sock->currentAddress().toInetAddr());
-	usleep((rand() % 30) * 33000); // sleep 0 ~ 1s, granularity 33ms.
-
-	// Join
-	D2MCE::instance()->join(appname);
-	PINFO(D2MCE::instance()->getNumberOfNodes() <<
-			"nodes inside the group, node id = " << D2MCE::instance()->nodeId()
-			<< ".");
-#endif /* DISABLE_D2MCE */
 }
 
 }

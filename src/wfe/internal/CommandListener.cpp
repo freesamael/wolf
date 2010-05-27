@@ -31,13 +31,7 @@ void CommandListener::run()
 			PERR("Invalid incoming message.");
 			delete inobj;
 		} else {
-			AbstractWorkerActor *actor;
-			if ((actor = processCommand(inmsg))) {
-				PINFO("Returning finish message.");
-				TLVMessage rtn(TLVMessage::ACTOR_FINISHED, actor);
-				tcprw.write(rtn);
-				delete actor;
-			}
+			processCommand(inmsg);
 			delete inmsg;
 		}
 	}
@@ -48,7 +42,7 @@ void CommandListener::run()
  * Process command. Return true if the actor is successfully extracted and
  * executed.
  */
-AbstractWorkerActor* CommandListener::processCommand(TLVMessage *cmd)
+void CommandListener::processCommand(TLVMessage *cmd)
 {
 	PINFO("Processing a command.");
 	if (cmd->command() == TLVMessage::ACTOR_RUN) {
@@ -56,18 +50,9 @@ AbstractWorkerActor* CommandListener::processCommand(TLVMessage *cmd)
 		AbstractWorkerActor *actor;
 		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
 			PERR("Invalid parameter.");
-			return NULL;
 		}
-
-		// Run actor.
-		actor->setup();
-		do {
-			actor->prefire();
-			actor->fire();
-			actor->postfire();
-		} while (actor->testfire());
-		actor->wrapup();
-		return actor;
+		// Add to waiting queue.
+		_parent->enqueue(actor);
 	} else if (cmd->command() == TLVMessage::SHUTDOWN) {
 		PINFO("Ending runner.");
 		_done = true;
@@ -75,7 +60,6 @@ AbstractWorkerActor* CommandListener::processCommand(TLVMessage *cmd)
 		PERR("Unexpected command \"" <<
 				TLVMessage::CommandString[cmd->command()] << "\".");
 	}
-	return NULL;
 }
 
 }

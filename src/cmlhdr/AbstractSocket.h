@@ -47,6 +47,7 @@ public:
 	bool setTTL(int ttl);
 	int TTL() const;
 	HostAddress currentAddress() const;
+	HostAddress peerAddress() const;
 
 	inline void changeState(ISocketState *state) { _state = state; }
 	inline const ISocketState* state() const { return _state; }
@@ -54,8 +55,6 @@ public:
 	inline int sockfd() const { return _sockfd; }
 
 	// Static helpers.
-	static HostAddress getHostByName(const std::string &host);
-	static uint16_t getServiceByName(const std::string &service);
 	static void registerSocketDependant(void (*rls)());
 
 protected:

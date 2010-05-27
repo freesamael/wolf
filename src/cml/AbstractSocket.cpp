@@ -206,44 +206,34 @@ int AbstractSocket::TTL() const
 	return ttl;
 }
 
+/**
+ * Get the address currently bound.
+ */
 HostAddress AbstractSocket::currentAddress() const
 {
 	sockaddr_in inaddr;
 	socklen_t len = sizeof(inaddr);
 
 	if (getsockname(_sockfd, (sockaddr *)&inaddr, &len)) {
-		perror("Error: AbstractSocket::getSocketName()");
+		perror("Error: AbstractSocket::currentAddress()");
 		return HostAddress();
 	}
 	return HostAddress(inaddr.sin_addr.s_addr);
 }
 
 /**
- * Get host address by host name (e.g. "www.google.com").
+ * Get the address of connected peer.
  */
-HostAddress AbstractSocket::getHostByName(const string &host)
+HostAddress AbstractSocket::peerAddress() const
 {
-	hostent *phe;
+	sockaddr_in inaddr;
+	socklen_t len = sizeof(inaddr);
 
-	if ((phe = gethostbyname(host.c_str()))) {
-		in_addr addr;
-		memcpy(&addr, phe->h_addr_list[0], phe->h_length);
-		return addr.s_addr;
+	if (getpeername(_sockfd, (sockaddr *)&inaddr, &len)) {
+		perror("Error: AbstractSocket::peerAddress()");
+		return HostAddress();
 	}
-	return INADDR_NONE;
-}
-
-/**
- * Get port number by service name (e.g. "http").
- */
-uint16_t AbstractSocket::getServiceByName(const string &service)
-{
-	servent *pse;
-
-	if ((pse = getservbyname(service.c_str(), NULL))) {
-		return pse->s_port;
-	}
-	return 0;
+	return HostAddress(inaddr.sin_addr.s_addr);
 }
 
 /**

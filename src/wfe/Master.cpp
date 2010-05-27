@@ -10,6 +10,7 @@
 #include <TLVReaderWriter.h>
 #include <Thread.h>
 #include <SingletonAutoDestructor.h>
+#include <TLVUInt32.h>
 #include "D2MCE.h"
 #include "Master.h"
 #include "TLVMessage.h"
@@ -39,16 +40,27 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 	// Listen and wait for join message.
 	RunnerConnectionListener listener(&_msock, master_port, &_runnersocks, timeout);
 	listener.start();
-
 	// Join d2mce and broadcast notification.
 	joinGroup(appname);
 	broadcastHelloMessage(runner_port);
 
 	// Check the runners.
-	listener.join();
+	listener.stop();
 	if (_runnersocks.size() == 0) {
 		PERR("No runner found.");
 		return false;
+	}
+
+	// Ask runners to connect each other.
+	for (unsigned i = 0; i < _runnersocks.size(); i++) {
+		TLVReaderWriter rw(_runnersocks[i]);
+		for (unsigned j = 0; i < i; j++) {
+			TLVUInt32 addr((uint32_t)_runnersocks[j]->peerAddress().toInetAddr());
+			TLVMessage msg(TLVMessage::RUNNER_ADD, &addr);
+			rw.write(msg);
+		}
+		TLVMessage startmsg(TLVMessage::RUNNER_START);
+		rw.write(startmsg);
 	}
 
 	_state = READY;

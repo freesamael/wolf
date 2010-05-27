@@ -18,12 +18,12 @@ namespace wfe
 {
 
 RunnerConnectionListener::RunnerConnectionListener(TCPSocket *msock,
-		uint16_t master_port, vector<TCPSocket *> *runnersocks,
+		uint16_t listen_port, vector<TCPSocket *> *runnersocks,
 		unsigned timeout):
 				_msock(msock), _runnersocks(runnersocks), _timeout(timeout),
 				_listener(_msock), _listhread(&_listener)
 {
-	msock->passiveOpen(master_port);
+	msock->passiveOpen(listen_port);
 	_listener.attach(this);
 }
 
@@ -59,7 +59,7 @@ void RunnerConnectionListener::start()
 /**
  * Wait timeout seconds and stop acceptor.
  */
-bool RunnerConnectionListener::join()
+bool RunnerConnectionListener::stop()
 {
 	sleep(_timeout);
 	_listener.setDone();
@@ -94,9 +94,9 @@ void RunnerConnectionListener::update(AbstractObservable *o)
 	TLVMessage *msg;
 	if (!(msg = dynamic_cast<TLVMessage *>(tcprw.read()))) {
 		PERR("Invalid incoming message.");
-	} else if (msg->command() != TLVMessage::HELLO_SLAVE) {
+	} else if (msg->command() != TLVMessage::HELLO_RUNNER) {
 		PERR("Expected command " <<
-				TLVMessage::CommandString[TLVMessage::HELLO_SLAVE] <<
+				TLVMessage::CommandString[TLVMessage::HELLO_RUNNER] <<
 				"but got " <<
 				TLVMessage::CommandString[msg->command()] << ".");
 	} else {

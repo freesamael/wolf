@@ -24,13 +24,13 @@ namespace wfe
 class RunnerConnectionListener: public cml::IObserver
 {
 public:
-	RunnerConnectionListener(cml::TCPSocket *msock, uint16_t master_port,
+	RunnerConnectionListener(cml::TCPSocket *msock, uint16_t listen_port,
 			std::vector<cml::TCPSocket *> *runnersocks, unsigned timeout);
 	RunnerConnectionListener(const RunnerConnectionListener &o);
 	RunnerConnectionListener& operator=(const RunnerConnectionListener &o);
 
 	void start();
-	bool join();
+	bool stop();
 	void update(cml::AbstractObservable *o);
 
 private:

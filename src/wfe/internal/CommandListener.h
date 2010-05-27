@@ -8,6 +8,8 @@
 #define COMMANDLISTENER_H_
 
 #include <TCPSocket.h>
+#include <IRunnable.h>
+#include "Runner.h"
 #include "TLVMessage.h"
 #include "AbstractWorkerActor.h"
 
@@ -17,18 +19,22 @@ namespace wfe
 /**
  * Used by runner to process commands from master.
  */
-class CommandListener
+class CommandListener: public cml::IRunnable
 {
 public:
-	CommandListener(cml::TCPSocket *sock): _done(false), _sock(sock) {}
-	CommandListener(const CommandListener &o): _done(o._done), _sock(o._sock) {}
+	CommandListener(Runner *parent, cml::TCPSocket *sock):
+		_done(false), _parent(parent), _sock(sock) {}
+	CommandListener(const CommandListener &o): _done(o._done),
+			_parent(o._parent), _sock(o._sock) {}
 	CommandListener& operator=(const CommandListener &o)
-		{ _done = o._done; _sock = o._sock; return *this; }
+		{ _done = o._done; _parent = o._parent; _sock = o._sock; return *this; }
 	void run();
+	void setDone() { _done = true; }
 
 private:
-	AbstractWorkerActor* processCommand(TLVMessage *cmd);
+	void processCommand(TLVMessage *cmd);
 	bool _done;
+	Runner *_parent;
 	cml::TCPSocket *_sock;
 };
 
