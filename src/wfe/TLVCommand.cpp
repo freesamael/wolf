@@ -73,7 +73,7 @@ StandardTLVBlock* TLVCommand::toTLVBlock() const
 	StandardTLVBlock *blk;
 
 	if (_params.size() > 0) { 	// Create param block (if any).
-		vector<StandardTLVBlock *> pamblks;
+		vector<const ITLVBlock *> pamblks;
 		for (unsigned i = 0; i < _params.size(); i++)
 			pamblks.push_back(_params[i]->toTLVBlock());
 		blk = StandardTLVBlock::concate(pamblks);

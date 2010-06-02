@@ -8,7 +8,7 @@
 #define MASTERCOMMANDSENDER_H_
 
 #include <stdint.h>
-#include <TCPSocket.h>
+#include "TCPSocket.h"
 #include "AbstractWorkerActor.h"
 
 namespace wfe

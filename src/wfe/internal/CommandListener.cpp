@@ -5,8 +5,8 @@
  */
 
 #include <iostream>
-#include <TLVReaderWriter.h>
-#include <HelperMacros.h>
+#include "TLVReaderWriter.h"
+#include "HelperMacros.h"
 #include "CommandListener.h"
 #include "AbstractWorkerActor.h"
 
@@ -48,9 +48,9 @@ void CommandListener::processCommand(TLVCommand *cmd)
 	if (cmd->command() == TLVCommand::ACTOR_RUN) {
 		// Test parameter.
 		AbstractWorkerActor *actor;
-		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
-			PERR("Invalid parameter.");
-		}
+//		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
+//			PERR("Invalid parameter.");
+//		}
 		// Add to waiting queue.
 		_parent->enqueue(actor);
 	} else if (cmd->command() == TLVCommand::SHUTDOWN) {

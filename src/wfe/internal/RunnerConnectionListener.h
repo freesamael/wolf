@@ -8,12 +8,12 @@
 #define RUNNERCONNECTIONLISTENER_H_
 
 #include <vector>
-#include <IObserver.h>
-#include <AbstractObservable.h>
-#include <TCPSocket.h>
-#include <TCPConnectionListener.h>
-#include <Thread.h>
-#include <HelperMacros.h>
+#include "IObserver.h"
+#include "AbstractObservable.h"
+#include "TCPSocket.h"
+#include "TCPConnectionListener.h"
+#include "Thread.h"
+#include "HelperMacros.h"
 
 namespace wfe
 {

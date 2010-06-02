@@ -5,9 +5,9 @@
  */
 
 #include <iostream>
-#include <TCPConnectionListener.h>
-#include <TLVReaderWriter.h>
-#include <Thread.h>
+#include "TCPConnectionListener.h"
+#include "TLVReaderWriter.h"
+#include "Thread.h"
 #include "RunnerConnectionListener.h"
 #include "TLVCommand.h"
 

@@ -7,8 +7,8 @@
 #ifndef COMMANDLISTENER_H_
 #define COMMANDLISTENER_H_
 
-#include <TCPSocket.h>
-#include <IRunnable.h>
+#include "TCPSocket.h"
+#include "IRunnable.h"
 #include "Runner.h"
 #include "TLVCommand.h"
 #include "AbstractWorkerActor.h"
