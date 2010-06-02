@@ -7,10 +7,10 @@
 #include <iostream>
 #include <cstring>
 #include <arpa/inet.h>
-#include <TLVBlock.h>
-#include <TLVUInt16.h>
-#include <TLVObjectFactory.h>
-#include <HelperMacros.h>
+#include "TLVBlock.h"
+#include "TLVUInt16.h"
+#include "TLVObjectFactory.h"
+#include "HelperMacros.h"
 #include "TLVCommandCreator.h"
 #include "WfeTLVTypes.h"
 
@@ -22,31 +22,31 @@ namespace wfe
 
 /*
  * The nested TLV blocks look like:\n
- * -----------------------------------\n
- * |    |      | ----(Optional)----- |\n
- * |Type|Length| |Type|Length|Value| |\n
- * |    |      | ------------------- |\n
- * -----------------------------------\n
- * The sub-TLV represents parameter (which is an optional field).
+ * --------------------------------------\n
+ * |    |      | ----(Optional)-----    |\n
+ * |Type|Length| |Type|Length|Value| ...|\n
+ * |    |      | -------------------    |\n
+ * --------------------------------------\n
+ * The sub-TLVs represent parameters (which are optional).
  */
 ITLVObject* TLVCommandCreator::create(const ITLVBlock &blk) const
 {
-	SharedTLVBlock *paramblk;
-	ITLVObject *param = NULL;
-
-	// Construct param block (if any).
-	if (blk.length() > 0) {
-		paramblk = new SharedTLVBlock(blk.value());
-		param = TLVObjectFactory::instance()->createTLVObject(*paramblk);
-		delete paramblk;
-	}
-
-	// Construct message object.
 	PINFO("Got TLVCommand with command = " <<
 			TLVCommand::CommandString[blk.type() - TLV_TYPE_COMMAND_BASE]);
-	TLVCommand *msg = new TLVCommand(blk.type() - TLV_TYPE_COMMAND_BASE, param);
 
-	return msg;
+	TLVCommand *cmd = new TLVCommand(blk.type() - TLV_TYPE_COMMAND_BASE);
+
+	// Construct parameters (if any).
+	if (blk.length() > 0) {
+		unsigned short offset = 0;
+		do {
+			SharedTLVBlock pamblk(blk.plainBuffer() + offset);
+			offset += pamblk.plainSize();
+			cmd->addParameter(TLVObjectFactory::instance()->createTLVObject(pamblk));
+		} while (offset < blk.length());
+	}
+
+	return cmd;
 }
 
 }

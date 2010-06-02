@@ -8,7 +8,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
-#include <SingletonAutoDestructor.h>
+#include "SingletonAutoDestructor.h"
 #include "D2MCE.h"
 #include "SharedMemory.h"
 

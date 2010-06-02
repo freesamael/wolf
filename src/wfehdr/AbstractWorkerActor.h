@@ -7,8 +7,8 @@
 #ifndef ABSTRACTWORKERACTOR_H_
 #define ABSTRACTWORKERACTOR_H_
 
-#include <ITLVObject.h>
-#include <HelperMacros.h>
+#include "ITLVObject.h"
+#include "HelperMacros.h"
 #include "AbstractActor.h"
 
 namespace wfe

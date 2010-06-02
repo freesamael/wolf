@@ -7,7 +7,7 @@
 #ifndef TLVSHAREDMEMORYINFOCREATOR_H_
 #define TLVSHAREDMEMORYINFOCREATOR_H_
 
-#include <ITLVObjectCreator.h>
+#include "ITLVObjectCreator.h"
 #include "TLVSharedMemoryInfo.h"
 
 namespace wfe

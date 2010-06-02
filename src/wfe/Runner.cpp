@@ -9,10 +9,10 @@
 #include <cstdlib>
 #include <unistd.h>
 #include <sys/time.h>
-#include <Thread.h>
-#include <UDPSocket.h>
-#include <TLVReaderWriter.h>
-#include <HelperMacros.h>
+#include "Thread.h"
+#include "UDPSocket.h"
+#include "TLVReaderWriter.h"
+#include "HelperMacros.h"
 #include "Runner.h"
 #include "D2MCE.h"
 #include "internal/CommandListener.h"

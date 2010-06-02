@@ -8,6 +8,7 @@
 #define TLVCOMMAND_H_
 
 #include <string>
+#include <vector>
 #include <stdint.h>
 #include "ITLVObject.h"
 
@@ -16,12 +17,12 @@ namespace wfe
 
 /**
  * TLVCommand represents the command used for communications between runners
- * and master.
+ * and master. It doesn't take the ownership of parameters, so users need to
+ * delete the parameters if it's allocated on heap.
  */
 class TLVCommand: public cml::ITLVObject
 {
 public:
-	static const uint16_t TLVType;
 	/**
 	 * Enumeration of commands. To ensure the size and value of commands, we
 	 * use constant uint16_t instead of C++ 'enum' here.
@@ -37,12 +38,17 @@ public:
 	static const uint16_t RUNNER_START;
 
 	TLVCommand(uint16_t c = EMPTY): _cmd(c){}
+	virtual ~TLVCommand() {}
 	inline uint16_t command() const { return _cmd; }
 	inline void setCommand(uint16_t c) { _cmd = c; }
+	inline const std::vector<cml::ITLVObject *> parameters() const
+			{ return _params; }
+	inline void addParameter(ITLVObject *obj) { _params.push_back(obj); }
 	virtual cml::StandardTLVBlock* toTLVBlock() const;
 
 private:
 	uint16_t _cmd;
+	std::vector<cml::ITLVObject *> _params;
 };
 
 }

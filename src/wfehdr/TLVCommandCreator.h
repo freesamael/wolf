@@ -13,6 +13,12 @@
 namespace wfe
 {
 
+/**
+ * Creator of TLVCommand. When a command is created from a TLV block, user need
+ * to take care of the deletion of parameters because TLVCommand doesn't take
+ * ownership of that, and parameters constructed here are always constructed
+ * on heap.
+ */
 class TLVCommandCreator: public cml::ITLVObjectCreator
 {
 public:

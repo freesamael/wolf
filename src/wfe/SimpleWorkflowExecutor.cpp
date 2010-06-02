@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <deque>
-#include <HelperMacros.h>
+#include "HelperMacros.h"
 #include "SimpleWorkflowExecutor.h"
 
 using namespace std;

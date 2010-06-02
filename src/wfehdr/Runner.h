@@ -10,10 +10,10 @@
 #include <vector>
 #include <deque>
 #include <string>
-#include <HostAddress.h>
-#include <TCPSocket.h>
-#include <Mutex.h>
-#include <WaitCondition.h>
+#include "HostAddress.h"
+#include "TCPSocket.h"
+#include "Mutex.h"
+#include "WaitCondition.h"
 #include "TLVCommand.h"
 #include "AbstractWorkerActor.h"
 

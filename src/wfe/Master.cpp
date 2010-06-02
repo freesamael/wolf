@@ -6,11 +6,11 @@
 
 #include <sys/time.h>
 #include <unistd.h>
-#include <UDPSocket.h>
-#include <TLVReaderWriter.h>
-#include <Thread.h>
-#include <SingletonAutoDestructor.h>
-#include <TLVUInt32.h>
+#include "UDPSocket.h"
+#include "TLVReaderWriter.h"
+#include "Thread.h"
+#include "SingletonAutoDestructor.h"
+#include "TLVUInt32.h"
 #include "D2MCE.h"
 #include "Master.h"
 #include "TLVCommand.h"
@@ -52,16 +52,16 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 	}
 
 	// Ask runners to connect each other.
-	for (unsigned i = 0; i < _runnersocks.size(); i++) {
-		TLVReaderWriter rw(_runnersocks[i]);
-		for (unsigned j = 0; i < i; j++) {
-			TLVUInt32 addr((uint32_t)_runnersocks[j]->peerAddress().toInetAddr());
-			TLVCommand msg(TLVCommand::RUNNER_ADD, &addr);
-			rw.write(msg);
-		}
-		TLVCommand startmsg(TLVCommand::RUNNER_START);
-		rw.write(startmsg);
-	}
+//	for (unsigned i = 0; i < _runnersocks.size(); i++) {
+//		TLVReaderWriter rw(_runnersocks[i]);
+//		for (unsigned j = 0; i < i; j++) {
+//			TLVUInt32 addr((uint32_t)_runnersocks[j]->peerAddress().toInetAddr());
+//			TLVCommand msg(TLVCommand::RUNNER_ADD, &addr);
+//			rw.write(msg);
+//		}
+//		TLVCommand startmsg(TLVCommand::RUNNER_START);
+//		rw.write(startmsg);
+//	}
 
 	_state = READY;
 	return true;
@@ -101,26 +101,26 @@ bool Master::shutdown()
  */
 bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 {
-	if (_state != READY)
+//	if (_state != READY)
 		return false;
-
-	TLVCommand msg;
-	msg.setCommand(TLVCommand::ACTOR_RUN);
-	msg.setParameter(actor);
-
-	// Send to given runner.
-	if (rsock) {
-		TLVReaderWriter rw(rsock);
-		return rw.write(msg);
-	}
-
-	// Send to all runners.
-	bool success = true;
-	for (unsigned i = 0; i < _runnersocks.size(); i++) {
-		TLVReaderWriter rw(_runnersocks[i]);
-		success &= rw.write(msg);
-	}
-	return success;
+//
+//	TLVCommand msg;
+//	msg.setCommand(TLVCommand::ACTOR_RUN);
+//	msg.setParameter(actor);
+//
+//	// Send to given runner.
+//	if (rsock) {
+//		TLVReaderWriter rw(rsock);
+//		return rw.write(msg);
+//	}
+//
+//	// Send to all runners.
+//	bool success = true;
+//	for (unsigned i = 0; i < _runnersocks.size(); i++) {
+//		TLVReaderWriter rw(_runnersocks[i]);
+//		success &= rw.write(msg);
+//	}
+//	return success;
 }
 
 /**

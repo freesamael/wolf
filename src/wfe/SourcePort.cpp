@@ -5,7 +5,7 @@
  */
 
 #include <iostream>
-#include <HelperMacros.h>
+#include "HelperMacros.h"
 #include "SourcePort.h"
 #include "Channel.h"
 

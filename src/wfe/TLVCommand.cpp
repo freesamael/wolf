@@ -7,9 +7,9 @@
 #include <cstring>
 #include <vector>
 #include <typeinfo>
-#include <TLVBlock.h>
-#include <TLVUInt16.h>
-#include <TLVObjectFactoryAutoRegistry.h>
+#include "TLVBlock.h"
+#include "TLVUInt16.h"
+#include "TLVObjectFactoryAutoRegistry.h"
 #include "TLVCommand.h"
 #include "TLVCommandCreator.h"
 #include "WfeTLVTypes.h"
@@ -70,20 +70,20 @@ const uint16_t TLVCommand::RUNNER_START = 7;
 
 StandardTLVBlock* TLVCommand::toTLVBlock() const
 {
-	StandardTLVBlock *blk, *param = NULL;
+	StandardTLVBlock *blk;
 
-	// Create param block (if any).
-	if (_param) {
-		param = _param->toTLVBlock();
-		blk = new StandardTLVBlock(TLV_TYPE_COMMAND_BASE + _cmd,
-				param->plainSize());
-		memcpy(blk->value(), param->plainBuffer(), blk->length());
+	if (_params.size() > 0) { 	// Create param block (if any).
+		vector<StandardTLVBlock *> pamblks;
+		for (unsigned i = 0; i < _params.size(); i++)
+			pamblks.push_back(_params[i]->toTLVBlock());
+		blk = StandardTLVBlock::concate(pamblks);
+		blk->setType(TLV_TYPE_COMMAND_BASE + _cmd);
+		// Clean up.
+		for (unsigned i = 0; i < pamblks.size(); i++)
+			delete pamblks[i];
 	} else {
 		blk = new StandardTLVBlock(TLV_TYPE_COMMAND_BASE + _cmd);
 	}
-
-	// Clean up.
-	delete param;
 
 	return blk;
 }

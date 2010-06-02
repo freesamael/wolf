@@ -10,8 +10,8 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <TCPSocket.h>
-#include <HelperMacros.h>
+#include "TCPSocket.h"
+#include "HelperMacros.h"
 #include "AbstractWorkerActor.h"
 
 namespace wfe
