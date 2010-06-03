@@ -3,6 +3,7 @@ CXX ?= ${CROSS_COMPILE}g++
 AR ?= ${CROSS_COMPILE}ar
 
 DSM ?= y
+DEBUG ?= n
 
 ifeq (${DSM}, y)
 D2MCE_INSTDIR ?= /opt/d2mce/i386
@@ -13,6 +14,10 @@ D2MCE_LDFLAGS = -L${D2MCE_LIBDIR}
 D2MCE_LIBS = -ld2mce
 else
 CXXFLAGS += -DDISABLE_D2MCE
+endif
+
+ifeq (${DEBUG}, y)
+CXXFLAGS += -DDEBUG
 endif
 
 CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra
