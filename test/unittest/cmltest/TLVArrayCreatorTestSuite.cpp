@@ -23,7 +23,7 @@ void TLVArrayCreatorTestSuite::testCreate()
 
 	ITLVBlock *blk = array.toTLVBlock();
 	TLVArray *oary = (TLVArray *)TLVArrayCreator().create(*blk);
-	CPPUNIT_ASSERT_EQUAL((unsigned)0, oary->elements().size());
+	CPPUNIT_ASSERT_EQUAL((size_t)0, oary->elements().size());
 	delete blk;
 	delete oary;
 
@@ -36,7 +36,7 @@ void TLVArrayCreatorTestSuite::testCreate()
 	blk = array.toTLVBlock();
 
 	oary = (TLVArray *)TLVArrayCreator().create(*blk);
-	CPPUNIT_ASSERT_EQUAL((unsigned)3, oary->elements().size());
+	CPPUNIT_ASSERT_EQUAL((size_t)3, oary->elements().size());
 
 	TLVUInt32 *ou32 = (TLVUInt32 *)oary->elements()[0];
 	TLVUInt16 *ou16 = (TLVUInt16 *)oary->elements()[1];

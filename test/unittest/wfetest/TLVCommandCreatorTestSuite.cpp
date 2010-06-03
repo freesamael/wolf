@@ -27,16 +27,20 @@ void TLVCommandCreatorTestSuite::testCreate()
 	cmd.addParameter(&u32_3);
 
 	StandardTLVBlock *blk = cmd.toTLVBlock();
+	CPPUNIT_ASSERT_EQUAL((uint16_t)(TLVUInt32::Size * 3), blk->length());
 	TLVCommand *ocmd = (TLVCommand *)TLVCommandCreator().create(*blk);
 	CPPUNIT_ASSERT_EQUAL((uint16_t)TLVCommand::RUNNER_ADD, ocmd->command());
-	CPPUNIT_ASSERT_EQUAL((unsigned)3, ocmd->parameters().size());
-//	CPPUNIT_ASSERT_EQUAL(HostAddress("192.168.2.1").toString(), ((HostAddress *)ocmd->parameters()[0])->toString());
-//	CPPUNIT_ASSERT_EQUAL(HostAddress("192.168.2.2").toString(), ((HostAddress *)ocmd->parameters()[1])->toString());
-//	CPPUNIT_ASSERT_EQUAL(HostAddress("192.168.2.3").toString(), ((HostAddress *)ocmd->parameters()[2])->toString());
+	CPPUNIT_ASSERT_EQUAL((size_t)3, ocmd->parameters().size());
+	CPPUNIT_ASSERT_EQUAL(HostAddress("192.168.2.1").toString(),
+			HostAddress((in_addr_t)((TLVUInt32 *)ocmd->parameters()[0])->value()).toString());
+	CPPUNIT_ASSERT_EQUAL(HostAddress("192.168.2.2").toString(),
+			HostAddress((in_addr_t)((TLVUInt32 *)ocmd->parameters()[1])->value()).toString());
+	CPPUNIT_ASSERT_EQUAL(HostAddress("192.168.2.3").toString(),
+			HostAddress((in_addr_t)((TLVUInt32 *)ocmd->parameters()[2])->value()).toString());
 
 	delete blk;
-//	delete ocmd->parameters()[0];
-//	delete ocmd->parameters()[1];
-//	delete ocmd->parameters()[2];
+	delete ocmd->parameters()[0];
+	delete ocmd->parameters()[1];
+	delete ocmd->parameters()[2];
 	delete ocmd;
 }

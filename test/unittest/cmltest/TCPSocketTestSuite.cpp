@@ -39,10 +39,10 @@ void TCPSocketTestSuite::testReadWrite()
 
 	const char *str = "Hello World";
 	char sstr[20], cstr[20];
-	CPPUNIT_ASSERT_EQUAL(12, client.write(str, 12));
-	CPPUNIT_ASSERT_EQUAL(12, athread.ssock->read(sstr, 12));
-	CPPUNIT_ASSERT_EQUAL(12, athread.ssock->write(sstr, 12));
-	CPPUNIT_ASSERT_EQUAL(12, client.read(cstr, 12));
+	CPPUNIT_ASSERT_EQUAL((ssize_t)12, client.write(str, 12));
+	CPPUNIT_ASSERT_EQUAL((ssize_t)12, athread.ssock->read(sstr, 12));
+	CPPUNIT_ASSERT_EQUAL((ssize_t)12, athread.ssock->write(sstr, 12));
+	CPPUNIT_ASSERT_EQUAL((ssize_t)12, client.read(cstr, 12));
 	CPPUNIT_ASSERT_EQUAL((string)str, (string)cstr);
 
 	CPPUNIT_ASSERT(client.close());
