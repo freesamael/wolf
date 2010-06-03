@@ -37,13 +37,13 @@ ITLVObject* TLVCommandCreator::create(const ITLVBlock &blk) const
 	TLVCommand *cmd = new TLVCommand(blk.type() - TLV_TYPE_COMMAND_BASE);
 
 	// Construct parameters (if any).
-	if (blk.length() > 0) {
-		unsigned short offset = 0;
-		do {
-			SharedTLVBlock pamblk(blk.plainBuffer() + offset);
-			offset += pamblk.plainSize();
-			cmd->addParameter(TLVObjectFactory::instance()->createTLVObject(pamblk));
-		} while (offset < blk.length());
+	unsigned short offset = 0;
+	while (offset < blk.length()) {
+		SharedTLVBlock pamblk(blk.value() + offset);
+		offset += pamblk.plainSize();
+		PINFO("Got a parameter block with type = " << pamblk.type() <<
+				", length = " << pamblk.length());
+		cmd->addParameter(TLVObjectFactory::instance()->createTLVObject(pamblk));
 	}
 
 	return cmd;

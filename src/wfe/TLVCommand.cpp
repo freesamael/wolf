@@ -40,7 +40,7 @@ TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::RUNNER_S
 
 const string TLVCommand::CommandString[] = {
 		"Empty", "Shutdown", "Hello Master", "Hello Slave",
-		"Actor Run", "Actor Finished"
+		"Actor Run", "Actor Finished", "Runner Add", "Runner Start"
 };
 
 /// Empty command.
