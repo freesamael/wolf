@@ -68,6 +68,14 @@ const uint16_t TLVCommand::RUNNER_ADD = 6;
 /// waiting for connections from other runners.
 const uint16_t TLVCommand::RUNNER_START = 7;
 
+TLVCommand::~TLVCommand()
+{
+	if (_autoclean) {
+		for (unsigned i = 0; i < _params.size(); i++)
+			delete _params[i];
+	}
+}
+
 StandardTLVBlock* TLVCommand::toTLVBlock() const
 {
 	StandardTLVBlock *blk;

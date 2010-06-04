@@ -11,10 +11,10 @@
 #include "Thread.h"
 #include "SingletonAutoDestructor.h"
 #include "TLVUInt32.h"
-#include "D2MCE.h"
 #include "Master.h"
 #include "TLVCommand.h"
 #include "internal/RunnerConnectionListener.h"
+#include "internal/MasterCommandSender.h"
 
 using namespace std;
 using namespace cml;
@@ -37,12 +37,12 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 	if (_state != NOT_READY)
 		return false;
 
-	// Listen and wait for join message.
+	// Start waiting runner connections, join d2mce and broadcast hello msg.
+	MasterCommandSender cmdr;
 	RunnerConnectionListener listener(&_msock, master_port, &_runnersocks, timeout);
 	listener.start();
-	// Join d2mce and broadcast notification.
-	joinGroup(appname);
-	broadcastHelloMessage(runner_port);
+	cmdr.joinD2MCE(appname);
+	cmdr.hello(runner_port);
 
 	// Check the runners.
 	listener.stop();
@@ -51,17 +51,7 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 		return false;
 	}
 
-	// Ask runners to connect each other.
-//	for (unsigned i = 0; i < _runnersocks.size(); i++) {
-//		TLVReaderWriter rw(_runnersocks[i]);
-//		for (unsigned j = 0; i < i; j++) {
-//			TLVUInt32 addr((uint32_t)_runnersocks[j]->peerAddress().toInetAddr());
-//			TLVCommand msg(TLVCommand::RUNNER_ADD, &addr);
-//			rw.write(msg);
-//		}
-//		TLVCommand startmsg(TLVCommand::RUNNER_START);
-//		rw.write(startmsg);
-//	}
+	// Start all runners.
 
 	_state = READY;
 	return true;
@@ -70,40 +60,21 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 /**
  * Tell the runners to shutdown. It should be perform before program exits.
  */
-bool Master::shutdown()
+void Master::shutdown()
 {
-	if (_state != READY)
-		return false;
-
-	// Construct command.
-	TLVCommand msg;
-
-	msg.setCommand(TLVCommand::SHUTDOWN);
-
 	// Shutdown all runners.
-	bool success = true;
+	MasterCommandSender cmdr;
 	for (unsigned i = 0; i < _runnersocks.size(); i++) {
-		TLVReaderWriter rw(_runnersocks[i]);
-		success &= rw.write(msg);
+		cmdr.shutdown(_runnersocks[i]);
 	}
 	_state = NOT_READY;
-	return success;
 }
 
 /**
  * Send an worker actor to runners to execute.
- *
- * \param[in] actor
- * Actor to send.
- *
- * \param[in] rsock
- * Socket of runner to send actor to, or NULL for all runners.
  */
-bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
+void Master::sendActor(AbstractWorkerActor *actor, ManagerActor *owner)
 {
-//	if (_state != READY)
-		return false;
-//
 //	TLVCommand msg;
 //	msg.setCommand(TLVCommand::ACTOR_RUN);
 //	msg.setParameter(actor);
@@ -121,34 +92,6 @@ bool Master::sendActor(AbstractWorkerActor *actor, TCPSocket *rsock)
 //		success &= rw.write(msg);
 //	}
 //	return success;
-}
-
-/**
- * \internal
- * Join the D2MCE computing group.
- */
-void Master::joinGroup(const string &appname)
-{
-#ifndef DISABLE_D2MCE
-	// Join D2MCE computing group.
-	D2MCE::instance()->join(appname);
-	PINFO(D2MCE::instance()->getNumberOfNodes() <<
-			" nodes inside the group, node id = " <<
-			D2MCE::instance()->nodeId() << ".");
-#endif /* DISABLE_D2MCE */
-}
-
-/**
- * Send hello message.
- */
-void Master::broadcastHelloMessage(uint16_t runner_port)
-{
-	UDPSocket usock;
-	TLVReaderWriter udprw(&usock);
-	usock.setBroadcast(true);
-	usock.setTTL(1);
-	udprw.sendto(TLVCommand(TLVCommand::HELLO_MASTER),
-			HostAddress::BroadcastAddress, runner_port);
 }
 
 }

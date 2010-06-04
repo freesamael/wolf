@@ -9,6 +9,7 @@
 
 #include <iostream>
 #include "HelperMacros.h"
+#include "WaitCondition.h"
 #include "AbstractWorkerActor.h"
 #include "Channel.h"
 
@@ -39,13 +40,16 @@ public:
 	inline IPort* addPort(IPort::Type type) { return _worker->addPort(type); }
 	/// ManagerActor's wrapper for worker's ports.
 	inline void removePort(IPort *port) { _worker->removePort(port); }
-
+	/// Tell the manager actor that the worker sent has finished.
+	void workerFinished();
 	State state();
 	void fire();
 
 private:
 	AbstractWorkerActor *_worker;
 	State _state;
+	cml::WaitCondition _wait;
+	cml::Mutex _muxwait;
 };
 
 }

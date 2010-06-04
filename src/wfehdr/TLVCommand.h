@@ -17,8 +17,9 @@ namespace wfe
 
 /**
  * TLVCommand represents the command used for communications between runners
- * and master. It doesn't take the ownership of parameters, so users need to
- * delete the parameters if it's allocated on heap.
+ * and master. It doesn't take the ownership of parameters unless autoclean is
+ * set to true (by default it's false), so users need to delete the parameters
+ * if it's allocated on heap, or set autoclean property.
  */
 class TLVCommand: public cml::ITLVObject
 {
@@ -37,8 +38,10 @@ public:
 	static const uint16_t RUNNER_ADD;
 	static const uint16_t RUNNER_START;
 
-	TLVCommand(uint16_t c = EMPTY): _cmd(c){}
-	virtual ~TLVCommand() {}
+	TLVCommand(uint16_t c = EMPTY): _cmd(c), _autoclean(false) {}
+	virtual ~TLVCommand();
+	inline bool autoclean() const { return _autoclean; }
+	inline void setAutoclean(bool ac) { _autoclean = ac; }
 	inline uint16_t command() const { return _cmd; }
 	inline void setCommand(uint16_t c) { _cmd = c; }
 	inline const std::vector<cml::ITLVObject *> parameters() const
@@ -49,6 +52,7 @@ public:
 private:
 	uint16_t _cmd;
 	std::vector<cml::ITLVObject *> _params;
+	bool _autoclean;
 };
 
 }

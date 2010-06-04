@@ -31,8 +31,8 @@ public:
 	static const std::string StateString[];
 	bool setup(uint16_t runner_port, uint16_t master_port, const
 			std::string &appname, unsigned int timeout = 2);
-	bool shutdown();
-	bool sendActor(AbstractWorkerActor *actor, cml::TCPSocket *rsock = NULL);
+	void shutdown();
+	void sendActor(AbstractWorkerActor *actor, ManagerActor *owner);
 
 	/// Get the state of the agent.
 	inline State state() const { return _state; }
@@ -41,12 +41,8 @@ public:
 			{ return _runnersocks; }
 
 private:
-	// Private member functions.
 	Master(): SINGLETON_MEMBER_INITLST,
 		_state(NOT_READY), _msock(), _runnersocks() {}
-	void joinGroup(const std::string &appname);
-	void broadcastHelloMessage(uint16_t runner_port);
-	// Private data members.
 	State _state;
 	cml::TCPSocket _msock;
 	std::vector<cml::TCPSocket *> _runnersocks;

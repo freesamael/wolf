@@ -133,9 +133,7 @@ void Director::execute(uint16_t runner_port, uint16_t master_port,
 		return;
 	}
 	_exest->execute(_actors);
-	if (!Master::instance()->shutdown()) {
-		PERR("Shutdown failed.");
-	}
+	Master::instance()->shutdown();
 }
 
 }

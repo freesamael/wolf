@@ -5,11 +5,13 @@
  */
 
 #include <iostream>
+#include <vector>
 #include "TCPConnectionListener.h"
 #include "TLVReaderWriter.h"
 #include "Thread.h"
 #include "RunnerConnectionListener.h"
 #include "TLVCommand.h"
+#include "MasterCommandSender.h"
 
 using namespace std;
 using namespace cml;
@@ -100,7 +102,15 @@ void RunnerConnectionListener::update(AbstractObservable *o)
 				"but got " <<
 				TLVCommand::CommandString[msg->command()] << ".");
 	} else {
+		// Ask runner to add all other runners, and add the runner into local
+		// runner list.
+		MasterCommandSender cmdr;
+		vector<HostAddress> addrs
 		PINFO("Got one runner.");
+		for (unsigned i = 0; i < _runnersocks->size(); i++) {
+			addrs.push_back((*_runnersocks)[i]->peerAddress());
+		}
+		cmdr.addRunner(sock, addrs);
 		_runnersocks->push_back(sock);
 	}
 	delete msg;
