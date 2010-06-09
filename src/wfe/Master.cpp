@@ -71,7 +71,9 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 	for (unsigned i = 0; i < _runnersocks.size(); i++) {
 		_mgrqueue[cmdr.runWorker(_runnersocks[i], worker)] = mgr;
 	}
-#endif
+#else
+	_mgrqueue[cmdr.runWorker(dispatcher()->choose(_runnersocks), worker)] = mgr;
+#endif /* DISABLE_D2MCE */
 }
 
 /**
@@ -128,7 +130,7 @@ void Master::workerFinished(uint32_t wseq, AbstractWorkerActor *worker)
 		iter->second->workerFinished();
 #else
 	iter->second->workerFinished();
-#endif
+#endif /* DISABLE_D2MCE */
 	_mgrqueue.erase(iter);
 }
 

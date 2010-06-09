@@ -14,6 +14,7 @@ namespace wfe
 {
 
 /**
+ * \interface
  * \note
  * Execution strategies should be aware of of both normal actors and
  * iterative actors.
