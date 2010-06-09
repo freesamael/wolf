@@ -26,11 +26,6 @@ public:
 	SharedMemory(const std::string &name, char *buf, size_t size,
 		d2mce_mutex_t *mutex):
 		_name(name), _buf(buf), _size(size), _mutex(mutex) {}
-	/// The clone created still share the same buffer and mutex the original
-	/// SharedMemory uses.
-	SharedMemory(const SharedMemory &sm):
-		_name(sm._name), _buf(sm._buf), _size(sm._size), _mutex(sm._mutex) {}
-	SharedMemory& operator=(const SharedMemory &sm);
 	inline const std::string& name() const { return _name; }
 	inline size_t size() const { return _size; }
 	inline char* buffer() { return _buf; }
@@ -45,6 +40,9 @@ public:
 	IDrop* clone() const;
 
 private:
+	SharedMemory(const SharedMemory &sm):
+		_name(sm._name), _buf(sm._buf), _size(sm._size), _mutex(sm._mutex) {}
+	SharedMemory& operator=(const SharedMemory &sm) { return *this; }
 	std::string _name;
 	char *_buf;
 	size_t _size;

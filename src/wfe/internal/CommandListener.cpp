@@ -45,7 +45,7 @@ void CommandListener::run()
 void CommandListener::processCommand(TLVCommand *cmd)
 {
 	PINFO("Processing a command.");
-	if (cmd->command() == TLVCommand::ACTOR_RUN) {
+	if (cmd->command() == TLVCommand::WORKER_RUN) {
 		// Test parameter.
 		AbstractWorkerActor *actor;
 //		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {

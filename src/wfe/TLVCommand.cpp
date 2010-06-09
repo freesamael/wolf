@@ -29,9 +29,9 @@ TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::HELLO_MA
 		TLVCommandCreator);
 TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::HELLO_RUNNER,
 		TLVCommandCreator);
-TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::ACTOR_RUN,
+TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::WORKER_RUN,
 		TLVCommandCreator);
-TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::ACTOR_FINISHED,
+TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::WORKER_FINISHED,
 		TLVCommandCreator);
 TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::RUNNER_ADD,
 		TLVCommandCreator);
@@ -40,7 +40,7 @@ TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::RUNNER_S
 
 const string TLVCommand::CommandString[] = {
 		"Empty", "Shutdown", "Hello Master", "Hello Slave",
-		"Actor Run", "Actor Finished", "Runner Add", "Runner Start"
+		"Worker Run", "Worker Finished", "Runner Add", "Runner Start"
 };
 
 /// Empty command.
@@ -55,11 +55,11 @@ const uint16_t TLVCommand::HELLO_MASTER = 2;
 /// Hello message from a runner.
 const uint16_t TLVCommand::HELLO_RUNNER = 3;
 
-/// Send an actor to a runner and run it.
-const uint16_t TLVCommand::ACTOR_RUN = 4;
+/// Send an worker to a runner and run it.
+const uint16_t TLVCommand::WORKER_RUN = 4;
 
-/// Send an finished actor back.
-const uint16_t TLVCommand::ACTOR_FINISHED = 5;
+/// Send an finished worker back.
+const uint16_t TLVCommand::WORKER_FINISHED = 5;
 
 /// Ask a runner to connect to another runner.
 const uint16_t TLVCommand::RUNNER_ADD = 6;

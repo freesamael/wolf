@@ -26,13 +26,19 @@ class Runner
 	friend class CommandListener;
 public:
 	Runner(uint16_t runner_port, const std::string &appname):
-		_rport(runner_port), _appname(appname), _mhandle(NULL) {}
+		_rport(runner_port), _mport(), _appname(appname), _maddr(),
+		_msock(), _mhandle(NULL), _raddrs(), _rsocks(), _rhandles(),
+		_endflag(false), _wq(), _mutex(), _wcond() {}
 	~Runner();
 	void run();
 	void enqueue(AbstractWorkerActor *worker);
 	AbstractWorkerActor* dequeue(unsigned timeout_us = 100000);
 
 private:
+	Runner(const Runner &UNUSED(o)): _rport(), _mport(), _appname(), _maddr(),
+	_msock(), _mhandle(), _raddrs(), _rsocks(), _rhandles(), _endflag(false),
+	_wq(), _mutex(), _wcond() {}
+	Runner& operator=(const Runner &UNUSED(o)) { return *this; }
 	bool waitMaster();
 	bool connMaster();
 	void joinD2MCE();

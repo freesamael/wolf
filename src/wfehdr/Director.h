@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 #include <stdint.h>
+#include "HelperMacros.h"
 #include "IWorkflowExecutor.h"
 
 namespace wfe
@@ -20,9 +21,7 @@ class Director
 {
 public:
 	Director(IWorkflowExecutor *exest): _actors(), _channels(), _exest(exest){}
-	Director(const Director &dir);
 	~Director();
-	Director& operator=(const Director &dir);
 	bool addActor(AbstractActor *actor);
 	bool removeActor(AbstractActor *actor);
 	Channel* createChannel(const std::string &name);
@@ -32,6 +31,8 @@ public:
 			const std::string &name);
 
 private:
+	Director(const Director &UNUSED(o)): _actors(), _channels(), _exest(NULL) {}
+	Director& operator=(const Director &UNUSED(o)) { return *this; }
 	std::vector<AbstractActor *> _actors;
 	std::vector<Channel *> _channels;
 	IWorkflowExecutor *_exest;

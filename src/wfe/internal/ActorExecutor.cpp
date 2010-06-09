@@ -16,7 +16,7 @@ namespace wfe
 void ActorExecutor::run()
 {
 	AbstractWorkerActor *actor;
-	while (actor = _parent->dequeue()) {
+	while ((actor = _parent->dequeue())) {
 		actor->setup();
 		do {
 			actor->prefire();

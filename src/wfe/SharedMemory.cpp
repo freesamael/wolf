@@ -15,18 +15,6 @@ namespace wfe
 {
 
 /**
- * Operator =
- */
-SharedMemory& SharedMemory::operator=(const SharedMemory &sm)
-{
-	_name = sm._name;
-	_buf = sm._buf;
-	_size = sm._size;
-	_mutex = sm._mutex;
-	return *this;
-}
-
-/**
  * Clone the shared memory. It's done by D2MCE::createSharedMemory().
  */
 IDrop* SharedMemory::clone() const

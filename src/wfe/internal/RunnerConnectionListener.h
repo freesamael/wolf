@@ -14,6 +14,7 @@
 #include "TCPConnectionListener.h"
 #include "Thread.h"
 #include "HelperMacros.h"
+#include "Master.h"
 
 namespace wfe
 {
@@ -24,8 +25,8 @@ namespace wfe
 class RunnerConnectionListener: public cml::IObserver
 {
 public:
-	RunnerConnectionListener(cml::TCPSocket *msock, uint16_t listen_port,
-			std::vector<cml::TCPSocket *> *runnersocks, unsigned timeout);
+	RunnerConnectionListener(Master *master, cml::TCPSocket *msock,
+			uint16_t listen_port, unsigned timeout);
 	RunnerConnectionListener(const RunnerConnectionListener &o);
 	RunnerConnectionListener& operator=(const RunnerConnectionListener &o);
 
@@ -34,8 +35,8 @@ public:
 	void update(cml::AbstractObservable *o);
 
 private:
+	Master *_master;
 	cml::TCPSocket *_msock;
-	std::vector<cml::TCPSocket *> *_runnersocks;
 	unsigned _timeout;
 	cml::TCPConnectionListener _listener;
 	cml::Thread _listhread;

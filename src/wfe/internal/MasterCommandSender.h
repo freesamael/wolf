@@ -16,21 +16,28 @@
 namespace wfe
 {
 
+/**
+ * Internal class used by Master to send command.
+ */
 class MasterCommandSender
 {
 public:
 	/// Join D2MCE computing group.
 	void joinD2MCE(const std::string &appname);
 	/// Send hello message.
-	void hello(uint16_t runner_port);
-	/// Tell a runner to start working.
-	void start(cml::TCPSocket *runner);
-	/// Shutdown the runner.
-	void shutdown(cml::TCPSocket *runner);
-	/// Send an actor to run.
-	void runActor(cml::TCPSocket *runner, AbstractWorkerActor *actor);
+	void hello(uint16_t rport);
 	/// Ask a runner to add other runners.
-	void addRunner(cml::TCPSocket *runner, std::vector<cml::HostAddress> addrs);
+	void addRunner(cml::TCPSocket *rsock, const std::vector<cml::HostAddress> &addrs);
+	/// Tell a runner to start working.
+	void startRunner(cml::TCPSocket *rsock);
+	/// Shutdown the runner.
+	void shutdown(cml::TCPSocket *rsock);
+	/// Send an actor to run.
+	/// \return sequence number of the worker.
+	uint32_t runWorker(cml::TCPSocket *rsock, AbstractWorkerActor *worker);
+
+private:
+	static uint32_t _wseq; ///< Worker sequence number.
 };
 
 }

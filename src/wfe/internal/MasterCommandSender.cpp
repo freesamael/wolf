@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#define __STDC_LIMIT_MACROS // Needed for UINTx_MAX
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
 #include "MasterCommandSender.h"
@@ -17,6 +18,8 @@ using namespace cml;
 namespace wfe
 {
 
+uint32_t MasterCommandSender::_wseq = 0;
+
 void MasterCommandSender::joinD2MCE(const string &appname)
 {
 #ifndef DISABLE_D2MCE
@@ -28,44 +31,54 @@ void MasterCommandSender::joinD2MCE(const string &appname)
 #endif /* DISABLE_D2MCE */
 }
 
-void MasterCommandSender::hello(uint16_t runner_port)
+void MasterCommandSender::hello(uint16_t rport)
 {
 	UDPSocket usock;
 	TLVReaderWriter udprw(&usock);
 	usock.setBroadcast(true);
 	usock.setTTL(1);
 	udprw.sendto(TLVCommand(TLVCommand::HELLO_MASTER),
-	HostAddress::BroadcastAddress, runner_port);
+	HostAddress::BroadcastAddress, rport);
 }
 
-void MasterCommandSender::start(TCPSocket *runner)
+void MasterCommandSender::addRunner(TCPSocket *rsock, const vector<HostAddress> &addrs)
 {
-	TLVReaderWriter rw(runner);
-	rw.write(TLVCommand(TLVCommand::RUNNER_START));
-}
-
-void MasterCommandSender::shutdown(TCPSocket *runner)
-{
-	TLVReaderWriter rw(runner);
-	rw.write(TLVCommand(TLVCommand::SHUTDOWN));
-}
-
-void MasterCommandSender::runActor(TCPSocket *runner, AbstractWorkerActor *actor)
-{
-/// TODO:
-}
-
-void MasterCommandSender::addRunner(TCPSocket *runner, vector<HostAddress> addrs)
-{
-	if (addrs.size() > 0U) {
+	if (addrs.size() > 0) {
 		TLVCommand cmd(TLVCommand::RUNNER_ADD);
 		cmd.setAutoclean(true);
 		for (unsigned i = 0; i < addrs.size(); i++) {
 			cmd.addParameter(new TLVUInt32((uint32_t)addrs[i].toInetAddr()));
 		}
-		TLVReaderWriter rw(runner);
+		TLVReaderWriter rw(rsock);
 		rw.write(cmd);
 	}
+}
+
+void MasterCommandSender::startRunner(TCPSocket *rsock)
+{
+	TLVReaderWriter rw(rsock);
+	rw.write(TLVCommand(TLVCommand::RUNNER_START));
+}
+
+void MasterCommandSender::shutdown(TCPSocket *rsock)
+{
+	TLVReaderWriter rw(rsock);
+	rw.write(TLVCommand(TLVCommand::SHUTDOWN));
+}
+
+uint32_t MasterCommandSender::runWorker(TCPSocket *rsock, AbstractWorkerActor *worker)
+{
+	if (++_wseq == UINT32_MAX)
+		_wseq = 0;
+
+	TLVReaderWriter rw(rsock);
+	TLVCommand cmd(TLVCommand::WORKER_RUN);
+	TLVUInt32 u32(_wseq);
+	cmd.addParameter(&u32);
+	cmd.addParameter(worker);
+	rw.write(cmd);
+
+	return _wseq;
 }
 
 }

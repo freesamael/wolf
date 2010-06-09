@@ -25,7 +25,7 @@ AbstractActor::State ManagerActor::state()
 void ManagerActor::fire()
 {
 	_muxwait.lock();
-	Master::instance()->sendActor(_worker, this);
+	Master::instance()->runWorker(_worker, this);
 	_wait.wait(&_muxwait);
 	_muxwait.unlock();
 }

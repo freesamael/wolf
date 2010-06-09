@@ -33,12 +33,13 @@ public:
 	static const uint16_t SHUTDOWN;
 	static const uint16_t HELLO_MASTER;
 	static const uint16_t HELLO_RUNNER;
-	static const uint16_t ACTOR_RUN;
-	static const uint16_t ACTOR_FINISHED;
+	static const uint16_t WORKER_RUN;
+	static const uint16_t WORKER_FINISHED;
 	static const uint16_t RUNNER_ADD;
 	static const uint16_t RUNNER_START;
 
-	TLVCommand(uint16_t c = EMPTY): _cmd(c), _autoclean(false) {}
+	TLVCommand(uint16_t c = EMPTY, bool ac = false): _cmd(c), _params(),
+			_autoclean(ac) {}
 	virtual ~TLVCommand();
 	inline bool autoclean() const { return _autoclean; }
 	inline void setAutoclean(bool ac) { _autoclean = ac; }
