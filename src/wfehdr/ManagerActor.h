@@ -38,7 +38,7 @@ public:
 	/// ManagerActor's wrapper for worker's ports.
 	inline void removePort(IPort *port) { _worker->removePort(port); }
 	/// Tell the manager actor that the worker sent has finished.
-	void workerFinished();
+	void workerFinished(const AbstractWorkerActor &worker);
 	State state();
 	void fire();
 

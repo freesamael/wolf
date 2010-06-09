@@ -106,7 +106,7 @@ void Master::runnerConnected(cml::TCPSocket *runnersock)
 /**
  * Notify Master that a worker has finished.
  */
-void Master::workerFinished(uint32_t wseq, AbstractWorkerActor *worker)
+void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 {
 	map<uint32_t, ManagerActor *>::iterator iter;
 	if ((iter = _mgrqueue.find(wseq)) == _mgrqueue.end()) {
@@ -127,9 +127,9 @@ void Master::workerFinished(uint32_t wseq, AbstractWorkerActor *worker)
 
 	// Notify manager only if it's the last worker.
 	if (lastone)
-		iter->second->workerFinished();
+		iter->second->workerFinished(worker);
 #else
-	iter->second->workerFinished();
+	iter->second->workerFinished(worker);
 #endif /* DISABLE_D2MCE */
 	_mgrqueue.erase(iter);
 }

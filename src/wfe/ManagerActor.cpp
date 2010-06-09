@@ -30,8 +30,9 @@ void ManagerActor::fire()
 	_muxwait.unlock();
 }
 
-void ManagerActor::workerFinished()
+void ManagerActor::workerFinished(const AbstractWorkerActor &worker)
 {
+	*_worker = worker;
 	_wait.wakeOne();
 }
 

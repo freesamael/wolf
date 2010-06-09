@@ -59,11 +59,11 @@ void MasterSideRunnerConnectionListener::start()
 /**
  * Wait timeout seconds and stop acceptor.
  */
-bool MasterSideRunnerConnectionListener::stop()
+void MasterSideRunnerConnectionListener::stop()
 {
 	sleep(_timeout);
 	_listener.setDone();
-	return _listhread.join();
+	_listhread.join();
 }
 
 /**

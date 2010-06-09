@@ -31,7 +31,7 @@ public:
 	MasterSideRunnerConnectionListener& operator=(const MasterSideRunnerConnectionListener &o);
 
 	void start();
-	bool stop();
+	void stop();
 	void update(cml::AbstractObservable *o);
 
 private:

@@ -32,6 +32,9 @@ class ManagerActor;
  * until all jobs are finished and use barrier to wait all workers in wrapup()
  * method. Afterward, it might use finalize() to write the result to output
  * ports attached on the manager.
+ *
+ * \note A worker must has valid assignment operator. Manager uses assignment
+ * to update the value of original worker when the sent worker migrated back.
  */
 class AbstractWorkerActor: public AbstractActor, public cml::ITLVObject
 {
