@@ -1,11 +1,11 @@
 /**
- * \file RunnerConnectionListener.h
+ * \file MasterSideRunnerConnectionListener.h
  * \date Apr 28, 2010
  * \author samael
  */
 
-#ifndef RUNNERCONNECTIONLISTENER_H_
-#define RUNNERCONNECTIONLISTENER_H_
+#ifndef MASTERSIDERUNNERCONNECTIONLISTENER_H_
+#define MASTERSIDERUNNERCONNECTIONLISTENER_H_
 
 #include <vector>
 #include "IObserver.h"
@@ -22,13 +22,13 @@ namespace wfe
 /**
  * The proxy between TCPConnectionListener and Master.
  */
-class RunnerConnectionListener: public cml::IObserver
+class MasterSideRunnerConnectionListener: public cml::IObserver
 {
 public:
-	RunnerConnectionListener(Master *master, cml::TCPSocket *msock,
+	MasterSideRunnerConnectionListener(Master *master, cml::TCPSocket *msock,
 			uint16_t listen_port, unsigned timeout);
-	RunnerConnectionListener(const RunnerConnectionListener &o);
-	RunnerConnectionListener& operator=(const RunnerConnectionListener &o);
+	MasterSideRunnerConnectionListener(const MasterSideRunnerConnectionListener &o);
+	MasterSideRunnerConnectionListener& operator=(const MasterSideRunnerConnectionListener &o);
 
 	void start();
 	bool stop();
@@ -44,4 +44,4 @@ private:
 
 }
 
-#endif /* RUNNERCONNECTIONLISTENER_H_ */
+#endif /* MASTERSIDERUNNERCONNECTIONLISTENER_H_ */

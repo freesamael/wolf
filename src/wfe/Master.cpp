@@ -14,7 +14,7 @@
 #include "Master.h"
 #include "TLVCommand.h"
 #include "ManagerActor.h"
-#include "internal/RunnerConnectionListener.h"
+#include "internal/MasterSideRunnerConnectionListener.h"
 #include "internal/MasterCommandSender.h"
 
 using namespace std;
@@ -40,7 +40,7 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 
 	// Start waiting runner connections, join d2mce and broadcast hello msg.
 	MasterCommandSender cmdr;
-	RunnerConnectionListener listener(this, &_msock, master_port, timeout);
+	MasterSideRunnerConnectionListener listener(this, &_msock, master_port, timeout);
 	listener.start();
 	cmdr.joinD2MCE(appname);
 	cmdr.hello(runner_port);

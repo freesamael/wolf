@@ -1,5 +1,5 @@
 /**
- * \file RunnerConnectionListener.cpp
+ * \file MasterSideRunnerConnectionListener.cpp
  * \date Apr 28, 2010
  * \author samael
  */
@@ -9,7 +9,7 @@
 #include "TCPConnectionListener.h"
 #include "TLVReaderWriter.h"
 #include "Thread.h"
-#include "RunnerConnectionListener.h"
+#include "MasterSideRunnerConnectionListener.h"
 #include "TLVCommand.h"
 
 using namespace std;
@@ -18,7 +18,7 @@ using namespace cml;
 namespace wfe
 {
 
-RunnerConnectionListener::RunnerConnectionListener(Master *master,
+MasterSideRunnerConnectionListener::MasterSideRunnerConnectionListener(Master *master,
 		TCPSocket *msock, uint16_t listen_port, unsigned timeout):
 				_master(master), _msock(msock), _timeout(timeout),
 				_listener(_msock), _listhread(&_listener)
@@ -27,7 +27,7 @@ RunnerConnectionListener::RunnerConnectionListener(Master *master,
 	_listener.attach(this);
 }
 
-RunnerConnectionListener::RunnerConnectionListener(const RunnerConnectionListener &o):
+MasterSideRunnerConnectionListener::MasterSideRunnerConnectionListener(const MasterSideRunnerConnectionListener &o):
 		_master(o._master), _msock(o._msock), _timeout(o._timeout),
 		_listener(_msock), _listhread(&_listener)
 {
@@ -37,7 +37,7 @@ RunnerConnectionListener::RunnerConnectionListener(const RunnerConnectionListene
 /**
  * Assignment.
  */
-RunnerConnectionListener& RunnerConnectionListener::operator=(const RunnerConnectionListener &o)
+MasterSideRunnerConnectionListener& MasterSideRunnerConnectionListener::operator=(const MasterSideRunnerConnectionListener &o)
 {
 	_master = o._master;
 	_msock = o._msock;
@@ -51,7 +51,7 @@ RunnerConnectionListener& RunnerConnectionListener::operator=(const RunnerConnec
 /**
  * Start acceptor.
  */
-void RunnerConnectionListener::start()
+void MasterSideRunnerConnectionListener::start()
 {
 	_listhread.start();
 }
@@ -59,7 +59,7 @@ void RunnerConnectionListener::start()
 /**
  * Wait timeout seconds and stop acceptor.
  */
-bool RunnerConnectionListener::stop()
+bool MasterSideRunnerConnectionListener::stop()
 {
 	sleep(_timeout);
 	_listener.setDone();
@@ -69,7 +69,7 @@ bool RunnerConnectionListener::stop()
 /**
  * Used to process the events from TCPConnectionAcceptor.
  */
-void RunnerConnectionListener::update(AbstractObservable *o)
+void MasterSideRunnerConnectionListener::update(AbstractObservable *o)
 {
 	PINFO("Updating.");
 
