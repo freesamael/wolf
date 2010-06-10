@@ -141,6 +141,7 @@ void Master::shutdown()
  */
 void Master::runnerConnected(cml::TCPSocket *runnersock)
 {
+	PINFO_2("Got one runner.");
 	vector<HostAddress> addrs;
 	for (unsigned i = 0; i < _data->RunnerSocks.size(); i++) {
 		addrs.push_back(_data->RunnerSocks[i]->peerAddress());
@@ -154,6 +155,7 @@ void Master::runnerConnected(cml::TCPSocket *runnersock)
  */
 void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 {
+	PINFO_2("Worker " << wseq << " finished.");
 	map<uint32_t, ManagerActor *>::iterator iter;
 	if ((iter = _data->ManagerWaitingQueue.find(wseq)) ==
 			_data->ManagerWaitingQueue.end()) {
@@ -180,6 +182,14 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 	iter->second->workerFinished(worker);
 #endif /* DISABLE_D2MCE */
 	_data->ManagerWaitingQueue.erase(iter);
+}
+
+/**
+ * Get the number of runners.
+ */
+unsigned Master::numberOfRunners() const
+{
+	return _data->RunnerSocks.size();
 }
 
 }

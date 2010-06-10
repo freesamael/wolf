@@ -36,8 +36,6 @@ public:
 	static const std::string StateString[];
 
 	inline State state() const { return _state; }
-//	inline const std::vector<cml::TCPSocket *>& runners() const
-//			{ return _runnersocks; }
 	inline IWorkerDispatcher* dispatcher() const { return _activedisp; }
 	inline void setDispatcher(IWorkerDispatcher *d) { _activedisp = d; }
 
@@ -47,6 +45,7 @@ public:
 	void shutdown();
 	void runnerConnected(cml::TCPSocket *runnersock);
 	void workerFinished(uint32_t wseq, const AbstractWorkerActor &worker);
+	unsigned numberOfRunners() const;
 
 private:
 	Master();

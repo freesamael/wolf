@@ -33,6 +33,7 @@ void MasterSideCommandSender::joinD2MCE(const string &appname)
 
 void MasterSideCommandSender::hello(uint16_t rport)
 {
+	PINFO_2("Send HELLO_MASTER");
 	UDPSocket usock;
 	TLVReaderWriter udprw(&usock);
 	usock.setBroadcast(true);
@@ -43,6 +44,7 @@ void MasterSideCommandSender::hello(uint16_t rport)
 
 void MasterSideCommandSender::addRunner(TCPSocket *rsock, const vector<HostAddress> &addrs)
 {
+	PINFO_2("Send RUNNER_ADD");
 	if (addrs.size() > 0) {
 		TLVCommand cmd(TLVCommand::RUNNER_ADD);
 		cmd.setAutoclean(true);
@@ -56,18 +58,21 @@ void MasterSideCommandSender::addRunner(TCPSocket *rsock, const vector<HostAddre
 
 void MasterSideCommandSender::startRunner(TCPSocket *rsock)
 {
+	PINFO_2("Send RUNNER_START");
 	TLVReaderWriter rw(rsock);
 	rw.write(TLVCommand(TLVCommand::RUNNER_START));
 }
 
 void MasterSideCommandSender::shutdown(TCPSocket *rsock)
 {
+	PINFO_2("Send SHUTDOWN");
 	TLVReaderWriter rw(rsock);
 	rw.write(TLVCommand(TLVCommand::SHUTDOWN));
 }
 
 uint32_t MasterSideCommandSender::runWorker(TCPSocket *rsock, AbstractWorkerActor *worker)
 {
+	PINFO_2("Send WORKER_RUN");
 	if (++_wseq == UINT32_MAX)
 		_wseq = 0;
 
@@ -77,6 +82,7 @@ uint32_t MasterSideCommandSender::runWorker(TCPSocket *rsock, AbstractWorkerActo
 	cmd.addParameter(&u32);
 	cmd.addParameter(worker);
 	rw.write(cmd);
+	PINFO_2("Sent worker with id = " << _wseq);
 
 	return _wseq;
 }

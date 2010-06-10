@@ -44,7 +44,7 @@ void SimpleWorkflowExecutor::iterate(const vector<AbstractActor *> &actors)
 
 	// Execute one actor.
 	while (qready.size() > 0) {
-		PINFO_2("Iterating an actor");
+		PINFO_2("Iterating an actor.");
 		// Iterate until testfire() fails.
 		do {
 			qready.front()->prefire();
