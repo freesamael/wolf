@@ -45,7 +45,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 		return NULL;
 	}
 
-	PINFO("Reading a message from TCP socket.");
+	PINFO_3("Reading a message from TCP socket.");
 
 	// Read header.
 	if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
@@ -106,7 +106,7 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 	}
 
 	if (blk) {
-		PINFO("Sending a message to TCP socket.");
+		PINFO_3("Sending a message to TCP socket.");
 		ret = activesock->write(blk->plainBuffer(), blk->plainSize());
 		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
@@ -158,7 +158,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 		return NULL;
 	}
 
-	PINFO("Reading a message from UDP socket.");
+	PINFO_3("Reading a message from UDP socket.");
 
 	// Read datagram.
 	localbuf = new char[SZ_MAXBUF];
@@ -230,7 +230,7 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 	}
 
 	if (blk) {
-		PINFO("Sending a message to UDP socket.");
+		PINFO_3("Sending a message to UDP socket.");
 		ret = activesock->sendto(blk->plainBuffer(), blk->plainSize(),
 				addr, port);
 		if (!(success = (ret == (int)blk->plainSize()))) {

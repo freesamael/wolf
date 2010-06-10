@@ -50,7 +50,7 @@ void MasterSideConnectionListener::stop()
  */
 void MasterSideConnectionListener::update(AbstractObservable *o)
 {
-	PINFO("Updating.");
+	PINFO_2("Updating.");
 
 	// Check observable.
 	TCPConnectionListener *ca;

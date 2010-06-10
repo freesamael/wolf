@@ -35,7 +35,7 @@ void CommandListener::run()
 			delete inmsg;
 		}
 	}
-	PINFO("CommandListener running loop ends.");
+	PINFO_2("Running loop ends.");
 }
 
 /**
@@ -44,7 +44,7 @@ void CommandListener::run()
  */
 void CommandListener::processCommand(TLVCommand *cmd)
 {
-	PINFO("Processing a command.");
+	PINFO_2("Processing a command.");
 	if (cmd->command() == TLVCommand::WORKER_RUN) {
 		// Test parameter.
 		AbstractWorkerActor *actor;
@@ -54,7 +54,7 @@ void CommandListener::processCommand(TLVCommand *cmd)
 		// Add to waiting queue.
 		_parent->enqueue(actor);
 	} else if (cmd->command() == TLVCommand::SHUTDOWN) {
-		PINFO("Ending runner.");
+		PINFO_2("Ending runner.");
 		_done = true;
 	} else {
 		PERR("Unexpected command \"" <<

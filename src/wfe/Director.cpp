@@ -92,7 +92,7 @@ Channel* Director::findChannel(const string &name)
 
 void Director::execute()
 {
-	PINFO("Executing the actors.");
+	PINFO_2("Executing the actors.");
 	_exest->execute(_actors);
 }
 

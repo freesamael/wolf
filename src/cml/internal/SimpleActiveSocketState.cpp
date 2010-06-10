@@ -33,7 +33,7 @@ bool SimpleActiveSocketState::activeOpen(AbstractSocket *sock,
 	inaddr.sin_port = htons(port);
 
 	// Perform connection.
-	PINFO("Connecting to a remote host.");
+	PINFO_3("Connecting to a remote host.");
 	if (connect(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
 		perror("Error: SimpleActiveSocketState::activeOpen()");
 		return false;
@@ -54,7 +54,7 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 	inaddr.sin_port = htons(port);
 
 	// Perform binding.
-	PINFO("Binding a port.");
+	PINFO_3("Binding a port.");
 	if (bind(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
 		perror("Error: SimpleActiveSocketState::passiveOpen()");
 		return false;
@@ -62,7 +62,7 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 
 	// Perform listen if it's a TCP socket.
 	if ((dynamic_cast<TCPSocket *>(sock))) {
-		PINFO("Listening for connections.");
+		PINFO_3("Listening for connections.");
 		if (listen(sock->sockfd(), qlen) < 0) {
 			perror("Error: SimpleActiveSocketState::passiveOpen()");
 			return false;
@@ -75,7 +75,7 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 
 bool SimpleActiveSocketState::close(AbstractSocket *sock)
 {
-	PINFO("Closing the socket.");
+	PINFO_3("Closing the socket.");
 	if (::close(sock->sockfd()) != 0) {
 		perror("Error: ConnectedSocketState::close(): close");
 		return false;
@@ -97,7 +97,7 @@ ssize_t SimpleActiveSocketState::recvfrom(AbstractSocket *sock, char *buf,
 	struct sockaddr_in inaddr;
 	socklen_t alen = sizeof(inaddr);
 
-	PINFO("Receiving an incoming message.");
+	PINFO_3("Receiving an incoming message.");
 	if ((result = ::recvfrom(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
 		perror("Error: SimpleActiveSocketState::recvfrom()");
@@ -126,7 +126,7 @@ ssize_t SimpleActiveSocketState::sendto(AbstractSocket *sock, const char *buf,
 	inaddr.sin_addr.s_addr = addr.toInetAddr();
 	inaddr.sin_port = htons(port);
 
-	PINFO("Sending an outgoing message.");
+	PINFO_3("Sending an outgoing message.");
 	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr,	sizeof(inaddr))) < 0) {
 		perror("Error: SimpleActiveSocketState::sendto()");

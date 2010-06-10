@@ -20,6 +20,7 @@ void MasterSideCommandListener::run()
 	ITLVObject *inobj;
 	TLVCommand *incmd = NULL;
 
+	PINFO_2("Start listening for runner commands.");
 	while (!_done) {
 		if (!(inobj = tcprw.read()))
 			break; // End of file.
@@ -31,12 +32,12 @@ void MasterSideCommandListener::run()
 			delete incmd;
 		}
 	}
-	PINFO("MasterSideCommandListener running loop ends.");
+	PINFO_2("Running loop ends.");
 }
 
 void MasterSideCommandListener::process(TLVCommand *cmd)
 {
-	PINFO("Processing a command.");
+	PINFO_2("Processing a command.");
 	if (cmd->command() == TLVCommand::WORKER_FINISHED) {
 		TLVUInt32 *u32;
 		AbstractWorkerActor *worker;

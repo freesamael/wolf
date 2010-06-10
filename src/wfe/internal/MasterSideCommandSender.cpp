@@ -25,7 +25,7 @@ void MasterSideCommandSender::joinD2MCE(const string &appname)
 #ifndef DISABLE_D2MCE
 	// Join D2MCE computing group.
 	D2MCE::instance()->join(appname);
-	PINFO(D2MCE::instance()->getNumberOfNodes() <<
+	PINFO_2(D2MCE::instance()->getNumberOfNodes() <<
 			" nodes inside the group, node id = " <<
 			D2MCE::instance()->nodeId() << ".");
 #endif /* DISABLE_D2MCE */

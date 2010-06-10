@@ -67,7 +67,7 @@
  */
 #define SINGLETON_RELEASE_BODY()                                               \
 	if (_instance) {                                                           \
-		PINFO("Releasing");                                                    \
+		PINFO_3("Releasing");                                                    \
 		_instance->releaseDependants();                                        \
 		delete _instance;                                                      \
 		_instance = NULL;                                                      \
@@ -143,18 +143,51 @@
 	<< __LINE__ << std::endl
 
 #ifdef DEBUG
+#define __PINFO(str) \
+	std::cout << "Info: " << str << ": " << __PRETTY_FUNCTION__ << ": " \
+	<< __LINE__ << std::endl
+
+#if DEBUG >= 1 // Normal
 /**
- * \def PINFO(str)
+ * \def PINFO_1(str)
  * Print an info message. str is a stream in "a << b << c" format.
+ * Only show when compiled as DEBUG >= 1.
  *
  * \note
  * \#include \<iostream\>
  */
-#define PINFO(str) \
-	std::cout << "Info: " << str << ": " << __PRETTY_FUNCTION__ << ": " \
-	<< __LINE__ << std::endl
+#define PINFO_1(str) __PINFO(str)
+#endif /* DEBUG >= 1 */
+
+#if DEBUG >= 2 // Verbose
+/**
+ * \def PINFO_2(str)
+ * Print an info message. str is a stream in "a << b << c" format.
+ * Only show when compiled as DEBUG >= 2 (verbose).
+ *
+ * \note
+ * \#include \<iostream\>
+ */
+#define PINFO_2(str) __PINFO(str)
+#endif /* DEBUG >= 2 */
+
+#if DEBUG >= 3 // Very verbose
+/**
+ * \def PINFO_3(str)
+ * Print an info message. str is a stream in "a << b << c" format.
+ * Only show when compiled as DEBUG >= 3 (very verbose).
+ *
+ * \note
+ * \#include \<iostream\>
+ */
+#define PINFO_3(str) __PINFO(str)
+#endif /* DEBUG >= 3 */
 #else
-#define PINFO(str)
+#define PINFO_1(str)
+#define PINFO_2(str)
+#define PINFO_3(str)
 #endif /* DEBUG */
+
+
 
 #endif /* HELPERMACROS_H_ */

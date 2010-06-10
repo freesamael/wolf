@@ -104,7 +104,7 @@ void Runner::joinD2MCE()
 
 	// Join
 	D2MCE::instance()->join(_appname);
-	PINFO(D2MCE::instance()->getNumberOfNodes() <<
+	PINFO_2(D2MCE::instance()->getNumberOfNodes() <<
 			"nodes inside the group, node id = " << D2MCE::instance()->nodeId()
 			<< ".");
 #endif /* DISABLE_D2MCE */

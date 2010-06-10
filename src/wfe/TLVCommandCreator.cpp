@@ -31,7 +31,7 @@ namespace wfe
  */
 ITLVObject* TLVCommandCreator::create(const ITLVBlock &blk) const
 {
-	PINFO("Got TLVCommand with command = " <<
+	PINFO_2("Got TLVCommand with command = " <<
 			TLVCommand::CommandString[blk.type() - TLV_TYPE_COMMAND_BASE]);
 
 	TLVCommand *cmd = new TLVCommand(blk.type() - TLV_TYPE_COMMAND_BASE);
@@ -41,7 +41,7 @@ ITLVObject* TLVCommandCreator::create(const ITLVBlock &blk) const
 	while (offset < blk.length()) {
 		SharedTLVBlock pamblk(blk.value() + offset);
 		offset += pamblk.plainSize();
-		PINFO("Got a parameter block with type = " << pamblk.type() <<
+		PINFO_2("Got a parameter block with type = " << pamblk.type() <<
 				", length = " << pamblk.length());
 		cmd->addParameter(TLVObjectFactory::instance()->createTLVObject(pamblk));
 	}
