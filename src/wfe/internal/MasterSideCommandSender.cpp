@@ -1,13 +1,13 @@
 /**
- * \file MasterCommandSender.cpp
+ * \file MasterSideCommandSender.cpp
  * \date May 27, 2010
  * \author samael
  */
 
-#define __STDC_LIMIT_MACROS // Needed for UINTx_MAX
+#define __STDC_LIMIT_MACROS // Needed to use UINTx_MAX macros in <stdint.h>
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
-#include "MasterCommandSender.h"
+#include "MasterSideCommandSender.h"
 #include "TLVCommand.h"
 #include "TLVUInt32.h"
 #include "D2MCE.h"
@@ -18,9 +18,9 @@ using namespace cml;
 namespace wfe
 {
 
-uint32_t MasterCommandSender::_wseq = 0;
+uint32_t MasterSideCommandSender::_wseq = 0;
 
-void MasterCommandSender::joinD2MCE(const string &appname)
+void MasterSideCommandSender::joinD2MCE(const string &appname)
 {
 #ifndef DISABLE_D2MCE
 	// Join D2MCE computing group.
@@ -31,7 +31,7 @@ void MasterCommandSender::joinD2MCE(const string &appname)
 #endif /* DISABLE_D2MCE */
 }
 
-void MasterCommandSender::hello(uint16_t rport)
+void MasterSideCommandSender::hello(uint16_t rport)
 {
 	UDPSocket usock;
 	TLVReaderWriter udprw(&usock);
@@ -41,7 +41,7 @@ void MasterCommandSender::hello(uint16_t rport)
 	HostAddress::BroadcastAddress, rport);
 }
 
-void MasterCommandSender::addRunner(TCPSocket *rsock, const vector<HostAddress> &addrs)
+void MasterSideCommandSender::addRunner(TCPSocket *rsock, const vector<HostAddress> &addrs)
 {
 	if (addrs.size() > 0) {
 		TLVCommand cmd(TLVCommand::RUNNER_ADD);
@@ -54,19 +54,19 @@ void MasterCommandSender::addRunner(TCPSocket *rsock, const vector<HostAddress> 
 	}
 }
 
-void MasterCommandSender::startRunner(TCPSocket *rsock)
+void MasterSideCommandSender::startRunner(TCPSocket *rsock)
 {
 	TLVReaderWriter rw(rsock);
 	rw.write(TLVCommand(TLVCommand::RUNNER_START));
 }
 
-void MasterCommandSender::shutdown(TCPSocket *rsock)
+void MasterSideCommandSender::shutdown(TCPSocket *rsock)
 {
 	TLVReaderWriter rw(rsock);
 	rw.write(TLVCommand(TLVCommand::SHUTDOWN));
 }
 
-uint32_t MasterCommandSender::runWorker(TCPSocket *rsock, AbstractWorkerActor *worker)
+uint32_t MasterSideCommandSender::runWorker(TCPSocket *rsock, AbstractWorkerActor *worker)
 {
 	if (++_wseq == UINT32_MAX)
 		_wseq = 0;

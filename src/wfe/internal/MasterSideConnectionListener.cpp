@@ -1,5 +1,5 @@
 /**
- * \file MasterSideRunnerConnectionListener.cpp
+ * \file MasterSideConnectionListener.cpp
  * \date Apr 28, 2010
  * \author samael
  */
@@ -9,7 +9,7 @@
 #include "TCPConnectionListener.h"
 #include "TLVReaderWriter.h"
 #include "Thread.h"
-#include "MasterSideRunnerConnectionListener.h"
+#include "MasterSideConnectionListener.h"
 #include "TLVCommand.h"
 
 using namespace std;
@@ -18,7 +18,7 @@ using namespace cml;
 namespace wfe
 {
 
-MasterSideRunnerConnectionListener::MasterSideRunnerConnectionListener(Master *master,
+MasterSideConnectionListener::MasterSideConnectionListener(Master *master,
 		TCPSocket *msock, uint16_t listen_port, unsigned timeout):
 				_master(master), _msock(msock), _timeout(timeout),
 				_listener(_msock), _listhread(&_listener)
@@ -27,31 +27,10 @@ MasterSideRunnerConnectionListener::MasterSideRunnerConnectionListener(Master *m
 	_listener.attach(this);
 }
 
-MasterSideRunnerConnectionListener::MasterSideRunnerConnectionListener(const MasterSideRunnerConnectionListener &o):
-		_master(o._master), _msock(o._msock), _timeout(o._timeout),
-		_listener(_msock), _listhread(&_listener)
-{
-	_listener.attach(this);
-}
-
-/**
- * Assignment.
- */
-MasterSideRunnerConnectionListener& MasterSideRunnerConnectionListener::operator=(const MasterSideRunnerConnectionListener &o)
-{
-	_master = o._master;
-	_msock = o._msock;
-	_timeout = o._timeout;
-	_listener = o._listener;
-	_listhread = o._listhread;
-	_listener.attach(this);
-	return *this;
-}
-
 /**
  * Start acceptor.
  */
-void MasterSideRunnerConnectionListener::start()
+void MasterSideConnectionListener::start()
 {
 	_listhread.start();
 }
@@ -59,7 +38,7 @@ void MasterSideRunnerConnectionListener::start()
 /**
  * Wait timeout seconds and stop acceptor.
  */
-void MasterSideRunnerConnectionListener::stop()
+void MasterSideConnectionListener::stop()
 {
 	sleep(_timeout);
 	_listener.setDone();
@@ -69,7 +48,7 @@ void MasterSideRunnerConnectionListener::stop()
 /**
  * Used to process the events from TCPConnectionAcceptor.
  */
-void MasterSideRunnerConnectionListener::update(AbstractObservable *o)
+void MasterSideConnectionListener::update(AbstractObservable *o)
 {
 	PINFO("Updating.");
 

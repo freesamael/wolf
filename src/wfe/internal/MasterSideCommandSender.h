@@ -1,17 +1,19 @@
 /**
- * \file MasterCommandSender.h
+ * \file MasterSideCommandSender.h
  * \date May 27, 2010
  * \author samael
  */
 
-#ifndef MASTERCOMMANDSENDER_H_
-#define MASTERCOMMANDSENDER_H_
+#ifndef MASTERSIDECOMMANDSENDER_H_
+#define MASTERSIDECOMMANDSENDER_H_
 
 #include <vector>
 #include <string>
 #include <stdint.h>
 #include "TCPSocket.h"
 #include "AbstractWorkerActor.h"
+#include "Master.h"
+#include "HelperMacros.h"
 
 namespace wfe
 {
@@ -19,7 +21,7 @@ namespace wfe
 /**
  * Internal class used by Master to send command.
  */
-class MasterCommandSender
+class MasterSideCommandSender
 {
 public:
 	/// Join D2MCE computing group.
@@ -42,4 +44,4 @@ private:
 
 }
 
-#endif /* MASTERCOMMANDSENDER_H_ */
+#endif /* MASTERSIDECOMMANDSENDER_H_ */

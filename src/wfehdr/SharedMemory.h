@@ -8,6 +8,7 @@
 #define SHAREDMEMORY_H_
 
 #include <string>
+#include "HelperMacros.h"
 #include "IDrop.h"
 
 namespace wfe
@@ -40,9 +41,9 @@ public:
 	IDrop* clone() const;
 
 private:
-	SharedMemory(const SharedMemory &sm):
-		_name(sm._name), _buf(sm._buf), _size(sm._size), _mutex(sm._mutex) {}
-	SharedMemory& operator=(const SharedMemory &sm) { return *this; }
+	SharedMemory(const SharedMemory &UNUSED(o)):
+		_name(), _buf(NULL), _size(0), _mutex(NULL) {}
+	SharedMemory& operator=(const SharedMemory &UNUSED(o)) { return *this; }
 	std::string _name;
 	char *_buf;
 	size_t _size;

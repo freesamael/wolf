@@ -34,16 +34,4 @@ void TCPConnectionListener::run()
 	}
 }
 
-/**
- * Assignment.
- */
-TCPConnectionListener& TCPConnectionListener::operator=(const TCPConnectionListener &o)
-{
-	AbstractObservable::operator=(o);
-	_server = o._server;
-	_done = o._done;
-	_ssock = o._ssock;
-	return *this;
-}
-
 }

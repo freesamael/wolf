@@ -1,5 +1,5 @@
 /**
- * \file MasterSideRunnerCommandListener.cpp
+ * \file MasterSideCommandListener.cpp
  * \date Jun 3, 2010
  * \author samael
  */
@@ -7,14 +7,14 @@
 #include "HelperMacros.h"
 #include "TLVReaderWriter.h"
 #include "TLVUInt32.h"
-#include "MasterSideRunnerCommandListener.h"
+#include "MasterSideCommandListener.h"
 
 using namespace cml;
 
 namespace wfe
 {
 
-void MasterSideRunnerCommandListener::run()
+void MasterSideCommandListener::run()
 {
 	TLVReaderWriter tcprw(_rsock);
 	ITLVObject *inobj;
@@ -34,7 +34,7 @@ void MasterSideRunnerCommandListener::run()
 	PINFO("MasterSideCommandListener running loop ends.");
 }
 
-void MasterSideRunnerCommandListener::process(TLVCommand *cmd)
+void MasterSideCommandListener::process(TLVCommand *cmd)
 {
 	PINFO("Processing a command.");
 	if (cmd->command() == TLVCommand::WORKER_FINISHED) {

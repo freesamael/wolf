@@ -1,11 +1,11 @@
 /**
- * \file MasterSideRunnerConnectionListener.h
+ * \file MasterSideConnectionListener.h
  * \date Apr 28, 2010
  * \author samael
  */
 
-#ifndef MASTERSIDERUNNERCONNECTIONLISTENER_H_
-#define MASTERSIDERUNNERCONNECTIONLISTENER_H_
+#ifndef MASTERSIDECONNECTIONLISTENER_H_
+#define MASTERSIDECONNECTIONLISTENER_H_
 
 #include <vector>
 #include "IObserver.h"
@@ -22,19 +22,22 @@ namespace wfe
 /**
  * The proxy between TCPConnectionListener and Master.
  */
-class MasterSideRunnerConnectionListener: public cml::IObserver
+class MasterSideConnectionListener: public cml::IObserver
 {
 public:
-	MasterSideRunnerConnectionListener(Master *master, cml::TCPSocket *msock,
+	MasterSideConnectionListener(Master *master, cml::TCPSocket *msock,
 			uint16_t listen_port, unsigned timeout);
-	MasterSideRunnerConnectionListener(const MasterSideRunnerConnectionListener &o);
-	MasterSideRunnerConnectionListener& operator=(const MasterSideRunnerConnectionListener &o);
 
 	void start();
 	void stop();
 	void update(cml::AbstractObservable *o);
 
 private:
+	MasterSideConnectionListener(const MasterSideConnectionListener &UNUSED(o)):
+		_master(NULL), _msock(NULL), _timeout(0), _listener(NULL),
+		_listhread(&_listener) {}
+	MasterSideConnectionListener& operator=(const MasterSideConnectionListener &UNUSED(o))
+		{ return *this; }
 	Master *_master;
 	cml::TCPSocket *_msock;
 	unsigned _timeout;
@@ -44,4 +47,4 @@ private:
 
 }
 
-#endif /* MASTERSIDERUNNERCONNECTIONLISTENER_H_ */
+#endif /* MASTERSIDECONNECTIONLISTENER_H_ */

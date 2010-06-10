@@ -30,6 +30,7 @@ void* thread_caller(void *param)
 
 	pthread_mutex_lock(&th->_mutex);
 	th->_running = false;
+	th->_finished = true;
 	pthread_mutex_unlock(&th->_mutex);
 
 	if (pthread_cond_broadcast(&th->_rcnd) != 0)
@@ -39,17 +40,7 @@ void* thread_caller(void *param)
 
 Thread::Thread(IRunnable *runner):
 		_runner(runner), _rcnd(), _mutex(),
-		_tid(0), _running(false)
-{
-	int state;
-	pthread_mutex_init(&_mutex, NULL);
-	pthread_cond_init(&_rcnd, NULL);
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &state);
-}
-
-Thread::Thread(const Thread &thread):
-		_runner(thread._runner), _rcnd(), _mutex(),
-		_tid(0), _running(false)
+		_tid(0), _running(false), _finished(false), _canceled(false)
 {
 	int state;
 	pthread_mutex_init(&_mutex, NULL);
@@ -141,16 +132,9 @@ bool Thread::join(unsigned timeout)
  */
 bool Thread::cancel()
 {
-	return !pthread_cancel(_tid);
-}
-
-/**
- * Operator =
- */
-Thread& Thread::operator=(const Thread &thread)
-{
-	_runner = thread._runner;
-	return *this;
+	if (pthread_cancel(_tid))
+		return _canceled = true;
+	return false;
 }
 
 }

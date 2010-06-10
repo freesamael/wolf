@@ -11,6 +11,7 @@
 #include "AbstractObservable.h"
 #include "IRunnable.h"
 #include "Mutex.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -26,11 +27,7 @@ class TCPConnectionListener: public AbstractObservable, public IRunnable
 public:
 	TCPConnectionListener(TCPSocket *server):
 		_mutex(), _done(false), _server(server), _ssock(NULL) {}
-	/// Note that the mutex won't be the same on copy construction.
-	TCPConnectionListener(const TCPConnectionListener &o):
-		AbstractObservable(o), _mutex(), _done(o._done), _server(o._server),
-		_ssock(o._ssock) {}
-	TCPConnectionListener& operator=(const TCPConnectionListener &o);
+
 	inline TCPSocket* lastAcceptedSocket() { return _ssock; }
 	inline bool isDone() const { return _done; }
 	inline void setDone() { _done = true; }
@@ -39,6 +36,11 @@ public:
 	void run();
 
 private:
+	TCPConnectionListener(const TCPConnectionListener &UNUSED(o)):
+		AbstractObservable(), _mutex(), _done(false), _server(NULL),
+		_ssock(NULL) {}
+	TCPConnectionListener& operator=(const TCPConnectionListener &UNUSED(o))
+		{ return *this; }
 	Mutex _mutex;
 	bool _done;
 	TCPSocket *_server;
