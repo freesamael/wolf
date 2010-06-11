@@ -1,10 +1,10 @@
 /**
- * \file ActorExecutor.cpp
+ * \file RunnerSideWorkerExecutor.cpp
  * \date May 26, 2010
  * \author samael
  */
 
-#include "ActorExecutor.h"
+#include "RunnerSideWorkerExecutor.h"
 #include "AbstractWorkerActor.h"
 
 namespace wfe
@@ -13,7 +13,7 @@ namespace wfe
 /**
  * Keep running until dequeue() returns NULL.
  */
-void ActorExecutor::run()
+void RunnerSideWorkerExecutor::run()
 {
 	AbstractWorkerActor *actor;
 	while ((actor = _parent->dequeue())) {

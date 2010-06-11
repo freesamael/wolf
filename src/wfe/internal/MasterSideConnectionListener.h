@@ -26,7 +26,7 @@ class MasterSideConnectionListener: public cml::IObserver
 {
 public:
 	MasterSideConnectionListener(Master *master, cml::TCPSocket *msock,
-			uint16_t listen_port, unsigned timeout);
+			uint16_t listen_port);
 
 	void start();
 	void stop();
@@ -34,13 +34,11 @@ public:
 
 private:
 	MasterSideConnectionListener(const MasterSideConnectionListener &UNUSED(o)):
-		_master(NULL), _msock(NULL), _timeout(0), _listener(NULL),
-		_listhread(&_listener) {}
+		_master(NULL), _msock(NULL), _listener(NULL), _listhread(&_listener) {}
 	MasterSideConnectionListener& operator=(const MasterSideConnectionListener &UNUSED(o))
 		{ return *this; }
 	Master *_master;
 	cml::TCPSocket *_msock;
-	unsigned _timeout;
 	cml::TCPConnectionListener _listener;
 	cml::Thread _listhread;
 };

@@ -20,8 +20,8 @@ namespace wfe
 
 MasterSideConnectionListener::MasterSideConnectionListener(Master *master,
 		TCPSocket *msock, uint16_t listen_port, unsigned timeout):
-				_master(master), _msock(msock), _timeout(timeout),
-				_listener(_msock), _listhread(&_listener)
+				_master(master), _msock(msock), _listener(_msock),
+				_listhread(&_listener)
 {
 	_msock->passiveOpen(listen_port);
 	_listener.attach(this);
@@ -40,7 +40,6 @@ void MasterSideConnectionListener::start()
  */
 void MasterSideConnectionListener::stop()
 {
-	sleep(_timeout);
 	_listener.setDone();
 	_listhread.join();
 }

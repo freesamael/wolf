@@ -20,24 +20,24 @@
 namespace wfe
 {
 
-class CommandListener;
+struct PData;
+
+/**
+ * The runner which is responsible for worker executions.
+ */
 class Runner
 {
-	friend class CommandListener;
+	friend class RunnerSideCommandListener;
 public:
-	Runner(uint16_t runner_port, const std::string &appname):
-		_rport(runner_port), _mport(), _appname(appname), _maddr(),
-		_msock(), _mhandle(NULL), _raddrs(), _rsocks(), _rhandles(),
-		_endflag(false), _wq(), _mutex(), _wcond() {}
+	Runner(uint16_t master_port, uint16_t runner_port,
+			const std::string &appname);
 	~Runner();
 	void run();
 	void enqueue(AbstractWorkerActor *worker);
 	AbstractWorkerActor* dequeue(unsigned timeout_us = 100000);
 
 private:
-	Runner(const Runner &UNUSED(o)): _rport(), _mport(), _appname(), _maddr(),
-	_msock(), _mhandle(), _raddrs(), _rsocks(), _rhandles(), _endflag(false),
-	_wq(), _mutex(), _wcond() {}
+	Runner(const Runner &UNUSED(o)) {}
 	Runner& operator=(const Runner &UNUSED(o)) { return *this; }
 	bool waitMaster();
 	bool connMaster();
@@ -46,27 +46,12 @@ private:
 	void stopWaitRunners();
 	void listenMaster();
 	void listenRunners();
-//	cml::HostAddress getMasterAddr(uint16_t runner_port);
-//	bool connectToMaster(cml::TCPSocket *sock, const cml::HostAddress &addr,
-//			uint16_t master_port);
-//	void joinGroup(cml::TCPSocket *sock, const std::string &appname);
-//	bool processCommand(TLVMessage *msg);
-//	void runnerLoop(cml::TCPSocket *sock);
 
 private:
-	uint16_t _rport, _mport;
+	uint16_t _mport, _rport;
 	std::string _appname;
-	cml::HostAddress _maddr;
-	cml::TCPSocket _msock;
-	CommandListener *_mhandle;
-	std::vector<cml::HostAddress> _raddrs;
-	std::vector<cml::TCPSocket> _rsocks;
-	std::vector<CommandListener *> _rhandles;
-
-	bool _endflag;
-	std::deque<AbstractWorkerActor *> _wq;
-	cml::Mutex _mutex;
-	cml::WaitCondition _wcond;
+	cml::TCPSocket *_msock;
+	PData *_data;
 };
 
 }

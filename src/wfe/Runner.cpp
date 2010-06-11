@@ -15,8 +15,11 @@
 #include "HelperMacros.h"
 #include "Runner.h"
 #include "D2MCE.h"
-#include "internal/CommandListener.h"
-#include "internal/ActorExecutor.h"
+#include "internal/RunnerSideMasterConnector.h"
+#include "internal/RunnerSideConnectionListener.h"
+#include "internal/RunnerSideCommandListener.h"
+#include "internal/RunnerSideCommandSender.h"
+#include "internal/RunnerSideWorkerExecutor.h"
 
 using namespace std;
 using namespace cml;
@@ -24,56 +27,34 @@ using namespace cml;
 namespace wfe
 {
 
+struct PData
+{
+};
+
+Runner::Runner(uint16_t master_port, uint16_t runner_port,
+		const string &appname): _mport(master_port), _rport(runner_port),
+		_appname(appname), _msock(NULL), _data(new PData())
+{
+
+}
+
 Runner::~Runner()
 {
-	delete _mhandle;
-	for (unsigned i = 0; i < _rhandles.size(); i++) {
-		delete _rhandles[i];
-	}
+	delete _data;
 }
 
 void Runner::run()
 {
-	// Preparation
-	if (!waitMaster()) return;
-	if (!connMaster()) return;
-	joinD2MCE();
-
-	// Start processing commands.
-	CommandListener cmdhandle(this, &_msock);
-	ActorExecutor actorhandle(this);
-	Thread cmdthread(&cmdhandle);
-	Thread actorthread(&actorhandle);
-	cmdthread.start();
-	actorthread.start();
-	cmdthread.join();
-	actorthread.join();
-}
-
-/**
- * Wait for master hello message.
- */
-bool Runner::waitMaster()
-{
-	UDPSocket usock;
-	TLVReaderWriter udprw(&usock);
-	TLVCommand *inmsg;
-
-	usock.passiveOpen(_rport);
-	if (!(inmsg = dynamic_cast<TLVCommand *>(udprw.recvfrom(&_maddr, &_mport)))) {
-		PERR("Invalid incoming message.");
-		return false;
+	// Connect to master.
+	RunnerSideMasterConnector msconn;
+	if (!(_msock = msconn.connect(_mport, _rport))) {
+		PERR("Runner fails. Exit.");
+		return;
 	}
 
-	if (inmsg->command() != TLVCommand::HELLO_MASTER) {
-		PERR("Expected command " <<
-				TLVCommand::CommandString[TLVCommand::HELLO_MASTER] <<
-				" but got " << TLVCommand::CommandString[inmsg->command()]);
-		return false;
-	}
+	// Start listening connections from other runners.
 
-	delete inmsg;
-	return true;
+	// Start listening master commands.
 }
 
 /**

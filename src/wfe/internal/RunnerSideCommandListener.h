@@ -1,11 +1,11 @@
 /**
- * \file CommandListener.h
+ * \file RunnerSideCommandListener.h
  * \date Apr 28, 2010
  * \author samael
  */
 
-#ifndef COMMANDLISTENER_H_
-#define COMMANDLISTENER_H_
+#ifndef RUNNERSIDECOMMANDLISTENER_H_
+#define RUNNERSIDECOMMANDLISTENER_H_
 
 #include "TCPSocket.h"
 #include "IRunnable.h"
@@ -19,14 +19,14 @@ namespace wfe
 /**
  * Used by runner to process commands from master.
  */
-class CommandListener: public cml::IRunnable
+class RunnerSideCommandListener: public cml::IRunnable
 {
 public:
-	CommandListener(Runner *parent, cml::TCPSocket *sock):
+	RunnerSideCommandListener(Runner *parent, cml::TCPSocket *sock):
 		_done(false), _parent(parent), _sock(sock) {}
-	CommandListener(const CommandListener &o): _done(o._done),
+	RunnerSideCommandListener(const RunnerSideCommandListener &o): _done(o._done),
 			_parent(o._parent), _sock(o._sock) {}
-	CommandListener& operator=(const CommandListener &o)
+	RunnerSideCommandListener& operator=(const RunnerSideCommandListener &o)
 		{ _done = o._done; _parent = o._parent; _sock = o._sock; return *this; }
 	void run();
 	void setDone() { _done = true; }
@@ -40,4 +40,4 @@ private:
 
 }
 
-#endif /* COMMANDLISTENER_H_ */
+#endif /* RUNNERSIDECOMMANDLISTENER_H_ */

@@ -59,14 +59,14 @@ Master::~Master()
 /**
  * Setup the master. It must be called before other operations.
  */
-bool Master::setup(uint16_t runner_port, uint16_t master_port,
+bool Master::setup(uint16_t master_port, uint16_t runner_port,
 		const string &appname, unsigned int timeout)
 {
 	if (_state != NOT_READY)
 		return false;
 
 	// Start waiting runner connections.
-	MasterSideConnectionListener listener(this, &_msock, master_port, timeout);
+	MasterSideConnectionListener listener(this, &_msock, master_port);
 	listener.start();
 
 	// Join D2MCE group and broadcast hello message.
@@ -74,6 +74,7 @@ bool Master::setup(uint16_t runner_port, uint16_t master_port,
 	_data->CommandSender.hello(runner_port);
 
 	// Check the runners.
+	sleep(timeout);
 	listener.stop();
 	if (_data->RunnerSocks.size() == 0) {
 		PERR("No runner found.");

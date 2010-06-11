@@ -1,5 +1,5 @@
 /**
- * \file CommandListener.cpp
+ * \file RunnerSideCommandListener.cpp
  * \date Apr 28, 2010
  * \author samael
  */
@@ -7,7 +7,7 @@
 #include <iostream>
 #include "TLVReaderWriter.h"
 #include "HelperMacros.h"
-#include "CommandListener.h"
+#include "RunnerSideCommandListener.h"
 #include "AbstractWorkerActor.h"
 
 using namespace cml;
@@ -18,7 +18,7 @@ namespace wfe
 /**
  * Read command and execute.
  */
-void CommandListener::run()
+void RunnerSideCommandListener::run()
 {
 	TLVReaderWriter tcprw(_sock);
 	ITLVObject *inobj;
@@ -42,7 +42,7 @@ void CommandListener::run()
  * Process command. Return true if the actor is successfully extracted and
  * executed.
  */
-void CommandListener::processCommand(TLVCommand *cmd)
+void RunnerSideCommandListener::processCommand(TLVCommand *cmd)
 {
 	PINFO_2("Processing a command.");
 	if (cmd->command() == TLVCommand::WORKER_RUN) {
