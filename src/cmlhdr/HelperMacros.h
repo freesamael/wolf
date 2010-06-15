@@ -67,7 +67,7 @@
  */
 #define SINGLETON_RELEASE_BODY()                                               \
 	if (_instance) {                                                           \
-		PINFO_3("Releasing");                                                    \
+		PINF_3("Releasing");                                                    \
 		_instance->releaseDependants();                                        \
 		delete _instance;                                                      \
 		_instance = NULL;                                                      \
@@ -143,7 +143,7 @@
 	<< __LINE__ << std::endl
 
 #ifdef DEBUG
-#define __PINFO(str) \
+#define __PINF(str) \
 	std::cout << "Info: " << str << ": " << __PRETTY_FUNCTION__ << ": " \
 	<< __LINE__ << std::endl
 
@@ -156,7 +156,7 @@
  * \note
  * \#include \<iostream\>
  */
-#define PINFO_1(str) __PINFO(str)
+#define PINF_1(str) __PINF(str)
 #endif /* DEBUG >= 1 */
 
 #if DEBUG >= 2 // Verbose
@@ -168,7 +168,7 @@
  * \note
  * \#include \<iostream\>
  */
-#define PINFO_2(str) __PINFO(str)
+#define PINF_2(str) __PINF(str)
 #endif /* DEBUG >= 2 */
 
 #if DEBUG >= 3 // Very verbose
@@ -180,12 +180,12 @@
  * \note
  * \#include \<iostream\>
  */
-#define PINFO_3(str) __PINFO(str)
+#define PINF_3(str) __PINF(str)
 #endif /* DEBUG >= 3 */
 #else
-#define PINFO_1(str)
-#define PINFO_2(str)
-#define PINFO_3(str)
+#define PINF_1(str)
+#define PINF_2(str)
+#define PINF_3(str)
 #endif /* DEBUG */
 
 

@@ -7,26 +7,29 @@
 #ifndef RUNNERSIDECONNECTIONLISTENER_H_
 #define RUNNERSIDECONNECTIONLISTENER_H_
 
-#include "IObserver.h"
+#include "AbstractConnectionListener.h"
 #include "Runner.h"
-#include "TCPConnectionListener.h"
-#include "Thread.h"
 
 namespace wfe
 {
 
-class RunnerSideConnectionListener: public IObserver
+/**
+ * Runner side runner connections listener.
+ */
+class RunnerSideConnectionListener: public AbstractConnectionListener
 {
 public:
-	RunnerSideConnectionListener(Runner *runner, cml::TCPSocket *sock,
-			uint16_t port);
-	void start();
-	void stop();
-	void update(cml::AbstractObservable *o);
+	RunnerSideConnectionListener(Runner *runner, cml::TCPSocket *lsock,
+			uint16_t lport): AbstractConnectionListener(lsock, lport),
+			_runner(runner) {}
+	void notify(cml::TCPSocket *sock);
 
 private:
-	cml::TCPConnectionListener _listener;
-	cml::Thread _listhread;
+	RunnerSideConnectionListener(const RunnerSideConnectionListener &UNUSED(o)):
+		AbstractConnectionListener(NULL, 0), _runner(NULL) {}
+	RunnerSideConnectionListener& operator=(const RunnerSideConnectionListener
+			&UNUSED(o)) { return *this; }
+	Runner *_runner;
 };
 
 }

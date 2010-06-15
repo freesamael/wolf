@@ -31,6 +31,8 @@ TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::HELLO_RU
 		TLVCommandCreator);
 TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::WORKER_RUN,
 		TLVCommandCreator);
+TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::WORKER_STEAL,
+		TLVCommandCreator);
 TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::WORKER_FINISHED,
 		TLVCommandCreator);
 TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::RUNNER_ADD,
@@ -39,34 +41,9 @@ TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::RUNNER_S
 		TLVCommandCreator);
 
 const string TLVCommand::CommandString[] = {
-		"Empty", "Shutdown", "Hello Master", "Hello Slave",
-		"Worker Run", "Worker Finished", "Runner Add", "Runner Start"
+		"Empty", "Shutdown", "Hello (Master)", "Hello (Runner)", "Worker Run",
+		"Worker Steal", "Worker Finished", "Runner Add", "Runner Start"
 };
-
-/// Empty command.
-const uint16_t TLVCommand::EMPTY = 0;
-
-/// Shutdown the runner.
-const uint16_t TLVCommand::SHUTDOWN = 1;
-
-/// Hello message from the master node.
-const uint16_t TLVCommand::HELLO_MASTER = 2;
-
-/// Hello message from a runner.
-const uint16_t TLVCommand::HELLO_RUNNER = 3;
-
-/// Send an worker to a runner and run it.
-const uint16_t TLVCommand::WORKER_RUN = 4;
-
-/// Send an finished worker back.
-const uint16_t TLVCommand::WORKER_FINISHED = 5;
-
-/// Ask a runner to connect to another runner.
-const uint16_t TLVCommand::RUNNER_ADD = 6;
-
-/// Tell the runner to start working, which also indicates the runner stop
-/// waiting for connections from other runners.
-const uint16_t TLVCommand::RUNNER_START = 7;
 
 TLVCommand::~TLVCommand()
 {
@@ -90,7 +67,7 @@ StandardTLVBlock* TLVCommand::toTLVBlock() const
 		for (unsigned i = 0; i < pamblks.size(); i++)
 			delete pamblks[i];
 	} else {
-		blk = new StandardTLVBlock(TLV_TYPE_COMMAND_BASE + _cmd);
+		blk = new StandardTLVBlock((uint16_t)(TLV_TYPE_COMMAND_BASE + _cmd));
 	}
 
 	return blk;

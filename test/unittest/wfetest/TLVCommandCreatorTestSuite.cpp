@@ -29,7 +29,7 @@ void TLVCommandCreatorTestSuite::testCreate()
 	StandardTLVBlock *blk = cmd.toTLVBlock();
 	CPPUNIT_ASSERT_EQUAL((uint16_t)(TLVUInt32::Size * 3), blk->length());
 	TLVCommand *ocmd = (TLVCommand *)TLVCommandCreator().create(*blk);
-	CPPUNIT_ASSERT_EQUAL((uint16_t)TLVCommand::RUNNER_ADD, ocmd->command());
+	CPPUNIT_ASSERT_EQUAL(TLVCommand::RUNNER_ADD, ocmd->command());
 	CPPUNIT_ASSERT_EQUAL((size_t)3, ocmd->parameters().size());
 	CPPUNIT_ASSERT_EQUAL(HostAddress("192.168.2.1").toString(),
 			HostAddress((in_addr_t)((TLVUInt32 *)ocmd->parameters()[0])->value()).toString());

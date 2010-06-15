@@ -24,34 +24,35 @@ namespace wfe
 class TLVCommand: public cml::ITLVObject
 {
 public:
-	/**
-	 * Enumeration of commands. To ensure the size and value of commands, we
-	 * use constant uint16_t instead of C++ 'enum' here.
-	 */
+	typedef enum Command {
+		EMPTY = 0,			///< Empty command.
+		SHUTDOWN,			///< Shutdown the runner.
+		HELLO_MASTER,		///< Hello message from the master node.
+		HELLO_RUNNER,		///< Hello message from a runner.
+		WORKER_RUN,			///< Send an worker to a runner and run it.
+		WORKER_STEAL,		///< Ask for stealing a worker.
+		WORKER_FINISHED,	///< Send an finished worker back.
+		RUNNER_ADD,			///< Ask a runner to connect to another runner.
+		RUNNER_START		/**< Tell the runner to start working, which also \
+							     indicates the runner stop waiting for \
+							     connections from other runners. */
+	} Command;
 	static const std::string CommandString[];
-	static const uint16_t EMPTY;
-	static const uint16_t SHUTDOWN;
-	static const uint16_t HELLO_MASTER;
-	static const uint16_t HELLO_RUNNER;
-	static const uint16_t WORKER_RUN;
-	static const uint16_t WORKER_FINISHED;
-	static const uint16_t RUNNER_ADD;
-	static const uint16_t RUNNER_START;
 
-	TLVCommand(uint16_t c = EMPTY, bool ac = false): _cmd(c), _params(),
+	TLVCommand(Command c = EMPTY, bool ac = false): _cmd(c), _params(),
 			_autoclean(ac) {}
 	virtual ~TLVCommand();
 	inline bool autoclean() const { return _autoclean; }
 	inline void setAutoclean(bool ac) { _autoclean = ac; }
-	inline uint16_t command() const { return _cmd; }
-	inline void setCommand(uint16_t c) { _cmd = c; }
+	inline Command command() const { return _cmd; }
+	inline void setCommand(Command c) { _cmd = c; }
 	inline const std::vector<cml::ITLVObject *> parameters() const
 			{ return _params; }
 	inline void addParameter(ITLVObject *obj) { _params.push_back(obj); }
 	virtual cml::StandardTLVBlock* toTLVBlock() const;
 
 private:
-	uint16_t _cmd;
+	Command _cmd;
 	std::vector<cml::ITLVObject *> _params;
 	bool _autoclean;
 };

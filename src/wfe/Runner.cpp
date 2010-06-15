@@ -29,98 +29,103 @@ namespace wfe
 
 struct PData
 {
+	PData(): pcnlis(NULL), pmclis(NULL), rsocks(), rclis(), rclthreads(),
+			cmdsdr() {}
+	RunnerSideConnectionListener *pcnlis;
+	RunnerSideCommandListener *pmclis;
+	vector<TCPSocket *> rsocks;
+	vector<RunnerSideCommandListener *> rclis;
+	vector<Thread *> rclthreads;
+	RunnerSideCommandSender cmdsdr;
+private:
+	PData(const PData &UNUSED(o)): pcnlis(NULL), pmclis(NULL), rsocks(),
+		rclis(), rclthreads(), cmdsdr() {}
+	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
 
 Runner::Runner(uint16_t master_port, uint16_t runner_port,
 		const string &appname): _mport(master_port), _rport(runner_port),
-		_appname(appname), _msock(NULL), _data(new PData())
+		_appname(appname), _msock(NULL), _rsock(), _d(new PData())
 {
 
 }
 
 Runner::~Runner()
 {
-	delete _data;
+	delete _d;
 }
 
 void Runner::run()
 {
-	// Connect to master.
+	// Connect to master and join D2MCE.
 	RunnerSideMasterConnector msconn;
 	if (!(_msock = msconn.connect(_mport, _rport))) {
 		PERR("Runner fails. Exit.");
 		return;
 	}
+	_d->cmdsdr.joinD2MCE(_appname);
 
 	// Start listening connections from other runners.
+	_d->pcnlis = new RunnerSideConnectionListener(this, &_rsock, _rport);
+	_d->pcnlis->start();
 
 	// Start listening master commands.
+	_d->pmclis = new RunnerSideCommandListener(this, _msock);
+	Thread cmdthread(_d->pmclis);
+	cmdthread.start();
+
+	// Send hello message to master.
+	_d->cmdsdr.hello(_msock);
+
+	// Block wait until command processing loop ends.
+	cmdthread.join();
 }
 
-/**
- * Connect to master node.
- */
-bool Runner::connMaster()
-{
-	TLVReaderWriter tcprw(&_msock);
-	if (!_msock.activeOpen(_maddr, _mport)) {
-		PERR("Unable to connect to the master node.");
-		return false;
-	}
-
-	TLVCommand outmsg(TLVCommand::HELLO_RUNNER);
-	return tcprw.write(outmsg);
-}
-
-/**
- * Join the computing group.
- */
-void Runner::joinD2MCE()
-{
-#ifndef DISABLE_D2MCE
-	// Random back-off. It's just a workaround for the problem that multiple
-	// nodes joining at the same time might cause failure.
-	srand((unsigned)_msock.currentAddress().toInetAddr());
-	usleep((rand() % 30) * 33000); // sleep 0 ~ 1s, granularity 33ms.
-
-	// Join
-	D2MCE::instance()->join(_appname);
-	PINFO_2(D2MCE::instance()->getNumberOfNodes() <<
-			"nodes inside the group, node id = " << D2MCE::instance()->nodeId()
-			<< ".");
-#endif /* DISABLE_D2MCE */
-}
+///**
+// * Add an actor into the waiting queue for execution.
+// */
+//void Runner::enqueue(AbstractWorkerActor *worker)
+//{
+//	_mutex.lock();
+//	_wq.push_back(worker);
+//	if (_wq.size() == 1)
+//		_wcond.wakeOne();
+//	_mutex.unlock();
+//}
+//
+///**
+// * Take an actor from the waiting queue. If no actors are in the queue, the
+// * caller will be blocked until available or return NULL if timed out.
+// */
+//AbstractWorkerActor* Runner::dequeue(unsigned timeout_us)
+//{
+//	AbstractWorkerActor *a;
+//
+//	_mutex.lock();
+//	if (_wq.size() == 0)
+//		_wcond.wait(&_mutex, timeout_us);
+//	if (_wq.size() == 0)
+//		return NULL;
+//	a = _wq.front();
+//	_wq.pop_front();
+//	_mutex.unlock();
+//
+//	return a;
+//}
 
 /**
- * Add an actor into the waiting queue for execution.
+ * Called when a runner connection got.
  */
-void Runner::enqueue(AbstractWorkerActor *worker)
+void Runner::runnerConnected(TCPSocket *runnersock)
 {
-	_mutex.lock();
-	_wq.push_back(worker);
-	if (_wq.size() == 1)
-		_wcond.wakeOne();
-	_mutex.unlock();
-}
+	RunnerSideCommandListener *lis =
+			new RunnerSideCommandListener(this, runnersock);
+	Thread *listhread = new Thread(lis);
+	listhread->start();
 
-/**
- * Take an actor from the waiting queue. If no actors are in the queue, the
- * caller will be blocked until available or return NULL if timed out.
- */
-AbstractWorkerActor* Runner::dequeue(unsigned timeout_us)
-{
-	AbstractWorkerActor *a;
-
-	_mutex.lock();
-	if (_wq.size() == 0)
-		_wcond.wait(&_mutex, timeout_us);
-	if (_wq.size() == 0)
-		return NULL;
-	a = _wq.front();
-	_wq.pop_front();
-	_mutex.unlock();
-
-	return a;
+	_d->rsocks.push_back(runnersock);
+	_d->rclis.push_back(lis);
+	_d->rclthreads.push_back(listhread);
 }
 
 }

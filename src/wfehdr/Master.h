@@ -52,13 +52,13 @@ private:
 	~Master();
 	Master(const Master &UNUSED(o)): SINGLETON_MEMBER_INITLST,
 			_state(NOT_READY), _msock(), _defdisp(), _activedisp(NULL),
-			_data(NULL) {}
+			_d(NULL) {}
 	Master& operator=(const Master &UNUSED(o)) { return *this; }
 	State _state;
 	cml::TCPSocket _msock;
 	SimpleWorkerDispatcher _defdisp;
 	IWorkerDispatcher *_activedisp;
-	PData *_data;
+	PData *_d;
 };
 
 }

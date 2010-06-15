@@ -5,7 +5,6 @@
  */
 
 #include "HelperMacros.h"
-#include "TLVReaderWriter.h"
 #include "TLVUInt32.h"
 #include "MasterSideCommandListener.h"
 
@@ -14,30 +13,9 @@ using namespace cml;
 namespace wfe
 {
 
-void MasterSideCommandListener::run()
-{
-	TLVReaderWriter tcprw(_rsock);
-	ITLVObject *inobj;
-	TLVCommand *incmd = NULL;
-
-	PINFO_2("Start listening for runner commands.");
-	while (!_done) {
-		if (!(inobj = tcprw.read()))
-			break; // End of file.
-		if (!(incmd = dynamic_cast<TLVCommand *>(inobj))) {
-			PERR("Invalid incoming message.");
-			delete inobj;
-		} else {
-			process(incmd);
-			delete incmd;
-		}
-	}
-	PINFO_2("Running loop ends.");
-}
-
 void MasterSideCommandListener::process(TLVCommand *cmd)
 {
-	PINFO_2("Processing a command.");
+	PINF_2("Processing a command.");
 	if (cmd->command() == TLVCommand::WORKER_FINISHED) {
 		TLVUInt32 *u32;
 		AbstractWorkerActor *worker;

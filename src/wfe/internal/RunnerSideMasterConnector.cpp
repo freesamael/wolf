@@ -4,8 +4,11 @@
  * \author samael
  */
 
+#include <iostream>
 #include "HelperMacros.h"
 #include "UDPSocket.h"
+#include "TLVReaderWriter.h"
+#include "TLVCommand.h"
 #include "RunnerSideMasterConnector.h"
 
 using namespace cml;
@@ -24,7 +27,7 @@ TCPSocket* RunnerSideMasterConnector::connect(uint16_t mport, uint16_t rport)
 	UDPSocket passivesock;
 	TLVReaderWriter udpreader(&passivesock);
 	TLVCommand *inmsg;
-	uint32_t tmpport;
+	uint16_t tmpport;
 
 	passivesock.passiveOpen(rport);
 	if (!(inmsg = dynamic_cast<TLVCommand *>(udpreader.recvfrom(&maddr, &tmpport)))) {
@@ -37,6 +40,7 @@ TCPSocket* RunnerSideMasterConnector::connect(uint16_t mport, uint16_t rport)
 		return NULL;
 	}
 	delete inmsg;
+	PINF_2("Got master hello message.");
 
 	/*
 	 * Connect to Master.
@@ -47,6 +51,7 @@ TCPSocket* RunnerSideMasterConnector::connect(uint16_t mport, uint16_t rport)
 		delete tsock;
 		return NULL;
 	}
+	PINF_2("Connected to master.");
 
 	return tsock;
 }

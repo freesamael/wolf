@@ -26,13 +26,13 @@ void* thread_caller(void *param)
 	th->_running = true;
 	pthread_mutex_unlock(&th->_mutex);
 
-	PINFO_3("Start running thread's run() function.");
+	PINF_3("Start running thread's run() function.");
 	th->run();
 
 	pthread_mutex_lock(&th->_mutex);
 	th->_running = false;
 	th->_finished = true;
-	PINFO_3("Thread finished.");
+	PINF_3("Thread finished.");
 	pthread_mutex_unlock(&th->_mutex);
 
 	if (pthread_cond_broadcast(&th->_rcnd) != 0)
@@ -61,7 +61,7 @@ Thread::~Thread()
  */
 bool Thread::start()
 {
-	PINFO_3("Starting the thread.");
+	PINF_3("Starting the thread.");
 	if (_tid == 0) {
 		if (pthread_create(&_tid, NULL, thread_caller, this) != 0) {
 			perror("Error: Thread::start()");
@@ -135,7 +135,7 @@ bool Thread::join(unsigned timeout)
 bool Thread::cancel()
 {
 	if (pthread_cancel(_tid)) {
-		PINFO_3("Thread canceled.");
+		PINF_3("Thread canceled.");
 		return _canceled = true;
 	}
 	PERR("Failed to cancel thread.");

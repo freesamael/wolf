@@ -23,17 +23,17 @@ SINGLETON_REGISTRATION_END();
 D2MCE::D2MCE():
 		SINGLETON_MEMBER_INITLST, _nodeid(0), _barrier(), _bufs(), _mutexes()
 {
-	PINFO_3("Initializing d2mce.");
+	PINF_3("Initializing d2mce.");
 	d2mce_init();
 }
 
 D2MCE::~D2MCE()
 {
-	PINFO_3("Finalizing d2mce.");
+	PINF_3("Finalizing d2mce.");
 	for (unsigned i = 0; i < _mutexes.size(); i++)
 		free(_mutexes[i]);
 	d2mce_finalize();
-	PINFO_3("d2mce finalized.");
+	PINF_3("d2mce finalized.");
 }
 
 /**
@@ -47,7 +47,7 @@ D2MCE::~D2MCE()
  */
 bool D2MCE::join(string appname, string groupname)
 {
-	PINFO_3("Join d2mce computing group.");
+	PINF_3("Join d2mce computing group.");
 	_nodeid = d2mce_join(appname.c_str(), groupname.c_str(), D2MCE_GROUP_ANY);
 	return (d2mce_barrier_init(&_barrier, "barrier") > 0 && _nodeid > 0);
 }
@@ -63,7 +63,7 @@ bool D2MCE::join(string appname, string groupname)
  */
 bool D2MCE::barrier(unsigned int nnodes)
 {
-	PINFO_3("Barrier.");
+	PINF_3("Barrier.");
 	return (d2mce_barrier(&_barrier, nnodes) == 1);
 }
 
@@ -91,7 +91,7 @@ SharedMemory* D2MCE::createSharedMemory(size_t size, const string &name)
 	else
 		memname << name;
 	mutexname << memname.str() << "_mux";
-	PINFO_3("Creating shared memory with name = " << memname.str() <<
+	PINF_3("Creating shared memory with name = " << memname.str() <<
 			", mutex name = " << mutexname.str() << ", and size = " << size);
 
 	// Allocate memory and initialize mutex.

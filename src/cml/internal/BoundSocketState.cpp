@@ -27,7 +27,7 @@ SINGLETON_REGISTRATION_END();
 
 bool BoundSocketState::close(AbstractSocket *sock)
 {
-	PINFO_3("Closing Socket.");
+	PINF_3("Closing Socket.");
 	if (::close(sock->sockfd()) != 0) {
 		perror("Error: BoundSocketState::close(): close");
 		return false;
@@ -43,7 +43,7 @@ TCPSocket* BoundSocketState::accept(AbstractSocket *sock)
 	socklen_t addlen = sizeof(inaddr);
 	int insock;
 
-	PINFO_3("Waiting for incoming connections.");
+	PINF_3("Waiting for incoming connections.");
 	if ((insock = ::accept(sock->sockfd(), (struct sockaddr *)&inaddr,
 			&addlen)) < 0) {
 		if (!(sock->isNonblock() && (errno == EAGAIN || errno == EWOULDBLOCK)))
@@ -51,7 +51,7 @@ TCPSocket* BoundSocketState::accept(AbstractSocket *sock)
 		return NULL;
 	}
 
-	PINFO_3("Got an incoming connection.");
+	PINF_3("Got an incoming connection.");
 	TCPSocket *tcpsock = new TCPSocket(insock);
 	tcpsock->changeState(ConnectedSocketState::instance());
 
@@ -70,7 +70,7 @@ ssize_t BoundSocketState::recvfrom(AbstractSocket *sock, char *buf, size_t size,
 	struct sockaddr_in inaddr;
 	socklen_t alen = sizeof(inaddr);
 
-	PINFO_3("Receiving an incoming message.");
+	PINF_3("Receiving an incoming message.");
 	if ((result = ::recvfrom(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
 		perror("Error: BoundSocketState::recvfrom()");
@@ -99,7 +99,7 @@ ssize_t BoundSocketState::sendto(AbstractSocket *sock, const char *buf,
 	inaddr.sin_addr.s_addr = addr.toInetAddr();
 	inaddr.sin_port = htons(port);
 
-	PINFO_3("Sending an outgoing message.");
+	PINF_3("Sending an outgoing message.");
 	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, sizeof(inaddr))) < 0) {
 		perror("Error: BoundSocketState::sendto()");

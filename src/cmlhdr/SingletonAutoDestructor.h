@@ -22,7 +22,7 @@ class SingletonAutoDestructor
 {
 public:
 	~SingletonAutoDestructor()
-		{ PINFO_3("Releasing " << TYPENAME(T)); T::release(); }
+		{ PINF_3("Releasing " << TYPENAME(T)); T::release(); }
 };
 
 }

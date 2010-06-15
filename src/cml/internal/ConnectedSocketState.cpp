@@ -24,13 +24,13 @@ SINGLETON_REGISTRATION_END();
 
 bool ConnectedSocketState::close(AbstractSocket *sock)
 {
-	PINFO_3("Shutting down a socket.");
+	PINF_3("Shutting down a socket.");
 	if (shutdown(sock->sockfd(), SHUT_RDWR) != 0) {
 		perror("Error: ConnectedSocketState::close(): shutdown");
 		return false;
 	}
 
-	PINFO_3("Closing a socket.");
+	PINF_3("Closing a socket.");
 	if (::close(sock->sockfd()) != 0) {
 		perror("Error: ConnectedSocketState::close(): close");
 		return false;

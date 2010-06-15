@@ -7,30 +7,29 @@
 #ifndef MASTERSIDECOMMANDLISTENER_H_
 #define MASTERSIDECOMMANDLISTENER_H_
 
-#include "IRunnable.h"
+#include "AbstractCommandListener.h"
 #include "Master.h"
-#include "TLVCommand.h"
 
 namespace wfe
 {
 
-class MasterSideCommandListener: public cml::IRunnable
+/**
+ * Master side commands listener.
+ */
+class MasterSideCommandListener: public AbstractCommandListener
 {
 public:
-	MasterSideCommandListener(Master *master, cml::TCPSocket *rsock):
-		_done(false), _master(master), _rsock(rsock) {}
+	MasterSideCommandListener(Master *master, cml::TCPSocket *sock):
+		AbstractCommandListener(sock), _master(master) {}
 	MasterSideCommandListener(const MasterSideCommandListener &o):
-		_done(o._done), _master(o._master), _rsock(o._rsock) {}
+		AbstractCommandListener(o), _master(o._master) {}
 	MasterSideCommandListener& operator=(const MasterSideCommandListener &o)
-		{ _done = o._done; _master = o._master; _rsock = o._rsock; return *this;}
-	inline void setDone() { _done = true; }
-	void run();
+		{ AbstractCommandListener::operator=(o); _master = o._master;
+		return *this; }
 	void process(TLVCommand *cmd);
 
 private:
-	bool _done;
 	Master *_master;
-	cml::TCPSocket *_rsock;
 };
 
 }

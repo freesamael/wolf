@@ -26,7 +26,7 @@ public:
 		while (!_p->isFinished()) {
 			AbstractActor *actor;
 			if ((actor = _p->takeActor())) {
-				PINFO_2("Iterating an actor.");
+				PINF_2("Iterating an actor.");
 				do {
 					actor->prefire();
 					actor->fire();

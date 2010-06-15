@@ -7,35 +7,29 @@
 #ifndef RUNNERSIDECOMMANDLISTENER_H_
 #define RUNNERSIDECOMMANDLISTENER_H_
 
-#include "TCPSocket.h"
-#include "IRunnable.h"
+#include "AbstractCommandListener.h"
 #include "Runner.h"
-#include "TLVCommand.h"
-#include "AbstractWorkerActor.h"
 
 namespace wfe
 {
 
 /**
- * Used by runner to process commands from master.
+ * Runner side commands listener.
  */
-class RunnerSideCommandListener: public cml::IRunnable
+class RunnerSideCommandListener: public AbstractCommandListener
 {
 public:
-	RunnerSideCommandListener(Runner *parent, cml::TCPSocket *sock):
-		_done(false), _parent(parent), _sock(sock) {}
-	RunnerSideCommandListener(const RunnerSideCommandListener &o): _done(o._done),
-			_parent(o._parent), _sock(o._sock) {}
+	RunnerSideCommandListener(Runner *runner, cml::TCPSocket *sock):
+		AbstractCommandListener(sock), _runner(runner) {}
+	RunnerSideCommandListener(const RunnerSideCommandListener &o):
+		AbstractCommandListener(o), _runner(o._runner) {}
 	RunnerSideCommandListener& operator=(const RunnerSideCommandListener &o)
-		{ _done = o._done; _parent = o._parent; _sock = o._sock; return *this; }
-	void run();
-	void setDone() { _done = true; }
+		{ AbstractCommandListener::operator=(o); _runner = o._runner;
+		return *this; }
+	void process(TLVCommand *cmd);
 
 private:
-	void processCommand(TLVCommand *cmd);
-	bool _done;
-	Runner *_parent;
-	cml::TCPSocket *_sock;
+	Runner *_runner;
 };
 
 }

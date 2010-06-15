@@ -44,7 +44,7 @@ void AbstractObservable::detach(IObserver *o)
  */
 void AbstractObservable::notify()
 {
-	PINFO_3("Notifying all observers.");
+	PINF_3("Notifying all observers.");
 	for (unsigned i = 0; i < _obsrvs.size(); i++)
 		_obsrvs[i]->update(this);
 }

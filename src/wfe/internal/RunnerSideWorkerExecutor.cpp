@@ -15,17 +15,17 @@ namespace wfe
  */
 void RunnerSideWorkerExecutor::run()
 {
-	AbstractWorkerActor *actor;
-	while ((actor = _parent->dequeue())) {
-		actor->setup();
-		do {
-			actor->prefire();
-			actor->fire();
-			actor->postfire();
-		} while (actor->testfire());
-		actor->wrapup();
-	}
-	delete actor;
+//	AbstractWorkerActor *actor;
+//	while ((actor = _parent->dequeue())) {
+//		actor->setup();
+//		do {
+//			actor->prefire();
+//			actor->fire();
+//			actor->postfire();
+//		} while (actor->testfire());
+//		actor->wrapup();
+//	}
+//	delete actor;
 }
 
 }

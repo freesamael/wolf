@@ -26,13 +26,13 @@ namespace wfe
 
 struct PData
 {
-	PData(): CommandSender(), RunnerSocks(), CommandListeners(), CLThreads(),
-			ManagerWaitingQueue() {}
-	MasterSideCommandSender CommandSender;
-	std::vector<cml::TCPSocket *> RunnerSocks;
-	std::vector<MasterSideCommandListener *> CommandListeners;
-	std::vector<cml::Thread *> CLThreads;
-	std::map<uint32_t, ManagerActor *> ManagerWaitingQueue;
+	PData(): cmdsdr(), rsocks(), clis(), clthreads(),
+			mgrq() {}
+	MasterSideCommandSender cmdsdr;
+	std::vector<cml::TCPSocket *> rsocks;
+	std::vector<MasterSideCommandListener *> clis;
+	std::vector<cml::Thread *> clthreads;
+	std::map<uint32_t, ManagerActor *> mgrq;
 };
 
 SINGLETON_REGISTRATION(Master);
@@ -43,17 +43,17 @@ const string Master::StateString[] = { "Not Ready", "Ready", "End" };
 
 Master::Master():
 		SINGLETON_MEMBER_INITLST,	_state(NOT_READY), _msock(), _defdisp(),
-		_activedisp(&_defdisp), _data(new PData)
+		_activedisp(&_defdisp), _d(new PData)
 {
 }
 
 Master::~Master()
 {
-	for (unsigned i = 0; i < _data->CommandListeners.size(); i++)
-		delete _data->CommandListeners[i];
-	for (unsigned i = 0; i < _data->CLThreads.size(); i++)
-		delete _data->CLThreads[i];
-	delete _data;
+	for (unsigned i = 0; i < _d->clis.size(); i++)
+		delete _d->clis[i];
+	for (unsigned i = 0; i < _d->clthreads.size(); i++)
+		delete _d->clthreads[i];
+	delete _d;
 }
 
 /**
@@ -70,26 +70,26 @@ bool Master::setup(uint16_t master_port, uint16_t runner_port,
 	listener.start();
 
 	// Join D2MCE group and broadcast hello message.
-	_data->CommandSender.joinD2MCE(appname);
-	_data->CommandSender.hello(runner_port);
+	_d->cmdsdr.joinD2MCE(appname);
+	_d->cmdsdr.hello(runner_port);
 
 	// Check the runners.
 	sleep(timeout);
 	listener.stop();
-	if (_data->RunnerSocks.size() == 0) {
+	if (_d->rsocks.size() == 0) {
 		PERR("No runner found.");
 		return false;
 	}
 
 	// Bind command listeners to each runner, and start all runners.
-	for (unsigned i = 0; i < _data->RunnerSocks.size(); i++) {
+	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		MasterSideCommandListener *cl =
-				new MasterSideCommandListener(this, _data->RunnerSocks[i]);
+				new MasterSideCommandListener(this, _d->rsocks[i]);
 		Thread *clth = new Thread(cl);
 		clth->start();
-		_data->CommandListeners.push_back(cl);
-		_data->CLThreads.push_back(clth);
-		_data->CommandSender.startRunner(_data->RunnerSocks[i]);
+		_d->clis.push_back(cl);
+		_d->clthreads.push_back(clth);
+		_d->cmdsdr.startRunner(_d->rsocks[i]);
 	}
 
 	_state = READY;
@@ -105,16 +105,15 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 		return;
 
 #ifndef DISABLE_D2MCE
-	for (unsigned i = 0; i < _data->RunnerSocks.size(); i++) {
-		uint32_t seq = _data->CommandSender.runWorker(_data->RunnerSocks[i],
-				worker);
-		_data->ManagerWaitingQueue[seq] = mgr;
+	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
+		uint32_t seq = _d->cmdsdr.runWorker(_d->rsocks[i], worker);
+		_d->mgrq[seq] = mgr;
 	}
 #else
-	TCPSocket *runner = dispatcher()->choose(_data->RunnerSocks);
+	TCPSocket *runner = dispatcher()->choose(_d->rsocks);
 	if (runner) {
-		uint32_t seq = _data->CommandSender.runWorker(runner, worker);
-		_data->ManagerWaitingQueue[seq] = mgr;
+		uint32_t seq = _d->cmdsdr.runWorker(runner, worker);
+		_d->mgrq[seq] = mgr;
 	}
 #endif /* DISABLE_D2MCE */
 }
@@ -125,14 +124,14 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 void Master::shutdown()
 {
 	// Shutdown all runners and stop all command listeners.
-	for (unsigned i = 0; i < _data->RunnerSocks.size(); i++) {
-		_data->CommandSender.shutdown(_data->RunnerSocks[i]);
-		_data->CommandListeners[i]->setDone();
+	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
+		_d->cmdsdr.shutdown(_d->rsocks[i]);
+		_d->clis[i]->setDone();
 	}
 
 	// Wait listener threads end.
-	for (unsigned i = 0; i < _data->CLThreads.size(); i++)
-		_data->CLThreads[i]->join();
+	for (unsigned i = 0; i < _d->clthreads.size(); i++)
+		_d->clthreads[i]->join();
 
 	_state = END;
 }
@@ -142,13 +141,13 @@ void Master::shutdown()
  */
 void Master::runnerConnected(cml::TCPSocket *runnersock)
 {
-	PINFO_2("Got one runner.");
+	PINF_2("Got one runner.");
 	vector<HostAddress> addrs;
-	for (unsigned i = 0; i < _data->RunnerSocks.size(); i++) {
-		addrs.push_back(_data->RunnerSocks[i]->peerAddress());
+	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
+		addrs.push_back(_d->rsocks[i]->peerAddress());
 	}
-	_data->CommandSender.addRunner(runnersock, addrs);
-	_data->RunnerSocks.push_back(runnersock);
+	_d->cmdsdr.addRunner(runnersock, addrs);
+	_d->rsocks.push_back(runnersock);
 }
 
 /**
@@ -156,10 +155,9 @@ void Master::runnerConnected(cml::TCPSocket *runnersock)
  */
 void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 {
-	PINFO_2("Worker " << wseq << " finished.");
+	PINF_2("Worker " << wseq << " finished.");
 	map<uint32_t, ManagerActor *>::iterator iter;
-	if ((iter = _data->ManagerWaitingQueue.find(wseq)) ==
-			_data->ManagerWaitingQueue.end()) {
+	if ((iter = _d->mgrq.find(wseq)) == _d->mgrq.end()) {
 		PERR("No manager found owning worker with sequence = " << wseq);
 		return;
 	}
@@ -168,8 +166,8 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 	// Check if it's the last worker owned by that manager.
 	map<uint32_t, ManagerActor *>::iterator tmpiter;
 	bool lastone = true;
-	for (tmpiter = _data->ManagerWaitingQueue.begin();
-			tmpiter != _data->ManagerWaitingQueue.end(); tmpiter++) {
+	for (tmpiter = _d->mgrq.begin();
+			tmpiter != _d->mgrq.end(); tmpiter++) {
 		if (tmpiter->second == iter->second) {
 			lastone = false;
 			break;
@@ -182,7 +180,7 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 #else
 	iter->second->workerFinished(worker);
 #endif /* DISABLE_D2MCE */
-	_data->ManagerWaitingQueue.erase(iter);
+	_d->mgrq.erase(iter);
 }
 
 /**
@@ -190,7 +188,7 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
  */
 unsigned Master::numberOfRunners() const
 {
-	return _data->RunnerSocks.size();
+	return _d->rsocks.size();
 }
 
 }

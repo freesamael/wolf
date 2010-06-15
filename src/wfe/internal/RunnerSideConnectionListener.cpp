@@ -11,10 +11,10 @@ using namespace cml;
 namespace wfe
 {
 
-RunnerSideConnectionListener::RunnerSideConnectionListener(Runner *runner,
-		TCPSocket *sock, uint16_t port)
+void wfe::RunnerSideConnectionListener::notify(cml::TCPSocket *sock)
 {
-
+	_runner->runnerConnected(sock);
 }
 
 }
+

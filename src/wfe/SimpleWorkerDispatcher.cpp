@@ -21,7 +21,7 @@ TCPSocket* SimpleWorkerDispatcher::choose(const vector<TCPSocket *> &rsocks)
 
 	if (_p >= rsocks.size())
 		_p = 0;
-	PINFO_2("Pick up runner " << _p);
+	PINF_2("Pick up runner " << _p);
 	return rsocks[_p++];
 }
 

@@ -26,7 +26,7 @@ SINGLETON_REGISTRATION_END();
 bool ClosedSocketState::activeOpen(AbstractSocket *sock,
 		const HostAddress &addr, uint16_t port)
 {
-	PINFO_3("Actively opening a socket.");
+	PINF_3("Actively opening a socket.");
 	if (open(sock))
 		return sock->activeOpen(addr, port);
 	return false;
@@ -35,7 +35,7 @@ bool ClosedSocketState::activeOpen(AbstractSocket *sock,
 bool ClosedSocketState::passiveOpen(AbstractSocket *sock,
 		uint16_t port, int qlen)
 {
-	PINFO_3("Passively opening a socket");
+	PINF_3("Passively opening a socket");
 	if (open(sock))
 		return sock->passiveOpen(port, qlen);
 	return false;
@@ -57,7 +57,7 @@ bool ClosedSocketState::open(AbstractSocket *sock)
 	}
 
 	// Initialize.
-	PINFO_3("Opening a socket.");
+	PINF_3("Opening a socket.");
 	if ((sockfd = socket(AF_INET, type, 0)) < 0) {
 		perror("Error: ClosedSocketState::open()");
 		return false;

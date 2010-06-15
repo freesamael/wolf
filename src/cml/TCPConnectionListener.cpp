@@ -24,7 +24,7 @@ void TCPConnectionListener::run()
 	while (!_done) {
 		TCPSocket *sock;
 		if ((sock = _server->accept())) {
-			PINFO_3("Got an incoming connection.");
+			PINF_3("Got an incoming connection.");
 			_mutex.lock();
 			_ssock = sock;
 			_mutex.unlock();

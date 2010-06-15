@@ -13,6 +13,10 @@
 namespace wfe
 {
 
+/**
+ * RunnerSideMasterConnector connects to master once it got master hello
+ * message.
+ */
 class RunnerSideMasterConnector
 {
 public:
