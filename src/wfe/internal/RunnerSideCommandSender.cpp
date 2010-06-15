@@ -20,6 +20,7 @@ void RunnerSideCommandSender::joinD2MCE(const string &appname)
 {
 #ifndef DISABLE_D2MCE
 	// Join D2MCE computing group.
+	/// TODO: add random delay here.
 	D2MCE::instance()->join(appname);
 	PINF_2(D2MCE::instance()->getNumberOfNodes() <<
 			" nodes inside the group, node id = " <<

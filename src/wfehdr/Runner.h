@@ -7,14 +7,10 @@
 #ifndef RUNNER_H_
 #define RUNNER_H_
 
-#include <vector>
-#include <deque>
 #include <string>
-#include "HostAddress.h"
+#include <utility>
+#include <stdint.h>
 #include "TCPSocket.h"
-#include "Mutex.h"
-#include "WaitCondition.h"
-#include "TLVCommand.h"
 #include "AbstractWorkerActor.h"
 
 namespace wfe
@@ -32,10 +28,10 @@ public:
 			const std::string &appname);
 	~Runner();
 	void run();
-//	void enqueue(AbstractWorkerActor *worker);
-//	AbstractWorkerActor* dequeue(unsigned timeout_us = 100000);
-
 	void runnerConnected(cml::TCPSocket *runnersock);
+	void putWorker(uint32_t wseq, AbstractWorkerActor *worker);
+	std::pair<uint32_t, AbstractWorkerActor *> takeWorker();
+	void workerFinished(uint32_t wseq, AbstractWorkerActor *worker);
 
 private:
 	Runner(const Runner &UNUSED(o)): _mport(0), _rport(0), _appname(),

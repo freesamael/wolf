@@ -6,15 +6,14 @@
 
 #include <iostream>
 #include <string>
-#include <cstdlib>
-#include <unistd.h>
-#include <sys/time.h>
+#include <deque>
 #include "Thread.h"
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
 #include "HelperMacros.h"
 #include "Runner.h"
 #include "D2MCE.h"
+#include "Mutex.h"
 #include "internal/RunnerSideMasterConnector.h"
 #include "internal/RunnerSideConnectionListener.h"
 #include "internal/RunnerSideCommandListener.h"
@@ -29,18 +28,14 @@ namespace wfe
 
 struct PData
 {
-	PData(): pcnlis(NULL), pmclis(NULL), rsocks(), rclis(), rclthreads(),
-			cmdsdr() {}
 	RunnerSideConnectionListener *pcnlis;
 	RunnerSideCommandListener *pmclis;
 	vector<TCPSocket *> rsocks;
 	vector<RunnerSideCommandListener *> rclis;
 	vector<Thread *> rclthreads;
 	RunnerSideCommandSender cmdsdr;
-private:
-	PData(const PData &UNUSED(o)): pcnlis(NULL), pmclis(NULL), rsocks(),
-		rclis(), rclthreads(), cmdsdr() {}
-	PData& operator=(const PData &UNUSED(o)) { return *this; }
+	deque<pair<uint32_t, AbstractWorkerActor *> > wq;
+	Mutex wqmx;
 };
 
 Runner::Runner(uint16_t master_port, uint16_t runner_port,
@@ -81,37 +76,42 @@ void Runner::run()
 	cmdthread.join();
 }
 
-///**
-// * Add an actor into the waiting queue for execution.
-// */
-//void Runner::enqueue(AbstractWorkerActor *worker)
-//{
-//	_mutex.lock();
-//	_wq.push_back(worker);
-//	if (_wq.size() == 1)
-//		_wcond.wakeOne();
-//	_mutex.unlock();
-//}
-//
-///**
-// * Take an actor from the waiting queue. If no actors are in the queue, the
-// * caller will be blocked until available or return NULL if timed out.
-// */
-//AbstractWorkerActor* Runner::dequeue(unsigned timeout_us)
-//{
-//	AbstractWorkerActor *a;
-//
-//	_mutex.lock();
-//	if (_wq.size() == 0)
-//		_wcond.wait(&_mutex, timeout_us);
-//	if (_wq.size() == 0)
-//		return NULL;
-//	a = _wq.front();
-//	_wq.pop_front();
-//	_mutex.unlock();
-//
-//	return a;
-//}
+
+/**
+ * Add a worker into the waiting queue for execution.
+ */
+void Runner::putWorker(uint32_t wseq, AbstractWorkerActor *worker)
+{
+	_d->wqmx.lock();
+	_d->wq.push_back(pair<uint32_t, AbstractWorkerActor *>(wseq, worker));
+	_d->wqmx.unlock();
+}
+
+/**
+ * Take a worker from the waiting queue.
+ */
+pair<uint32_t, AbstractWorkerActor *> Runner::takeWorker()
+{
+	pair<uint32_t, AbstractWorkerActor *> w(0, NULL);
+
+	_d->wqmx.lock();
+	if (_d->wq.size() > 0) {
+		w = _d->wq.front();
+		_d->wq.pop_front();
+	}
+	_d->wqmx.unlock();
+
+	return w;
+}
+
+/**
+ * Notify that a worker has been finished.
+ */
+void Runner::workerFinished(uint32_t wseq, AbstractWorkerActor *worker)
+{
+	_d->cmdsdr.workerFinished(_msock, wseq, worker);
+	delete worker;
+}
 
 /**
  * Called when a runner connection got.
