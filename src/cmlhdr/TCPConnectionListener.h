@@ -30,7 +30,7 @@ public:
 
 	inline TCPSocket* lastAcceptedSocket() { return _ssock; }
 	inline bool isDone() const { return _done; }
-	inline void setDone() { _done = true; }
+	inline void setDone(bool d = true) { _done = d; }
 	inline bool mutexLock() { return _mutex.lock(); }
 	inline bool mutexUnlock() { return _mutex.unlock(); }
 	void run();

@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include "TLVUInt32.h"
 #include "TLVReaderWriter.h"
 #include "HelperMacros.h"
 #include "RunnerSideCommandListener.h"
@@ -17,22 +18,35 @@ namespace wfe
 
 void RunnerSideCommandListener::process(TLVCommand *cmd)
 {
-	PINF_2("Processing a command.");
-//	if (cmd->command() == TLVCommand::WORKER_RUN) {
-//		// Test parameter.
-//		AbstractWorkerActor *actor;
-//		if (!(actor = dynamic_cast<AbstractWorkerActor *>(cmd->parameter()))) {
-//			PERR("Invalid parameter.");
-//		}
-		// Add to waiting queue.
-//		_parent->enqueue(actor);
-//	} else if (cmd->command() == TLVCommand::SHUTDOWN) {
-//		PINF_2("Ending runner.");
-//		_done = true;
-//	} else {
-//		PERR("Unexpected command \"" <<
-//				TLVCommand::CommandString[cmd->command()] << "\".");
-//	}
+	PINF_2("Got a command, identifying...");
+	if (cmd->command() == TLVCommand::RUNNER_ADD) {
+		PINF_2("Processing RUNNER_ADD command.");
+		for (unsigned i = 0; i < cmd->parameters().size(); i++) {
+			TLVUInt32 *u32;
+			if ((u32 = dynamic_cast<TLVUInt32 *>(cmd->parameters()[i]))) {
+				HostAddress addr((in_addr_t)u32->value());
+				_runner->connectRunner(addr);
+				delete u32;
+			} else {
+				PERR("Invalid parameter.");
+			}
+		}
+	} else if (cmd->command() == TLVCommand::RUNNER_START) {
+		PINF_2("Processing RUNNER_START command.");
+		_runner->startWorking();
+	} else if (cmd->command() == TLVCommand::WORKER_RUN) {
+		PINF_2("Processing WORKER_RUN command.");
+		/// TODO: complete worker_run processing code.
+	} else if (cmd->command() == TLVCommand::WORKER_STEAL) {
+		PINF_2("Processing WORKER_STEAL command.");
+		_runner->sendWorker(sock());
+	} else if (cmd->command() == TLVCommand::SHUTDOWN) {
+		PINF_2("Processing SHUTDOWN command.");
+		_runner->shutdown();
+	} else {
+		PERR("Unexpected command \"" <<
+				TLVCommand::CommandString[cmd->command()] << "\".");
+	}
 }
 
 }

@@ -19,14 +19,18 @@ namespace wfe
 class RunnerSideWorkerExecutor: public cml::IRunnable
 {
 public:
-	RunnerSideWorkerExecutor(Runner *parent): _parent(parent) {}
-	RunnerSideWorkerExecutor(const RunnerSideWorkerExecutor &o): _parent(o._parent) {}
+	RunnerSideWorkerExecutor(Runner *runner): _done(false), _runner(runner) {}
+	RunnerSideWorkerExecutor(const RunnerSideWorkerExecutor &o):
+		_done(o._done), _runner(o._runner) {}
 	RunnerSideWorkerExecutor& operator=(const RunnerSideWorkerExecutor &o)
-		{ _parent = o._parent; return *this; }
+		{ _done = o._done; _runner = o._runner; return *this; }
+	inline bool isDone() const { return _done; }
+	inline void setDone(bool d = true) { _done = d; }
 	void run();
 
 private:
-	Runner* _parent;
+	bool _done;
+	Runner* _runner;
 };
 
 }

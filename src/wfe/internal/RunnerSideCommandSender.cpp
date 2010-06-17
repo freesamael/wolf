@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include <cstdlib>
+#include <unistd.h>
 #include "TLVUInt32.h"
 #include "TLVReaderWriter.h"
 #include "TLVCommand.h"
@@ -16,13 +18,17 @@ using namespace cml;
 namespace wfe
 {
 
-void RunnerSideCommandSender::joinD2MCE(const string &appname)
+void RunnerSideCommandSender::joinD2MCE(TCPSocket *sock, const string &appname)
 {
 #ifndef DISABLE_D2MCE
+	// Random delay.
+	srand((unsigned)sock->currentAddress().toInetAddr());
+	unsigned delay = rand() % 60 * 33000; // 0 ~ 2s, step 33ms
+	PINF_2("Delaying " << delay << " microseconds.");
+	usleep(delay);
 	// Join D2MCE computing group.
-	/// TODO: add random delay here.
 	D2MCE::instance()->join(appname);
-	PINF_2(D2MCE::instance()->getNumberOfNodes() <<
+	PINF_2("Currently " << D2MCE::instance()->getNumberOfNodes() <<
 			" nodes inside the group, node id = " <<
 			D2MCE::instance()->nodeId() << ".");
 #endif /* DISABLE_D2MCE */
@@ -30,7 +36,7 @@ void RunnerSideCommandSender::joinD2MCE(const string &appname)
 
 void RunnerSideCommandSender::hello(TCPSocket *sock)
 {
-	PINF_2("Sending HELL_RUNNER.");
+	PINF_2("Sending HELLO_RUNNER.");
 	TLVReaderWriter rw(sock);
 	rw.write(TLVCommand(TLVCommand::HELLO_RUNNER));
 }

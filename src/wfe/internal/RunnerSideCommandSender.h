@@ -18,7 +18,7 @@ class RunnerSideCommandSender
 {
 public:
 	/// Join D2MCE computing group.
-	void joinD2MCE(const std::string &appname);
+	void joinD2MCE(cml::TCPSocket *sock, const std::string &appname);
 	/// Say hello.
 	void hello(cml::TCPSocket *sock);
 	/// Notify that a worker is finished.

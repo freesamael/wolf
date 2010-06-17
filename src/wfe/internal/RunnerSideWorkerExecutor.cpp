@@ -4,8 +4,11 @@
  * \author samael
  */
 
+#include <utility>
 #include "RunnerSideWorkerExecutor.h"
 #include "AbstractWorkerActor.h"
+
+using namespace std;
 
 namespace wfe
 {
@@ -15,17 +18,20 @@ namespace wfe
  */
 void RunnerSideWorkerExecutor::run()
 {
-//	AbstractWorkerActor *actor;
-//	while ((actor = _parent->dequeue())) {
-//		actor->setup();
-//		do {
-//			actor->prefire();
-//			actor->fire();
-//			actor->postfire();
-//		} while (actor->testfire());
-//		actor->wrapup();
-//	}
-//	delete actor;
+	while (!_done) {
+		pair<uint32_t, AbstractWorkerActor *> wp = _runner->takeWorker();
+		AbstractWorkerActor *worker;
+		if ((worker = wp.second)) {
+			worker->setup();
+			do {
+				worker->prefire();
+				worker->fire();
+				worker->postfire();
+			} while (worker->testfire());
+			worker->wrapup();
+			_runner->workerFinished(wp.first, worker);
+		}
+	}
 }
 
 }

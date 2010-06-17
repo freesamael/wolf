@@ -41,8 +41,8 @@ TLV_OBJECT_REGISTRATION(TLVCommand, TLV_TYPE_COMMAND_BASE + TLVCommand::RUNNER_S
 		TLVCommandCreator);
 
 const string TLVCommand::CommandString[] = {
-		"Empty", "Shutdown", "Hello (Master)", "Hello (Runner)", "Worker Run",
-		"Worker Steal", "Worker Finished", "Runner Add", "Runner Start"
+		"EMPTY", "SHUTDOWN", "HELLO_MASTER", "HELLO_RUNNER", "WORKER_RUN",
+		"WORKER_STEAL", "WORKER_FINISHED", "RUNNER_ADD", "RUNNER_START"
 };
 
 TLVCommand::~TLVCommand()

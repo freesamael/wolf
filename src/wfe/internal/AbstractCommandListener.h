@@ -22,11 +22,13 @@ class AbstractCommandListener: public cml::IRunnable
 public:
 	AbstractCommandListener(cml::TCPSocket *sock): _done(false), _sock(sock) {}
 	AbstractCommandListener(const AbstractCommandListener &o):
-		_done(false), _sock(o._sock) {}
+		_done(o._done), _sock(o._sock) {}
 	virtual ~AbstractCommandListener() {}
 	AbstractCommandListener& operator=(const AbstractCommandListener &o)
-		{ _sock = o._sock; return *this; }
-	inline void setDone() { _done = true; }
+		{ _done = o._done; _sock = o._sock; return *this; }
+	inline bool isDone() const { return _done; }
+	inline void setDone(bool d = true) { _done = d; }
+	inline cml::TCPSocket* sock() const { return _sock; }
 	void run();
 	virtual void process(TLVCommand *cmd) = 0;
 private:

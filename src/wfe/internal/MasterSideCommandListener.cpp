@@ -15,8 +15,9 @@ namespace wfe
 
 void MasterSideCommandListener::process(TLVCommand *cmd)
 {
-	PINF_2("Processing a command.");
+	PINF_2("Got a command, identifying...");
 	if (cmd->command() == TLVCommand::WORKER_FINISHED) {
+		PINF_2("Processing command WORKER_FINISHED.");
 		TLVUInt32 *u32;
 		AbstractWorkerActor *worker;
 		if (cmd->parameters().size() != 2) { // [id, worker]

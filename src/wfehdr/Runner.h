@@ -11,6 +11,8 @@
 #include <utility>
 #include <stdint.h>
 #include "TCPSocket.h"
+#include "Mutex.h"
+#include "WaitCondition.h"
 #include "AbstractWorkerActor.h"
 
 namespace wfe
@@ -24,24 +26,37 @@ struct PData;
 class Runner
 {
 public:
+	typedef enum State {
+		NOT_READY,
+		READY,
+		WORKING,
+		END
+	} State;
+
 	Runner(uint16_t master_port, uint16_t runner_port,
 			const std::string &appname);
 	~Runner();
 	void run();
+	void connectRunner(const cml::HostAddress &addr);
 	void runnerConnected(cml::TCPSocket *runnersock);
+	void startWorking();
 	void putWorker(uint32_t wseq, AbstractWorkerActor *worker);
 	std::pair<uint32_t, AbstractWorkerActor *> takeWorker();
 	void workerFinished(uint32_t wseq, AbstractWorkerActor *worker);
+	void sendWorker(cml::TCPSocket *sock);
+	void shutdown();
 
 private:
-	Runner(const Runner &UNUSED(o)): _mport(0), _rport(0), _appname(),
-		_msock(NULL), _rsock(), _d(NULL) {}
+	Runner(const Runner &UNUSED(o)): _state(NOT_READY), _statemx(),
+	_statewcond(), _mport(0), _rport(0), _appname(), _rsock(), _d(NULL) {}
 	Runner& operator=(const Runner &UNUSED(o)) { return *this; }
 
 private:
+	State _state;
+	cml::Mutex _statemx;
+	cml::WaitCondition _statewcond;
 	uint16_t _mport, _rport;
 	std::string _appname;
-	cml::TCPSocket *_msock;
 	cml::TCPSocket _rsock;
 	PData *_d;
 };
