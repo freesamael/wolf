@@ -81,9 +81,7 @@ bool Thread::start()
  */
 bool Thread::join()
 {
-	int e;
-	if ((e = pthread_join(_tid, NULL)) != 0) {
-		PERR("Errono = " << e);
+	if (pthread_join(_tid, NULL) != 0) {
 		perror("Error: Thread::join()");
 		return false;
 	}

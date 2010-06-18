@@ -127,6 +127,7 @@ void Runner::run()
 	_state = READY;
 	_statewcond.wait(&_statemx);
 	_statemx.unlock();
+	_d->pmclthread->join();
 	PINF_2("Runner ends.");
 }
 
@@ -274,7 +275,6 @@ void Runner::shutdown()
 
 	PINF_2("Stopping master command listener.");
 	_d->pmclis->setDone();
-	_d->pmclthread->join();
 
 	_statemx.lock();
 	_state = END;
