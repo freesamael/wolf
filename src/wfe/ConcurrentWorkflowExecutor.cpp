@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <iostream>
 #include <unistd.h>
 #include "ConcurrentWorkflowExecutor.h"
 

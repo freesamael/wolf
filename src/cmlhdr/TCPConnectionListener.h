@@ -26,22 +26,23 @@ class TCPConnectionListener: public AbstractObservable, public IRunnable
 {
 public:
 	TCPConnectionListener(TCPSocket *server):
-		_mutex(), _done(false), _server(server), _ssock(NULL) {}
+		_mx(), _done(false), _server(server), _ssock(NULL) {}
 
-	inline TCPSocket* lastAcceptedSocket() { return _ssock; }
-	inline bool isDone() const { return _done; }
-	inline void setDone(bool d = true) { _done = d; }
-	inline bool mutexLock() { return _mutex.lock(); }
-	inline bool mutexUnlock() { return _mutex.unlock(); }
+	inline TCPSocket* lastAcceptedSocket()
+		{ _mx.lock(); TCPSocket *s = _ssock; _mx.unlock(); return s; }
+	inline bool isDone()
+		{ _mx.lock(); bool d = _done; _mx.unlock(); return d; }
+	inline void setDone(bool d = true)
+		{ _mx.lock(); _done = d; _mx.unlock(); }
 	void run();
 
 private:
 	TCPConnectionListener(const TCPConnectionListener &UNUSED(o)):
-		AbstractObservable(), _mutex(), _done(false), _server(NULL),
+		AbstractObservable(), _mx(), _done(false), _server(NULL),
 		_ssock(NULL) {}
 	TCPConnectionListener& operator=(const TCPConnectionListener &UNUSED(o))
 		{ return *this; }
-	Mutex _mutex;
+	Mutex _mx;
 	bool _done;
 	TCPSocket *_server;
 	TCPSocket *_ssock;

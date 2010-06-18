@@ -22,7 +22,7 @@ void wfe::AbstractCommandListener::run()
 	TLVCommand *incmd = NULL;
 
 	PINF_2("Start listening for commands.");
-	while (!_done) {
+	while (!isDone()) {
 		if (!(inobj = tcprw.read()))
 			break; // End of file.
 		if (!(incmd = dynamic_cast<TLVCommand *>(inobj))) {

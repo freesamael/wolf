@@ -19,15 +19,14 @@ namespace cml
  */
 void TCPConnectionListener::run()
 {
-	_done = false;
 	_server->setNonblock(true);
-	while (!_done) {
+	while (!isDone()) {
 		TCPSocket *sock;
 		if ((sock = _server->accept())) {
 			PINF_3("Got an incoming connection.");
-			_mutex.lock();
+			_mx.lock();
 			_ssock = sock;
-			_mutex.unlock();
+			_mx.unlock();
 			notify();
 		}
 		usleep(sock ? 0 : 50000);

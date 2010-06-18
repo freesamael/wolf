@@ -42,10 +42,7 @@ ssize_t UDPSocket::recvfrom(char *buf, size_t size, HostAddress *addr,
 ssize_t UDPSocket::sendto(const char *buf, size_t size, const HostAddress &addr,
 		uint16_t port)
 {
-	_mutex.lock();
-	ssize_t result = _state->sendto(this, buf, size, addr, port);
-	_mutex.unlock();
-	return result;
+	return _state->sendto(this, buf, size, addr, port);;
 }
 
 /**

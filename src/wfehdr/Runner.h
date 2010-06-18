@@ -34,7 +34,7 @@ public:
 	} State;
 
 	Runner(uint16_t master_port, uint16_t runner_port,
-			const std::string &appname);
+			const std::string &appname = "default");
 	~Runner();
 	void run();
 	void connectRunner(const cml::HostAddress &addr);

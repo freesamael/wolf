@@ -135,7 +135,7 @@ void Runner::run()
  */
 void Runner::connectRunner(const HostAddress &addr)
 {
-	TCPSocket *sock;
+	TCPSocket *sock = new TCPSocket(); /// TODO: lifetime management
 	if (sock->activeOpen(addr, _rport)) {
 		runnerConnected(sock);
 		_d->cmdsdr.hello(sock);

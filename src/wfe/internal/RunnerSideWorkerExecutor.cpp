@@ -18,7 +18,7 @@ namespace wfe
  */
 void RunnerSideWorkerExecutor::run()
 {
-	while (!_done) {
+	while (!isDone()) {
 		pair<uint32_t, AbstractWorkerActor *> wp = _runner->takeWorker();
 		AbstractWorkerActor *worker;
 		if ((worker = wp.second)) {

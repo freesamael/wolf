@@ -28,7 +28,7 @@ public:
 	Channel* findChannel(const std::string &name);
 	void execute();
 	void execute(uint16_t runner_port, uint16_t master_port,
-			const std::string &name);
+			const std::string &name = "default");
 
 private:
 	Director(const Director &UNUSED(o)): _actors(), _channels(), _exest(NULL) {}

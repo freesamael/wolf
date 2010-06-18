@@ -139,13 +139,14 @@
  * \#include \<iostream\>
  */
 #define PERR(str) \
-	std::cerr << "<error> " << str << ": " << __PRETTY_FUNCTION__ << ": " \
-	<< __LINE__ << std::endl
+	std::cerr << "Error: " << str << std::endl << "\t[" << \
+	__PRETTY_FUNCTION__ << ": " << __LINE__ << "]" << std::endl
 
 #ifdef DEBUG
 #define __PINF(str) \
-	std::cout << str << ": " << __PRETTY_FUNCTION__ << ": " \
-	<< __LINE__ << std::endl
+	std::cout << str << std::endl << "\t[" << __PRETTY_FUNCTION__ << ": " \
+	<< __LINE__ << "]" << std::endl
+#endif /* DEBUG */
 
 #if DEBUG >= 1 // Normal
 /**
@@ -156,7 +157,9 @@
  * \note
  * \#include \<iostream\>
  */
-#define PINF_1(str) __PINF("<info_1> " << str)
+#define PINF_1(str) __PINF("Info<1>: " << str)
+#else
+#define PINF_2(str)
 #endif /* DEBUG >= 1 */
 
 #if DEBUG >= 2 // Verbose
@@ -168,7 +171,9 @@
  * \note
  * \#include \<iostream\>
  */
-#define PINF_2(str) __PINF(std::tab << "<info_2> " << str)
+#define PINF_2(str) __PINF("Info<2>: " << str)
+#else
+#define PINF_2(str)
 #endif /* DEBUG >= 2 */
 
 #if DEBUG >= 3 // Very verbose
@@ -180,14 +185,9 @@
  * \note
  * \#include \<iostream\>
  */
-#define PINF_3(str) __PINF(std::tab << std::tab << "<info_3> " << str)
-#endif /* DEBUG >= 3 */
+#define PINF_3(str) __PINF("Info<3>: " << str)
 #else
-#define PINF_1(str)
-#define PINF_2(str)
 #define PINF_3(str)
-#endif /* DEBUG */
-
-
+#endif /* DEBUG >= 3 */
 
 #endif /* HELPERMACROS_H_ */

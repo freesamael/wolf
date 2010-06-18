@@ -20,7 +20,7 @@ class Mutex
 	friend class WaitCondition;
 public:
 	Mutex(): _mutex() { pthread_mutex_init(&_mutex, NULL); }
-	~Mutex() { unlock(); pthread_mutex_destroy(&_mutex); }
+	~Mutex() { pthread_mutex_destroy(&_mutex); }
 	/// Lock the mutex. Return true if successed.
 	inline bool lock() { return !(pthread_mutex_lock(&_mutex)); }
 	/// Unlock the mutex. Return true if successed.

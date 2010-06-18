@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <iostream>
 #include "SimpleWorkerDispatcher.h"
 #include "HelperMacros.h"
 

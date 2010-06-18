@@ -40,7 +40,7 @@ public:
 	inline void setDispatcher(IWorkerDispatcher *d) { _activedisp = d; }
 
 	bool setup(uint16_t master_port, uint16_t runner_port, const
-			std::string &appname, unsigned int timeout = 2);
+			std::string &appname = "default", unsigned int timeout = 2);
 	void runWorker(AbstractWorkerActor *worker, ManagerActor *mgr);
 	void shutdown();
 	void runnerConnected(cml::TCPSocket *runnersock);

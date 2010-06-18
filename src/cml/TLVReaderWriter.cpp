@@ -48,10 +48,13 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	PINF_3("Reading a message from TCP socket.");
 
 	// Read header.
+	activesock->lockread();
 	if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
+		activesock->unlockread();
 		delete [] hdrbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
+		activesock->unlockread();
 		PERR("Data read is too small to be a TLV block.");
 		delete [] hdrbuf;
 		return NULL;
@@ -63,12 +66,14 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 	blk.setLength(tmpblk->length());
 	if ((ret = activesock->read(blk.value(), blk.length())) !=
 			blk.length()) {
+		activesock->unlockread();
 		PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
 				" bytes read.");
 		delete [] hdrbuf;
 		delete tmpblk;
 		return NULL;
 	}
+	activesock->unlockread();
 
 	// Construct TLV object.
 	obj = TLVObjectFactory::instance()->createTLVObject(blk);
@@ -107,7 +112,9 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 
 	if (blk) {
 		PINF_3("Sending a message to TCP socket.");
+		activesock->lockwrite();
 		ret = activesock->write(blk->plainBuffer(), blk->plainSize());
+		activesock->unlockwrite();
 		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
 				PERR("Expected " << blk->plainSize() << " bytes but " <<
@@ -162,15 +169,19 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 
 	// Read datagram.
 	localbuf = new char[SZ_MAXBUF];
+	activesock->lockread();
 	if ((ret = activesock->recvfrom(localbuf, SZ_MAXBUF, addr, port)) == 0) {
 		// End of file.
+		activesock->unlockread();
 		delete [] localbuf;
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
+		activesock->unlockread();
 		PERR("Data read is too small to be a TLV block.");
 		delete [] localbuf;
 		return NULL;
 	}
+	activesock->unlockread();
 
 	// Construct TLV block.
 	tmpblk = new SharedTLVBlock(localbuf);
@@ -231,8 +242,10 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 
 	if (blk) {
 		PINF_3("Sending a message to UDP socket.");
+		activesock->lockwrite();
 		ret = activesock->sendto(blk->plainBuffer(), blk->plainSize(),
 				addr, port);
+		activesock->unlockwrite();
 		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
 				PERR("Expected " << blk->plainSize() << " bytes but " <<

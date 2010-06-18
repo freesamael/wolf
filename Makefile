@@ -16,8 +16,8 @@ else
 CXXFLAGS += -DDISABLE_D2MCE
 endif
 
-ifeq (${DEBUG}, y)
-CXXFLAGS += -DDEBUG
+ifneq (${DEBUG}, n)
+CXXFLAGS += -DDEBUG=${DEBUG}
 endif
 
 CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra

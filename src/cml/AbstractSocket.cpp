@@ -32,17 +32,18 @@ const string AbstractSocket::BoundState = BoundSocketState::instance()->name();
 const string AbstractSocket::ConnectedState = ConnectedSocketState::instance()->name();
 
 AbstractSocket::AbstractSocket():
-		_sockfd(0), _mutex(), _state(ClosedSocketState::instance())
+		_sockfd(0), _wmx(), _rmx(), _state(ClosedSocketState::instance())
 {
 }
 
 AbstractSocket::AbstractSocket(const AbstractSocket &sock):
-		_sockfd(sock._sockfd), _mutex(), _state(sock._state)
+		_sockfd(sock._sockfd), _wmx(), _rmx(), _state(sock._state)
 {
 }
 
 AbstractSocket::AbstractSocket(int sockfd):
-		_sockfd(sockfd), _mutex(),_state(SimpleActiveSocketState::instance())
+		_sockfd(sockfd), _wmx(), _rmx(),
+		_state(SimpleActiveSocketState::instance())
 {
 }
 
@@ -103,7 +104,8 @@ bool AbstractSocket::close()
 }
 
 /**
- * Read a message.
+ * Read a message. It's not thread-safe unless you use lockread() and
+ * unlockread() in your program.
  *
  * \return
  * Size read. On error, return -1.
@@ -114,17 +116,15 @@ ssize_t AbstractSocket::read(char *buf, size_t size)
 }
 
 /**
- * Write a message.
+ * Write a message. It's not thread-safe unless you use lockwrite() and
+ * unlockwrite().
  *
  * \return
  * Size written. On error, return -1.
  */
 ssize_t AbstractSocket::write(const char *buf, size_t size)
 {
-	_mutex.lock();
-	ssize_t result = _state->write(this, buf, size);
-	_mutex.unlock();
-	return result;
+	return _state->write(this, buf, size);;
 }
 
 /**

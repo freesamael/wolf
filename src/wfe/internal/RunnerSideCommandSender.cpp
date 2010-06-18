@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <iostream>
 #include <cstdlib>
 #include <unistd.h>
 #include "TLVUInt32.h"

@@ -51,10 +51,8 @@ void AbstractConnectionListener::update(AbstractObservable *o)
 	}
 
 	// Check socket.
-	ca->mutexLock();
-	TCPSocket *sock = ca->lastAcceptedSocket();
-	ca->mutexUnlock();
-	if (!sock) {
+	TCPSocket *sock;
+	if (!(sock = ca->lastAcceptedSocket())) {
 		PERR("No socket object found.");
 		return;
 	}
