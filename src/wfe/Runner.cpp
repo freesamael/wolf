@@ -54,7 +54,7 @@ Runner::Runner(uint16_t master_port, uint16_t runner_port,
 		_mport(master_port), _rport(runner_port), _appname(appname), _rsock(),
 		_d(new PData())
 {
-
+	_rsock.setAutoclean(false);
 }
 
 Runner::~Runner()
@@ -136,7 +136,7 @@ void Runner::run()
  */
 void Runner::connectRunner(const HostAddress &addr)
 {
-	TCPSocket *sock = new TCPSocket(); /// TODO: lifetime management
+	TCPSocket *sock = new TCPSocket();
 	if (sock->activeOpen(addr, _rport)) {
 		runnerConnected(sock);
 		_d->cmdsdr.hello(sock);
