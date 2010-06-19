@@ -37,12 +37,15 @@ public:
 			const std::string &appname = "default");
 	~Runner();
 	void run();
+
+	// Used by internal classes and runner itself.
 	void connectRunner(const cml::HostAddress &addr);
 	void runnerConnected(cml::TCPSocket *runnersock);
 	void startWorking();
 	void putWorker(uint32_t wseq, AbstractWorkerActor *worker);
 	std::pair<uint32_t, AbstractWorkerActor *> takeWorker();
 	void workerFinished(uint32_t wseq, AbstractWorkerActor *worker);
+	void workerMissed();
 	void sendWorker(cml::TCPSocket *sock);
 	void shutdown();
 

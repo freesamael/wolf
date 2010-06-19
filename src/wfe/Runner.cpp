@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>
 #include <deque>
+#include <cstdlib>
 #include "Thread.h"
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
@@ -29,7 +30,7 @@ struct PData
 {
 	PData(): pmsock(NULL), pmclis(NULL), pmclthread(NULL), pcnlis(NULL),
 			rsocks(), rclis(), rclthreads(), cmdsdr(), pwexe(NULL),
-			pwexethread(NULL), wq(), wqmx() {}
+			pwexethread(NULL), wq(), wqmx(), wmsc(0), wmscmx() {}
 	// Master related resources.
 	TCPSocket *pmsock;							// Master sock.
 	RunnerSideCommandListener *pmclis;			// Master cmd listener.
@@ -47,6 +48,8 @@ struct PData
 	Thread *pwexethread;						// Worker execution thread.
 	deque<pair<uint32_t, AbstractWorkerActor *> > wq;	// Working queue.
 	Mutex wqmx;									// Working queue mutex.
+	int wmsc;									// Worker miss count.
+	Mutex wmscmx;								// Worker miss count mutex.
 };
 
 Runner::Runner(uint16_t master_port, uint16_t runner_port,
@@ -194,6 +197,9 @@ void Runner::putWorker(uint32_t wseq, AbstractWorkerActor *worker)
 {
 	_d->wqmx.lock();
 	_d->wq.push_back(pair<uint32_t, AbstractWorkerActor *>(wseq, worker));
+	_d->wmscmx.lock();
+	_d->wmsc = 0;
+	_d->wmscmx.unlock();
 	_d->wqmx.unlock();
 }
 
@@ -211,6 +217,9 @@ pair<uint32_t, AbstractWorkerActor *> Runner::takeWorker()
 	}
 	_d->wqmx.unlock();
 
+	if (!w.second)
+		workerMissed();
+
 	return w;
 }
 
@@ -221,6 +230,24 @@ void Runner::workerFinished(uint32_t wseq, AbstractWorkerActor *worker)
 {
 	_d->cmdsdr.workerFinished(_d->pmsock, wseq, worker);
 	delete worker;
+}
+
+/**
+ * Called when takeWorker() returns NULL.
+ */
+void Runner::workerMissed()
+{
+	int tc;
+
+	_d->wmscmx.lock();
+	tc = ++_d->wmsc;
+	_d->wmscmx.unlock();
+
+	// Random steal each time count increases 10 times.
+	if (tc >= 10 && ((tc % 10) == 0)) {
+		int index = rand() % _d->rsocks.size();
+		_d->cmdsdr.stealWorker(_d->rsocks[index]);
+	}
 }
 
 /**

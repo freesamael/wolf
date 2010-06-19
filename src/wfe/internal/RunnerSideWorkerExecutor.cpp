@@ -30,6 +30,8 @@ void RunnerSideWorkerExecutor::run()
 			} while (worker->testfire());
 			worker->wrapup();
 			_runner->workerFinished(wp.first, worker);
+		} else {
+			usleep(10000);
 		}
 	}
 }
