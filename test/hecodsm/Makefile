@@ -1,4 +1,4 @@
-HECO = ${WOLF_BINDIR}/heco
+HECO = ${WOLF_BINDIR}/hecodsm
 HECO_O = ${HECO_SRCDIR}/heco.o
 HECO_RUNNER = ${WOLF_BINDIR}/heco_runner
 HECO_RUNNER_O = ${HECO_SRCDIR}/heco_runner.o

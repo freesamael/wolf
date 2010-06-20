@@ -7,6 +7,7 @@
 #include <iostream>
 #include <cstdlib>
 #include <unistd.h>
+#include "D2MCE.h"
 #include "TLVUInt32.h"
 #include "TLVReaderWriter.h"
 #include "TLVCommand.h"

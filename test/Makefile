@@ -1,6 +1,6 @@
 BINTEST_SRCDIR = ${WOLF_TESTDIR}/bintest
 UNITTEST_SRCDIR = ${WOLF_TESTDIR}/unittest
-HECO_SRCDIR = ${WOLF_TESTDIR}/heco
+HECO_SRCDIR = ${WOLF_TESTDIR}/hecodsm
 
 include ${BINTEST_SRCDIR}/Makefile ${UNITTEST_SRCDIR}/Makefile \
 	${HECO_SRCDIR}/Makefile

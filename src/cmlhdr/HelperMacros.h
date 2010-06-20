@@ -159,7 +159,7 @@
  */
 #define PINF_1(str) __PINF("Info<1>: " << str)
 #else
-#define PINF_2(str)
+#define PINF_1(str)
 #endif /* DEBUG >= 1 */
 
 #if DEBUG >= 2 // Verbose
