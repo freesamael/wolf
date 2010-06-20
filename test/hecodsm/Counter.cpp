@@ -4,7 +4,7 @@
  * \author samael
  */
 
-#include <cstdio>
+#include <iostream>
 #include <cstring>
 #include <SharedMemory.h>
 #include <TLVObjectFactoryAutoRegistry.h>
@@ -37,6 +37,7 @@ Counter::~Counter()
 
 void Counter::managerPrefire(ManagerActor *UNUSED(manager))
 {
+	PINF_1("Manager Prefire");
 	// Load memory.
 	_mem = dynamic_cast<SharedMemory *>(sinkPorts()[0]->readPort());
 	if (!_mem) {
@@ -45,27 +46,24 @@ void Counter::managerPrefire(ManagerActor *UNUSED(manager))
 	}
 	_mem->load();
 	int *num = (int *)_mem->buffer();
-	printf("%s: Num = %d %d %d %d\n", __PRETTY_FUNCTION__,
-			num[0], num[1], num[2], num[3]);
+	PINF_1("Num = " << num[0] << " " << num[1] << " " << num[2] << " " <<
+			num[3]);
 
 	// Generate memory info.
 	_meminfo = new TLVSharedMemoryInfo(_mem->name(), _mem->size());
-	printf("%s: Meminfo: name = %s, size = %d\n", __PRETTY_FUNCTION__,
-			_meminfo->name().c_str(), (int)_meminfo->size());
+	PINF_1("Meminfo: name = " << _meminfo->name() << ", size = " <<
+			_meminfo->size());
 }
 
 void Counter::managerPostfire(ManagerActor *UNUSED(manager))
 {
-	unsigned nodes = D2MCE::instance()->getNumberOfNodes();
-	printf("%s: Barrier for %u nodes.\n", __PRETTY_FUNCTION__, nodes);
-	D2MCE::instance()->barrier(nodes);
-	printf("%s: Barrier passed.\n", __PRETTY_FUNCTION__);
+	PINF_1("Manager Postfire");
 
 	// Load memory.
 	_mem->load();
 	int *num = (int *)_mem->buffer();
-	printf("%s: Num = %d %d %d %d\n", __PRETTY_FUNCTION__,
-			num[0], num[1], num[2], num[3]);
+	PINF_1("Num = " << num[0] << " " << num[1] << " " << num[2] << " " <<
+			num[3]);
 
 	// Write port.
 	sourcePorts()[0]->writeChannel(_mem);
@@ -73,11 +71,13 @@ void Counter::managerPostfire(ManagerActor *UNUSED(manager))
 
 void Counter::setup()
 {
+	PINF_1("Setup");
 	_mem = D2MCE::instance()->createSharedMemory(_meminfo->size(), _meminfo->name());
 }
 
 void Counter::fire()
 {
+	PINF_1("Fire");
 	int index = D2MCE::instance()->nodeId() - 1;
 	if (index < 0) {
 		PERR("Unexpected node id.");
@@ -87,19 +87,18 @@ void Counter::fire()
 	_mem->lock();
 	_mem->load();
 	int *num = (int *)_mem->buffer();
-	printf("%s: Num = %d %d %d %d\n", __PRETTY_FUNCTION__,
-			num[0], num[1], num[2], num[3]);
+	PINF_1("Num = " << num[0] << " " << num[1] << " " << num[2] << " " <<
+			num[3]);
 	num[index]++;
+	PINF_1("Num = " << num[0] << " " << num[1] << " " << num[2] << " " <<
+			num[3]);
 	_mem->store();
 	_mem->unlock();
 }
 
 void Counter::postfire()
 {
-	unsigned int nodes = D2MCE::instance()->getNumberOfNodes();
-	printf("%s: Barrier for %u nodes.\n", __PRETTY_FUNCTION__, nodes);
-	D2MCE::instance()->barrier(nodes);
-	printf("%s: Barrier passed.\n", __PRETTY_FUNCTION__);
+	PINF_1("Postfire");
 }
 
 StandardTLVBlock* Counter::toTLVBlock() const

@@ -18,10 +18,12 @@ namespace wfe
  */
 void RunnerSideWorkerExecutor::run()
 {
+	PINF_2("Worker executor starts.");
 	while (!isDone()) {
 		pair<uint32_t, AbstractWorkerActor *> wp = _runner->takeWorker();
 		AbstractWorkerActor *worker;
 		if ((worker = wp.second)) {
+			PINF_2("Executing a worker.");
 			worker->setup();
 			do {
 				worker->prefire();
@@ -34,6 +36,7 @@ void RunnerSideWorkerExecutor::run()
 			usleep(10000);
 		}
 	}
+	PINF_2("Worker executor ends.");
 }
 
 }

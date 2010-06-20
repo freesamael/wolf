@@ -4,7 +4,7 @@
  * \author samael
  */
 
-#include <cstdio>
+#include <iostream>
 #include <TLVObjectFactory.h>
 #include <TLVSharedMemoryInfo.h>
 #include <HelperMacros.h>
@@ -22,8 +22,7 @@ ITLVObject* CounterCreator::create(const ITLVBlock &blk) const
 		PERR("Invalid type.");
 		return NULL;
 	}
-	printf("%s: Meminfo: name = %s, size = %d\n", __PRETTY_FUNCTION__,
-			info->name().c_str(), (int)info->size());
+	PINF_1("Meminfo: name = " << info->name() << ", size = " << info->size());
 	Counter *c = new Counter();
 	c->setMeminfo(info);
 	return c;

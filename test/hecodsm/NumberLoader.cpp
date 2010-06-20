@@ -30,7 +30,7 @@ void NumberLoader::fire()
 		PERR("Invalid type.");
 	}
 	int *num = (int *)mem->buffer();
-	PINF_1("Num = " << num[0] << ", " << num[1] << ", " <<  num[2] <<
-			", " << num[3]);
+	PINF_1("Num = " << num[0] << " " << num[1] << " " <<  num[2] <<
+			" " << num[3]);
 	_state = FINISHED;
 }

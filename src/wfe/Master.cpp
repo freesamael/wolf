@@ -156,11 +156,17 @@ void Master::runnerConnected(cml::TCPSocket *runnersock)
 void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 {
 	PINF_2("Worker " << wseq << " finished.");
+
+	// Find the belonging manager.
 	map<uint32_t, ManagerActor *>::iterator iter;
 	if ((iter = _d->mgrq.find(wseq)) == _d->mgrq.end()) {
 		PERR("No manager found owning worker with sequence = " << wseq);
 		return;
 	}
+
+	// Take the value and remove the manager from the queue.
+	ManagerActor *mgr = iter->second;
+	_d->mgrq.erase(iter);
 
 #ifndef DISABLE_D2MCE
 	// Check if it's the last worker owned by that manager.
@@ -168,19 +174,21 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 	bool lastone = true;
 	for (tmpiter = _d->mgrq.begin();
 			tmpiter != _d->mgrq.end(); tmpiter++) {
-		if (tmpiter->second == iter->second) {
+		if (tmpiter->second == mgr) {
 			lastone = false;
 			break;
 		}
 	}
 
 	// Notify manager only if it's the last worker.
-	if (lastone)
-		iter->second->workerFinished(worker);
+	if (lastone) {
+		PINF_2("Notifying manager.");
+		mgr->workerFinished(worker);
+	}
 #else
-	iter->second->workerFinished(worker);
+	PINF_2("Notifying manager.");
+	mgr->workerFinished(worker);
 #endif /* DISABLE_D2MCE */
-	_d->mgrq.erase(iter);
 }
 
 /**
