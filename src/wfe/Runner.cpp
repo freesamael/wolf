@@ -243,11 +243,7 @@ void Runner::workerMissed()
 	tc = ++_d->wmsc;
 	_d->wmscmx.unlock();
 
-	// Random steal each time count increases 10 times.
-	if (tc >= 10 && ((tc % 10) == 0)) {
-		int index = rand() % _d->rsocks.size();
-		_d->cmdsdr.stealWorker(_d->rsocks[index]);
-	}
+	/// TODO: do something to steal workers.
 }
 
 /**
