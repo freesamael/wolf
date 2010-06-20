@@ -22,6 +22,7 @@ public:
 	TLVString(): _str() {}
 	TLVString(const char *str): _str(str) {}
 	TLVString(const std::string &str): _str(str) {}
+	TLVString(const TLVString &o): _str(o._str) {}
 	StandardTLVBlock* toTLVBlock() const;
 	inline std::string toString() const { return _str; }
 	void setString(const char *str) { _str = str; }
