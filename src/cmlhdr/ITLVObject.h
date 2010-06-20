@@ -29,6 +29,7 @@ class ITLVObject
 {
 public:
 	virtual ~ITLVObject() {}
+	/// Convert to StandardTLVBlock.
 	virtual StandardTLVBlock* toTLVBlock() const = 0;
 };
 

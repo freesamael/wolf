@@ -108,12 +108,14 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		uint32_t seq = _d->cmdsdr.runWorker(_d->rsocks[i], worker);
 		_d->mgrq[seq] = mgr;
+		PINF_2("Queue size = " << _d->mgrq.size());
 	}
 #else
 	TCPSocket *runner = dispatcher()->choose(_d->rsocks);
 	if (runner) {
 		uint32_t seq = _d->cmdsdr.runWorker(runner, worker);
 		_d->mgrq[seq] = mgr;
+		PINF_2("Queue size = " << _d->mgrq.size());
 	}
 #endif /* DISABLE_D2MCE */
 }

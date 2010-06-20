@@ -21,6 +21,7 @@ class IObserver
 {
 public:
 	virtual ~IObserver() {}
+	/// Update the observer.
 	virtual void update(AbstractObservable *o) = 0;
 };
 

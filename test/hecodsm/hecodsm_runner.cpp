@@ -1,5 +1,5 @@
 /*
- * heco_runner.cpp
+ * hecodsm_runner.cpp
  *
  *  Created on: Apr 7, 2010
  *      Author: samael

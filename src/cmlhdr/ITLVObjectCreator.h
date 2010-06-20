@@ -25,7 +25,9 @@ class ITLVObjectCreator
 {
 public:
 	virtual ~ITLVObjectCreator() {}
+	/// Create a TLV object corresponding to this creator.
 	virtual ITLVObject* create() const = 0;
+	/// Create a TLV object corresponding to this creator from TLV block.
 	virtual ITLVObject* create(const ITLVBlock &blk) const = 0;
 };
 

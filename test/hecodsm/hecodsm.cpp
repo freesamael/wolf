@@ -1,5 +1,5 @@
 /*
- * heco.cpp
+ * hecodsm.cpp
  *
  *  Created on: Apr 7, 2010
  *      Author: samael

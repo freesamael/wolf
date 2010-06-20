@@ -4,13 +4,18 @@
  * \author samael
  */
 
+#include "TLVObjectFactoryAutoRegistry.h"
+#include "HelperMacros.h"
 #include "DUInt32.h"
 #include "WfeTLVTypes.h"
+#include "DUInt32Creator.h"
 
 using namespace cml;
 
 namespace wfe
 {
+
+TLV_OBJECT_REGISTRATION(DUInt32, TLV_TYPE_DUINT32, DUInt32Creator);
 
 StandardTLVBlock* DUInt32::toTLVBlock() const
 {

@@ -130,7 +130,7 @@ ITLVObject* TLVObjectFactory::createTLVObject(const ITLVBlock &blk)
 			_creators.end()) {
 		return iter->second->create(blk);
 	}
-	PERR("No suitable creator found for type" << blk.type());
+	PERR("No suitable creator found for type " << blk.type());
 	return NULL;
 }
 

@@ -17,7 +17,7 @@ using namespace std;
 using namespace cml;
 using namespace wfe;
 
-#define TLV_TYPE_COUNTER	101
+#define TLV_TYPE_COUNTER	129
 
 TLV_OBJECT_REGISTRATION(Counter, TLV_TYPE_COUNTER, CounterCreator);
 

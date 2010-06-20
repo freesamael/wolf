@@ -18,6 +18,7 @@ class IRunnable
 {
 public:
 	virtual ~IRunnable() {}
+	/// Core processing function.
 	virtual void run() = 0;
 };
 
