@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include "HelperMacros.h"
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"

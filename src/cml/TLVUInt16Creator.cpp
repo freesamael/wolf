@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <arpa/inet.h>
 #include "TLVUInt16Creator.h"
 #include "TLVBlock.h"

@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <cstring>
 #include <SharedMemory.h>
 #include <TLVObjectFactoryAutoRegistry.h>

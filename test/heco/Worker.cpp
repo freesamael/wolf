@@ -7,6 +7,7 @@
 #include <TLVObjectFactoryAutoRegistry.h>
 #include <HelperMacros.h>
 #include <iostream>
+#include <sstream>
 #include <cstring>
 #include "Worker.h"
 #include "WorkerCreator.h"

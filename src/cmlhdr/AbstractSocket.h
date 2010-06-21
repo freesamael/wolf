@@ -8,6 +8,7 @@
 #define ABSTRACTSOCKET_H_
 
 #include <iostream>
+#include <sstream>
 #include <string>
 #include <stdint.h>
 #include "HostAddress.h"

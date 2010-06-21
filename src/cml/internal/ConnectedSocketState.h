@@ -7,8 +7,9 @@
 #ifndef CONNECTEDSOCKETSTATE_H_
 #define CONNECTEDSOCKETSTATE_H_
 
-#include <vector>
 #include <iostream>
+#include <sstream>
+#include <vector>
 #include "ISocketState.h"
 #include "HelperMacros.h"
 

@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <HelperMacros.h>
 #include <TLVObjectFactory.h>
 #include "WorkerCreator.h"

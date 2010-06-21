@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include "TLVUInt32.h"
 #include "TLVReaderWriter.h"
 #include "HelperMacros.h"

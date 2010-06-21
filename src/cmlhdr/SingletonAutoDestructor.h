@@ -8,6 +8,7 @@
 #define SINGLETONAUTODESTRUCTOR_H_
 
 #include <iostream>
+#include <sstream>
 #include <typeinfo>
 #include "HelperMacros.h"
 

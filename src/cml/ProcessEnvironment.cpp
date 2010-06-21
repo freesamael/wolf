@@ -4,8 +4,6 @@
  * \author samael
  */
 
-#include <iostream>
-#include <vector>
 #include <cstring>
 #include <unistd.h>
 #include "StringHelper.h"

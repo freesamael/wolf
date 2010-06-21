@@ -11,6 +11,7 @@
 #include <string>
 #include <vector>
 #include <iostream>
+#include <sstream>
 #include "ITLVObject.h"
 #include "ITLVObjectCreator.h"
 #include "ITLVBlock.h"

@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <deque>
 #include "HelperMacros.h"
 #include "SimpleWorkflowExecutor.h"

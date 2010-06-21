@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <cstdio>
 #include <errno.h>
 #include <sys/time.h>

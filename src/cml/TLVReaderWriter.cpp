@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include <iostream>
+#include <sstream>
 #include <cstring>
 #include "TLVReaderWriter.h"
 #include "TLVBlock.h"

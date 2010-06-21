@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include "TLVReaderWriter.h"
 #include "TLVCommand.h"
 #include "AbstractConnectionListener.h"

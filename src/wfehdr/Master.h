@@ -8,6 +8,7 @@
 #define MASTER_H_
 
 #include <iostream>
+#include <sstream>
 #include <vector>
 #include <string>
 #include <map>

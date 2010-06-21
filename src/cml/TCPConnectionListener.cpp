@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <unistd.h>
 #include "TCPConnectionListener.h"
 #include "HelperMacros.h"

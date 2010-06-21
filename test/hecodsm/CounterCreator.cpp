@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <TLVObjectFactory.h>
 #include <TLVSharedMemoryInfo.h>
 #include <HelperMacros.h>

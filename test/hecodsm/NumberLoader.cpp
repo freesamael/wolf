@@ -5,6 +5,7 @@
  */
 
 #include <iostream>
+#include <sstream>
 #include <SharedMemory.h>
 #include <HelperMacros.h>
 #include "NumberLoader.h"

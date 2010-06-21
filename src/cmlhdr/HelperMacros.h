@@ -6,6 +6,11 @@
 #ifndef HELPERMACROS_H_
 #define HELPERMACROS_H_
 
+#include <pthread.h>
+
+extern pthread_mutex_t g_mxcout;
+extern pthread_mutex_t g_mxcerr;
+
 #ifndef UNUSED
 #ifdef __GNUC__
 #define UNUSED(x) x __attribute__((unused))
@@ -39,7 +44,7 @@
  * \#include \<TLVObjectFactoryAutoRegistry.h\>
  */
 #define TLV_OBJECT_REGISTRATION(type, id, creator) \
-	static cml::TLVObjectFactoryAutoRegistry CONCATE(autoreg, __LINE__)( \
+	static cml::TLVObjectFactoryAutoRegistry CONCATE(__autoreg, __LINE__)( \
 			typeid(type).name(), id, new creator())
 
 /**
@@ -49,7 +54,8 @@
  *
  * \note
  * \#include \<vector\> <br>
- * \#include \<iostream\>
+ * \#include \<iostream\> <br>
+ * \#include \<sstream\>
  */
 #define SINGLETON(type)                                                        \
 	public:                                                                    \
@@ -90,7 +96,7 @@
  * \#include \<SingletonAutoDestructor.h\>
  */
 #define SINGLETON_REGISTRATION(type)                                           \
-	static cml::SingletonAutoDestructor< type > CONCATE(autodes, __LINE__);    \
+	static cml::SingletonAutoDestructor< type > CONCATE(__autodes, __LINE__);  \
 	type* type::_instance = NULL;                                              \
 	type* type::instance() {                                                   \
 		if (!_instance) {                                                      \
@@ -122,7 +128,7 @@
 		}                                                                      \
 		return _instance;                                                      \
 	}                                                                          \
-	typedef int DummyTypeDefForSemiColonEnding__
+	typedef int __DummyTypeDefForSemiColonEnding__
 
 /**
  * Initialize members singleton macros need. It should be put within
@@ -133,29 +139,47 @@
 
 /**
  * \def PERR(str)
- * Print an error message. str is a stream in "a << b << c" format.
+ * Print an error message. str is a stream in "a << b << c" format. It's a
+ * multi-line macro.
  *
  * \note
- * \#include \<iostream\>
+ * \#include \<iostream\> <br>
+ * \#include \<sstream\>
  */
 #define PERR(str) \
-	std::cerr << "Error: " << str << std::endl << "\t[" << \
-	__PRETTY_FUNCTION__ << ": " << __LINE__ << "]" << std::endl
+{ \
+	std::stringstream __tmpstream; \
+	__tmpstream << "Error: " << str << std::endl << "\t[" << \
+	__PRETTY_FUNCTION__ << ": " << __LINE__ << "]" << std::endl; \
+	pthread_mutex_lock(&g_mxcerr); \
+	std::cerr << __tmpstream; \
+	pthread_mutex_unlock(&g_mxcerr); \
+} \
+	typedef int CONCATE(__DummyTypeDefForSemiColonEnding__, __LINE__)
+
 
 #ifdef DEBUG
 #define __PINF(str) \
-	std::cout << str << std::endl << "\t[" << __PRETTY_FUNCTION__ << ": " \
-	<< __LINE__ << "]" << std::endl
+{ \
+	std::stringstream __tmpstream; \
+	__tmpstream << str << std::endl << "\t[" << __PRETTY_FUNCTION__ << ": " \
+	<< __LINE__ << "]" << std::endl; \
+	pthread_mutex_lock(&g_mxcout); \
+	std::cout << __tmpstream; \
+	pthread_mutex_unlock(&g_mxcout); \
+} \
+	typedef int CONCATE(__DummyTypeDefForSemiColonEnding__, __LINE__)
 #endif /* DEBUG */
 
 #if DEBUG >= 1 // Normal
 /**
  * \def PINFO_1(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 1.
+ * Only show when compiled as DEBUG >= 1. It's a multi-line macro.
  *
  * \note
- * \#include \<iostream\>
+ * \#include \<iostream\> <br>
+ * \#include \<sstream\>
  */
 #define PINF_1(str) __PINF("Info<1>: " << str)
 #else
@@ -166,10 +190,11 @@
 /**
  * \def PINFO_2(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 2 (verbose).
+ * Only show when compiled as DEBUG >= 2 (verbose). It's a multi-line macro.
  *
  * \note
- * \#include \<iostream\>
+ * \#include \<iostream\> <br>
+ * \#include \<sstream\>
  */
 #define PINF_2(str) __PINF("Info<2>: " << str)
 #else
@@ -180,10 +205,12 @@
 /**
  * \def PINFO_3(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 3 (very verbose).
+ * Only show when compiled as DEBUG >= 3 (very verbose). It's a multi-line
+ * macro.
  *
  * \note
- * \#include \<iostream\>
+ * \#include \<iostream\> <br>
+ * \#include \<sstream\>
  */
 #define PINF_3(str) __PINF("Info<3>: " << str)
 #else

@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include <iostream>
+#include <sstream>
 #include "HelperMacros.h"
 #include "TLVUInt32.h"
 #include "MasterSideCommandListener.h"

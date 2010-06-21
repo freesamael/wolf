@@ -5,6 +5,8 @@
  */
 
 #define __STDC_LIMIT_MACROS // Needed to use UINTx_MAX macros in <stdint.h>
+#include <iostream>
+#include <sstream>
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
 #include "MasterSideCommandSender.h"

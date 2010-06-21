@@ -34,6 +34,7 @@ void TCPSocketTestSuite::testReadWrite()
 	athread.start();
 	CPPUNIT_ASSERT(client.activeOpen("127.0.0.1", 6655));
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", client.state()->name());
+	athread.join();
 	CPPUNIT_ASSERT_ASSERTION_FAIL(CPPUNIT_ASSERT_EQUAL((TCPSocket *)NULL, athread.ssock));
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", athread.ssock->state()->name());
 
