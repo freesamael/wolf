@@ -66,9 +66,11 @@ void StandardTLVBlock::setLength(uint16_t len)
  */
 StandardTLVBlock& StandardTLVBlock::operator=(const StandardTLVBlock &blk)
 {
-	delete _buf;
-	_buf = new char[blk.plainSize()];
-	memcpy(_buf, blk.plainBuffer(), blk.plainSize());
+	if (&blk != this) {
+		delete _buf;
+		_buf = new char[blk.plainSize()];
+		memcpy(_buf, blk.plainBuffer(), blk.plainSize());
+	}
 	return *this;
 }
 

@@ -44,7 +44,7 @@ void SimpleWorkflowExecutor::iterate(const vector<AbstractActor *> &actors)
 	}
 
 	// Execute one actor.
-	while (qready.size() > 0) {
+	while (!qready.empty()) {
 		PINF_2("Iterating an actor.");
 		// Iterate until testfire() fails.
 		do {

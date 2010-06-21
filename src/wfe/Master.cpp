@@ -191,7 +191,7 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 	bool lastone = true;
 	_d->mgrqmx.lock();
 	for (tmpiter = _d->mgrq.begin();
-			tmpiter != _d->mgrq.end(); tmpiter++) {
+			tmpiter != _d->mgrq.end(); ++tmpiter) {
 		if (tmpiter->second == mgr) {
 			lastone = false;
 			break;

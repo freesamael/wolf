@@ -36,7 +36,7 @@ bool Director::addActor(AbstractActor *actor)
 		return false;
 	}
 	vector<AbstractActor *>::iterator iter;
-	for (iter = _actors.begin(); iter != _actors.end(); iter++) {
+	for (iter = _actors.begin(); iter != _actors.end(); ++iter) {
 		if (*iter == actor)
 			return false;
 	}
@@ -53,7 +53,7 @@ bool Director::addActor(AbstractActor *actor)
 bool Director::removeActor(AbstractActor *actor)
 {
 	vector<AbstractActor *>::iterator iter;
-	for (iter = _actors.begin(); iter != _actors.end(); iter++) {
+	for (iter = _actors.begin(); iter != _actors.end(); ++iter) {
 		if (*iter == actor) {
 			_actors.erase(iter);
 			return true;

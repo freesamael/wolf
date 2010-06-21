@@ -66,7 +66,7 @@ Runner::~Runner()
 {
 	// Cleanup all workers.
 	deque<pair<uint32_t, AbstractWorkerActor *> >::iterator iter;
-	for (iter = _d->wq.begin(); iter != _d->wq.end(); iter++)
+	for (iter = _d->wq.begin(); iter != _d->wq.end(); ++iter)
 		delete iter->second;
 
 	// Cleanup worker executor.

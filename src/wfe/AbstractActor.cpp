@@ -32,7 +32,7 @@ void AbstractActor::removePort(IPort *port)
 	if (port->type() == IPort::SINK) {
 		// Delete a sink port.
 		vector<SinkPort *>::iterator iter;
-		for (iter = _sinkp.begin(); iter != _sinkp.end(); iter++) {
+		for (iter = _sinkp.begin(); iter != _sinkp.end(); ++iter) {
 			if (*iter == port) {
 				delete *iter;
 				_sinkp.erase(iter);
@@ -42,7 +42,7 @@ void AbstractActor::removePort(IPort *port)
 	} else {
 		// Delete a source port.
 		vector<SourcePort *>::iterator iter;
-		for (iter = _srcp.begin(); iter != _srcp.end(); iter++) {
+		for (iter = _srcp.begin(); iter != _srcp.end(); ++iter) {
 			if (*iter == port) {
 				delete *iter;
 				_srcp.erase(iter);

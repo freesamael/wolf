@@ -77,7 +77,7 @@ void ConcurrentWorkflowExecutor::updateQueue()
 			_vwait.erase(iter);
 			_wcond.wakeOne();
 		} else
-			iter++;
+			++iter;
 	}
 
 	// No more actors to run => finish, wake up all executors.

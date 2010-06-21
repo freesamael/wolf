@@ -32,7 +32,7 @@ void AbstractObservable::attach(IObserver *o)
 void AbstractObservable::detach(IObserver *o)
 {
 	vector<IObserver *>::iterator iter;
-	for (iter = _obsrvs.begin(); iter != _obsrvs.end(); iter++) {
+	for (iter = _obsrvs.begin(); iter != _obsrvs.end(); ++iter) {
 		if (*iter == o) {
 			_obsrvs.erase(iter);
 			return;

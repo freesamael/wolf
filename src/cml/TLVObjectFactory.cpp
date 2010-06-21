@@ -24,7 +24,7 @@ SINGLETON_REGISTRATION_END();
 TLVObjectFactory::~TLVObjectFactory()
 {
 	map<string, ITLVObjectCreator *>::iterator iter;
-	for (iter = _creators.begin(); iter != _creators.end(); iter++)
+	for (iter = _creators.begin(); iter != _creators.end(); ++iter)
 		delete iter->second;
 }
 
@@ -84,7 +84,7 @@ void TLVObjectFactory::registerCreator(const std::string &name,
 string TLVObjectFactory::lookupTypeName(uint16_t id)
 {
 	map<uint16_t, string>::iterator iter;
-	for (iter = _typenames.begin(); iter != _typenames.end(); iter++) {
+	for (iter = _typenames.begin(); iter != _typenames.end(); ++iter) {
 		if (iter->first == id)
 			return iter->second;
 	}

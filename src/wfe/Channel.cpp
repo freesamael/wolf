@@ -33,7 +33,7 @@ void Channel::attachReader(SinkPort *port)
 void Channel::detachReader(SinkPort *port)
 {
 	vector<SinkPort *>::iterator iter;
-	for (iter = _readers.begin(); iter != _readers.end(); iter++) {
+	for (iter = _readers.begin(); iter != _readers.end(); ++iter) {
 		if (*iter == port) {
 			_readers.erase(iter);
 			return;
