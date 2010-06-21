@@ -26,8 +26,8 @@ void NumberGenerator::fire()
 	_item->unlock();
 
 	int *num = (int *)_item->buffer();
-	printf("%s: Num = %d %d %d %d\n", __PRETTY_FUNCTION__,
-			num[0], num[1], num[2], num[3]);
+	PINF_1("Num = " << num[0] << " " << num[1] << " " <<  num[2] << " " <<
+			num[3]);
 }
 
 void NumberGenerator::postfire()
