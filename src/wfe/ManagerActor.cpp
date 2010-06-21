@@ -33,7 +33,8 @@ void ManagerActor::fire()
 void ManagerActor::workerFinished(const AbstractWorkerActor &worker)
 {
 #ifdef DISABLE_D2MCE	// In DSM mode the result is directly taken from DSM.
-	*_worker = worker;
+	PINF_2("Update worker.");
+	_worker->update(worker);
 #endif /* DISABLE_D2MCE */
 	_wait.wakeOne();
 }

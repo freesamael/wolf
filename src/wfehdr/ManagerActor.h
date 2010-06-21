@@ -27,16 +27,6 @@ public:
 	inline void prefire() { _state = RUNNING; _worker->managerPrefire(this); }
 	inline void postfire() { _state = FINISHED; _worker->managerPostfire(this); }
 
-	/// ManagerActor's wrapper for worker's ports.
-	inline const std::vector<SinkPort *>& sinkPorts() const
-		{ return _worker->sinkPorts(); }
-	/// ManagerActor's wrapper for worker's ports.
-	inline const std::vector<SourcePort *>& sourcePorts() const
-		{ return _worker->sourcePorts(); }
-	/// ManagerActor's wrapper for worker's ports.
-	inline IPort* addPort(IPort::Type type) { return _worker->addPort(type); }
-	/// ManagerActor's wrapper for worker's ports.
-	inline void removePort(IPort *port) { _worker->removePort(port); }
 	/// Tell the manager actor that the worker sent has finished.
 	void workerFinished(const AbstractWorkerActor &worker);
 	State state();

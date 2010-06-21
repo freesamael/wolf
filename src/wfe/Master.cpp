@@ -6,6 +6,7 @@
 
 #include <sys/time.h>
 #include <unistd.h>
+#include "Mutex.h"
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
 #include "Thread.h"
@@ -26,13 +27,17 @@ namespace wfe
 
 struct PData
 {
-	PData(): cmdsdr(), rsocks(), clis(), clthreads(),
-			mgrq() {}
-	MasterSideCommandSender cmdsdr;
-	std::vector<cml::TCPSocket *> rsocks;
-	std::vector<MasterSideCommandListener *> clis;
-	std::vector<cml::Thread *> clthreads;
-	std::map<uint32_t, ManagerActor *> mgrq;
+	PData(): rsocks(), clis(), clthreads(), rsocksmx(), cmdsdr(), mgrq(),
+			mgrqmx() {}
+
+	vector<TCPSocket *> rsocks;					// Runner sockets.
+	vector<MasterSideCommandListener *> clis;	// Command listeners.
+	vector<Thread *> clthreads;					// Command listener threads.
+	Mutex rsocksmx;								// Runner sockets mutex.
+
+	MasterSideCommandSender cmdsdr;				// Command sender.
+	map<uint32_t, ManagerActor *> mgrq;			// Manager queue.
+	Mutex mgrqmx;								// Manager queue mutex.
 };
 
 SINGLETON_REGISTRATION(Master);
@@ -105,17 +110,23 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 		return;
 
 #ifndef DISABLE_D2MCE
+	_d->mgrqmx.lock();
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		uint32_t seq = _d->cmdsdr.runWorker(_d->rsocks[i], worker);
 		_d->mgrq[seq] = mgr;
 		PINF_2("Queue size = " << _d->mgrq.size());
 	}
+	_d->mgrqmx.unlock();
 #else
+	_d->rsocksmx.lock();
 	TCPSocket *runner = dispatcher()->choose(_d->rsocks);
+	_d->rsocksmx.unlock();
 	if (runner) {
+		_d->mgrqmx.lock();
 		uint32_t seq = _d->cmdsdr.runWorker(runner, worker);
 		_d->mgrq[seq] = mgr;
 		PINF_2("Queue size = " << _d->mgrq.size());
+		_d->mgrqmx.unlock();
 	}
 #endif /* DISABLE_D2MCE */
 }
@@ -145,11 +156,13 @@ void Master::runnerConnected(cml::TCPSocket *runnersock)
 {
 	PINF_2("Got one runner.");
 	vector<HostAddress> addrs;
+	_d->rsocksmx.lock();
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		addrs.push_back(_d->rsocks[i]->peerAddress());
 	}
 	_d->cmdsdr.addRunner(runnersock, addrs);
 	_d->rsocks.push_back(runnersock);
+	_d->rsocksmx.unlock();
 }
 
 /**
@@ -161,6 +174,7 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 
 	// Find the belonging manager.
 	map<uint32_t, ManagerActor *>::iterator iter;
+	_d->mgrqmx.lock();
 	if ((iter = _d->mgrq.find(wseq)) == _d->mgrq.end()) {
 		PERR("No manager found owning worker with sequence = " << wseq);
 		return;
@@ -169,11 +183,13 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 	// Take the value and remove the manager from the queue.
 	ManagerActor *mgr = iter->second;
 	_d->mgrq.erase(iter);
+	_d->mgrqmx.unlock();
 
 #ifndef DISABLE_D2MCE
 	// Check if it's the last worker owned by that manager.
 	map<uint32_t, ManagerActor *>::iterator tmpiter;
 	bool lastone = true;
+	_d->mgrqmx.lock();
 	for (tmpiter = _d->mgrq.begin();
 			tmpiter != _d->mgrq.end(); tmpiter++) {
 		if (tmpiter->second == mgr) {
@@ -181,6 +197,7 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 			break;
 		}
 	}
+	_d->mgrqmx.unlock();
 
 	// Notify manager only if it's the last worker.
 	if (lastone) {
@@ -196,9 +213,12 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 /**
  * Get the number of runners.
  */
-unsigned Master::numberOfRunners() const
+unsigned Master::numberOfRunners()
 {
-	return _d->rsocks.size();
+	_d->rsocksmx.lock();
+	unsigned n = _d->rsocks.size();
+	_d->rsocksmx.unlock();
+	return n;
 }
 
 }

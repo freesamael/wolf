@@ -73,7 +73,7 @@ extern pthread_mutex_t g_mxcerr;
  */
 #define SINGLETON_RELEASE_BODY()                                               \
 	if (_instance) {                                                           \
-		PINF_3("Releasing");                                                    \
+		PINF_3("Releasing");                                                   \
 		_instance->releaseDependants();                                        \
 		delete _instance;                                                      \
 		_instance = NULL;                                                      \
@@ -146,28 +146,28 @@ extern pthread_mutex_t g_mxcerr;
  * \#include \<iostream\> <br>
  * \#include \<sstream\>
  */
-#define PERR(str) \
-{ \
-	std::stringstream __tmpstream; \
-	__tmpstream << "Error: " << str << std::endl << "\t[" << \
-	__PRETTY_FUNCTION__ << ": " << __LINE__ << "]" << std::endl; \
-	pthread_mutex_lock(&g_mxcerr); \
-	std::cerr << __tmpstream; \
-	pthread_mutex_unlock(&g_mxcerr); \
-} \
+#define PERR(msg)                                                              \
+{                                                                              \
+	std::stringstream __tmpstream;                                             \
+	__tmpstream << "Error: " << msg << std::endl << "\t[" <<                   \
+	__PRETTY_FUNCTION__ << ": " << __LINE__ << "]";                            \
+	pthread_mutex_lock(&g_mxcerr);                                             \
+	std::cerr << __tmpstream.str() << std::endl;                               \
+	pthread_mutex_unlock(&g_mxcerr);                                           \
+}                                                                              \
 	typedef int CONCATE(__DummyTypeDefForSemiColonEnding__, __LINE__)
 
 
 #ifdef DEBUG
-#define __PINF(str) \
-{ \
-	std::stringstream __tmpstream; \
-	__tmpstream << str << std::endl << "\t[" << __PRETTY_FUNCTION__ << ": " \
-	<< __LINE__ << "]" << std::endl; \
-	pthread_mutex_lock(&g_mxcout); \
-	std::cout << __tmpstream; \
-	pthread_mutex_unlock(&g_mxcout); \
-} \
+#define __PINF(msg)                                                            \
+{                                                                              \
+	std::stringstream __tmpstream;                                             \
+	__tmpstream << msg << std::endl << "\t[" << __PRETTY_FUNCTION__ << ": "    \
+	<< __LINE__ << "]";                                                        \
+	pthread_mutex_lock(&g_mxcout);                                             \
+	std::cout << __tmpstream.str() << std::endl;                               \
+	pthread_mutex_unlock(&g_mxcout);                                           \
+}                                                                              \
 	typedef int CONCATE(__DummyTypeDefForSemiColonEnding__, __LINE__)
 #endif /* DEBUG */
 

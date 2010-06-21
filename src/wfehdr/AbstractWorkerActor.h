@@ -40,11 +40,19 @@ class AbstractWorkerActor: public AbstractActor, public cml::ITLVObject
 {
 public:
 	virtual ~AbstractWorkerActor() {}
+	/// In usual case, worker actor is always ready.
 	virtual State state() { return READY; }
+	/// Initialize manager. Called on construction of manager.
 	virtual void managerInitialization(ManagerActor *UNUSED(manager)) {}
+	/// Finalize manager. Called on destruction of manager.
 	virtual void managerFinalization(ManagerActor *UNUSED(manager)) {}
+	/// Prefire manager. Called on ManagerActor::prefire().
 	virtual void managerPrefire(ManagerActor *UNUSED(manager)) {}
+	/// Postfire manager. Called on ManagerActor::postfire().
 	virtual void managerPostfire(ManagerActor *UNUSED(manager)) {}
+	/// When a worker returns from runner, manager uses this function to update
+	/// the value of original worker.
+	virtual void update(const AbstractWorkerActor &o) = 0;
 };
 
 }

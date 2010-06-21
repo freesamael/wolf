@@ -44,6 +44,7 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 
 	if (!activesock) {
 		PERR("No active TCP socket found.");
+		delete [] hdrbuf;
 		return NULL;
 	}
 

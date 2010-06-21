@@ -13,12 +13,13 @@
 class Worker: public wfe::AbstractWorkerActor
 {
 public:
-	Worker() { addPort(wfe::IPort::SINK); addPort(wfe::IPort::SOURCE); }
-	~Worker() { delete sinkPorts()[0]; delete sourcePorts()[0]; }
+	void managerInitialization(wfe::ManagerActor *manager);
+	void managerFinalization(wfe::ManagerActor *manager);
 	void managerPrefire(wfe::ManagerActor *manager);
 	void managerPostfire(wfe::ManagerActor *manager);
 	void fire();
 	void setNum(wfe::DUInt32 n) { _n = n; }
+	void update(const AbstractWorkerActor &o);
 	cml::StandardTLVBlock* toTLVBlock() const;
 
 private:

@@ -46,7 +46,7 @@ public:
 	void shutdown();
 	void runnerConnected(cml::TCPSocket *runnersock);
 	void workerFinished(uint32_t wseq, const AbstractWorkerActor &worker);
-	unsigned numberOfRunners() const;
+	unsigned numberOfRunners();
 
 private:
 	Master();

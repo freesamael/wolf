@@ -30,7 +30,7 @@ namespace wfe
 struct PData
 {
 	PData(): pmsock(NULL), pmclis(NULL), pmclthread(NULL), pcnlis(NULL),
-			rsocks(), rclis(), rclthreads(), cmdsdr(), pwexe(NULL),
+			rsocks(), rclis(), rclthreads(), rsocksmx(), cmdsdr(), pwexe(NULL),
 			pwexethread(NULL), wq(), wqmx(), wmsc(0), wmscmx() {}
 	// Master related resources.
 	TCPSocket *pmsock;							// Master sock.
@@ -42,6 +42,7 @@ struct PData
 	vector<TCPSocket *> rsocks;					// Runner socks.
 	vector<RunnerSideCommandListener *> rclis;	// Runner cmd listeners.
 	vector<Thread *> rclthreads;				// Runner cmd listener threads.
+	Mutex rsocksmx;								// Runner socks mutex.
 
 	// Others.
 	RunnerSideCommandSender cmdsdr;				// Command sender.
@@ -161,9 +162,11 @@ void Runner::runnerConnected(TCPSocket *runnersock)
 	PINF_2("Starting runner command listener.");
 	listhread->start();
 
+	_d->rsocksmx.lock();
 	_d->rsocks.push_back(runnersock);
 	_d->rclis.push_back(lis);
 	_d->rclthreads.push_back(listhread);
+	_d->rsocksmx.unlock();
 }
 
 /**

@@ -11,6 +11,7 @@
 #include <TLVObjectFactoryAutoRegistry.h>
 #include <HelperMacros.h>
 #include <D2MCE.h>
+#include <ManagerActor.h>
 #include "Counter.h"
 #include "CounterCreator.h"
 
@@ -25,22 +26,30 @@ TLV_OBJECT_REGISTRATION(Counter, TLV_TYPE_COUNTER, CounterCreator);
 Counter::Counter():
 		_mem(NULL), _meminfo(NULL)
 {
-	addPort(IPort::SINK);
-	addPort(IPort::SOURCE);
 }
 
 Counter::~Counter()
 {
-	delete sinkPorts()[0];
-	delete sourcePorts()[0];
 	delete _meminfo;
+}
+
+void Counter::managerInitialization(ManagerActor *manager)
+{
+	manager->addPort(IPort::SINK);
+	manager->addPort(IPort::SOURCE);
+}
+
+void Counter::managerFinalization(ManagerActor *manager)
+{
+	manager->removePort(manager->sinkPorts()[0]);
+	manager->removePort(manager->sourcePorts()[0]);
 }
 
 void Counter::managerPrefire(ManagerActor *UNUSED(manager))
 {
 	PINF_1("Manager Prefire");
 	// Load memory.
-	_mem = dynamic_cast<SharedMemory *>(sinkPorts()[0]->readPort());
+	_mem = dynamic_cast<SharedMemory *>(manager->sinkPorts()[0]->readPort());
 	if (!_mem) {
 		PERR("Invalid type.");
 		return;
@@ -67,7 +76,7 @@ void Counter::managerPostfire(ManagerActor *UNUSED(manager))
 			num[3]);
 
 	// Write port.
-	sourcePorts()[0]->writeChannel(_mem);
+	manager->sourcePorts()[0]->writeChannel(_mem);
 }
 
 void Counter::setup()
