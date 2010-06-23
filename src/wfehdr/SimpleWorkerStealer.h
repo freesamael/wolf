@@ -22,7 +22,7 @@ class SimpleWorkerStealer: public IWorkerStealer
 public:
 	SimpleWorkerStealer();
 	SimpleWorkerStealer(const SimpleWorkerStealer &o): IWorkerStealer(),
-			_runner(o._runner), _mx(), _stealing(false) {}
+			_runner(o._runner), _mx() {}
 	SimpleWorkerStealer& operator=(const SimpleWorkerStealer &o)
 		{ _runner = o._runner; return *this; }
 	void setRunner(Runner *runner)
@@ -34,7 +34,6 @@ public:
 private:
 	Runner *_runner;
 	cml::Mutex _mx;
-	bool _stealing;
 };
 
 }

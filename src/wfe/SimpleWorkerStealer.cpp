@@ -17,7 +17,7 @@ namespace wfe
 {
 
 SimpleWorkerStealer::SimpleWorkerStealer():
-		_runner(NULL), _mx(), _stealing(false)
+		_runner(NULL), _mx()
 {
 	srand(time(NULL));
 }
