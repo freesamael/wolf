@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include "TLVUInt32.h"
+#include "TLVUInt16.h"
 #include "TLVReaderWriter.h"
 #include "HelperMacros.h"
 #include "RunnerSideCommandListener.h"
@@ -55,7 +56,7 @@ void RunnerSideCommandListener::process(TLVCommand *cmd)
 				PERR("Invalid parameters.");
 				cmd->setAutoclean(true);
 			} else {
-				_runner->putWorker(u32->value(), worker);
+				_runner->putWorker(u32->value(), worker, sock());
 				delete u32;
 			}
 		}
@@ -63,7 +64,22 @@ void RunnerSideCommandListener::process(TLVCommand *cmd)
 	// Command WORKER_STEAL
 	} else if (cmd->command() == TLVCommand::WORKER_STEAL) {
 		PINF_2("Got command WORKER_STEAL.");
-		_runner->sendWorker(sock());
+		if (cmd->parameters().size() != 1) { // number of workers to steal
+			PERR("Invalid parameters.");
+			cmd->setAutoclean(true);
+		} else {
+			TLVUInt16 *u16;
+			if (!(u16 = dynamic_cast<TLVUInt16 *>(cmd->parameters()[0]))) {
+				PERR("Invalid parameters.");
+				cmd->setAutoclean(true);
+			} else {
+				_runner->sendWorker(sock(), u16->value());
+			}
+		}
+
+	// Command WORKER_STEAL_FAILED
+	} else if (cmd->command() == TLVCommand::WORKER_STEAL_FAILED) {
+		_runner->workerStealFailed(sock());
 
 	// Command SHUTDOWN
 	} else if (cmd->command() == TLVCommand::SHUTDOWN) {

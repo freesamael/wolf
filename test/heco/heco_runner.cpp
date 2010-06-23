@@ -4,12 +4,14 @@
  * \author samael
  */
 #include <Runner.h>
+#include <SimpleWorkerStealer.h>
 
 using namespace wfe;
 
 int main()
 {
-	Runner runner(5566, 7788);
+	SimpleWorkerStealer stealer;
+	Runner runner(5566, 7788, &stealer);
 	runner.run();
 	return 0;
 }

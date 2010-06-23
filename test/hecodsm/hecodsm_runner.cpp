@@ -10,7 +10,7 @@ using namespace wfe;
 
 int main()
 {
-	Runner runner(6655, 8877, "hecodsm");
+	Runner runner(6655, 8877, NULL, "hecodsm");
 	runner.run();
 	return 0;
 }

@@ -24,8 +24,10 @@ public:
 	/// Notify that a worker is finished.
 	void workerFinished(cml::TCPSocket *sock, uint32_t wseq,
 			AbstractWorkerActor *worker);
-	/// Ask for stealing a worker.
-	void stealWorker(cml::TCPSocket *sock);
+	/// Ask for stealing n workers.
+	void stealWorker(cml::TCPSocket *sock, uint16_t n);
+	/// Ack that no worker to steal.
+	void stealFailed(cml::TCPSocket *sock);
 	/// Send a worker out.
 	void runWorker(cml::TCPSocket *sock, uint32_t wseq,
 			AbstractWorkerActor *worker);

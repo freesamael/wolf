@@ -31,7 +31,7 @@ struct PData
 {
 	PData(): pmsock(NULL), pmclis(NULL), pmclthread(NULL), pcnlis(NULL),
 			rsocks(), rclis(), rclthreads(), rsocksmx(), cmdsdr(), pwexe(NULL),
-			pwexethread(NULL), wq(), wqmx(), wmsc(0), wmscmx() {}
+			pwexethread(NULL), wq(), wqmx() {}
 	// Master related resources.
 	TCPSocket *pmsock;							// Master sock.
 	RunnerSideCommandListener *pmclis;			// Master cmd listener.
@@ -50,21 +50,26 @@ struct PData
 	Thread *pwexethread;						// Worker execution thread.
 	deque<pair<uint32_t, AbstractWorkerActor *> > wq;	// Working queue.
 	Mutex wqmx;									// Working queue mutex.
-	int wmsc;									// Worker miss count.
-	Mutex wmscmx;								// Worker miss count mutex.
 
 private:
-	PData(const PData &UNUSED(o)): pmsock(NULL), pmclis(NULL), pmclthread(NULL), pcnlis(NULL),
-	rsocks(), rclis(), rclthreads(), rsocksmx(), cmdsdr(), pwexe(NULL),
-	pwexethread(NULL), wq(), wqmx(), wmsc(0), wmscmx() {}
+	PData(const PData &UNUSED(o)): pmsock(NULL), pmclis(NULL), pmclthread(NULL),
+	pcnlis(NULL), rsocks(), rclis(), rclthreads(), rsocksmx(), cmdsdr(),
+	pwexe(NULL), pwexethread(NULL), wq(), wqmx() {}
 	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
 
-Runner::Runner(uint16_t master_port, uint16_t runner_port,
+Runner::Runner(uint16_t master_port, uint16_t runner_port, IWorkerStealer *ws,
 		const string &appname): _state(NOT_READY), _statemx(), _statewcond(),
-		_mport(master_port), _rport(runner_port), _appname(appname), _rsock(),
-		_d(new PData())
+		_mport(master_port), _rport(runner_port), _stealer(ws),
+		_appname(appname), _rsock(), _d(new PData())
 {
+#ifdef DISABLE_D2MCE
+	if (!ws) {
+		PERR("Worker stealer can not be NULL.");
+		exit(EXIT_FAILURE);
+	}
+	ws->setRunner(this);
+#endif /* DISABLE_D2MCE */
 	_rsock.setAutoclean(false);
 }
 
@@ -143,6 +148,14 @@ void Runner::run()
 }
 
 /**
+ * Get all runners.
+ */
+vector<TCPSocket*> Runner::runnerSocks()
+{
+	return _d->rsocks;
+}
+
+/**
  * Connect to a runner with given address.
  */
 void Runner::connectRunner(const HostAddress &addr)
@@ -203,14 +216,16 @@ void Runner::startWorking()
 /**
  * Add a worker into the waiting queue for execution.
  */
-void Runner::putWorker(uint32_t wseq, AbstractWorkerActor *worker)
+void Runner::putWorker(uint32_t wseq, AbstractWorkerActor *worker,
+		TCPSocket *sender)
 {
 	_d->wqmx.lock();
 	_d->wq.push_back(pair<uint32_t, AbstractWorkerActor *>(wseq, worker));
-	_d->wmscmx.lock();
-	_d->wmsc = 0;
-	_d->wmscmx.unlock();
 	_d->wqmx.unlock();
+
+#ifdef DISABLE_D2MCE
+	_stealer->workerArrived(sender);
+#endif /* DISABLE_D2MCE */
 }
 
 /**
@@ -227,47 +242,69 @@ pair<uint32_t, AbstractWorkerActor *> Runner::takeWorker()
 	}
 	_d->wqmx.unlock();
 
+#ifdef DISABLE_D2MCE
 	if (!w.second)
-		workerMissed();
+		_stealer->workerMissed();
+#endif /* DISABLE_D2MCE */
 
 	return w;
 }
 
 /**
+ * Notify that the worker stealing failed.
+ */
+void Runner::workerStealFailed(TCPSocket *sender)
+{
+#ifdef DISABLE_D2MCE
+	_stealer->stealFailed(sender);
+#endif /* DISABLE_D2MCE */
+}
+
+/**
  * Notify that a worker has been finished.
  */
-void Runner::workerFinished(uint32_t wseq, AbstractWorkerActor *worker)
+void Runner::sendWorkerFinished(uint32_t wseq, AbstractWorkerActor *worker)
 {
 	_d->cmdsdr.workerFinished(_d->pmsock, wseq, worker);
 	delete worker;
 }
 
 /**
- * Called when takeWorker() returns NULL.
+ * Send n worker (if any) to given runner.
  */
-void Runner::workerMissed()
+void Runner::sendWorker(TCPSocket *sock, uint16_t nworkers)
 {
-	int tc;
+#ifdef DISABLE_D2MCE
+	vector<pair<uint32_t, AbstractWorkerActor *> > wps;
 
-	_d->wmscmx.lock();
-	tc = ++_d->wmsc;
-	_d->wmscmx.unlock();
+	// Try to take n worker pairs.
+	for (unsigned i = 0; i < nworkers; i++) {
+		pair<uint32_t, AbstractWorkerActor *> wp = takeWorker();
+		if (!wp.second)
+			break;
+		wps.push_back(wp);
+	}
 
-	/// TODO: do something to steal workers.
+	// Send workers to the runner or WORKER_STEAL_FAILED if no worker found.
+	if (wps.empty()) {
+		_d->cmdsdr.stealFailed(sock);
+	} else {
+		for (unsigned i = 0; i < wps.size(); i++)
+			_d->cmdsdr.runWorker(sock, wps[i].first, wps[i].second);
+	}
+#else
+	_d->cmdsdr.stealFailed(sock); // Always fail in DSM mode.
+#endif /* DISABLE_D2MCE */
 }
 
 /**
- * Send a worker (if any) to given runner.
+ * Steal workers from givne runner.
  */
-void Runner::sendWorker(TCPSocket *sock)
+void Runner::sendWorkerSteal(TCPSocket *sock, uint16_t nworkers)
 {
-	pair<uint32_t, AbstractWorkerActor *> wp = takeWorker();
-	if (wp.second) {
-		_d->cmdsdr.runWorker(sock, wp.first, wp.second);
-		delete wp.second;
-	} else {
-		PINF_2("No worker to send. Skipping.");
-	}
+#ifdef DISABLE_D2MCE
+	_d->cmdsdr.stealWorker(sock, nworkers);
+#endif /* DISABLE_D2MCE */
 }
 
 /**

@@ -19,6 +19,7 @@ namespace wfe
 void RunnerSideWorkerExecutor::run()
 {
 	PINF_2("Worker executor starts.");
+	unsigned ecount = 0;
 	while (!isDone()) {
 		pair<uint32_t, AbstractWorkerActor *> wp = _runner->takeWorker();
 		AbstractWorkerActor *worker;
@@ -31,12 +32,13 @@ void RunnerSideWorkerExecutor::run()
 				worker->postfire();
 			} while (worker->testfire());
 			worker->wrapup();
-			_runner->workerFinished(wp.first, worker);
+			_runner->sendWorkerFinished(wp.first, worker);
+			ecount++;
 		} else {
 			usleep(10000);
 		}
 	}
-	PINF_2("Worker executor ends.");
+	PINF_2("Worker executor ends. Totally " << ecount << " workers executed.");
 }
 
 }

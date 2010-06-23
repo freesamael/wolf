@@ -5,12 +5,14 @@
  */
 
 #include <Runner.h>
+#include <SimpleWorkerStealer.h>
 
 using namespace wfe;
 
 int main()
 {
-	Runner runner(1234, 5678);
+	SimpleWorkerStealer stealer;
+	Runner runner(1234, 5678, &stealer);
 	runner.run();
 	return 0;
 }

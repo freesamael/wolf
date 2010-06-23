@@ -10,6 +10,7 @@
 #include <unistd.h>
 #include "D2MCE.h"
 #include "TLVUInt32.h"
+#include "TLVUInt16.h"
 #include "TLVReaderWriter.h"
 #include "TLVCommand.h"
 #include "HelperMacros.h"
@@ -56,13 +57,21 @@ void RunnerSideCommandSender::workerFinished(TCPSocket *sock, uint32_t wseq,
 	rw.write(cmd);
 }
 
-void RunnerSideCommandSender::stealWorker(TCPSocket *sock)
+void RunnerSideCommandSender::stealWorker(TCPSocket *sock, uint16_t n)
 {
-#ifdef DISABLE_D2MCE // Stealing only work in isolated mode.
-	PINF_2("Sending WORKER_STEAL.");
+	PINF_2("Sending WORKER_STEAL to steal " << n << " workers.");
 	TLVReaderWriter rw(sock);
-	rw.write(TLVCommand(TLVCommand::WORKER_STEAL));
-#endif /* DISABLE_D2MCE */
+	TLVCommand cmd(TLVCommand::WORKER_STEAL);
+	TLVUInt16 u16(n);
+	cmd.addParameter(&u16);
+	rw.write(cmd);
+}
+
+void RunnerSideCommandSender::stealFailed(TCPSocket *sock)
+{
+	PINF_2("Sending WORKER_STEAL_FAILED.");
+	TLVReaderWriter rw(sock);
+	rw.write(TLVCommand(TLVCommand::WORKER_STEAL_FAILED));
 }
 
 void RunnerSideCommandSender::runWorker(TCPSocket *sock, uint32_t wseq,

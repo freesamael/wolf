@@ -31,6 +31,7 @@ public:
 		HELLO_RUNNER,		///< Hello message from a runner.
 		WORKER_RUN,			///< Send an worker to a runner and run it.
 		WORKER_STEAL,		///< Ask for stealing a worker.
+		WORKER_STEAL_FAILED,///< Ack that no worker to steal.
 		WORKER_FINISHED,	///< Send an finished worker back.
 		RUNNER_ADD,			///< Ask a runner to connect to another runner.
 		RUNNER_START		/**< Tell the runner to start working, which also \

@@ -14,6 +14,7 @@
 #include "Mutex.h"
 #include "WaitCondition.h"
 #include "AbstractWorkerActor.h"
+#include "IWorkerStealer.h"
 
 namespace wfe
 {
@@ -33,25 +34,28 @@ public:
 		END
 	} State;
 
-	Runner(uint16_t master_port, uint16_t runner_port,
+	Runner(uint16_t master_port, uint16_t runner_port, IWorkerStealer *ws,
 			const std::string &appname = "default");
 	~Runner();
 	void run();
 
-	// Used by internal classes and runner itself.
+	std::vector<cml::TCPSocket *> runnerSocks();
 	void connectRunner(const cml::HostAddress &addr);
 	void runnerConnected(cml::TCPSocket *runnersock);
 	void startWorking();
-	void putWorker(uint32_t wseq, AbstractWorkerActor *worker);
+	void putWorker(uint32_t wseq, AbstractWorkerActor *worker,
+			cml::TCPSocket *sender);
 	std::pair<uint32_t, AbstractWorkerActor *> takeWorker();
-	void workerFinished(uint32_t wseq, AbstractWorkerActor *worker);
-	void workerMissed();
-	void sendWorker(cml::TCPSocket *sock);
+	void workerStealFailed(cml::TCPSocket *sender);
+	void sendWorkerFinished(uint32_t wseq, AbstractWorkerActor *worker);
+	void sendWorker(cml::TCPSocket *sock, uint16_t nworkers);
+	void sendWorkerSteal(cml::TCPSocket *sock, uint16_t nworkers);
 	void shutdown();
 
 private:
 	Runner(const Runner &UNUSED(o)): _state(NOT_READY), _statemx(),
-	_statewcond(), _mport(0), _rport(0), _appname(), _rsock(), _d(NULL) {}
+	_statewcond(), _mport(0), _rport(0), _stealer(NULL), _appname(), _rsock(),
+	_d(NULL) {}
 	Runner& operator=(const Runner &UNUSED(o)) { return *this; }
 
 private:
@@ -59,6 +63,7 @@ private:
 	cml::Mutex _statemx;
 	cml::WaitCondition _statewcond;
 	uint16_t _mport, _rport;
+	IWorkerStealer *_stealer;
 	std::string _appname;
 	cml::TCPSocket _rsock;
 	PData *_d;
