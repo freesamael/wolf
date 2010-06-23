@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <vector>
 #include <ConcurrentWorkflowExecutor.h>
 #include <Director.h>
 #include <ManagerActor.h>
@@ -12,55 +13,50 @@
 #include "Loader.h"
 #include "Worker.h"
 
+using namespace std;
 using namespace wfe;
 
 int main(int argc, char *argv[])
 {
-	ConcurrentWorkflowExecutor exec(4);
+	ConcurrentWorkflowExecutor exec(60);
 	Director d(&exec);
 
-	Generator g1(1);
-	Loader l1(4);
-	Worker w1;
-	Worker w2;
-	Worker w3;
-	Worker w4;
-	ManagerActor a1(&w1);
-	ManagerActor a2(&w2);
-	ManagerActor a3(&w3);
-	ManagerActor a4(&w4);
+	vector<Worker *> workers;
+	vector<ManagerActor *> managers;
 
+	Generator gtr(1);
+	d.addActor(&gtr);
+
+	Loader ldr(60);
+	d.addActor(&ldr);
+
+	// Setup first port.
 	Channel *ch1 = d.createChannel();
-	Channel *ch2 = d.createChannel();
-	Channel *ch3 = d.createChannel();
-	Channel *ch4 = d.createChannel();
-	Channel *ch5 = d.createChannel();
+	gtr.sourcePorts()[0]->setChannel(ch1);
 
-	g1.sourcePorts()[0]->setChannel(ch1);
-	a1.sinkPorts()[0]->setChannel(ch1);
-	a2.sinkPorts()[0]->setChannel(ch1);
-	a3.sinkPorts()[0]->setChannel(ch1);
-	a4.sinkPorts()[0]->setChannel(ch1);
-	a1.sourcePorts()[0]->setChannel(ch2);
-	a2.sourcePorts()[0]->setChannel(ch3);
-	a3.sourcePorts()[0]->setChannel(ch4);
-	a4.sourcePorts()[0]->setChannel(ch5);
+	for (int i = 0; i < 60; i++) {
+		Worker *w = new Worker();
+		ManagerActor *m = new ManagerActor(w);
+		d.addActor(m);
 
+		// Setup all intermediate ports.
+		Channel *ich = d.createChannel();
+		m->sinkPorts()[0]->setChannel(ch1);
+		m->sourcePorts()[0]->setChannel(ich);
+		ldr.sinkPorts()[i]->setChannel(ich);
 
-	l1.sinkPorts()[0]->setChannel(ch2);
-	l1.sinkPorts()[1]->setChannel(ch3);
-	l1.sinkPorts()[2]->setChannel(ch4);
-	l1.sinkPorts()[3]->setChannel(ch5);
-
-	d.addActor(&g1);
-	d.addActor(&l1);
-	d.addActor(&a1);
-	d.addActor(&a2);
-	d.addActor(&a3);
-	d.addActor(&a4);
+		workers.push_back(w);
+		managers.push_back(m);
+	}
 
 	Master::instance()->init(argc, argv);
 	d.execute(5566, 7788);
+
+	// Cleanup.
+	for (int i = 0; i < 60; i++) {
+		delete managers[i];
+		delete workers[i];
+	}
 
 	return 0;
 }

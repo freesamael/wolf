@@ -4,11 +4,12 @@
  * \author samael
  */
 
-#include <TLVObjectFactoryAutoRegistry.h>
-#include <HelperMacros.h>
 #include <iostream>
 #include <sstream>
 #include <cstring>
+#include <unistd.h>
+#include <TLVObjectFactoryAutoRegistry.h>
+#include <HelperMacros.h>
 #include <ManagerActor.h>
 #include "Worker.h"
 #include "WorkerCreator.h"
@@ -54,6 +55,7 @@ void Worker::fire()
 {
 	PINF_1("Old value = " << _n.value());
 	_n.setValue(_n.value() + 1);
+	usleep(33000); // sleep 10ms.
 	PINF_1("New value = " << _n.value());
 }
 
