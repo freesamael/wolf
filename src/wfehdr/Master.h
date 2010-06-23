@@ -40,6 +40,7 @@ public:
 	inline IWorkerDispatcher* dispatcher() const { return _activedisp; }
 	inline void setDispatcher(IWorkerDispatcher *d) { _activedisp = d; }
 
+	void init(int argc, char *argv[]);
 	bool setup(uint16_t master_port, uint16_t runner_port, const
 			std::string &appname = "default", unsigned int timeout = 2);
 	void runWorker(AbstractWorkerActor *worker, ManagerActor *mgr);

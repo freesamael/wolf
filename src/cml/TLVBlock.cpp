@@ -29,7 +29,7 @@ StandardTLVBlock::StandardTLVBlock(uint16_t type, uint16_t length):
 }
 
 StandardTLVBlock::StandardTLVBlock(const StandardTLVBlock &blk):
-		_buf(NULL)
+		ITLVBlock(), _buf(NULL)
 {
 	_buf = new char[blk.plainSize()];
 	memcpy(_buf, blk.plainBuffer(), blk.plainSize());

@@ -7,13 +7,14 @@
 #include <ConcurrentWorkflowExecutor.h>
 #include <Director.h>
 #include <ManagerActor.h>
+#include <Master.h>
 #include "Generator.h"
 #include "Loader.h"
 #include "Worker.h"
 
 using namespace wfe;
 
-int main()
+int main(int argc, char *argv[])
 {
 	ConcurrentWorkflowExecutor exec(4);
 	Director d(&exec);
@@ -58,6 +59,7 @@ int main()
 	d.addActor(&a3);
 	d.addActor(&a4);
 
+	Master::instance()->init(argc, argv);
 	d.execute(5566, 7788);
 
 	return 0;

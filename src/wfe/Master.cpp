@@ -6,6 +6,7 @@
 
 #include <sys/time.h>
 #include <unistd.h>
+#include <cstdlib>
 #include "Mutex.h"
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
@@ -28,7 +29,7 @@ namespace wfe
 struct PData
 {
 	PData(): rsocks(), clis(), clthreads(), rsocksmx(), cmdsdr(), mgrq(),
-			mgrqmx() {}
+			mgrqmx(), bcastaddr(HostAddress::BroadcastAddress), bcastttl(1) {}
 
 	vector<TCPSocket *> rsocks;					// Runner sockets.
 	vector<MasterSideCommandListener *> clis;	// Command listeners.
@@ -38,6 +39,8 @@ struct PData
 	MasterSideCommandSender cmdsdr;				// Command sender.
 	map<uint32_t, ManagerActor *> mgrq;			// Manager queue.
 	Mutex mgrqmx;								// Manager queue mutex.
+	HostAddress bcastaddr;						// Broadcast address.
+	int bcastttl;								// Broadcast TTL.
 };
 
 SINGLETON_REGISTRATION(Master);
@@ -59,6 +62,28 @@ Master::~Master()
 	for (unsigned i = 0; i < _d->clthreads.size(); i++)
 		delete _d->clthreads[i];
 	delete _d;
+}
+
+/**
+ * Initial master with program parameters.
+ */
+void Master::init(int argc, char *argv[])
+{
+	int opt;
+	while ((opt = getopt(argc, argv, "a:t:"))) {
+		switch (opt) {
+		case 'a':
+			_d->bcastaddr = HostAddress(optarg);
+			break;
+		case 't':
+			_d->bcastttl = atoi(optarg);
+			break;
+		default:
+			cerr << "Usage: " << argv[0] <<
+			" [-a broadcast_address] [-t broadcast_ttl]" << endl;
+			exit(EXIT_FAILURE);
+		}
+	}
 }
 
 /**

@@ -27,7 +27,8 @@ public:
 	/// Join D2MCE computing group.
 	void joinD2MCE(const std::string &appname);
 	/// Send hello message.
-	void hello(uint16_t rport);
+	void hello(uint16_t rport, const cml::HostAddress &addr =
+			cml::HostAddress::BroadcastAddress, int ttl = 1);
 	/// Ask a runner to add other runners.
 	void addRunner(cml::TCPSocket *rsock, const std::vector<cml::HostAddress> &addrs);
 	/// Tell a runner to start working.

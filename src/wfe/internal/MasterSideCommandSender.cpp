@@ -33,15 +33,15 @@ void MasterSideCommandSender::joinD2MCE(const string &appname)
 #endif /* DISABLE_D2MCE */
 }
 
-void MasterSideCommandSender::hello(uint16_t rport)
+void MasterSideCommandSender::hello(uint16_t rport, const HostAddress &addr,
+		int ttl)
 {
 	PINF_2("Sending HELLO_MASTER.");
 	UDPSocket usock;
 	TLVReaderWriter udprw(&usock);
 	usock.setBroadcast(true);
-	usock.setTTL(1);
-	udprw.sendto(TLVCommand(TLVCommand::HELLO_MASTER),
-	HostAddress::BroadcastAddress, rport);
+	usock.setTTL(ttl);
+	udprw.sendto(TLVCommand(TLVCommand::HELLO_MASTER), addr, rport);
 }
 
 void MasterSideCommandSender::addRunner(TCPSocket *rsock, const vector<HostAddress> &addrs)

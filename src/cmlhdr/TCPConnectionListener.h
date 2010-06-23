@@ -38,7 +38,7 @@ public:
 
 private:
 	TCPConnectionListener(const TCPConnectionListener &UNUSED(o)):
-		AbstractObservable(), _mx(), _done(false), _server(NULL),
+		AbstractObservable(), IRunnable(), _mx(), _done(false), _server(NULL),
 		_ssock(NULL) {}
 	TCPConnectionListener& operator=(const TCPConnectionListener &UNUSED(o))
 		{ return *this; }

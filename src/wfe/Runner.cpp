@@ -52,6 +52,12 @@ struct PData
 	Mutex wqmx;									// Working queue mutex.
 	int wmsc;									// Worker miss count.
 	Mutex wmscmx;								// Worker miss count mutex.
+
+private:
+	PData(const PData &UNUSED(o)): pmsock(NULL), pmclis(NULL), pmclthread(NULL), pcnlis(NULL),
+	rsocks(), rclis(), rclthreads(), rsocksmx(), cmdsdr(), pwexe(NULL),
+	pwexethread(NULL), wq(), wqmx(), wmsc(0), wmscmx() {}
+	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
 
 Runner::Runner(uint16_t master_port, uint16_t runner_port,
