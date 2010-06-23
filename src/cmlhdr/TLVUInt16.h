@@ -22,7 +22,7 @@ public:
 	static const uint16_t Size;
 
 	TLVUInt16(uint16_t value = 0): _value(value) {}
-	TLVUInt16(const TLVUInt16 &o): ITLVOBject(), _value(o._value) {}
+	TLVUInt16(const TLVUInt16 &o): ITLVObject(), _value(o._value) {}
 	uint16_t value() const { return _value; }
 	void setValue(uint16_t v) { _value = v; }
 	StandardTLVBlock* toTLVBlock() const;
