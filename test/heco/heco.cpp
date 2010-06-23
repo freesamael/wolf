@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <ConcurrentWorkflowExecutor.h>
+#include <AlwaysFirstWorkerDispatcher.h>
 #include <Director.h>
 #include <ManagerActor.h>
 #include <Master.h>
@@ -18,6 +19,10 @@ using namespace wfe;
 
 int main(int argc, char *argv[])
 {
+	AlwaysFirstWorkerDispatcher disp;
+	Master::instance()->init(argc, argv);
+	Master::instance()->setDispatcher(&disp);
+
 	ConcurrentWorkflowExecutor exec(60);
 	Director d(&exec);
 
@@ -49,7 +54,6 @@ int main(int argc, char *argv[])
 		managers.push_back(m);
 	}
 
-	Master::instance()->init(argc, argv);
 	d.execute(5566, 7788);
 
 	// Cleanup.
