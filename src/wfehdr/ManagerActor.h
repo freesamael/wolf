@@ -33,8 +33,8 @@ public:
 	void fire();
 
 private:
-	ManagerActor(const ManagerActor &UNUSED(o)): _worker(), _state(NOT_READY),
-	_wait(), _muxwait() {}
+	ManagerActor(const ManagerActor &UNUSED(o)): AbstractActor(), _worker(),
+	_state(NOT_READY), _wait(), _muxwait() {}
 	ManagerActor& operator=(const ManagerActor &UNUSED(o)) { return *this; }
 	AbstractWorkerActor *_worker;
 	State _state;
