@@ -4,6 +4,9 @@
  * \author samael
  */
 
+#include <iostream>
+#include <sstream>
+#include <HelperMacros.h>
 #include <cstdio>
 #include <cstring>
 #include <D2MCE.h>

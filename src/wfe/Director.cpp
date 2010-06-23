@@ -63,32 +63,14 @@ bool Director::removeActor(AbstractActor *actor)
 }
 
 /**
- * Create a channel with given name. If the channel already exists, it returns
- * the original one rather than create a new one.
+ * Create a channel.
  */
-Channel* Director::createChannel(const string &name)
+Channel* Director::createChannel()
 {
 	Channel *c;
-	if ((c = findChannel(name)))
-		return c;
-
-	c = new Channel(name);
+	c = new Channel();
 	_channels.push_back(c);
 	return c;
-}
-
-/**
- * Find a channel with given name.
- *
- * \return
- * Proper channel or NULL if nothing found.
- */
-Channel* Director::findChannel(const string &name)
-{
-	for (unsigned i = 0; i < _channels.size(); i++)
-		if (_channels[i]->name() == name)
-			return _channels[i];
-	return NULL;
 }
 
 void Director::execute()

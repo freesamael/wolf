@@ -24,8 +24,8 @@ int main()
 	Counter w1;
 	ManagerActor a2(&w1);
 	NumberLoader a3;
-	Channel *ch1 = d.createChannel("ch1");
-	Channel *ch2 = d.createChannel("ch2");
+	Channel *ch1 = d.createChannel();
+	Channel *ch2 = d.createChannel();
 
 	a1.sourcePorts()[0]->setChannel(ch1);
 	a2.sinkPorts()[0]->setChannel(ch1);

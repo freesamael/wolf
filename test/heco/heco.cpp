@@ -30,11 +30,11 @@ int main(int argc, char *argv[])
 	ManagerActor a3(&w3);
 	ManagerActor a4(&w4);
 
-	Channel *ch1 = d.createChannel("ch1");
-	Channel *ch2 = d.createChannel("ch2");
-	Channel *ch3 = d.createChannel("ch3");
-	Channel *ch4 = d.createChannel("ch4");
-	Channel *ch5 = d.createChannel("ch5");
+	Channel *ch1 = d.createChannel();
+	Channel *ch2 = d.createChannel();
+	Channel *ch3 = d.createChannel();
+	Channel *ch4 = d.createChannel();
+	Channel *ch5 = d.createChannel();
 
 	g1.sourcePorts()[0]->setChannel(ch1);
 	a1.sinkPorts()[0]->setChannel(ch1);

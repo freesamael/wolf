@@ -24,8 +24,8 @@ public:
 	~Director();
 	bool addActor(AbstractActor *actor);
 	bool removeActor(AbstractActor *actor);
-	Channel* createChannel(const std::string &name);
-	Channel* findChannel(const std::string &name);
+	Channel* createChannel();
+	std::vector<Channel *>& channels() { return _channels; }
 	void execute();
 	void execute(uint16_t runner_port, uint16_t master_port,
 			const std::string &name = "default");
