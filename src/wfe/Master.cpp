@@ -70,13 +70,15 @@ Master::~Master()
 void Master::init(int argc, char *argv[])
 {
 	int opt;
-	while ((opt = getopt(argc, argv, "a:t:"))) {
+	while ((opt = getopt(argc, argv, "a:t:")) != -1) {
 		switch (opt) {
 		case 'a':
 			_d->bcastaddr = HostAddress(optarg);
+			PINF_2("Broadcast address will be " << _d->bcastaddr.toString());
 			break;
 		case 't':
 			_d->bcastttl = atoi(optarg);
+			PINF_2("Broadcast TTL will be " << _d->bcastttl);
 			break;
 		default:
 			cerr << "Usage: " << argv[0] <<
@@ -101,7 +103,7 @@ bool Master::setup(uint16_t master_port, uint16_t runner_port,
 
 	// Join D2MCE group and broadcast hello message.
 	_d->cmdsdr.joinD2MCE(appname);
-	_d->cmdsdr.hello(runner_port);
+	_d->cmdsdr.hello(runner_port, _d->bcastaddr, _d->bcastttl);
 
 	// Check the runners.
 	sleep(timeout);
