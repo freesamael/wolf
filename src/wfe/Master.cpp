@@ -70,7 +70,7 @@ Master::~Master()
 void Master::init(int argc, char *argv[])
 {
 	int opt;
-	while ((opt = getopt(argc, argv, "a:t:")) != -1) {
+	while ((opt = getopt(argc, argv, "a:t:h")) != -1) {
 		switch (opt) {
 		case 'a':
 			_d->bcastaddr = HostAddress(optarg);
@@ -80,7 +80,7 @@ void Master::init(int argc, char *argv[])
 			_d->bcastttl = atoi(optarg);
 			PINF_2("Broadcast TTL will be " << _d->bcastttl);
 			break;
-		default:
+		case 'h':
 			cerr << "Usage: " << argv[0] <<
 			" [-a broadcast_address] [-t broadcast_ttl]" << endl;
 			exit(EXIT_FAILURE);
