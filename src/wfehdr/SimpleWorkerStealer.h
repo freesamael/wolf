@@ -32,7 +32,6 @@ public:
 	void workerArrived(cml::TCPSocket *sender);
 
 private:
-	void steal();
 	Runner *_runner;
 	cml::Mutex _mx;
 	bool _stealing;

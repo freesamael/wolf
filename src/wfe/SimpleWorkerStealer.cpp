@@ -24,29 +24,14 @@ SimpleWorkerStealer::SimpleWorkerStealer():
 
 void SimpleWorkerStealer::workerMissed()
 {
-	if (!_stealing) {
-		_mx.lock();
-		bool s = _stealing;
-		_stealing = true;
-		_mx.unlock();
-
-		if (s)
-			steal();
-
-		_mx.lock();
-		_stealing = false;
-		_mx.unlock();
-	}
-}
-
-void SimpleWorkerStealer::steal()
-{
-	if (_runner) {
-		if (!_runner->runnerSocks().empty()) {
-			int index = rand() % _runner->runnerSocks().size();
-			_runner->sendWorkerSteal(_runner->runnerSocks()[index], 1);
+	_mx.lock();
+		if (_runner) {
+			if (!_runner->runnerSocks().empty()) {
+				int index = rand() % _runner->runnerSocks().size();
+				_runner->sendWorkerSteal(_runner->runnerSocks()[index], 1);
+			}
 		}
-	}
+	_mx.unlock();
 }
 
 void SimpleWorkerStealer::stealFailed(TCPSocket *UNUSED(sender))
