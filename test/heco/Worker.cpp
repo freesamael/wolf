@@ -55,7 +55,7 @@ void Worker::fire()
 {
 	PINF_1("Old value = " << _n.value());
 	_n.setValue(_n.value() + 1);
-	usleep(33000); // sleep 10ms.
+	usleep(500000); // sleep 500ms.
 	PINF_1("New value = " << _n.value());
 }
 
