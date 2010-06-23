@@ -9,6 +9,8 @@
 #include "StringHelper.h"
 #include "ProcessEnvironment.h"
 
+extern char **environ;
+
 using namespace std;
 
 namespace cml
