@@ -54,6 +54,11 @@ TCPSocket* RunnerSideMasterConnector::connect(uint16_t mport, uint16_t rport)
 	}
 	PINF_2("Connected to master.");
 
+	// Check nonblocking flag and set to block if needed.
+	// I noticed that the default value might be nonblocking on BSD/Mac.
+	if (tsock->isNonblock())
+		tsock->setNonblock(false);
+
 	return tsock;
 }
 

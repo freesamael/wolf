@@ -70,6 +70,10 @@ void AbstractConnectionListener::update(AbstractObservable *o)
 				TLVCommand::CommandString[msg->command()] << ".");
 	} else {
 		PINF_2("Got an incoming runner connection.");
+		// Check nonblocking flag and set to block if needed.
+		// I noticed that the default value might be nonblocking on BSD/Mac.
+		if (sock->isNonblock())
+			sock->setNonblock(false);
 		notify(sock);
 	}
 	delete msg;
