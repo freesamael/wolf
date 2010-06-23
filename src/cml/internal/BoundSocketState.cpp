@@ -75,6 +75,7 @@ ssize_t BoundSocketState::recvfrom(AbstractSocket *sock, char *buf, size_t size,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
 		perror("Error: BoundSocketState::recvfrom()");
 	}
+	PINF_3(result << " bytes received.");
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
 	*port = ntohs(inaddr.sin_port);
@@ -104,6 +105,7 @@ ssize_t BoundSocketState::sendto(AbstractSocket *sock, const char *buf,
 			(struct sockaddr *)&inaddr, sizeof(inaddr))) < 0) {
 		perror("Error: BoundSocketState::sendto()");
 	}
+	PINF_3(result << " bytes sent.");
 
 	return result;
 }

@@ -45,6 +45,7 @@ ssize_t ConnectedSocketState::read(AbstractSocket *sock, char *buf, size_t size)
 	ssize_t result;
 	if ((result = ::read(sock->sockfd(), buf, size)) < 0)
 		perror("Error: ConnectedSocketState::read()");
+	PINF_3(result << " bytes read.");
 	return result;
 }
 
@@ -54,6 +55,7 @@ ssize_t ConnectedSocketState::write(AbstractSocket *sock, const char *buf,
 	ssize_t result;
 	if ((result = ::write(sock->sockfd(), buf, size)) < 0)
 		perror("Error: ConnectedSocketState::write()");
+	PINF_3(result << " bytes written.");
 	return result;
 
 }

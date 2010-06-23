@@ -102,6 +102,7 @@ ssize_t SimpleActiveSocketState::recvfrom(AbstractSocket *sock, char *buf,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
 		perror("Error: SimpleActiveSocketState::recvfrom()");
 	}
+	PINF_3(result << " bytes received.");
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
 	*port = ntohs(inaddr.sin_port);
@@ -131,6 +132,7 @@ ssize_t SimpleActiveSocketState::sendto(AbstractSocket *sock, const char *buf,
 			(struct sockaddr *)&inaddr,	sizeof(inaddr))) < 0) {
 		perror("Error: SimpleActiveSocketState::sendto()");
 	}
+	PINF_3(result << " bytes sent.");
 
 	return result;
 }
