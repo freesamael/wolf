@@ -24,7 +24,7 @@ public:
 	AbstractCommandListener(cml::TCPSocket *sock):
 		_done(false), _sock(sock), _mx() {}
 	AbstractCommandListener(const AbstractCommandListener &o):
-		_done(o._done), _sock(o._sock), _mx() {}
+		cml::IRunnable(), _done(o._done), _sock(o._sock), _mx() {}
 	virtual ~AbstractCommandListener() {}
 	AbstractCommandListener& operator=(const AbstractCommandListener &o)
 		{ _done = o._done; _sock = o._sock; return *this; }

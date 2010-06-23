@@ -23,7 +23,7 @@ public:
 	RunnerSideWorkerExecutor(Runner *runner):
 		_done(false), _runner(runner), _mx() {}
 	RunnerSideWorkerExecutor(const RunnerSideWorkerExecutor &o):
-		_done(o._done), _runner(o._runner), _mx() {}
+		cml::IRunnable(), _done(o._done), _runner(o._runner), _mx() {}
 	RunnerSideWorkerExecutor& operator=(const RunnerSideWorkerExecutor &o)
 		{ _done = o._done; _runner = o._runner; return *this; }
 	inline bool isDone()

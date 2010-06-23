@@ -22,7 +22,7 @@ class Executor: public IRunnable
 {
 public:
 	Executor(ConcurrentWorkflowExecutor *parent): _p(parent) {}
-	Executor(const Executor &o): _p(o._p) {}
+	Executor(const Executor &o): IRunnable(), _p(o._p) {}
 	Executor& operator=(const Executor &o) { _p = o._p; return *this; }
 	void run() {
 		while (!_p->isFinished()) {

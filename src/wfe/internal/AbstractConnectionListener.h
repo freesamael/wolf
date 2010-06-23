@@ -32,7 +32,8 @@ public:
 
 private:
 	AbstractConnectionListener(const AbstractConnectionListener &UNUSED(o)):
-		_lsock(NULL), _listener(NULL), _listhread(&_listener) {}
+		cml::IObserver(), _lsock(NULL), _listener(NULL),
+		_listhread(&_listener) {}
 	AbstractConnectionListener& operator=(const AbstractConnectionListener
 			&UNUSED(o)) { return *this; }
 	cml::TCPSocket *_lsock;
