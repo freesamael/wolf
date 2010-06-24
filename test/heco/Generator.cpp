@@ -28,4 +28,5 @@ void Generator::fire()
 		DUInt32 *n = new DUInt32(0);
 		sourcePorts()[i]->writeChannel(n);
 	}
+	_state = POST_RUNNING;
 }

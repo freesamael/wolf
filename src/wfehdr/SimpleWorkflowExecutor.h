@@ -7,20 +7,32 @@
 #ifndef SIMPLEWORKFLOWEXECUTOR_H_
 #define SIMPLEWORKFLOWEXECUTOR_H_
 
+#include <deque>
+#include "Thread.h"
 #include "IWorkflowExecutor.h"
 
 namespace wfe
 {
 
-class SimpleWorkflowExecutor: public IWorkflowExecutor
+class SimpleWorkflowExecutor: public IWorkflowExecutor, public cml::Thread
 {
 public:
 	void execute(const std::vector<AbstractActor *> &actors);
+	void run();
+	void setup();
+	void iterate();
+	void wrapup();
+	void findready();
+	void findpost();
+	void runactor(AbstractActor *actor);
+	void postrunactor(AbstractActor *actor);
 
 private:
-	void setup(const std::vector<AbstractActor *> &actors);
-	void iterate(const std::vector<AbstractActor *> &actors);
-	void wrapup(const std::vector<AbstractActor *> &actors);
+	std::vector<AbstractActor *> _all;
+	std::vector<AbstractActor *> _vwaitready;
+	std::deque<AbstractActor *> _qready;
+	std::vector<AbstractActor *> _vwaitpost;
+	std::deque<AbstractActor *> _qpost;
 };
 
 }

@@ -43,18 +43,24 @@ void* thread_caller(void *param)
 
 Thread::Thread(IRunnable *runner):
 		_runner(runner), _rcnd(), _mutex(),
-		_tid(0), _running(false), _finished(false), _canceled(false)
+		_tid(0), _tattr(), _tpoli(0), _tparm(), _running(false),
+		_finished(false), _canceled(false)
 {
-	int state;
-	pthread_mutex_init(&_mutex, NULL);
-	pthread_cond_init(&_rcnd, NULL);
-	pthread_setcancelstate(PTHREAD_CANCEL_ENABLE, &state);
+	pthread_mutex_init(&_mutex, NULL);		// Never return error.
+	pthread_cond_init(&_rcnd, NULL);		// Never return error.
+	if (pthread_attr_init(&_tattr))
+		perror("Error: Thread::Thread(): Initial attribute");
+	if (pthread_attr_getschedpolicy(&_tattr, &_tpoli))
+		perror("Error: Thread::Thread(): Get schedule policy");
+	if (pthread_attr_getschedparam(&_tattr, &_tparm))
+		perror("Error: Thread::Thread(): Get schedule parameter");
 }
 
 Thread::~Thread()
 {
 	pthread_cond_destroy(&_rcnd);
 	pthread_mutex_destroy(&_mutex);
+	pthread_attr_destroy(&_tattr);
 }
 
 /**
@@ -64,7 +70,7 @@ bool Thread::start()
 {
 	PINF_3("Starting the thread.");
 	if (_tid == 0) {
-		if (pthread_create(&_tid, NULL, thread_caller, this) != 0) {
+		if (pthread_create(&_tid, &_tattr, thread_caller, this) != 0) {
 			perror("Error: Thread::start()");
 			return false;
 		}
@@ -141,6 +147,69 @@ bool Thread::cancel()
 	}
 	PERR("Failed to cancel thread.");
 	return false;
+}
+
+/**
+ * Get the minimum priority. Return -1 on error.
+ */
+int Thread::minimumPriority()
+{
+	int p;
+	if ((p = sched_get_priority_min(_tpoli)) == -1)
+		perror("Error: Thread::minimumPriority()");
+	return p;
+}
+
+/**
+ * Get the maximum priority. Return -1 on error.
+ */
+int Thread::maximumPriority()
+{
+	int p;
+	if ((p = sched_get_priority_max(_tpoli)) == -1)
+		perror("Error: Thread::maximumPriority()");
+	return p;
+}
+
+/**
+ * Get current priority setting. Return -1 on error.
+ */
+int Thread::priority()
+{
+	if (isRunning()) {
+		if (pthread_getschedparam(_tid, &_tpoli, &_tparm)) {
+			perror("Error: Thread::priority(): Get runtime priority");
+			return -1;
+		}
+	} else {
+		if (pthread_attr_getschedparam(&_tattr, &_tparm)) {
+			perror("Error: Thread::priority(): Get attribute priority");
+			return -1;
+		}
+	}
+	return _tparm.sched_priority;
+}
+
+/**
+ * Set the priority.
+ *
+ * \return True on success, false on error.
+ */
+bool Thread::setPriority(int p)
+{
+	_tparm.sched_priority = p;
+	if (isRunning()) {
+		if (pthread_setschedparam(_tid, _tpoli, &_tparm)) {
+			perror("Error: Thread::setPriority(): Set runtime priority");
+			return false;
+		}
+	} else {
+		if (pthread_attr_setschedparam(&_tattr, &_tparm)) {
+			perror("Error: Thread::setPriority(): Set attribute priority");
+			return false;
+		}
+	}
+	return true;
 }
 
 }

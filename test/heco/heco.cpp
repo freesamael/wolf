@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <ConcurrentWorkflowExecutor.h>
+#include <SimpleWorkflowExecutor.h>
 #include <AlwaysFirstWorkerDispatcher.h>
 #include <Director.h>
 #include <ManagerActor.h>
@@ -23,7 +24,8 @@ int main(int argc, char *argv[])
 	Master::instance()->init(argc, argv);
 	Master::instance()->setDispatcher(&disp);
 
-	ConcurrentWorkflowExecutor exec(60);
+//	ConcurrentWorkflowExecutor exec(60);
+	SimpleWorkflowExecutor exec;
 	Director d(&exec);
 
 	vector<Worker *> workers;

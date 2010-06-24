@@ -47,4 +47,5 @@ void Loader::fire()
 		delete d;
 	}
 	cout << endl;
+	_state = POST_RUNNING;
 }

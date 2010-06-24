@@ -37,15 +37,23 @@ public:
 	bool join();
 	bool join(unsigned timeout);
 	bool cancel();
+	int minimumPriority();
+	int maximumPriority();
+	int priority();
+	bool setPriority(int p);
 
 private:
 	Thread(const Thread &UNUSED(o)): _runner(NULL), _rcnd(), _mutex(),
-		_tid(0), _running(false), _finished(false), _canceled(false) {}
+		_tid(0), _tattr(), _tpoli(0), _tparm(), _running(false),
+		_finished(false), _canceled(false) {}
 	Thread& operator=(const Thread &UNUSED(o)) { return *this; }
 	IRunnable *_runner;
 	pthread_cond_t _rcnd;
 	pthread_mutex_t _mutex;
 	pthread_t _tid;
+	pthread_attr_t _tattr;
+	int _tpoli;
+	sched_param _tparm;
 	bool _running;
 	bool _finished;
 	bool _canceled;

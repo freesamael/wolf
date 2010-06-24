@@ -24,10 +24,10 @@ AbstractActor::State ManagerActor::state()
 
 void ManagerActor::fire()
 {
-	_muxwait.lock();
+//	_muxwait.lock();
 	Master::instance()->runWorker(_worker, this);
-	_wait.wait(&_muxwait);
-	_muxwait.unlock();
+//	_wait.wait(&_muxwait);
+//	_muxwait.unlock();
 }
 
 void ManagerActor::workerFinished(const AbstractWorkerActor &worker)
@@ -36,7 +36,7 @@ void ManagerActor::workerFinished(const AbstractWorkerActor &worker)
 	PINF_2("Update worker.");
 	_worker->update(worker);
 #endif /* DISABLE_D2MCE */
-	_wait.wakeOne();
+//	_wait.wakeOne();
 	_state = POST_RUNNING;
 }
 
