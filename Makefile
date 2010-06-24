@@ -20,7 +20,7 @@ ifneq (${DEBUG}, n)
 CXXFLAGS += -DDEBUG=${DEBUG}
 endif
 
-CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra
+CXXFLAGS += -O2 -ansi -pedantic -Wall -Wextra
 
 COV ?= n
 ifeq (${COV}, y)

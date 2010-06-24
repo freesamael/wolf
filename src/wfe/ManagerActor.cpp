@@ -37,6 +37,7 @@ void ManagerActor::workerFinished(const AbstractWorkerActor &worker)
 	_worker->update(worker);
 #endif /* DISABLE_D2MCE */
 	_wait.wakeOne();
+	_state = POST_RUNNING;
 }
 
 }

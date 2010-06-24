@@ -12,7 +12,8 @@ namespace wfe
 {
 
 const string AbstractActor::StateString[] =
-		{"Not Ready", "Ready", "Running", "Finished", "Terminated"};
+		{"Not Ready", "Ready", "Running", "Post Running", "Finished",
+				"Terminated"};
 
 IPort* AbstractActor::addPort(IPort::Type type)
 {

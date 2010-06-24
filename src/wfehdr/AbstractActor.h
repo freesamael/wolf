@@ -40,6 +40,7 @@ public:
 		NOT_READY,
 		READY,
 		RUNNING,
+		POST_RUNNING,
 		FINISHED,
 		TERMINATED
 	} State;
