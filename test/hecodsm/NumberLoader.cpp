@@ -33,5 +33,5 @@ void NumberLoader::fire()
 	int *num = (int *)mem->buffer();
 	PINF_1("Num = " << num[0] << " " << num[1] << " " <<  num[2] <<
 			" " << num[3]);
-	_state = FINISHED;
+	_state = POST_RUNNING;
 }

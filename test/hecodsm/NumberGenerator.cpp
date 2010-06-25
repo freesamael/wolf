@@ -31,6 +31,8 @@ void NumberGenerator::fire()
 	int *num = (int *)_item->buffer();
 	PINF_1("Num = " << num[0] << " " << num[1] << " " <<  num[2] << " " <<
 			num[3]);
+
+	_state = POST_RUNNING;
 }
 
 void NumberGenerator::postfire()
