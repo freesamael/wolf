@@ -152,6 +152,8 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 		_d->mgrqmx.lock();
 		uint32_t seq = _d->cmdsdr.runWorker(runner, worker);
 		_d->mgrq[seq] = mgr;
+		PINF_2("Worker " << seq << " has been sent to runner " <<
+				runner->peerAddress().toString());
 		PINF_2("Queue size = " << _d->mgrq.size());
 		_d->mgrqmx.unlock();
 	}
@@ -197,8 +199,6 @@ void Master::runnerConnected(cml::TCPSocket *runnersock)
  */
 void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 {
-	PINF_2("Worker " << wseq << " finished.");
-
 	// Find the belonging manager.
 	map<uint32_t, ManagerActor *>::iterator iter;
 	_d->mgrqmx.lock();

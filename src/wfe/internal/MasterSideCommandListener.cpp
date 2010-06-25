@@ -34,6 +34,8 @@ void MasterSideCommandListener::process(TLVCommand *cmd)
 			delete u32;
 			return;
 		}
+		PINF_2("Worker " << u32->value() << " finished by runner " <<
+				sock()->peerAddress().toString());
 		_master->workerFinished(u32->value(), *worker);
 		delete u32;
 		delete worker;
