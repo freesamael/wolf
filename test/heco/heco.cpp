@@ -5,7 +5,6 @@
  */
 
 #include <vector>
-#include <ConcurrentWorkflowExecutor.h>
 #include <SimpleWorkflowExecutor.h>
 #include <AlwaysFirstWorkerDispatcher.h>
 #include <Director.h>
