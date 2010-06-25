@@ -24,7 +24,7 @@ namespace wfe
 
 void RunnerSideCommandSender::joinD2MCE(TCPSocket *sock, const string &appname)
 {
-#ifndef DISABLE_D2MCE
+#ifdef ENABLE_D2MCE /* DSM mode */
 	// Random delay.
 	srand((unsigned)sock->currentAddress().toInetAddr());
 	unsigned delay = rand() % 60 * 33000; // 0 ~ 2s, step 33ms
@@ -35,7 +35,7 @@ void RunnerSideCommandSender::joinD2MCE(TCPSocket *sock, const string &appname)
 	PINF_2("Currently " << D2MCE::instance()->getNumberOfNodes() <<
 			" nodes inside the group, node id = " <<
 			D2MCE::instance()->nodeId() << ".");
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 }
 
 void RunnerSideCommandSender::hello(TCPSocket *sock)

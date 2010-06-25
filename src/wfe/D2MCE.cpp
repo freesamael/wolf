@@ -4,7 +4,7 @@
  * \author samael
  */
 
-#ifndef DISABLE_D2MCE
+#ifdef ENABLE_D2MCE /* DSM mode */
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
@@ -105,4 +105,4 @@ SharedMemory* D2MCE::createSharedMemory(size_t size, const string &name)
 
 }
 
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */

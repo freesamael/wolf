@@ -24,19 +24,15 @@ AbstractActor::State ManagerActor::state()
 
 void ManagerActor::fire()
 {
-//	_muxwait.lock();
 	Master::instance()->runWorker(_worker, this);
-//	_wait.wait(&_muxwait);
-//	_muxwait.unlock();
 }
 
 void ManagerActor::workerFinished(const AbstractWorkerActor &worker)
 {
-#ifdef DISABLE_D2MCE	// In DSM mode the result is directly taken from DSM.
+#ifndef ENABLE_D2MCE /* Normal mode */
 	PINF_2("Update worker.");
 	_worker->update(worker);
-#endif /* DISABLE_D2MCE */
-//	_wait.wakeOne();
+#endif /* ENABLE_D2MCE */
 	_state = POST_RUNNING;
 }
 

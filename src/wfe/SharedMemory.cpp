@@ -4,7 +4,7 @@
  * \author samael
  */
 
-#ifndef DISABLE_D2MCE
+#ifdef ENABLE_D2MCE /* DSM mode */
 #include <cstring>
 #include "SharedMemory.h"
 #include "D2MCE.h"
@@ -24,4 +24,4 @@ IDrop* SharedMemory::clone() const
 
 }
 
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */

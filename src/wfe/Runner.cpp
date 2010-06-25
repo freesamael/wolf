@@ -63,13 +63,13 @@ Runner::Runner(uint16_t master_port, uint16_t runner_port, IWorkerStealer *ws,
 		_mport(master_port), _rport(runner_port), _stealer(ws),
 		_appname(appname), _rsock(), _d(new PData())
 {
-#ifdef DISABLE_D2MCE
+#ifndef ENABLE_D2MCE /* Normal mode */
 	if (!ws) {
 		PERR("Worker stealer can not be NULL.");
 		exit(EXIT_FAILURE);
 	}
 	ws->setRunner(this);
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 	_rsock.setAutoclean(false);
 }
 
@@ -223,9 +223,9 @@ void Runner::putWorker(uint32_t wseq, AbstractWorkerActor *worker,
 	_d->wq.push_back(pair<uint32_t, AbstractWorkerActor *>(wseq, worker));
 	_d->wqmx.unlock();
 
-#ifdef DISABLE_D2MCE
+#ifndef ENABLE_D2MCE /* Normal mode */
 	_stealer->workerArrived(sender);
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 }
 
 /**
@@ -242,10 +242,10 @@ pair<uint32_t, AbstractWorkerActor *> Runner::takeWorker()
 	}
 	_d->wqmx.unlock();
 
-#ifdef DISABLE_D2MCE
+#ifndef ENABLE_D2MCE /* Normal mode */
 	if (!w.second)
 		_stealer->workerMissed();
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 
 	return w;
 }
@@ -255,9 +255,9 @@ pair<uint32_t, AbstractWorkerActor *> Runner::takeWorker()
  */
 void Runner::workerStealFailed(TCPSocket *sender)
 {
-#ifdef DISABLE_D2MCE
+#ifndef ENABLE_D2MCE /* Normal mode */
 	_stealer->stealFailed(sender);
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 }
 
 /**
@@ -274,7 +274,10 @@ void Runner::sendWorkerFinished(uint32_t wseq, AbstractWorkerActor *worker)
  */
 void Runner::sendWorker(TCPSocket *sock, uint16_t nworkers)
 {
-#ifdef DISABLE_D2MCE
+#ifdef ENABLE_D2MCE /* DSM mode */
+	_d->cmdsdr.stealFailed(sock); // Always fail in DSM mode.
+
+#else					// Normal mode.
 	vector<pair<uint32_t, AbstractWorkerActor *> > wps;
 
 	// Try to take n worker pairs.
@@ -292,9 +295,7 @@ void Runner::sendWorker(TCPSocket *sock, uint16_t nworkers)
 		for (unsigned i = 0; i < wps.size(); i++)
 			_d->cmdsdr.runWorker(sock, wps[i].first, wps[i].second);
 	}
-#else
-	_d->cmdsdr.stealFailed(sock); // Always fail in DSM mode.
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 }
 
 /**
@@ -302,9 +303,9 @@ void Runner::sendWorker(TCPSocket *sock, uint16_t nworkers)
  */
 void Runner::sendWorkerSteal(TCPSocket *sock, uint16_t nworkers)
 {
-#ifdef DISABLE_D2MCE
+#ifndef ENABLE_D2MCE /* Normal mode */
 	_d->cmdsdr.stealWorker(sock, nworkers);
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 }
 
 /**

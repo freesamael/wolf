@@ -9,7 +9,6 @@
 
 #include <iostream>
 #include "HelperMacros.h"
-#include "WaitCondition.h"
 #include "AbstractWorkerActor.h"
 #include "Channel.h"
 
@@ -20,7 +19,7 @@ class ManagerActor: public AbstractActor
 {
 public:
 	ManagerActor(AbstractWorkerActor *worker): _worker(worker),
-		_state(NOT_READY), _wait(), _muxwait()
+		_state(NOT_READY)
 		{ _worker->managerInitialization(this); }
 	~ManagerActor() { _worker->managerFinalization(this);}
 
@@ -34,12 +33,10 @@ public:
 
 private:
 	ManagerActor(const ManagerActor &UNUSED(o)): AbstractActor(), _worker(),
-	_state(NOT_READY), _wait(), _muxwait() {}
+	_state(NOT_READY) {}
 	ManagerActor& operator=(const ManagerActor &UNUSED(o)) { return *this; }
 	AbstractWorkerActor *_worker;
 	State _state;
-	cml::WaitCondition _wait;
-	cml::Mutex _muxwait;
 };
 
 }

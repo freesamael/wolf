@@ -2,25 +2,26 @@
 CXX ?= ${CROSS_COMPILE}g++
 AR ?= ${CROSS_COMPILE}ar
 
-DSM ?= y
+DSM ?= n
 DEBUG ?= n
 
 ifeq (${DSM}, y)
+CXXFLAGS += -DENABLE_D2MCE
 D2MCE_INSTDIR ?= /opt/d2mce/i386
 D2MCE_INCDIR ?= ${D2MCE_INSTDIR}/include
 D2MCE_LIBDIR ?= ${D2MCE_INSTDIR}/lib
 D2MCE_CXXFLAGS = -I${D2MCE_INCDIR}
 D2MCE_LDFLAGS = -L${D2MCE_LIBDIR}
 D2MCE_LIBS = -ld2mce
-else
-CXXFLAGS += -DDISABLE_D2MCE
 endif
 
 ifneq (${DEBUG}, n)
-CXXFLAGS += -DDEBUG=${DEBUG}
+CXXFLAGS += -g3 -O0 -DDEBUG=${DEBUG}
+else
+CXXFLAGS += -O2
 endif
 
-CXXFLAGS += -O2 -ansi -pedantic -Wall -Wextra
+CXXFLAGS += -ansi -pedantic -Wall -Wextra
 
 COV ?= n
 ifeq (${COV}, y)

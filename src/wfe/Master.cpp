@@ -136,7 +136,7 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 	if (!worker || !mgr)
 		return;
 
-#ifndef DISABLE_D2MCE
+#ifdef ENABLE_D2MCE /* DSM mode */
 	_d->mgrqmx.lock();
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		uint32_t seq = _d->cmdsdr.runWorker(_d->rsocks[i], worker);
@@ -144,7 +144,7 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 		PINF_2("Queue size = " << _d->mgrq.size());
 	}
 	_d->mgrqmx.unlock();
-#else
+#else /* Normal mode */
 	_d->rsocksmx.lock();
 	TCPSocket *runner = dispatcher()->choose(_d->rsocks);
 	_d->rsocksmx.unlock();
@@ -155,7 +155,7 @@ void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
 		PINF_2("Queue size = " << _d->mgrq.size());
 		_d->mgrqmx.unlock();
 	}
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 }
 
 /**
@@ -212,7 +212,7 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 	_d->mgrq.erase(iter);
 	_d->mgrqmx.unlock();
 
-#ifndef DISABLE_D2MCE
+#ifdef ENABLE_D2MCE /* DSM mode */
 	// Check if it's the last worker owned by that manager.
 	map<uint32_t, ManagerActor *>::iterator tmpiter;
 	bool lastone = true;
@@ -231,7 +231,7 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 		PINF_2("Notifying manager.");
 		mgr->workerFinished(worker);
 	}
-#else
+#else /* Normal mode */
 	PINF_2("Notifying manager.");
 	mgr->workerFinished(worker);
 #endif /* DISABLE_D2MCE */

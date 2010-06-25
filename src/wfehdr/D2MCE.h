@@ -16,7 +16,7 @@
 namespace wfe
 {
 
-#ifndef DISABLE_D2MCE
+#ifdef ENABLE_D2MCE /* DSM mode */
 
 #include <d2mce/d2mce.h>
 /**
@@ -42,7 +42,7 @@ private:
 };
 
 #else
-#endif /* DISABLE_D2MCE */
+#endif /* ENABLE_D2MCE */
 
 }
 
