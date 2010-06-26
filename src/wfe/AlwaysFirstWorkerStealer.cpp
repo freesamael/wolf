@@ -12,6 +12,7 @@ namespace wfe
 void AlwaysFirstWorkerStealer::workerMissed()
 {
 	if (!isStealing()) {
+		PINF_2("Try to steal " << _num << " workers.");
 		setStealing(true);
 		if (_runner) {
 			if (!_runner->runnerSocks().empty()) {
