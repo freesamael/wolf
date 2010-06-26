@@ -10,7 +10,7 @@ using namespace wfe;
 
 int main()
 {
-	SimpleWorkerStealer stealer;
+	SimpleWorkerStealer stealer(10);
 	Runner runner(5566, 7788, &stealer);
 	runner.run();
 	return 0;
