@@ -36,7 +36,7 @@ public:
 
 private:
 	SimpleManagerActor(const SimpleManagerActor &UNUSED(o)): AbstractActor(),
-	_worker(), _state(NOT_READY) {}
+	IManagerActor(), _worker(), _state(NOT_READY) {}
 	SimpleManagerActor& operator=(const SimpleManagerActor &UNUSED(o))
 		{ return *this; }
 	AbstractWorkerActor *_worker;
