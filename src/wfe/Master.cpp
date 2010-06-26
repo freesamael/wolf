@@ -7,6 +7,7 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <cstdlib>
+#include "Time.h"
 #include "Mutex.h"
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
@@ -29,7 +30,8 @@ namespace wfe
 struct PData
 {
 	PData(): rsocks(), clis(), clthreads(), rsocksmx(), cmdsdr(), mgrq(),
-			mgrqmx(), bcastaddr(HostAddress::BroadcastAddress), bcastttl(1) {}
+			mgrqmx(), bcastaddr(HostAddress::BroadcastAddress), bcastttl(1),
+			stime() {}
 
 	vector<TCPSocket *> rsocks;					// Runner sockets.
 	vector<MasterSideCommandListener *> clis;	// Command listeners.
@@ -41,6 +43,7 @@ struct PData
 	Mutex mgrqmx;								// Manager queue mutex.
 	HostAddress bcastaddr;						// Broadcast address.
 	int bcastttl;								// Broadcast TTL.
+	cml::Time stime;							// Time when started.
 };
 
 SINGLETON_REGISTRATION(Master);
@@ -125,6 +128,7 @@ bool Master::setup(uint16_t master_port, uint16_t runner_port,
 	}
 
 	_state = READY;
+	_d->stime = Time::now();
 	return true;
 }
 
@@ -165,6 +169,8 @@ void Master::runWorker(AbstractWorkerActor *worker, IManagerActor *mgr)
  */
 void Master::shutdown()
 {
+	PINF_2("Execution time = " << Time::now() - _d->stime);
+
 	// Shutdown all runners and stop all command listeners.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		_d->cmdsdr.shutdown(_d->rsocks[i]);
