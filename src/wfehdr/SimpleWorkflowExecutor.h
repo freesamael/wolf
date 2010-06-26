@@ -14,7 +14,7 @@
 namespace wfe
 {
 
-class SimpleWorkflowExecutor: public IWorkflowExecutor, public cml::Thread
+class SimpleWorkflowExecutor: public cml::Thread, public IWorkflowExecutor
 {
 public:
 	void execute(const std::vector<AbstractActor *> &actors);

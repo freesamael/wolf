@@ -1,16 +1,16 @@
 /**
- * \file ManagerActor.cpp
+ * \file SimpleManagerActor.cpp
  * \date Apr 13, 2010
  * \author samael
  */
 
-#include "ManagerActor.h"
+#include "SimpleManagerActor.h"
 #include "Master.h"
 
 namespace wfe
 {
 
-AbstractActor::State ManagerActor::state()
+AbstractActor::State SimpleManagerActor::state()
 {
 	if (_state == NOT_READY) {
 		bool ready = true;
@@ -22,12 +22,12 @@ AbstractActor::State ManagerActor::state()
 	return _state;
 }
 
-void ManagerActor::fire()
+void SimpleManagerActor::fire()
 {
 	Master::instance()->runWorker(_worker, this);
 }
 
-void ManagerActor::workerFinished(const AbstractWorkerActor &worker)
+void SimpleManagerActor::workerFinished(const AbstractWorkerActor &worker)
 {
 #ifndef ENABLE_D2MCE /* Normal mode */
 	PINF_2("Update worker.");

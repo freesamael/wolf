@@ -13,10 +13,10 @@
 class Worker: public wfe::AbstractWorkerActor
 {
 public:
-	void managerInitialization(wfe::ManagerActor *manager);
-	void managerFinalization(wfe::ManagerActor *manager);
-	void managerPrefire(wfe::ManagerActor *manager);
-	void managerPostfire(wfe::ManagerActor *manager);
+	void managerInitialization(wfe::IManagerActor *mgr);
+	void managerFinalization(wfe::IManagerActor *mgr);
+	void managerPrefire(wfe::IManagerActor *mgr);
+	void managerPostfire(wfe::IManagerActor *mgr);
 	void fire();
 	void setNum(wfe::DUInt32 n) { _n = n; }
 	void update(const AbstractWorkerActor &o);

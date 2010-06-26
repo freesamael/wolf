@@ -43,7 +43,7 @@ public:
 	void init(int argc, char *argv[]);
 	bool setup(uint16_t master_port, uint16_t runner_port, const
 			std::string &appname = "default", unsigned int timeout = 2);
-	void runWorker(AbstractWorkerActor *worker, ManagerActor *mgr);
+	void runWorker(AbstractWorkerActor *worker, IManagerActor *mgr);
 	void shutdown();
 	void runnerConnected(cml::TCPSocket *runnersock);
 	void workerFinished(uint32_t wseq, const AbstractWorkerActor &worker);

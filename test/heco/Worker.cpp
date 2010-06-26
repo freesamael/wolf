@@ -10,7 +10,8 @@
 #include <unistd.h>
 #include <TLVObjectFactoryAutoRegistry.h>
 #include <HelperMacros.h>
-#include <ManagerActor.h>
+#include <IManagerActor.h>
+#include <SimpleManagerActor.h>
 #include "Worker.h"
 #include "WorkerCreator.h"
 
@@ -21,34 +22,46 @@ using namespace wfe;
 #define TLV_TYPE_WORKER		130
 TLV_OBJECT_REGISTRATION(Worker, TLV_TYPE_WORKER, WorkerCreator);
 
-void Worker::managerInitialization(ManagerActor *manager)
+void Worker::managerInitialization(IManagerActor *mgr)
 {
-	manager->addPort(wfe::IPort::SINK);
-	manager->addPort(wfe::IPort::SOURCE);
-}
-
-void Worker::managerFinalization(ManagerActor *manager)
-{
-	manager->removePort(manager->sinkPorts()[0]);
-	manager->removePort(manager->sourcePorts()[0]);
-}
-
-void Worker::managerPrefire(ManagerActor *manager)
-{
-	IDrop *d = manager->sinkPorts()[0]->readPort();
-	DUInt32 *n;
-	if (!(n = dynamic_cast<DUInt32 *>(d))) {
-		PERR("Failed to read port.");
-	} else {
-		_n.setValue(n->value());
+	SimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+		smgr->addPort(wfe::IPort::SINK);
+		smgr->addPort(wfe::IPort::SOURCE);
 	}
-	delete d;
 }
 
-void Worker::managerPostfire(ManagerActor *manager)
+void Worker::managerFinalization(IManagerActor *mgr)
 {
-	DUInt32 *n = new DUInt32(_n);
-	manager->sourcePorts()[0]->writeChannel(n);
+	SimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+		smgr->removePort(smgr->sinkPorts()[0]);
+		smgr->removePort(smgr->sourcePorts()[0]);
+	}
+}
+
+void Worker::managerPrefire(IManagerActor *mgr)
+{
+	SimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+		IDrop *d = smgr->sinkPorts()[0]->readPort();
+		DUInt32 *n;
+		if (!(n = dynamic_cast<DUInt32 *>(d))) {
+			PERR("Failed to read port.");
+		} else {
+			_n.setValue(n->value());
+		}
+		delete d;
+	}
+}
+
+void Worker::managerPostfire(IManagerActor *mgr)
+{
+	SimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+		DUInt32 *n = new DUInt32(_n);
+		smgr->sourcePorts()[0]->writeChannel(n);
+	}
 }
 
 void Worker::fire()

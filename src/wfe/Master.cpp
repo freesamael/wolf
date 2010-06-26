@@ -15,7 +15,7 @@
 #include "TLVUInt32.h"
 #include "Master.h"
 #include "TLVCommand.h"
-#include "ManagerActor.h"
+#include "IManagerActor.h"
 #include "internal/MasterSideConnectionListener.h"
 #include "internal/MasterSideCommandListener.h"
 #include "internal/MasterSideCommandSender.h"
@@ -37,7 +37,7 @@ struct PData
 	Mutex rsocksmx;								// Runner sockets mutex.
 
 	MasterSideCommandSender cmdsdr;				// Command sender.
-	map<uint32_t, ManagerActor *> mgrq;			// Manager queue.
+	map<uint32_t, IManagerActor *> mgrq;		// Manager queue.
 	Mutex mgrqmx;								// Manager queue mutex.
 	HostAddress bcastaddr;						// Broadcast address.
 	int bcastttl;								// Broadcast TTL.
@@ -131,7 +131,7 @@ bool Master::setup(uint16_t master_port, uint16_t runner_port,
 /**
  * Send a worker out to run.
  */
-void Master::runWorker(AbstractWorkerActor *worker, ManagerActor *mgr)
+void Master::runWorker(AbstractWorkerActor *worker, IManagerActor *mgr)
 {
 	if (!worker || !mgr)
 		return;
@@ -200,7 +200,7 @@ void Master::runnerConnected(cml::TCPSocket *runnersock)
 void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 {
 	// Find the belonging manager.
-	map<uint32_t, ManagerActor *>::iterator iter;
+	map<uint32_t, IManagerActor *>::iterator iter;
 	_d->mgrqmx.lock();
 	if ((iter = _d->mgrq.find(wseq)) == _d->mgrq.end()) {
 		PERR("No manager found owning worker with sequence = " << wseq);
@@ -208,13 +208,13 @@ void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
 	}
 
 	// Take the value and remove the manager from the queue.
-	ManagerActor *mgr = iter->second;
+	IManagerActor *mgr = iter->second;
 	_d->mgrq.erase(iter);
 	_d->mgrqmx.unlock();
 
 #ifdef ENABLE_D2MCE /* DSM mode */
 	// Check if it's the last worker owned by that manager.
-	map<uint32_t, ManagerActor *>::iterator tmpiter;
+	map<uint32_t, IManagerActor *>::iterator tmpiter;
 	bool lastone = true;
 	_d->mgrqmx.lock();
 	for (tmpiter = _d->mgrq.begin();

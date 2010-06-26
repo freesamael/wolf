@@ -11,7 +11,8 @@
 #include <TLVObjectFactoryAutoRegistry.h>
 #include <HelperMacros.h>
 #include <D2MCE.h>
-#include <ManagerActor.h>
+#include <IManagerActor.h>
+#include <SimpleManagerActor.h>
 #include "Counter.h"
 #include "CounterCreator.h"
 
@@ -33,50 +34,62 @@ Counter::~Counter()
 	delete _meminfo;
 }
 
-void Counter::managerInitialization(ManagerActor *manager)
+void Counter::managerInitialization(IManagerActor *mgr)
 {
-	manager->addPort(IPort::SINK);
-	manager->addPort(IPort::SOURCE);
-}
-
-void Counter::managerFinalization(ManagerActor *manager)
-{
-	manager->removePort(manager->sinkPorts()[0]);
-	manager->removePort(manager->sourcePorts()[0]);
-}
-
-void Counter::managerPrefire(ManagerActor *UNUSED(manager))
-{
-	PINF_1("Manager Prefire");
-	// Load memory.
-	_mem = dynamic_cast<SharedMemory *>(manager->sinkPorts()[0]->readPort());
-	if (!_mem) {
-		PERR("Invalid type.");
-		return;
+	SimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+		smgr->addPort(IPort::SINK);
+		smgr->addPort(IPort::SOURCE);
 	}
-	_mem->load();
-	int *num = (int *)_mem->buffer();
-	PINF_1("Num = " << num[0] << " " << num[1] << " " << num[2] << " " <<
-			num[3]);
-
-	// Generate memory info.
-	_meminfo = new TLVSharedMemoryInfo(_mem->name(), _mem->size());
-	PINF_1("Meminfo: name = " << _meminfo->name() << ", size = " <<
-			_meminfo->size());
 }
 
-void Counter::managerPostfire(ManagerActor *UNUSED(manager))
+void Counter::managerFinalization(IManagerActor *mgr)
 {
-	PINF_1("Manager Postfire");
+	SimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+		smgr->removePort(smgr->sinkPorts()[0]);
+		smgr->removePort(smgr->sourcePorts()[0]);
+	}
+}
 
-	// Load memory.
-	_mem->load();
-	int *num = (int *)_mem->buffer();
-	PINF_1("Num = " << num[0] << " " << num[1] << " " << num[2] << " " <<
-			num[3]);
+void Counter::managerPrefire(IManagerActor *mgr)
+{
+	SimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+		PINF_1("Manager Prefire");
+		// Load memory.
+		_mem = dynamic_cast<SharedMemory *>(smgr->sinkPorts()[0]->readPort());
+		if (!_mem) {
+			PERR("Invalid type.");
+			return;
+		}
+		_mem->load();
+		int *num = (int *)_mem->buffer();
+		PINF_1("Num = " << num[0] << " " << num[1] << " " << num[2] << " " <<
+				num[3]);
 
-	// Write port.
-	manager->sourcePorts()[0]->writeChannel(_mem);
+		// Generate memory info.
+		_meminfo = new TLVSharedMemoryInfo(_mem->name(), _mem->size());
+		PINF_1("Meminfo: name = " << _meminfo->name() << ", size = " <<
+				_meminfo->size());
+	}
+}
+
+void Counter::managerPostfire(IManagerActor *mgr)
+{
+	SimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+		PINF_1("Manager Postfire");
+
+		// Load memory.
+		_mem->load();
+		int *num = (int *)_mem->buffer();
+		PINF_1("Num = " << num[0] << " " << num[1] << " " << num[2] << " " <<
+				num[3]);
+
+		// Write port.
+		smgr->sourcePorts()[0]->writeChannel(_mem);
+	}
 }
 
 void Counter::setup()

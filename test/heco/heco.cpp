@@ -8,7 +8,7 @@
 #include <SimpleWorkflowExecutor.h>
 #include <AlwaysFirstWorkerDispatcher.h>
 #include <Director.h>
-#include <ManagerActor.h>
+#include <SimpleManagerActor.h>
 #include <Master.h>
 #include "Generator.h"
 #include "Loader.h"
@@ -28,7 +28,7 @@ int main(int argc, char *argv[])
 	Director d(&exec);
 
 	vector<Worker *> workers;
-	vector<ManagerActor *> managers;
+	vector<SimpleManagerActor *> managers;
 
 	Generator gtr(1);
 	d.addActor(&gtr);
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 
 	for (int i = 0; i < 60; i++) {
 		Worker *w = new Worker();
-		ManagerActor *m = new ManagerActor(w);
+		SimpleManagerActor *m = new SimpleManagerActor(w);
 		d.addActor(m);
 
 		// Setup all intermediate ports.

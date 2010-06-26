@@ -10,11 +10,10 @@
 #include "ITLVObject.h"
 #include "HelperMacros.h"
 #include "AbstractActor.h"
+#include "IManagerActor.h"
 
 namespace wfe
 {
-
-class ManagerActor;
 
 /**
  * In addition to the methods AbstractActor defined, AbstractWorkerActor adds
@@ -43,13 +42,13 @@ public:
 	/// In usual case, worker actor is always ready.
 	virtual State state() { return READY; }
 	/// Initialize manager. Called on construction of manager.
-	virtual void managerInitialization(ManagerActor *UNUSED(manager)) {}
+	virtual void managerInitialization(IManagerActor *UNUSED(mgr)) {}
 	/// Finalize manager. Called on destruction of manager.
-	virtual void managerFinalization(ManagerActor *UNUSED(manager)) {}
+	virtual void managerFinalization(IManagerActor *UNUSED(mgr)) {}
 	/// Prefire manager. Called on ManagerActor::prefire().
-	virtual void managerPrefire(ManagerActor *UNUSED(manager)) {}
+	virtual void managerPrefire(IManagerActor *UNUSED(mgr)) {}
 	/// Postfire manager. Called on ManagerActor::postfire().
-	virtual void managerPostfire(ManagerActor *UNUSED(manager)) {}
+	virtual void managerPostfire(IManagerActor *UNUSED(mgr)) {}
 	/// When a worker returns from runner, manager uses this function to update
 	/// the value of original worker.
 	virtual void update(const AbstractWorkerActor &o) = 0;

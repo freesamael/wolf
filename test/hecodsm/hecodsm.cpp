@@ -7,7 +7,7 @@
 
 #include <Director.h>
 #include <SimpleWorkflowExecutor.h>
-#include <ManagerActor.h>
+#include <SimpleManagerActor.h>
 #include "NumberGenerator.h"
 #include "NumberLoader.h"
 #include "Counter.h"
@@ -22,7 +22,7 @@ int main()
 
 	NumberGenerator a1;
 	Counter w1;
-	ManagerActor a2(&w1);
+	SimpleManagerActor a2(&w1);
 	NumberLoader a3;
 	Channel *ch1 = d.createChannel();
 	Channel *ch2 = d.createChannel();
