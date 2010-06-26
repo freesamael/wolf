@@ -24,11 +24,12 @@ SimpleWorkerStealer::SimpleWorkerStealer(int n):
 void SimpleWorkerStealer::workerMissed()
 {
 	if (!isStealing()) {
-		PINF_2("Try to stealing " << _num << " workers.");
 		setStealing(true);
 		if (_runner) {
 			if (!_runner->runnerSocks().empty()) {
 				int index = rand() % _runner->runnerSocks().size();
+				PINF_2("Try to stealing " << _num << " workers from runner " <<
+						index);
 				_runner->sendWorkerSteal(_runner->runnerSocks()[index], 1);
 			}
 		}
