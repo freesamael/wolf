@@ -64,7 +64,7 @@ Runner::Runner(uint16_t master_port, uint16_t runner_port, IWorkerStealer *ws,
 		_appname(appname), _rsock(), _d(new PData())
 {
 #ifndef ENABLE_D2MCE /* Normal mode */
-	if (!ws)
+	if (ws)
 		ws->setRunner(this);
 #endif /* ENABLE_D2MCE */
 	_rsock.setAutoclean(false);
