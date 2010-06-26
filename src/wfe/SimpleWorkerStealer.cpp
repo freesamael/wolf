@@ -30,7 +30,7 @@ void SimpleWorkerStealer::workerMissed()
 		} else {
 			if (!_runner->runnerSocks().empty()) {
 				int index = rand() % _runner->runnerSocks().size();
-				_runner->sendWorkerSteal(_runner->runnerSocks()[index], 1);
+				_runner->sendWorkerSteal(_runner->runnerSocks()[index], _num);
 			}
 		}
 		setStealing(false);
