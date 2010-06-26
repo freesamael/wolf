@@ -64,11 +64,8 @@ Runner::Runner(uint16_t master_port, uint16_t runner_port, IWorkerStealer *ws,
 		_appname(appname), _rsock(), _d(new PData())
 {
 #ifndef ENABLE_D2MCE /* Normal mode */
-	if (!ws) {
-		PERR("Worker stealer can not be NULL.");
-		exit(EXIT_FAILURE);
-	}
-	ws->setRunner(this);
+	if (!ws)
+		ws->setRunner(this);
 #endif /* ENABLE_D2MCE */
 	_rsock.setAutoclean(false);
 }
@@ -224,7 +221,8 @@ void Runner::putWorker(uint32_t wseq, AbstractWorkerActor *worker,
 	_d->wqmx.unlock();
 
 #ifndef ENABLE_D2MCE /* Normal mode */
-	_stealer->workerArrived(sender);
+	if (_stealer)
+		_stealer->workerArrived(sender);
 #endif /* ENABLE_D2MCE */
 }
 
@@ -243,7 +241,7 @@ pair<uint32_t, AbstractWorkerActor *> Runner::takeWorker()
 	_d->wqmx.unlock();
 
 #ifndef ENABLE_D2MCE /* Normal mode */
-	if (!w.second)
+	if (!w.second && _stealer)
 		_stealer->workerMissed();
 #endif /* ENABLE_D2MCE */
 
@@ -256,7 +254,8 @@ pair<uint32_t, AbstractWorkerActor *> Runner::takeWorker()
 void Runner::workerStealFailed(TCPSocket *sender)
 {
 #ifndef ENABLE_D2MCE /* Normal mode */
-	_stealer->stealFailed(sender);
+	if (_stealer)
+		_stealer->stealFailed(sender);
 #endif /* ENABLE_D2MCE */
 }
 

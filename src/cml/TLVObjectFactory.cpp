@@ -124,7 +124,8 @@ ITLVObject* TLVObjectFactory::createTLVObject(uint16_t type_id)
  */
 ITLVObject* TLVObjectFactory::createTLVObject(const ITLVBlock &blk)
 {
-	PINF_3("Creating an object, type id = " << blk.type() << ".");
+	PINF_3("Creating an object, type id = " << blk.type() << " (" <<
+			lookupTypeName(blk.type()) << ").");
 	map<string, ITLVObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(lookupTypeName(blk.type()))) !=
 			_creators.end()) {

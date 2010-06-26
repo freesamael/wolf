@@ -16,6 +16,9 @@
 namespace wfe
 {
 
+/**
+ * A simple implementation of IManagerActor.
+ */
 class SimpleManagerActor: public AbstractActor, public IManagerActor
 {
 public:

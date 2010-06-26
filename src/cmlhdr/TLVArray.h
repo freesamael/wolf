@@ -24,6 +24,7 @@ class TLVArray: public ITLVObject
 {
 public:
 	TLVArray(): _elem() {}
+	void addElement(ITLVObject *obj) { _elem.push_back(obj); }
 	std::vector<ITLVObject *>& elements() { return _elem; }
 	StandardTLVBlock* toTLVBlock() const;
 
