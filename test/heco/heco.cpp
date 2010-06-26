@@ -17,13 +17,14 @@
 using namespace std;
 using namespace wfe;
 
+#define NWORKER	600
+
 int main(int argc, char *argv[])
 {
 	AlwaysFirstWorkerDispatcher disp;
 	Master::instance()->init(argc, argv);
 	Master::instance()->setDispatcher(&disp);
 
-//	ConcurrentWorkflowExecutor exec(60);
 	SimpleWorkflowExecutor exec;
 	Director d(&exec);
 
@@ -33,14 +34,14 @@ int main(int argc, char *argv[])
 	Generator gtr(1);
 	d.addActor(&gtr);
 
-	Loader ldr(60);
+	Loader ldr(NWORKER);
 	d.addActor(&ldr);
 
 	// Setup first port.
 	Channel *ch1 = d.createChannel();
 	gtr.sourcePorts()[0]->setChannel(ch1);
 
-	for (int i = 0; i < 60; i++) {
+	for (int i = 0; i < NWORKER; i++) {
 		Worker *w = new Worker();
 		SimpleManagerActor *m = new SimpleManagerActor(w);
 		d.addActor(m);
@@ -58,7 +59,7 @@ int main(int argc, char *argv[])
 	d.execute(5566, 7788);
 
 	// Cleanup.
-	for (int i = 0; i < 60; i++) {
+	for (int i = 0; i < NWORKER; i++) {
 		delete managers[i];
 		delete workers[i];
 	}
