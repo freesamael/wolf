@@ -128,7 +128,7 @@ extern pthread_mutex_t g_mxcerr;
 		}                                                                      \
 		return _instance;                                                      \
 	}                                                                          \
-	typedef int __DummyTypeDefForSemiColonEnding__
+	typedef int __DummyTypeDefForSemiColonEnding__	// For semicolon.
 
 /**
  * Initialize members singleton macros need. It should be put within
@@ -139,43 +139,40 @@ extern pthread_mutex_t g_mxcerr;
 
 /**
  * \def PERR(str)
- * Print an error message. str is a stream in "a << b << c" format. It's a
- * multi-line macro.
+ * Print an error message. str is a stream in "a << b << c" format.
  *
  * \note
  * \#include \<iostream\> <br>
  * \#include \<sstream\>
  */
 #define PERR(msg)                                                              \
-{                                                                              \
+do {                                                                           \
 	std::stringstream __tmpstream;                                             \
 	__tmpstream << "Error: " << msg << std::endl << "\t[" <<                   \
 	__PRETTY_FUNCTION__ << ": " << __LINE__ << "]";                            \
 	pthread_mutex_lock(&g_mxcerr);                                             \
 	std::cerr << __tmpstream.str() << std::endl;                               \
 	pthread_mutex_unlock(&g_mxcerr);                                           \
-}                                                                              \
-	typedef int CONCATE(__DummyTypeDefForSemiColonEnding__, __LINE__)
+} while (false) // For semicolon and one-line statement.
 
 
 #ifdef DEBUG
 #define __PINF(msg)                                                            \
-{                                                                              \
+do {                                                                           \
 	std::stringstream __tmpstream;                                             \
 	__tmpstream << msg << std::endl << "\t[" << __PRETTY_FUNCTION__ << ": "    \
 	<< __LINE__ << "]";                                                        \
 	pthread_mutex_lock(&g_mxcout);                                             \
 	std::cout << __tmpstream.str() << std::endl;                               \
 	pthread_mutex_unlock(&g_mxcout);                                           \
-}                                                                              \
-	typedef int CONCATE(__DummyTypeDefForSemiColonEnding__, __LINE__)
+} while (false) // For semicolon and one-line statement.
 #endif /* DEBUG */
 
 #if DEBUG >= 1 // Normal
 /**
  * \def PINFO_1(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 1. It's a multi-line macro.
+ * Only show when compiled as DEBUG >= 1.
  *
  * \note
  * \#include \<iostream\> <br>
@@ -190,7 +187,7 @@ extern pthread_mutex_t g_mxcerr;
 /**
  * \def PINFO_2(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 2 (verbose). It's a multi-line macro.
+ * Only show when compiled as DEBUG >= 2 (verbose).
  *
  * \note
  * \#include \<iostream\> <br>
@@ -205,8 +202,7 @@ extern pthread_mutex_t g_mxcerr;
 /**
  * \def PINFO_3(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 3 (very verbose). It's a multi-line
- * macro.
+ * Only show when compiled as DEBUG >= 3 (very verbose).
  *
  * \note
  * \#include \<iostream\> <br>
