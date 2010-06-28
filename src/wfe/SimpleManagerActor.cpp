@@ -12,6 +12,7 @@ namespace wfe
 
 AbstractActor::State SimpleManagerActor::state()
 {
+	_statemx.lock();
 	if (_state == NOT_READY) {
 		bool ready = true;
 		for (unsigned i = 0; i < sinkPorts().size(); i++)
@@ -19,7 +20,10 @@ AbstractActor::State SimpleManagerActor::state()
 		if (ready)
 			_state = READY;
 	}
-	return _state;
+	State s = _state;
+	_statemx.unlock();
+
+	return s;
 }
 
 void SimpleManagerActor::fire()
@@ -33,7 +37,9 @@ void SimpleManagerActor::workerFinished(const AbstractWorkerActor &worker)
 	PINF_2("Update worker.");
 	_worker->update(worker);
 #endif /* ENABLE_D2MCE */
+	_statemx.lock();
 	_state = POST_RUNNING;
+	_statemx.unlock();
 }
 
 }

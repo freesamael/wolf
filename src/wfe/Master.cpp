@@ -7,7 +7,6 @@
 #include <sys/time.h>
 #include <unistd.h>
 #include <cstdlib>
-#include "Time.h"
 #include "Mutex.h"
 #include "UDPSocket.h"
 #include "TLVReaderWriter.h"
@@ -31,7 +30,7 @@ struct PData
 {
 	PData(): rsocks(), clis(), clthreads(), rsocksmx(), cmdsdr(), mgrq(),
 			mgrqmx(), bcastaddr(HostAddress::BroadcastAddress), bcastttl(1),
-			stime() {}
+			stime(), exetime() {}
 
 	vector<TCPSocket *> rsocks;					// Runner sockets.
 	vector<MasterSideCommandListener *> clis;	// Command listeners.
@@ -44,6 +43,7 @@ struct PData
 	HostAddress bcastaddr;						// Broadcast address.
 	int bcastttl;								// Broadcast TTL.
 	cml::Time stime;							// Time when started.
+	cml::Time exetime;							// Execution time.
 };
 
 SINGLETON_REGISTRATION(Master);
@@ -169,7 +169,8 @@ void Master::runWorker(AbstractWorkerActor *worker, IManagerActor *mgr)
  */
 void Master::shutdown()
 {
-	PINF_2("Execution time = " << Time::now() - _d->stime);
+	_d->exetime = Time::now() - _d->stime;
+	PINF_2("Execution time = " << _d->exetime);
 
 	// Shutdown all runners and stop all command listeners.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
@@ -252,6 +253,11 @@ unsigned Master::numberOfRunners()
 	unsigned n = _d->rsocks.size();
 	_d->rsocksmx.unlock();
 	return n;
+}
+
+Time Master::executionTime() const
+{
+	return _d->exetime;
 }
 
 }

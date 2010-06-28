@@ -15,12 +15,10 @@ D2MCE_LIBS = -ld2mce
 endif
 
 ifneq (${DEBUG}, n)
-CXXFLAGS += -g3 -O0 -DDEBUG=${DEBUG}
-else
-CXXFLAGS += -O2
+CXXFLAGS += -DDEBUG=${DEBUG}
 endif
 
-CXXFLAGS += -ansi -pedantic -Wall -Wextra
+CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra
 
 COV ?= n
 ifeq (${COV}, y)

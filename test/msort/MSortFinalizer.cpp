@@ -54,10 +54,12 @@ void MSortFinalizer::prefire()
 
 void MSortFinalizer::fire()
 {
+	PINF_1("Printing results.");
 	while (!testend()) {
-		cout << findmin() << endl;
+		findmin();
 	}
 	_state = POST_RUNNING;
+	PINF_1("Done.");
 }
 
 void MSortFinalizer::postfire()
@@ -71,7 +73,7 @@ bool MSortFinalizer::testend()
 {
 	bool end = true;
 	for (unsigned i = 0; i < _vex.size(); i++)
-		end &= _its[i] == _vex[i]->end();
+		end &= (_its[i] == _vex[i]->end());
 	return end;
 }
 
