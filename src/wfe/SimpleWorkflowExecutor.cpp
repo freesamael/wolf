@@ -3,7 +3,7 @@
  * \date Mar 25, 2010
  * \author samael
  */
-
+#include <unistd.h>
 #include <iostream>
 #include <sstream>
 #include "HelperMacros.h"
@@ -58,6 +58,7 @@ void SimpleWorkflowExecutor::iterate()
 			postrunactor(a);
 		}
 		findready();
+		usleep(30000);
 	}
 
 	PINF_2("Execution loop ends.");
