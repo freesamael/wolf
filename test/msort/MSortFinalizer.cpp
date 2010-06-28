@@ -21,6 +21,12 @@ MSortFinalizer::MSortFinalizer(int nports):
 		addPort(IPort::SINK);
 }
 
+MSortFinalizer::~MSortFinalizer()
+{
+	while (!sinkPorts().empty())
+		removePort(sinkPorts()[0]);
+}
+
 AbstractActor::State MSortFinalizer::state()
 {
 	if (_state == NOT_READY) {

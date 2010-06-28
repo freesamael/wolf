@@ -14,6 +14,7 @@ class MSortDataGenerator: public wfe::AbstractActor
 {
 public:
 	MSortDataGenerator(int nports, int psize);
+	~MSortDataGenerator();
 	void prefire() { _state = RUNNING; }
 	void fire();
 	void postfire() { _state = FINISHED; }

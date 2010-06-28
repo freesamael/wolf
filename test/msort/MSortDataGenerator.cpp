@@ -20,6 +20,12 @@ MSortDataGenerator::MSortDataGenerator(int nports, int psize):
 		addPort(IPort::SOURCE);
 }
 
+MSortDataGenerator::~MSortDataGenerator()
+{
+	while (!sourcePorts().empty())
+		removePort(sourcePorts()[0]);
+}
+
 void MSortDataGenerator::fire()
 {
 	for (int i = 0; i < _np; i++) {

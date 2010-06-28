@@ -14,6 +14,7 @@ class MSortFinalizer: public wfe::AbstractActor
 {
 public:
 	MSortFinalizer(int nports);
+	~MSortFinalizer();
 	State state();
 	void prefire();
 	void fire();

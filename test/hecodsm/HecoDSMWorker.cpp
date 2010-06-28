@@ -20,9 +20,8 @@ using namespace std;
 using namespace cml;
 using namespace wfe;
 
-#define TLV_TYPE_COUNTER	129
-
-TLV_OBJECT_REGISTRATION(HecoDSMWorker, TLV_TYPE_COUNTER, HecoDSMWorkerCreator);
+#define TLV_TYPE_WORKER	129
+TLV_OBJECT_REGISTRATION(HecoDSMWorker, TLV_TYPE_WORKER, HecoDSMWorkerCreator);
 
 HecoDSMWorker::HecoDSMWorker():
 		_mem(NULL), _meminfo(NULL)
@@ -127,7 +126,7 @@ void HecoDSMWorker::postfire()
 StandardTLVBlock* HecoDSMWorker::toTLVBlock() const
 {
 	StandardTLVBlock *infoblk = _meminfo->toTLVBlock();
-	StandardTLVBlock *blk = new StandardTLVBlock(TLV_TYPE_COUNTER, infoblk->plainSize());
+	StandardTLVBlock *blk = new StandardTLVBlock(TLV_TYPE_WORKER, infoblk->plainSize());
 	memcpy(blk->value(), infoblk->plainBuffer(), blk->length());
 	delete infoblk;
 	return blk;

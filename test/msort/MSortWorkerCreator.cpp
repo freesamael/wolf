@@ -6,8 +6,15 @@
 
 #include "MSortWorkerCreator.h"
 
+using namespace cml;
+
 MSortWorkerCreator::MSortWorkerCreator()
 {
-	// TODO Auto-generated constructor stub
 
+}
+
+
+ITLVObject* MSortWorkerCreator::create(const ITLVBlock &blk) const
+{
+	return NULL;
 }
