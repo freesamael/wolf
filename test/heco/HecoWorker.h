@@ -1,16 +1,16 @@
 /**
- * \file Worker.h
+ * \file HecoWorker.h
  * \date Jun 20, 2010
  * \author samael
  */
 
-#ifndef WORKER_H_
-#define WORKER_H_
+#ifndef HECOWORKER_H_
+#define HECOWORKER_H_
 
 #include <AbstractWorkerActor.h>
 #include <DUInt32.h>
 
-class Worker: public wfe::AbstractWorkerActor
+class HecoWorker: public wfe::AbstractWorkerActor
 {
 public:
 	void managerInitialization(wfe::IManagerActor *mgr);
@@ -26,4 +26,4 @@ private:
 	wfe::DUInt32 _n;
 };
 
-#endif /* WORKER_H_ */
+#endif /* HECOWORKER_H_ */

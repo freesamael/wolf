@@ -39,6 +39,7 @@ public:
 	~Runner();
 	void run();
 
+	int id() const { return _id; }
 	std::vector<cml::TCPSocket *> runnerSocks();
 	void connectRunner(const cml::HostAddress &addr);
 	void runnerConnected(cml::TCPSocket *runnersock);
@@ -53,12 +54,13 @@ public:
 	void shutdown();
 
 private:
-	Runner(const Runner &UNUSED(o)): _state(NOT_READY), _statemx(),
+	Runner(const Runner &UNUSED(o)): _id(0), _state(NOT_READY), _statemx(),
 	_statewcond(), _mport(0), _rport(0), _stealer(NULL), _appname(), _rsock(),
 	_d(NULL) {}
 	Runner& operator=(const Runner &UNUSED(o)) { return *this; }
 
 private:
+	int _id;
 	State _state;
 	cml::Mutex _statemx;
 	cml::WaitCondition _statewcond;

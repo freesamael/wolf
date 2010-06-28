@@ -1,17 +1,16 @@
-/*
- * hecodsm.cpp
- *
- *  Created on: Apr 7, 2010
- *      Author: samael
+/**
+ * \file hecodsm.cpp
+ * \date Apr 7, 2010
+ * \author samael
  */
 
 #include <Director.h>
 #include <SimpleWorkflowExecutor.h>
 #include <SimpleManagerActor.h>
-#include "NumberGenerator.h"
-#include "NumberLoader.h"
-#include "Counter.h"
-#include "CounterCreator.h"
+#include "HecoDataGenerator.h"
+#include "HecoFinalizer.h"
+#include "HecoWorker.h"
+#include "HecoWorkerCreator.h"
 
 using namespace wfe;
 
@@ -20,10 +19,10 @@ int main()
 	SimpleWorkflowExecutor exec;
 	Director d(&exec);
 
-	NumberGenerator a1;
-	Counter w1;
+	HecoDSMDataGenerator a1;
+	HecoDSMWorker w1;
 	SimpleManagerActor a2(&w1);
-	NumberLoader a3;
+	HecoDSMFinalizer a3;
 	Channel *ch1 = d.createChannel();
 	Channel *ch2 = d.createChannel();
 

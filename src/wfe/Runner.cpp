@@ -59,8 +59,8 @@ private:
 };
 
 Runner::Runner(uint16_t master_port, uint16_t runner_port, IWorkerStealer *ws,
-		const string &appname): _state(NOT_READY), _statemx(), _statewcond(),
-		_mport(master_port), _rport(runner_port), _stealer(ws),
+		const string &appname): _id(0), _state(NOT_READY), _statemx(),
+		_statewcond(), _mport(master_port), _rport(runner_port), _stealer(ws),
 		_appname(appname), _rsock(), _d(new PData())
 {
 #ifndef ENABLE_D2MCE /* Normal mode */
@@ -157,6 +157,7 @@ vector<TCPSocket*> Runner::runnerSocks()
  */
 void Runner::connectRunner(const HostAddress &addr)
 {
+	_id++;
 	TCPSocket *sock = new TCPSocket();
 	if (sock->activeOpen(addr, _rport)) {
 		runnerConnected(sock);
@@ -201,6 +202,7 @@ void Runner::startWorking()
 	PINF_2("Stopping runner connection listener.");
 	_d->pcnlis->stop();
 	PINF_2("Totally " << _d->rsocks.size() << " runners connected.");
+	PINF_2("Runner id = " << _id);
 
 	PINF_2("Starting worker executor.");
 	_d->pwexethread->start();

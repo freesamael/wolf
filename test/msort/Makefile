@@ -1,0 +1,18 @@
+MSORT = ${WOLF_BINDIR}/msort
+MSORT_O = ${MSORT_SRCDIR}/msort.o
+MSORT_RUNNER = ${WOLF_BINDIR}/msort_runner
+MSORT_RUNNER_O = ${MSORT_SRCDIR}/msort_runner.o
+MSORT_COM_OBJS := ${filter-out ${MSORT_O} ${MSORT_RUNNER_O},${patsubst %.cpp,%.o,${wildcard ${MSORT_SRCDIR}/*.cpp}}}
+
+${MSORT}: CXXFLAGS += -I${COMLIB_INCDIR} -I${WOLFLIB_INCDIR}
+${MSORT}: LIBS += -lwolf -lpthread
+${MSORT}: LDFLAGS += -L${WOLF_LIBDIR}
+
+${MSORT}: ${MSORT_O} ${MSORT_COM_OBJS} ${MSORT_RUNNER}
+	${CXX} ${CXXFLAGS} -o $@ ${LDFLAGS} ${MSORT_O} ${MSORT_COM_OBJS} ${LIBS}
+
+${MSORT_RUNNER}: ${MSORT_RUNNER_O} ${MSORT_COM_OBJS} ${WOLFLIB}
+	${CXX} ${CXXFLAGS} -o $@ ${LDFLAGS} ${MSORT_RUNNER_O} ${MSORT_COM_OBJS} ${LIBS}
+
+msort_clean:
+	-rm ${MSORT} ${MSORT_O} ${MSORT_RUNNER} ${MSORT_RUNNER_O} ${MSORT_COM_OBJS}

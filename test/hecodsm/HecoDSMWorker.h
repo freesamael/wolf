@@ -1,22 +1,22 @@
 /**
- * \file Counter.h
+ * \file HecoDSMWorker.h
  * \date Apr 15, 2010
  * \author samael
  */
 
-#ifndef COUNTER_H_
-#define COUNTER_H_
+#ifndef HECODSMWORKER_H_
+#define HECODSMWORKER_H_
 
 #include <HelperMacros.h>
 #include <SharedMemory.h>
 #include <TLVSharedMemoryInfo.h>
 #include <AbstractWorkerActor.h>
 
-class Counter: public wfe::AbstractWorkerActor
+class HecoDSMWorker: public wfe::AbstractWorkerActor
 {
 public:
-	Counter();
-	~Counter();
+	HecoDSMWorker();
+	~HecoDSMWorker();
 	void managerInitialization(wfe::IManagerActor *mgr);
 	void managerFinalization(wfe::IManagerActor *mgr);
 	void managerPrefire(wfe::IManagerActor *mgr);
@@ -33,4 +33,4 @@ private:
 	wfe::TLVSharedMemoryInfo *_meminfo;
 };
 
-#endif /* COUNTER_H_ */
+#endif /* HECODSMWORKER_H_ */

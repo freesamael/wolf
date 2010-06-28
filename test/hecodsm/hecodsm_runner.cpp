@@ -1,8 +1,7 @@
-/*
- * hecodsm_runner.cpp
- *
- *  Created on: Apr 7, 2010
- *      Author: samael
+/**
+ * \file hecodsm_runner.cpp
+ * \date Apr 7, 2010
+ * \author samael
  */
 #include <Runner.h>
 

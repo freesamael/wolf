@@ -1,5 +1,5 @@
 /**
- * \file Counter.cpp
+ * \file HecoDSMWorker.cpp
  * \date Apr 15, 2010
  * \author samael
  */
@@ -13,8 +13,8 @@
 #include <D2MCE.h>
 #include <IManagerActor.h>
 #include <SimpleManagerActor.h>
-#include "Counter.h"
-#include "CounterCreator.h"
+#include "HecoDSMWorker.h"
+#include "HecoDSMWorkerCreator.h"
 
 using namespace std;
 using namespace cml;
@@ -22,19 +22,19 @@ using namespace wfe;
 
 #define TLV_TYPE_COUNTER	129
 
-TLV_OBJECT_REGISTRATION(Counter, TLV_TYPE_COUNTER, CounterCreator);
+TLV_OBJECT_REGISTRATION(HecoDSMWorker, TLV_TYPE_COUNTER, HecoDSMWorkerCreator);
 
-Counter::Counter():
+HecoDSMWorker::HecoDSMWorker():
 		_mem(NULL), _meminfo(NULL)
 {
 }
 
-Counter::~Counter()
+HecoDSMWorker::~HecoDSMWorker()
 {
 	delete _meminfo;
 }
 
-void Counter::managerInitialization(IManagerActor *mgr)
+void HecoDSMWorker::managerInitialization(IManagerActor *mgr)
 {
 	SimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
@@ -43,7 +43,7 @@ void Counter::managerInitialization(IManagerActor *mgr)
 	}
 }
 
-void Counter::managerFinalization(IManagerActor *mgr)
+void HecoDSMWorker::managerFinalization(IManagerActor *mgr)
 {
 	SimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
@@ -52,7 +52,7 @@ void Counter::managerFinalization(IManagerActor *mgr)
 	}
 }
 
-void Counter::managerPrefire(IManagerActor *mgr)
+void HecoDSMWorker::managerPrefire(IManagerActor *mgr)
 {
 	SimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
@@ -75,7 +75,7 @@ void Counter::managerPrefire(IManagerActor *mgr)
 	}
 }
 
-void Counter::managerPostfire(IManagerActor *mgr)
+void HecoDSMWorker::managerPostfire(IManagerActor *mgr)
 {
 	SimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
@@ -92,13 +92,13 @@ void Counter::managerPostfire(IManagerActor *mgr)
 	}
 }
 
-void Counter::setup()
+void HecoDSMWorker::setup()
 {
 	PINF_1("Setup");
 	_mem = D2MCE::instance()->createSharedMemory(_meminfo->size(), _meminfo->name());
 }
 
-void Counter::fire()
+void HecoDSMWorker::fire()
 {
 	PINF_1("Fire");
 	int index = D2MCE::instance()->nodeId() - 1;
@@ -119,12 +119,12 @@ void Counter::fire()
 	_mem->unlock();
 }
 
-void Counter::postfire()
+void HecoDSMWorker::postfire()
 {
 	PINF_1("Postfire");
 }
 
-StandardTLVBlock* Counter::toTLVBlock() const
+StandardTLVBlock* HecoDSMWorker::toTLVBlock() const
 {
 	StandardTLVBlock *infoblk = _meminfo->toTLVBlock();
 	StandardTLVBlock *blk = new StandardTLVBlock(TLV_TYPE_COUNTER, infoblk->plainSize());

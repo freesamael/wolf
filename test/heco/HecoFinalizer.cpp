@@ -1,30 +1,30 @@
 /**
- * \file Loader.cpp
+ * \file HecoFinalizer.cpp
  * \date Jun 20, 2010
  * \author samael
  */
 
 #include <iostream>
 #include <DUInt32.h>
-#include "Loader.h"
+#include "HecoFinalizer.h"
 
 using namespace std;
 using namespace wfe;
 
-Loader::Loader(unsigned np):
+HecoFinalizer::HecoFinalizer(unsigned np):
 		_state(NOT_READY)
 {
 	for (unsigned i = 0; i < np; i++)
 		addPort(wfe::IPort::SINK);
 }
 
-Loader::~Loader()
+HecoFinalizer::~HecoFinalizer()
 {
 	for (unsigned i = 0; i < sinkPorts().size(); i++)
 		delete sinkPorts()[i];
 }
 
-AbstractActor::State Loader::state()
+AbstractActor::State HecoFinalizer::state()
 {
 	if (_state == NOT_READY) {
 		bool ready = true;
@@ -36,7 +36,7 @@ AbstractActor::State Loader::state()
 	return _state;
 }
 
-void Loader::fire()
+void HecoFinalizer::fire()
 {
 	for (unsigned i = 0; i < sinkPorts().size(); i++) {
 		IDrop *d = sinkPorts()[i]->readPort();

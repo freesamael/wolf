@@ -1,5 +1,5 @@
 /**
- * \file WorkerCreator.cpp
+ * \file HecoWorkerCreator.cpp
  * \date Jun 20, 2010
  * \author samael
  */
@@ -8,13 +8,13 @@
 #include <sstream>
 #include <HelperMacros.h>
 #include <TLVObjectFactory.h>
-#include "WorkerCreator.h"
+#include "HecoWorkerCreator.h"
 #include "DUInt32.h"
 
 using namespace cml;
 using namespace wfe;
 
-ITLVObject* WorkerCreator::create(const ITLVBlock &blk) const
+ITLVObject* HecoWorkerCreator::create(const ITLVBlock &blk) const
 {
 	SharedTLVBlock sblk(blk.value());
 	DUInt32 *u32;
@@ -24,7 +24,7 @@ ITLVObject* WorkerCreator::create(const ITLVBlock &blk) const
 		return NULL;
 	}
 
-	Worker *w = new Worker;
+	HecoWorker *w = new HecoWorker;
 	w->setNum(*u32);
 	delete u32;
 	return w;

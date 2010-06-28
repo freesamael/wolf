@@ -1,5 +1,5 @@
 /**
- * \file CounterCreator.cpp
+ * \file HecoDSMWorkerCreator.cpp
  * \date Apr 15, 2010
  * \author samael
  */
@@ -9,12 +9,12 @@
 #include <TLVObjectFactory.h>
 #include <TLVSharedMemoryInfo.h>
 #include <HelperMacros.h>
-#include "CounterCreator.h"
+#include "HecoDSMWorkerCreator.h"
 
 using namespace cml;
 using namespace wfe;
 
-ITLVObject* CounterCreator::create(const ITLVBlock &blk) const
+ITLVObject* HecoDSMWorkerCreator::create(const ITLVBlock &blk) const
 {
 	SharedTLVBlock sblk(blk.value());
 	TLVSharedMemoryInfo *info;
@@ -24,7 +24,7 @@ ITLVObject* CounterCreator::create(const ITLVBlock &blk) const
 		return NULL;
 	}
 	PINF_1("Meminfo: name = " << info->name() << ", size = " << info->size());
-	Counter *c = new Counter();
+	HecoDSMWorker *c = new HecoDSMWorker();
 	c->setMeminfo(info);
 	return c;
 }

@@ -1,28 +1,28 @@
 /**
- * \file Generator.cpp
+ * \file HecoDataGenerator.cpp
  * \date Jun 20, 2010
  * \author samael
  */
 
 #include <DUInt32.h>
-#include "Generator.h"
+#include "HecoDataGenerator.h"
 
 using namespace wfe;
 
-Generator::Generator(unsigned np):
+HecoDataGenerator::HecoDataGenerator(unsigned np):
 		_state(READY)
 {
 	for (unsigned i = 0; i < np; i++)
 		addPort(IPort::SOURCE);
 }
 
-Generator::~Generator()
+HecoDataGenerator::~HecoDataGenerator()
 {
 	for (unsigned i = 0; i < sourcePorts().size(); i++)
 		delete sourcePorts()[i];
 }
 
-void Generator::fire()
+void HecoDataGenerator::fire()
 {
 	for (unsigned i = 0; i < sourcePorts().size(); i++) {
 		DUInt32 *n = new DUInt32(0);

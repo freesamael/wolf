@@ -1,5 +1,5 @@
 /**
- * \file NumberLoader.cpp
+ * \file HecoDSMFinalizer.cpp
  * \date Apr 15, 2010
  * \author samael
  */
@@ -8,15 +8,15 @@
 #include <sstream>
 #include <SharedMemory.h>
 #include <HelperMacros.h>
-#include "NumberLoader.h"
+#include "HecoDSMFinalizer.h"
 
 using namespace wfe;
 
-AbstractActor::State NumberLoader::state()
+AbstractActor::State HecoDSMFinalizer::state()
 {
 	if (_state == NOT_READY) {
 		bool ready = true;
-		for (int i = 0; i < (int)sinkPorts().size(); i++)
+		for (unsigned i = 0; i < sinkPorts().size(); i++)
 			ready &= !sinkPorts()[i]->isEmpty();
 		if (ready)
 			_state = READY;
@@ -24,7 +24,7 @@ AbstractActor::State NumberLoader::state()
 	return _state;
 }
 
-void NumberLoader::fire()
+void HecoDSMFinalizer::fire()
 {
 	SharedMemory *mem;
 	if (!(mem = dynamic_cast<SharedMemory *>(sinkPorts()[0]->readPort()))) {

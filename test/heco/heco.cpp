@@ -10,9 +10,9 @@
 #include <Director.h>
 #include <SimpleManagerActor.h>
 #include <Master.h>
-#include "Generator.h"
-#include "Loader.h"
-#include "Worker.h"
+#include "HecoDataGenerator.h"
+#include "HecoFinalizer.h"
+#include "HecoWorker.h"
 
 using namespace std;
 using namespace wfe;
@@ -28,13 +28,13 @@ int main(int argc, char *argv[])
 	SimpleWorkflowExecutor exec;
 	Director d(&exec);
 
-	vector<Worker *> workers;
+	vector<HecoWorker *> workers;
 	vector<SimpleManagerActor *> managers;
 
-	Generator gtr(1);
+	HecoDataGenerator gtr(1);
 	d.addActor(&gtr);
 
-	Loader ldr(NWORKER);
+	HecoFinalizer ldr(NWORKER);
 	d.addActor(&ldr);
 
 	// Setup first port.
@@ -42,7 +42,7 @@ int main(int argc, char *argv[])
 	gtr.sourcePorts()[0]->setChannel(ch1);
 
 	for (int i = 0; i < NWORKER; i++) {
-		Worker *w = new Worker();
+		HecoWorker *w = new HecoWorker();
 		SimpleManagerActor *m = new SimpleManagerActor(w);
 		d.addActor(m);
 

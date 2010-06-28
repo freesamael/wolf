@@ -1,5 +1,5 @@
 /**
- * \file Worker.cpp
+ * \file HecoWorker.cpp
  * \date Jun 20, 2010
  * \author samael
  */
@@ -12,17 +12,17 @@
 #include <HelperMacros.h>
 #include <IManagerActor.h>
 #include <SimpleManagerActor.h>
-#include "Worker.h"
-#include "WorkerCreator.h"
+#include "HecoWorker.h"
+#include "HecoWorkerCreator.h"
 
 using namespace std;
 using namespace cml;
 using namespace wfe;
 
 #define TLV_TYPE_WORKER		130
-TLV_OBJECT_REGISTRATION(Worker, TLV_TYPE_WORKER, WorkerCreator);
+TLV_OBJECT_REGISTRATION(HecoWorker, TLV_TYPE_WORKER, HecoWorkerCreator);
 
-void Worker::managerInitialization(IManagerActor *mgr)
+void HecoWorker::managerInitialization(IManagerActor *mgr)
 {
 	SimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
@@ -31,7 +31,7 @@ void Worker::managerInitialization(IManagerActor *mgr)
 	}
 }
 
-void Worker::managerFinalization(IManagerActor *mgr)
+void HecoWorker::managerFinalization(IManagerActor *mgr)
 {
 	SimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
@@ -40,7 +40,7 @@ void Worker::managerFinalization(IManagerActor *mgr)
 	}
 }
 
-void Worker::managerPrefire(IManagerActor *mgr)
+void HecoWorker::managerPrefire(IManagerActor *mgr)
 {
 	SimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
@@ -55,7 +55,7 @@ void Worker::managerPrefire(IManagerActor *mgr)
 	}
 }
 
-void Worker::managerPostfire(IManagerActor *mgr)
+void HecoWorker::managerPostfire(IManagerActor *mgr)
 {
 	SimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
@@ -64,24 +64,24 @@ void Worker::managerPostfire(IManagerActor *mgr)
 	}
 }
 
-void Worker::fire()
+void HecoWorker::fire()
 {
 	PINF_1("Old value = " << _n.value());
 	_n.setValue(_n.value() + 1);
 	PINF_1("New value = " << _n.value());
 }
 
-void Worker::update(const AbstractWorkerActor &o)
+void HecoWorker::update(const AbstractWorkerActor &o)
 {
-	const Worker *w;
-	if (!(w = dynamic_cast<const Worker *>(&o))) {
+	const HecoWorker *w;
+	if (!(w = dynamic_cast<const HecoWorker *>(&o))) {
 		PERR("Invalid object.");
 	} else {
 		_n = w->_n;
 	}
 }
 
-StandardTLVBlock* Worker::toTLVBlock() const
+StandardTLVBlock* HecoWorker::toTLVBlock() const
 {
 	StandardTLVBlock *nblk = _n.toTLVBlock();
 	StandardTLVBlock *blk = new StandardTLVBlock(TLV_TYPE_WORKER,

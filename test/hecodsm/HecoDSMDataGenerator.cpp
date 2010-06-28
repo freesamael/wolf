@@ -1,5 +1,5 @@
 /**
- * \file NumberGenerator.cpp
+ * \file HecoDSMDataGenerator.cpp
  * \date Apr 15, 2010
  * \author samael
  */
@@ -11,17 +11,17 @@
 #include <cstring>
 #include <D2MCE.h>
 #include <SharedMemory.h>
-#include "NumberGenerator.h"
+#include "HecoDSMDataGenerator.h"
 
 using namespace wfe;
 
-void NumberGenerator::prefire()
+void HecoDSMDataGenerator::prefire()
 {
 	_state = RUNNING;
 	_item = D2MCE::instance()->createSharedMemory(4 * sizeof(int));
 }
 
-void NumberGenerator::fire()
+void HecoDSMDataGenerator::fire()
 {
 	_item->lock();
 	memset(_item->buffer(), 0, 4 * sizeof(int));
@@ -35,7 +35,7 @@ void NumberGenerator::fire()
 	_state = POST_RUNNING;
 }
 
-void NumberGenerator::postfire()
+void HecoDSMDataGenerator::postfire()
 {
 	sourcePorts()[0]->writeChannel(_item);
 	_state = FINISHED;
