@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	vector<MSortWorker *> wrks;
 	vector<SimpleManagerActor *> mgrs;
 
-	MSortDataGenerator gen(NWORKERS, 1000);
+	MSortDataGenerator gen(NWORKERS, 500);
 	d.addActor(&gen);
 
 	MSortFinalizer fin(NWORKERS);
