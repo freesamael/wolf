@@ -54,7 +54,8 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 	inaddr.sin_port = htons(port);
 
 	// Reuse port.
-    socklen_t reuseaddr_len;
+	int resueaddr = 1;
+    socklen_t reuseaddr_len = sizeof(resueaddr);
 	setsockopt(sock->sockfd(), SOL_SOCKET, SO_REUSEADDR, &reuseaddr,
 			reuseaddr_len);
 
