@@ -8,6 +8,7 @@
 #define MUTEX_H_
 
 #include <pthread.h>
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -27,6 +28,8 @@ public:
 	inline bool unlock() { return !(pthread_mutex_unlock(&_mutex)); }
 
 private:
+	Mutex(const Mutex &UNUSED(o)) {}
+	Mutex& operator=(const Mutex &UNUSED(o)) { return *this; }
 	pthread_mutex_t _mutex;
 };
 
