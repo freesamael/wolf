@@ -115,12 +115,7 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 	}
 
 	if (blk) {
-		unsigned rcount = 0;
-		do {
-			if (rcount > 0)
-				usleep(30000);
-			PINF_3("Sending a message to TCP socket with retry count = " <<
-					rcount);
+			PINF_3("Sending a message to TCP socket.");
 			activesock->lockwrite();
 			ret = activesock->write(blk->plainBuffer(), blk->plainSize());
 			activesock->unlockwrite();
@@ -132,9 +127,6 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 					PERR("Fail to write.");
 				}
 			}
-		} while (!success && (++rcount < _retrylimit));
-		if (!success)
-			PERR("Failed to write after " << rcount << " times try.");
 	} else {
 		PERR("Unable to create TLV block from given object.");
 	}
@@ -253,27 +245,19 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 	}
 
 	if (blk) {
-		unsigned rcount = 0;
-		do {
-			if (rcount > 0)
-				usleep(30000);
-			PINF_3("Sending a message to UDP socket with retry count = " <<
-					rcount);
-			activesock->lockwrite();
-			ret = activesock->sendto(blk->plainBuffer(), blk->plainSize(),
-					addr, port);
-			activesock->unlockwrite();
-			if (!(success = (ret == (int)blk->plainSize()))) {
-				if (ret > 0) {
-					PERR("Expected " << blk->plainSize() << " bytes but " <<
-							ret << " bytes written.");
-				} else {
-					PERR("Fail to write.");
-				}
+		PINF_3("Sending a message to UDP socket.");
+		activesock->lockwrite();
+		ret = activesock->sendto(blk->plainBuffer(), blk->plainSize(),
+				addr, port);
+		activesock->unlockwrite();
+		if (!(success = (ret == (int)blk->plainSize()))) {
+			if (ret > 0) {
+				PERR("Expected " << blk->plainSize() << " bytes but " <<
+						ret << " bytes written.");
+			} else {
+				PERR("Fail to write.");
 			}
-		} while (!success && (++rcount < _retrylimit));
-		if (!success)
-			PERR("Failed to write after " << rcount << " times try.");
+		}
 	} else {
 		PERR("Unable to create TLV block from given object.");
 	}
