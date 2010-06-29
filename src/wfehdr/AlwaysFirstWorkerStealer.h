@@ -21,7 +21,8 @@ public:
 	AlwaysFirstWorkerStealer(int n = 1):
 		_num(n), _runner(NULL), _mx(), _stealing(false) {}
 	AlwaysFirstWorkerStealer(const AlwaysFirstWorkerStealer &o):
-		_num(o._num), _runner(o._runner), _mx(), _stealing(false) {}
+		IWorkerStealer(), _num(o._num), _runner(o._runner), _mx(),
+		_stealing(false) {}
 	AlwaysFirstWorkerStealer& operator=(const AlwaysFirstWorkerStealer &o)
 		{ _num = o._num; _runner = o._runner; return *this; }
 	inline void setRunner(Runner *runner) { _runner = runner; }
