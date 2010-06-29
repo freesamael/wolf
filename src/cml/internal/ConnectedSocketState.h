@@ -10,6 +10,7 @@
 #include <iostream>
 #include <sstream>
 #include <vector>
+#include "Mutex.h"
 #include "ISocketState.h"
 #include "HelperMacros.h"
 
@@ -26,6 +27,7 @@ class ConnectedSocketState: public ISocketState
 	SINGLETON(ConnectedSocketState);
 public:
 	inline const std::string& name() const { return _statestr; }
+	inline Mutex& mutex() { return _mx; }
 
 	bool close(AbstractSocket *sock);
 	ssize_t read(AbstractSocket *sock, char *buf, size_t size);
@@ -52,8 +54,10 @@ public:
 			uint16_t UNUSED(port)) { return -1; }
 
 private:
-	ConnectedSocketState(): SINGLETON_MEMBER_INITLST, _statestr("Connected") {}
+	ConnectedSocketState(): SINGLETON_MEMBER_INITLST, _statestr("Connected"),
+		_mx() {}
 	std::string _statestr;
+	Mutex _mx;
 };
 
 }

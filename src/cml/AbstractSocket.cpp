@@ -105,6 +105,24 @@ bool AbstractSocket::close()
 }
 
 /**
+ * Lock write.
+ */
+bool AbstractSocket::lockwrite()
+{
+	PINF_3("Lock write.");
+	return ConnectedSocketState::instance()->mutex().lock();
+}
+
+/**
+ * Unlock write.
+ */
+bool AbstractSocket::unlockwrite()
+{
+	PINF_3("Unlock write.");
+	return ConnectedSocketState::instance()->mutex().unlock();
+}
+
+/**
  * Read a message. It's not thread-safe unless you use lockread() and
  * unlockread() in your program.
  *

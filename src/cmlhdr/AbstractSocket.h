@@ -45,8 +45,8 @@ public:
 
 	inline bool lockread() { PINF_3("Lock read."); return _rmx.lock(); }
 	inline bool unlockread() { PINF_3("Unlock read."); return _rmx.unlock(); }
-	inline bool lockwrite() { PINF_3("Lock write."); return _wmx.lock(); }
-	inline bool unlockwrite() { PINF_3("Unlock write."); return _wmx.unlock(); }
+	bool lockwrite();
+	bool unlockwrite();
 	ssize_t read(char *buf, size_t size);
 	ssize_t write(const char *buf, size_t size);
 
