@@ -87,11 +87,11 @@ void MSortWorker::managerPostfire(wfe::IManagerActor *mgr)
 	}
 }
 
-void MSortWorker::update(const AbstractWorkerActor &o)
+void MSortWorker::update(AbstractWorkerActor *o)
 {
 	PINF_1("Updating results.");
-	const MSortWorker *w;
-	if (!(w = dynamic_cast<const MSortWorker *>(&o))) {
+	MSortWorker *w;
+	if (!(w = dynamic_cast<MSortWorker *>(o))) {
 		PERR("Invalid worker.");
 	} else {
 		_vec = w->_vec;

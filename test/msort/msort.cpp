@@ -16,7 +16,7 @@ using namespace std;
 using namespace cml;
 using namespace wfe;
 
-#define NWORKERS	48
+#define NWORKERS	10
 
 int main(int argc, char *argv[])
 {
@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 	vector<MSortWorker *> wrks;
 	vector<SimpleManagerActor *> mgrs;
 
-	MSortDataGenerator gen(NWORKERS, 12000);
+	MSortDataGenerator gen(NWORKERS, 1000);
 	d.addActor(&gen);
 
 	MSortFinalizer fin(NWORKERS);

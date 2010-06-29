@@ -19,7 +19,7 @@ public:
 	void managerPostfire(wfe::IManagerActor *mgr);
 	void fire();
 	void setNum(wfe::DUInt32 n) { _n = n; }
-	void update(const AbstractWorkerActor &o);
+	void update(AbstractWorkerActor *o);
 	cml::StandardTLVBlock* toTLVBlock() const;
 
 private:

@@ -11,7 +11,7 @@ using namespace wfe;
 
 int main()
 {
-	AlwaysFirstWorkerStealer stealer(10);
+	AlwaysFirstWorkerStealer stealer;
 	Runner runner(9527, 7259, &stealer);
 	runner.run();
 	return 0;

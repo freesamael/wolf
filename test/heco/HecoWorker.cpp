@@ -71,10 +71,10 @@ void HecoWorker::fire()
 	PINF_1("New value = " << _n.value());
 }
 
-void HecoWorker::update(const AbstractWorkerActor &o)
+void HecoWorker::update(AbstractWorkerActor *o)
 {
-	const HecoWorker *w;
-	if (!(w = dynamic_cast<const HecoWorker *>(&o))) {
+	HecoWorker *w;
+	if (!(w = dynamic_cast<HecoWorker *>(o))) {
 		PERR("Invalid object.");
 	} else {
 		_n = w->_n;

@@ -24,7 +24,7 @@ public:
 	void setup();
 	void fire();
 	void postfire();
-	void update(const AbstractWorkerActor &UNUSED(o)) {}
+	void update(AbstractWorkerActor *UNUSED(o)) {}
 	cml::StandardTLVBlock* toTLVBlock() const;
 	void setMeminfo(wfe::TLVSharedMemoryInfo *meminfo) { _meminfo = meminfo; }
 

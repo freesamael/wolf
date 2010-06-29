@@ -56,7 +56,8 @@ void MSortFinalizer::fire()
 {
 	PINF_1("Printing results.");
 	while (!testend()) {
-		findmin();
+		uint32_t r = findmin();
+		PINF_1(r);
 	}
 	_state = POST_RUNNING;
 	PINF_1("Done.");

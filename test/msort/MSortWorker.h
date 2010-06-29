@@ -19,7 +19,7 @@ public:
 	void managerFinalization(wfe::IManagerActor *mgr);
 	void managerPrefire(wfe::IManagerActor *mgr);
 	void managerPostfire(wfe::IManagerActor *mgr);
-	void update(const AbstractWorkerActor &o);
+	void update(AbstractWorkerActor *o);
 	void fire();
 	wfe::DVector<uint32_t> vector() const { return _vec; }
 	void setVector(const wfe::DVector<uint32_t> &v);
