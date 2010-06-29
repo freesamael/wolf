@@ -53,7 +53,13 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 	inaddr.sin_addr.s_addr = INADDR_ANY;
 	inaddr.sin_port = htons(port);
 
+	// Reuse port.
+    socklen_t reuseaddr_len;
+	setsockopt(sock->sockfd(), SOL_SOCKET, SO_REUSEADDR, &reuseaddr,
+			reuseaddr_len);
+
 	// Perform binding.
+	int reuseaddr = 1;
 	PINF_3("Binding a port.");
 	if (bind(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
 		perror("Error: SimpleActiveSocketState::passiveOpen()");
