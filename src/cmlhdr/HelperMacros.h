@@ -152,7 +152,7 @@ do {                                                                           \
 	__tmpstream << "Error: " << msg << std::endl << "\t[" <<                   \
 	__PRETTY_FUNCTION__ << ": " << __LINE__ << "]";                            \
 	pthread_mutex_lock(&g_mxcerr);                                             \
-	std::cerr << "[" << cml::Time::now() << "] " << __tmpstream.str() <<       \
+	std::cerr << cml::Time::now() << ": " << __tmpstream.str() <<       \
 	std::endl;                                                                 \
 	pthread_mutex_unlock(&g_mxcerr);                                           \
 } while (false) // For semicolon and one-line statement.
@@ -165,7 +165,7 @@ do {                                                                           \
 	__tmpstream << msg << std::endl << "\t[" << __PRETTY_FUNCTION__ << ": "    \
 	<< __LINE__ << "]";                                                        \
 	pthread_mutex_lock(&g_mxcout);                                             \
-	std::cout << "[" << cml::Time::now() << "] " << __tmpstream.str() <<       \
+	std::cout << cml::Time::now() << ": " << __tmpstream.str() <<       \
 	std::endl;                                                                 \
 	pthread_mutex_unlock(&g_mxcout);                                           \
 } while (false) // For semicolon and one-line statement.
