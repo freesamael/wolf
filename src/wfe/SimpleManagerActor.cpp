@@ -31,7 +31,7 @@ void SimpleManagerActor::fire()
 	Master::instance()->runWorker(_worker, this);
 }
 
-void SimpleManagerActor::workerFinished(const AbstractWorkerActor &worker)
+void SimpleManagerActor::workerFinished(AbstractWorkerActor *worker)
 {
 #ifndef ENABLE_D2MCE /* Normal mode */
 	PINF_2("Update worker.");

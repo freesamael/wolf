@@ -19,6 +19,7 @@
 #include "internal/MasterSideConnectionListener.h"
 #include "internal/MasterSideCommandListener.h"
 #include "internal/MasterSideCommandSender.h"
+#include "internal/MasterSideFinishedWorkerProcessor.h"
 
 using namespace std;
 using namespace cml;
@@ -28,22 +29,34 @@ namespace wfe
 
 struct PData
 {
-	PData(): rsocks(), clis(), clthreads(), rsocksmx(), cmdsdr(), mgrq(),
-			mgrqmx(), bcastaddr(HostAddress::BroadcastAddress), bcastttl(1),
-			stime(), exetime() {}
+	PData(): rsocks(), clis(), clthreads(), rsocksmx(), pfwpsr(NULL),
+			pthfwpsr(NULL), cmdsdr(), mgrq(), mgrqmx(), fwq(), fwqmx(),
+			bcastaddr(HostAddress::BroadcastAddress), bcastttl(1), stime(),
+			exetime() {}
 
 	vector<TCPSocket *> rsocks;					// Runner sockets.
 	vector<MasterSideCommandListener *> clis;	// Command listeners.
 	vector<Thread *> clthreads;					// Command listener threads.
 	Mutex rsocksmx;								// Runner sockets mutex.
+	MasterSideFinishedWorkerProcessor *pfwpsr;	// Finished worker processor.
+	Thread *pthfwpsr;							// Fin worker psr thread.
 
 	MasterSideCommandSender cmdsdr;				// Command sender.
 	map<uint32_t, IManagerActor *> mgrq;		// Manager queue.
 	Mutex mgrqmx;								// Manager queue mutex.
+	deque<pair<uint32_t, AbstractWorkerActor *> > fwq; // Finished worker queue.
+	Mutex fwqmx;								// Finished worker queue mutex.
 	HostAddress bcastaddr;						// Broadcast address.
 	int bcastttl;								// Broadcast TTL.
 	cml::Time stime;							// Time when started.
 	cml::Time exetime;							// Execution time.
+
+private:
+	PData(const PData &UNUSED(o)): rsocks(), clis(), clthreads(), rsocksmx(),
+			pfwpsr(NULL), pthfwpsr(NULL), cmdsdr(), mgrq(), mgrqmx(), fwq(),
+			fwqmx(), bcastaddr(HostAddress::BroadcastAddress), bcastttl(1),
+			stime(), exetime() {}
+	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
 
 SINGLETON_REGISTRATION(Master);
@@ -116,6 +129,11 @@ bool Master::setup(uint16_t master_port, uint16_t runner_port,
 		return false;
 	}
 
+	// Start finished worker processor.
+	_d->pfwpsr = new MasterSideFinishedWorkerProcessor(this);
+	_d->pthfwpsr = new Thread(_d->pfwpsr);
+	_d->pthfwpsr->start();
+
 	// Bind command listeners to each runner, and start all runners.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		MasterSideCommandListener *cl =
@@ -172,6 +190,10 @@ void Master::shutdown()
 	_d->exetime = Time::now() - _d->stime;
 	PINF_2("Execution time = " << _d->exetime);
 
+	// Stop finished worker processor.
+	_d->pfwpsr->setDone();
+	_d->pthfwpsr->join();
+
 	// Shutdown all runners and stop all command listeners.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		_d->cmdsdr.shutdown(_d->rsocks[i]);
@@ -202,46 +224,76 @@ void Master::runnerConnected(cml::TCPSocket *runnersock)
 }
 
 /**
- * Notify Master that a worker has finished.
+ * Put a finished worker into waiting to for processing.
  */
-void Master::workerFinished(uint32_t wseq, const AbstractWorkerActor &worker)
+void Master::putFinishWorker(uint32_t wseq, AbstractWorkerActor *worker)
 {
-	// Find the belonging manager.
-	map<uint32_t, IManagerActor *>::iterator iter;
-	_d->mgrqmx.lock();
-	if ((iter = _d->mgrq.find(wseq)) == _d->mgrq.end()) {
-		PERR("No manager found owning worker with sequence = " << wseq);
-		return;
-	}
+	_d->fwqmx.lock();
+	_d->fwq.push_back(pair<uint32_t, AbstractWorkerActor *>(wseq, worker));
+	_d->fwqmx.unlock();
+}
 
-	// Take the value and remove the manager from the queue.
-	IManagerActor *mgr = iter->second;
-	_d->mgrq.erase(iter);
-	_d->mgrqmx.unlock();
+/**
+ * Process a finished worker from queue. It's called by a different thread from
+ * who put workers to queue.
+ */
+void Master::processFinishedWorker()
+{
+	uint32_t wseq;
+	AbstractWorkerActor *worker = NULL;
+
+	// Take a finished worker.
+	_d->fwqmx.lock();
+	if (!_d->fwq.empty()) {
+		pair<uint32_t, AbstractWorkerActor *> p = _d->fwq.front();
+		wseq = p.first;
+		worker = p.second;
+		_d->fwq.pop_front();
+	}
+	_d->fwqmx.unlock();
+
+	if (!worker) {
+		usleep(10000);
+	} else {
+		// Find the belonging manager.
+		map<uint32_t, IManagerActor *>::iterator iter;
+		_d->mgrqmx.lock();
+		if ((iter = _d->mgrq.find(wseq)) == _d->mgrq.end()) {
+			PERR("No manager found owning worker with sequence = " << wseq);
+			delete worker;
+			return;
+		}
+
+		// Take the value and remove the manager from the queue.
+		IManagerActor *mgr = iter->second;
+		_d->mgrq.erase(iter);
+		_d->mgrqmx.unlock();
 
 #ifdef ENABLE_D2MCE /* DSM mode */
-	// Check if it's the last worker owned by that manager.
-	map<uint32_t, IManagerActor *>::iterator tmpiter;
-	bool lastone = true;
-	_d->mgrqmx.lock();
-	for (tmpiter = _d->mgrq.begin();
-			tmpiter != _d->mgrq.end(); ++tmpiter) {
-		if (tmpiter->second == mgr) {
-			lastone = false;
-			break;
+		// Check if it's the last worker owned by that manager.
+		map<uint32_t, IManagerActor *>::iterator tmpiter;
+		bool lastone = true;
+		_d->mgrqmx.lock();
+		for (tmpiter = _d->mgrq.begin();
+				tmpiter != _d->mgrq.end(); ++tmpiter) {
+			if (tmpiter->second == mgr) {
+				lastone = false;
+				break;
+			}
 		}
-	}
-	_d->mgrqmx.unlock();
+		_d->mgrqmx.unlock();
 
-	// Notify manager only if it's the last worker.
-	if (lastone) {
+		// Notify manager only if it's the last worker.
+		if (lastone) {
+			PINF_2("Notifying manager.");
+			mgr->processFinishedWorker(worker);
+		}
+#else /* Normal mode */
 		PINF_2("Notifying manager.");
 		mgr->workerFinished(worker);
-	}
-#else /* Normal mode */
-	PINF_2("Notifying manager.");
-	mgr->workerFinished(worker);
 #endif /* DISABLE_D2MCE */
+		delete worker;
+	}
 }
 
 /**

@@ -22,7 +22,7 @@ public:
 	virtual ~IManagerActor() {}
 	/// Called by Master to notify that a previous sent work has finished its
 	/// job and returned.
-	virtual void workerFinished(const AbstractWorkerActor &worker) = 0;
+	virtual void workerFinished(AbstractWorkerActor *worker) = 0;
 };
 
 }

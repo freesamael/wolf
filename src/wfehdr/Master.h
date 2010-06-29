@@ -7,6 +7,7 @@
 #ifndef MASTER_H_
 #define MASTER_H_
 
+#include <utility>
 #include <iostream>
 #include <sstream>
 #include <vector>
@@ -47,7 +48,8 @@ public:
 	void runWorker(AbstractWorkerActor *worker, IManagerActor *mgr);
 	void shutdown();
 	void runnerConnected(cml::TCPSocket *runnersock);
-	void workerFinished(uint32_t wseq, const AbstractWorkerActor &worker);
+	void putFinishWorker(uint32_t wseq, AbstractWorkerActor *worker);
+	void processFinishedWorker();
 	unsigned numberOfRunners();
 	cml::Time executionTime() const;
 

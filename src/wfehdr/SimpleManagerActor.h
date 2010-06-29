@@ -31,7 +31,7 @@ public:
 		{ _state = RUNNING; _worker->managerPrefire(this); }
 	inline void postfire()
 		{ _state = FINISHED; _worker->managerPostfire(this); }
-	void workerFinished(const AbstractWorkerActor &worker);
+	void workerFinished(AbstractWorkerActor *worker);
 	State state();
 	void fire();
 

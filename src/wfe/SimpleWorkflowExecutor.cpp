@@ -58,7 +58,9 @@ void SimpleWorkflowExecutor::iterate()
 			postrunactor(a);
 		}
 		findready();
-		usleep(30000);
+
+		if (_qready.empty())
+			usleep(10000);
 	}
 
 	PINF_2("Execution loop ends.");
@@ -73,7 +75,8 @@ void SimpleWorkflowExecutor::wrapup()
 
 void SimpleWorkflowExecutor::findready()
 {
-	PINF_2("Looking for ready actors.");
+	static int prcount = 0;
+	static unsigned pwcount = 0;
 	int rcount = 0;
 	vector<AbstractActor *>::iterator iter;
 	for (iter = _vwaitready.begin(); iter != _vwaitready.end();) {
@@ -84,13 +87,20 @@ void SimpleWorkflowExecutor::findready()
 		} else
 			++iter;
 	}
-	PINF_2("Found " << rcount << " runners ready, " << _vwaitready.size() <<
+
+	if (rcount != prcount || _vwaitready.size() != pwcount) {
+		PINF_2("Found " << rcount << " runners ready, " << _vwaitready.size() <<
 			" actors are still waiting.");
+	}
+
+	prcount = rcount;
+	pwcount = _vwaitready.size();
 }
 
 void SimpleWorkflowExecutor::findpost()
 {
-	PINF_2("Looking for postrunning actors.");
+	static int ppcount = 0;
+	static unsigned pwcount = 0;
 	int pcount = 0;
 	vector<AbstractActor *>::iterator iter;
 	for (iter = _vwaitpost.begin(); iter != _vwaitpost.end();) {
@@ -101,8 +111,14 @@ void SimpleWorkflowExecutor::findpost()
 		} else
 			++iter;
 	}
-	PINF_2("Found " << pcount << " runners postrunning, " << _vwaitpost.size()
-			<< " actors are still waiting.");
+
+	if (pcount != ppcount || _vwaitpost.size() != pwcount) {
+		PINF_2("Found " << pcount << " runners postrunning, " <<
+				_vwaitpost.size() << " actors are still waiting.");
+	}
+
+	ppcount = pcount;
+	pwcount = _vwaitpost.size();
 }
 
 void SimpleWorkflowExecutor::runactor(AbstractActor *actor)

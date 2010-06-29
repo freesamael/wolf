@@ -51,7 +51,7 @@ public:
 	virtual void managerPostfire(IManagerActor *UNUSED(mgr)) {}
 	/// When a worker returns from runner, manager uses this function to update
 	/// the value of original worker.
-	virtual void update(const AbstractWorkerActor &o) = 0;
+	virtual void update(AbstractWorkerActor *o) = 0;
 };
 
 }

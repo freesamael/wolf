@@ -48,35 +48,36 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 		return NULL;
 	}
 
-	PINF_3("Reading a message from TCP socket.");
+		PINF_3("Reading a message from TCP socket.");
 
-	// Read header.
-	activesock->lockread();
-	if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
-		activesock->unlockread();
-		delete [] hdrbuf;
-		return NULL;
-	} else if (ret < ITLVBlock::szHeader) {
-		activesock->unlockread();
-		PERR("Data read is too small to be a TLV block.");
-		delete [] hdrbuf;
-		return NULL;
-	}
+		// Read header.
+		activesock->lockread();
+		if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
+			activesock->unlockread();
+			delete [] hdrbuf;
+			return NULL;
+		} else if (ret < ITLVBlock::szHeader) {
+			activesock->unlockread();
+			PERR("Data read is too small to be a TLV block.");
+			delete [] hdrbuf;
+			return NULL;
+		}
 
-	// Read value.
-	tmpblk = new SharedTLVBlock(hdrbuf);
-	blk.setType(tmpblk->type());
-	blk.setLength(tmpblk->length());
-	if ((ret = activesock->read(blk.value(), blk.length())) !=
-			blk.length()) {
+		// Read value.
+		tmpblk = new SharedTLVBlock(hdrbuf);
+		blk.setType(tmpblk->type());
+		blk.setLength(tmpblk->length());
+		if ((ret = activesock->read(blk.value(), blk.length())) !=
+				blk.length()) {
+			activesock->unlockread();
+			PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
+					" bytes read.");
+			delete [] hdrbuf;
+			delete tmpblk;
+			return NULL;
+		}
+
 		activesock->unlockread();
-		PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
-				" bytes read.");
-		delete [] hdrbuf;
-		delete tmpblk;
-		return NULL;
-	}
-	activesock->unlockread();
 
 	// Construct TLV object.
 	obj = TLVObjectFactory::instance()->createTLVObject(blk);

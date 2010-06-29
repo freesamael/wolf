@@ -36,9 +36,8 @@ void MasterSideCommandListener::process(TLVCommand *cmd)
 		}
 		PINF_2("Worker " << u32->value() << " finished by runner " <<
 				sock()->peerAddress().toString());
-		_master->workerFinished(u32->value(), *worker);
+		_master->putFinishWorker(u32->value(), worker);
 		delete u32;
-		delete worker;
 	} else {
 		PERR("Unexpected command \"" <<
 				TLVCommand::CommandString[cmd->command()] << "\".");
