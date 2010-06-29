@@ -60,7 +60,6 @@ bool SimpleActiveSocketState::passiveOpen(AbstractSocket *sock,
 			reuseaddr_len);
 
 	// Perform binding.
-	int reuseaddr = 1;
 	PINF_3("Binding a port.");
 	if (bind(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0) {
 		perror("Error: SimpleActiveSocketState::passiveOpen()");
