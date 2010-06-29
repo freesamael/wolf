@@ -48,36 +48,38 @@ ITLVObject* TLVReaderWriter::read(TCPSocket *socket)
 		return NULL;
 	}
 
-		PINF_3("Reading a message from TCP socket.");
+	PINF_3("Reading a TCP message from " <<
+			activesock->peerAddress().toString());
 
-		// Read header.
-		activesock->lockread();
-		if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
-			activesock->unlockread();
-			delete [] hdrbuf;
-			return NULL;
-		} else if (ret < ITLVBlock::szHeader) {
-			activesock->unlockread();
-			PERR("Data read is too small to be a TLV block.");
-			delete [] hdrbuf;
-			return NULL;
-		}
-
-		// Read value.
-		tmpblk = new SharedTLVBlock(hdrbuf);
-		blk.setType(tmpblk->type());
-		blk.setLength(tmpblk->length());
-		if ((ret = activesock->read(blk.value(), blk.length())) !=
-				blk.length()) {
-			activesock->unlockread();
-			PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
-					" bytes read.");
-			delete [] hdrbuf;
-			delete tmpblk;
-			return NULL;
-		}
-
+	// Read header.
+	activesock->lockread();
+	if ((ret = activesock->read(hdrbuf, ITLVBlock::szHeader)) == 0) { // End of file.
 		activesock->unlockread();
+		delete [] hdrbuf;
+		return NULL;
+	} else if (ret < ITLVBlock::szHeader) {
+		activesock->unlockread();
+		PERR("Data read from " << activesock->peerAddress().toString() <<
+				" is too small to be a TLV block.");
+		delete [] hdrbuf;
+		return NULL;
+	}
+
+	// Read value.
+	tmpblk = new SharedTLVBlock(hdrbuf);
+	blk.setType(tmpblk->type());
+	blk.setLength(tmpblk->length());
+	if ((ret = activesock->read(blk.value(), blk.length())) !=
+			blk.length()) {
+		activesock->unlockread();
+		PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
+				" bytes read from " << activesock->peerAddress().toString());
+		delete [] hdrbuf;
+		delete tmpblk;
+		return NULL;
+	}
+
+	activesock->unlockread();
 
 	// Construct TLV object.
 	obj = TLVObjectFactory::instance()->createTLVObject(blk);
@@ -115,16 +117,19 @@ bool TLVReaderWriter::write(const ITLVObject &obj, TCPSocket *socket)
 	}
 
 	if (blk) {
-			PINF_3("Sending a message to TCP socket.");
+			PINF_3("Sending a TCP message to " <<
+					activesock->peerAddress().toString());
 			activesock->lockwrite();
 			ret = activesock->write(blk->plainBuffer(), blk->plainSize());
 			activesock->unlockwrite();
 			if (!(success = (ret == (int)blk->plainSize()))) {
 				if (ret > 0) {
 					PERR("Expected " << blk->plainSize() << " bytes but " <<
-							ret << " bytes written.");
+							ret << " bytes written to " <<
+							activesock->peerAddress().toString());
 				} else {
-					PERR("Fail to write.");
+					PERR("Fail to write to " <<
+							activesock->peerAddress().toString());
 				}
 			}
 	} else {
@@ -169,7 +174,8 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 		return NULL;
 	}
 
-	PINF_3("Reading a message from UDP socket.");
+	PINF_3("Reading an UDP message from " <<
+			activesock->peerAddress().toString());
 
 	// Read datagram.
 	localbuf = new char[SZ_MAXBUF];
@@ -181,7 +187,8 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
 		activesock->unlockread();
-		PERR("Data read is too small to be a TLV block.");
+		PERR("Data read from " << activesock->peerAddress().toString() <<
+				" is too small to be a TLV block.");
 		delete [] localbuf;
 		return NULL;
 	}
@@ -193,7 +200,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 	blk.setLength(tmpblk->length());
 	if (ret != blk.plainSize()) {
 		PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
-				" bytes read.");
+				" bytes read from " << activesock->peerAddress().toString());
 		delete tmpblk;
 		return NULL;
 	} else {
@@ -245,7 +252,8 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 	}
 
 	if (blk) {
-		PINF_3("Sending a message to UDP socket.");
+		PINF_3("Sending an UDP message to " <<
+				activesock->peerAddress().toString());
 		activesock->lockwrite();
 		ret = activesock->sendto(blk->plainBuffer(), blk->plainSize(),
 				addr, port);
@@ -253,9 +261,11 @@ bool TLVReaderWriter::sendto(const ITLVObject &obj, const HostAddress &addr,
 		if (!(success = (ret == (int)blk->plainSize()))) {
 			if (ret > 0) {
 				PERR("Expected " << blk->plainSize() << " bytes but " <<
-						ret << " bytes written.");
+						ret << " bytes written to " <<
+						activesock->peerAddress().toString());
 			} else {
-				PERR("Fail to write.");
+				PERR("Fail to write to " <<
+						activesock->peerAddress().toString());
 			}
 		}
 	} else {
