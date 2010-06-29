@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 		delete wrks[i];
 	}
 
-	cout << "Total Execution time = " << Master::instance()->executionTime() <<
+	cout << "Total Execution Time = " << Master::instance()->executionTime() <<
 			endl;
 
 	return 0;
