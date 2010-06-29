@@ -174,8 +174,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 		return NULL;
 	}
 
-	PINF_3("Reading an UDP message from " <<
-			activesock->peerAddress().toString());
+	PINF_3("Reading an UDP message.");
 
 	// Read datagram.
 	localbuf = new char[SZ_MAXBUF];
@@ -187,7 +186,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 		return NULL;
 	} else if (ret < ITLVBlock::szHeader) {
 		activesock->unlockread();
-		PERR("Data read from " << activesock->peerAddress().toString() <<
+		PERR("Data read from " << addr->toString() <<
 				" is too small to be a TLV block.");
 		delete [] localbuf;
 		return NULL;
@@ -200,7 +199,7 @@ ITLVObject* TLVReaderWriter::recvfrom(HostAddress *addr, uint16_t *port,
 	blk.setLength(tmpblk->length());
 	if (ret != blk.plainSize()) {
 		PERR("Expected " << blk.plainSize() << " bytes but " << ret <<
-				" bytes read from " << activesock->peerAddress().toString());
+				" bytes read from " << addr->toString());
 		delete tmpblk;
 		return NULL;
 	} else {
