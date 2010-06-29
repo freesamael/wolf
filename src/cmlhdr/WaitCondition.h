@@ -27,6 +27,8 @@ public:
 	void wakeAll();
 
 private:
+	WaitCondition(const WaitCondition &UNUSED(o)): _cond() {}
+	WaitCondition& operator=(const WaitCondition &UNUSED(o)) { return *this; }
 	pthread_cond_t _cond;
 };
 

@@ -24,7 +24,7 @@ public:
 	MasterSideFinishedWorkerProcessor(Master *m):
 		_master(m), _done(false), _mx() {}
 	MasterSideFinishedWorkerProcessor(const MasterSideFinishedWorkerProcessor &o):
-		_master(o._master), _done(o._done), _mx() {}
+		IRunnable(), _master(o._master), _done(o._done), _mx() {}
 	MasterSideFinishedWorkerProcessor& operator=(const MasterSideFinishedWorkerProcessor &o)
 		{ _master = o._master; _done = o._done; return *this; }
 	void run();
