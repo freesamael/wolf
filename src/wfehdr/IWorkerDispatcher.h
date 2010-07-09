@@ -8,7 +8,7 @@
 #define IWORKERDISPATCHER_H_
 
 #include <vector>
-#include "TCPSocket.h"
+#include "CTcpSocket.h"
 
 namespace wfe
 {
@@ -21,7 +21,7 @@ class IWorkerDispatcher
 public:
 	virtual ~IWorkerDispatcher() {}
 	/// Choose a runner from all runners to dispatch worker.
-	virtual cml::TCPSocket* choose(const std::vector<cml::TCPSocket *> &rsocks) = 0;
+	virtual cml::CTcpSocket* choose(const std::vector<cml::CTcpSocket *> &rsocks) = 0;
 };
 
 }

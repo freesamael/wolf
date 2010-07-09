@@ -5,7 +5,7 @@
  */
 
 #include "SinkPortTestSuite.h"
-#include "SinkPort.h"
+#include "CSinkPort.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SinkPortTestSuite);
 
@@ -19,7 +19,7 @@ public:
 
 void SinkPortTestSuite::testWriteReadPort()
 {
-	SinkPort port(NULL);
+	CSinkPort port(NULL);
 	FakeDrop a, b, c;
 	CPPUNIT_ASSERT_EQUAL((void *)NULL, (void *)port.readPort());
 

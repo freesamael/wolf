@@ -1,0 +1,43 @@
+/**
+ * \file CRunnerSideWorkerExecutor.h
+ * \date May 26, 2010
+ * \author samael
+ */
+
+#ifndef CRUNNERSIDEWORKEREXECUTOR_H_
+#define CRUNNERSIDEWORKEREXECUTOR_H_
+
+#include "IRunnable.h"
+#include "CMutex.h"
+#include "CRunner.h"
+
+namespace wfe
+{
+
+/**
+ * Used by runner to execute workers.
+ */
+class CRunnerSideWorkerExecutor: public cml::IRunnable
+{
+public:
+	CRunnerSideWorkerExecutor(CRunner *runner):
+		_done(false), _runner(runner), _mx() {}
+	CRunnerSideWorkerExecutor(const CRunnerSideWorkerExecutor &o):
+		cml::IRunnable(), _done(o._done), _runner(o._runner), _mx() {}
+	CRunnerSideWorkerExecutor& operator=(const CRunnerSideWorkerExecutor &o)
+		{ _done = o._done; _runner = o._runner; return *this; }
+	inline bool isDone()
+		{ _mx.lock(); bool d = _done; _mx.unlock(); return d; }
+	inline void setDone(bool d = true)
+		{ _mx.lock(); _done = d; _mx.unlock(); }
+	void run();
+
+private:
+	bool _done;
+	CRunner* _runner;
+	cml::CMutex _mx;
+};
+
+}
+
+#endif /* CRUNNERSIDEWORKEREXECUTOR_H_ */

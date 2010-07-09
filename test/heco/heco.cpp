@@ -5,11 +5,11 @@
  */
 
 #include <vector>
-#include <SimpleWorkflowExecutor.h>
-#include <AlwaysFirstWorkerDispatcher.h>
-#include <Director.h>
-#include <SimpleManagerActor.h>
-#include <Master.h>
+#include <CSimpleWorkflowExecutor.h>
+#include <CAlwaysFirstWorkerDispatcher.h>
+#include <CDirector.h>
+#include <CSimpleManagerActor.h>
+#include <CMaster.h>
 #include "HecoDataGenerator.h"
 #include "HecoFinalizer.h"
 #include "HecoWorker.h"
@@ -21,15 +21,15 @@ using namespace wfe;
 
 int main(int argc, char *argv[])
 {
-	AlwaysFirstWorkerDispatcher disp;
-	Master::instance()->init(argc, argv);
-	Master::instance()->setDispatcher(&disp);
+	CAlwaysFirstWorkerDispatcher disp;
+	CMaster::instance()->init(argc, argv);
+	CMaster::instance()->setDispatcher(&disp);
 
-	SimpleWorkflowExecutor exec;
-	Director d(&exec);
+	CSimpleWorkflowExecutor exec;
+	CDirector d(&exec);
 
 	vector<HecoWorker *> workers;
-	vector<SimpleManagerActor *> managers;
+	vector<CSimpleManagerActor *> managers;
 
 	HecoDataGenerator gtr(1);
 	d.addActor(&gtr);
@@ -38,16 +38,16 @@ int main(int argc, char *argv[])
 	d.addActor(&ldr);
 
 	// Setup first port.
-	Channel *ch1 = d.createChannel();
+	CChannel *ch1 = d.createChannel();
 	gtr.sourcePorts()[0]->setChannel(ch1);
 
 	for (int i = 0; i < NWORKER; i++) {
 		HecoWorker *w = new HecoWorker();
-		SimpleManagerActor *m = new SimpleManagerActor(w);
+		CSimpleManagerActor *m = new CSimpleManagerActor(w);
 		d.addActor(m);
 
 		// Setup all intermediate ports.
-		Channel *ich = d.createChannel();
+		CChannel *ich = d.createChannel();
 		m->sinkPorts()[0]->setChannel(ch1);
 		m->sourcePorts()[0]->setChannel(ich);
 		ldr.sinkPorts()[i]->setChannel(ich);

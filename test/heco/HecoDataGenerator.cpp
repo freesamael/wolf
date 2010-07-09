@@ -4,7 +4,7 @@
  * \author samael
  */
 
-#include <DUInt32.h>
+#include <CFlowUint32.h>
 #include "HecoDataGenerator.h"
 
 using namespace wfe;
@@ -25,7 +25,7 @@ HecoDataGenerator::~HecoDataGenerator()
 void HecoDataGenerator::fire()
 {
 	for (unsigned i = 0; i < sourcePorts().size(); i++) {
-		DUInt32 *n = new DUInt32(0);
+		CFlowUint32 *n = new CFlowUint32(0);
 		sourcePorts()[i]->writeChannel(n);
 	}
 	_state = POST_RUNNING;

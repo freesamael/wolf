@@ -5,9 +5,9 @@
  */
 
 #include "TLVStringCreatorTestSuite.h"
-#include "TLVStringCreator.h"
-#include "TLVString.h"
-#include "TLVBlock.h"
+#include "CTlvStringCreator.h"
+#include "CTlvString.h"
+#include "CTlvBlock.h"
 
 using namespace std;
 using namespace cml;
@@ -16,26 +16,26 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TLVStringCreatorTestSuite);
 
 void TLVStringCreatorTestSuite::testCreate()
 {
-	TLVStringCreator *ctr = new TLVStringCreator();
-	TLVString *str, *yastr;
-	StandardTLVBlock *blk;
+	CTlvStringCreator *ctr = new CTlvStringCreator();
+	CTlvString *str, *yastr;
+	CTlvBlock *blk;
 
-	str = dynamic_cast<TLVString*>(ctr->create());
+	str = dynamic_cast<CTlvString*>(ctr->create());
 	str->setString("Hello World");
 	CPPUNIT_ASSERT_EQUAL(string("Hello World"), str->toString());
 	delete str;
 
-	str = new TLVString("Test TLVString/TLVBlock Conversion");
+	str = new CTlvString("Test TLVString/TLVBlock Conversion");
 	blk = str->toTLVBlock();
-	yastr = dynamic_cast<TLVString*>(ctr->create(*blk));
+	yastr = dynamic_cast<CTlvString*>(ctr->create(*blk));
 	CPPUNIT_ASSERT_EQUAL(str->toString(), yastr->toString());
 	delete yastr;
 	delete blk;
 	delete str;
 
-	str = new TLVString();
+	str = new CTlvString();
 	blk = str->toTLVBlock();
-	yastr = dynamic_cast<TLVString*>(ctr->create(*blk));
+	yastr = dynamic_cast<CTlvString*>(ctr->create(*blk));
 	CPPUNIT_ASSERT_EQUAL(str->toString(), yastr->toString());
 	delete yastr;
 	delete blk;

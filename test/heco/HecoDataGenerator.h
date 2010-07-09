@@ -7,9 +7,9 @@
 #ifndef HECODATAGENERATOR_H_
 #define HECODATAGENERATOR_H_
 
-#include <AbstractActor.h>
+#include <AActor.h>
 
-class HecoDataGenerator: public wfe::AbstractActor
+class HecoDataGenerator: public wfe::AActor
 {
 public:
 	HecoDataGenerator(unsigned np);

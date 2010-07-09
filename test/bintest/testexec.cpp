@@ -5,14 +5,14 @@
  */
 
 #include <string>
-#include <Process.h>
+#include <CProcess.h>
 
 using namespace std;
 using namespace cml;
 
 int main()
 {
-	Process proc;
+	CProcess proc;
 	string bin = "ls";
 
 	proc.start(bin);

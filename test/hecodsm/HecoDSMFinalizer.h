@@ -7,9 +7,9 @@
 #ifndef HECODSMFINALIZER_H_
 #define HECODSMFINALIZER_H_
 
-#include <AbstractActor.h>
+#include <AActor.h>
 
-class HecoDSMFinalizer: public wfe::AbstractActor
+class HecoDSMFinalizer: public wfe::AActor
 {
 public:
 	HecoDSMFinalizer(): _state(NOT_READY) { addPort(wfe::IPort::SINK); }

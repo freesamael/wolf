@@ -7,11 +7,11 @@
 #ifndef MSORTWORKER_H_
 #define MSORTWORKER_H_
 
-#include <AbstractWorkerActor.h>
-#include <DVector.h>
-#include <Mutex.h>
+#include <AWorkerActor.h>
+#include <CFlowVector.h>
+#include <CMutex.h>
 
-class MSortWorker: public wfe::AbstractWorkerActor
+class MSortWorker: public wfe::AWorkerActor
 {
 public:
 	MSortWorker();
@@ -19,15 +19,15 @@ public:
 	void managerFinalization(wfe::IManagerActor *mgr);
 	void managerPrefire(wfe::IManagerActor *mgr);
 	void managerPostfire(wfe::IManagerActor *mgr);
-	void update(AbstractWorkerActor *o);
+	void update(AWorkerActor *o);
 	void fire();
-	wfe::DVector<uint32_t> vector() const { return _vec; }
-	void setVector(const wfe::DVector<uint32_t> &v);
-	cml::StandardTLVBlock* toTLVBlock() const;
+	wfe::CFlowVector<uint32_t> vector() const { return _vec; }
+	void setVector(const wfe::CFlowVector<uint32_t> &v);
+	cml::CTlvBlock* toTLVBlock() const;
 
 private:
-	wfe::DVector<uint32_t> _vec;
-	cml::Mutex _mx;
+	wfe::CFlowVector<uint32_t> _vec;
+	cml::CMutex _mx;
 };
 
 #endif /* MSORTWORKER_H_ */

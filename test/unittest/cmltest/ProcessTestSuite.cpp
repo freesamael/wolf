@@ -6,8 +6,8 @@
 
 #include <cstdlib>
 #include "ProcessTestSuite.h"
-#include "Process.h"
-#include "StringHelper.h"
+#include "CProcess.h"
+#include "CStringHelper.h"
 
 using namespace std;
 using namespace cml;
@@ -18,9 +18,9 @@ void ProcessTestSuite::testConstructArgs()
 {
 	string prog("program"), str("-arg1 -arg2 -arg3 -arg4 -arg5");
 	vector<string> args;
-	StringHelper::tokens(str, " ", &args);
+	CStringHelper::tokens(str, " ", &args);
 
-	char **argv = Process::constructArgs(prog, args);
+	char **argv = CProcess::constructArgs(prog, args);
 
 	CPPUNIT_ASSERT_EQUAL((string)"program", (string)argv[0]);
 	CPPUNIT_ASSERT_EQUAL((string)"-arg1", (string)argv[1]);

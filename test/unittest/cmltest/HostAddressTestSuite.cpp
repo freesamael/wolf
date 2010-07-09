@@ -6,7 +6,7 @@
 
 #include <string>
 #include "HostAddressTestSuite.h"
-#include "HostAddress.h"
+#include "CHostAddress.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(HostAddressTestSuite);
 
@@ -15,17 +15,17 @@ using namespace cml;
 
 void HostAddressTestSuite::testToString()
 {
-	HostAddress *addr;
+	CHostAddress *addr;
 
-	addr = new HostAddress("127.0.0.1");
+	addr = new CHostAddress("127.0.0.1");
 	CPPUNIT_ASSERT_EQUAL((string)"127.0.0.1", addr->toString());
 	delete addr;
 
-	addr = new HostAddress("192.168.0.1");
+	addr = new CHostAddress("192.168.0.1");
 	CPPUNIT_ASSERT_EQUAL((string)"192.168.0.1", addr->toString());
 	delete addr;
 
-	addr = new HostAddress("255.255.255.255");
+	addr = new CHostAddress("255.255.255.255");
 	CPPUNIT_ASSERT_EQUAL((string)"255.255.255.255", addr->toString());
 	delete addr;
 }

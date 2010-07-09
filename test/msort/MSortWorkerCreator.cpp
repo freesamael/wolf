@@ -19,14 +19,14 @@ MSortWorkerCreator::MSortWorkerCreator()
 
 }
 
-ITLVObject* MSortWorkerCreator::create(const ITLVBlock &blk) const
+ITlvObject* MSortWorkerCreator::create(const ITlvBlock &blk) const
 {
 	if ((blk.length() % sizeof(uint32_t)) != 0) {
 		PERR("Corrupted block.");
 		return NULL;
 	}
 
-	DVector<uint32_t> d;
+	CFlowVector<uint32_t> d;
 	int offset = 0;
 	while (offset < blk.length()) {
 		uint32_t u32;

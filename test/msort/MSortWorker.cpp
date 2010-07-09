@@ -4,15 +4,14 @@
  * \author samael
  */
 
-#define __STDC_LIMIT_MACROS // Needed to use UINTx_MAX macros in <stdint.h>
 #include <iostream>
 #include <sstream>
 #include <cstring>
 #include <stdint.h>
 #include <arpa/inet.h>
 #include <HelperMacros.h>
-#include <SimpleManagerActor.h>
-#include <TLVObjectFactoryAutoRegistry.h>
+#include <CSimpleManagerActor.h>
+#include <CTlvObjectFactoryAutoRegistry.h>
 #include "MSortWorker.h"
 #include "MSortWorkerCreator.h"
 
@@ -32,8 +31,8 @@ MSortWorker::MSortWorker():
 void MSortWorker::managerInitialization(IManagerActor *mgr)
 {
 //	PINF_1("Initializing manager.");
-	SimpleManagerActor *smgr;
-	if (!(smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+	CSimpleManagerActor *smgr;
+	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
 		PERR("Invalid operation.");
 	} else {
 		smgr->addPort(IPort::SINK);
@@ -44,8 +43,8 @@ void MSortWorker::managerInitialization(IManagerActor *mgr)
 void MSortWorker::managerFinalization(IManagerActor *mgr)
 {
 //	PINF_1("Finalizing manager.");
-	SimpleManagerActor *smgr;
-	if (!(smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+	CSimpleManagerActor *smgr;
+	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
 		PERR("Invalid operation.");
 	} else {
 		smgr->removePort(smgr->sinkPorts()[0]);
@@ -56,12 +55,12 @@ void MSortWorker::managerFinalization(IManagerActor *mgr)
 void MSortWorker::managerPrefire(wfe::IManagerActor *mgr)
 {
 	PINF_1("Manager prefire.");
-	SimpleManagerActor *smgr;
-	if (!(smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+	CSimpleManagerActor *smgr;
+	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
 		PERR("Invalid operation.");
 	} else {
-		DVector<uint32_t> *d;
-		if (!(d = dynamic_cast<DVector<uint32_t> *>(smgr->sinkPorts()[0]->readPort()))) {
+		CFlowVector<uint32_t> *d;
+		if (!(d = dynamic_cast<CFlowVector<uint32_t> *>(smgr->sinkPorts()[0]->readPort()))) {
 			PERR("Invalid object.");
 		} else {
 			_mx.lock();
@@ -75,11 +74,11 @@ void MSortWorker::managerPrefire(wfe::IManagerActor *mgr)
 void MSortWorker::managerPostfire(wfe::IManagerActor *mgr)
 {
 	PINF_1("Manager postfire.");
-	SimpleManagerActor *smgr;
-	if (!(smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+	CSimpleManagerActor *smgr;
+	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
 		PERR("Invalid operation.");
 	} else {
-		DVector<uint32_t> *d = new DVector<uint32_t>();
+		CFlowVector<uint32_t> *d = new CFlowVector<uint32_t>();
 		_mx.lock();
 		*d = _vec;
 		_mx.unlock();
@@ -87,7 +86,7 @@ void MSortWorker::managerPostfire(wfe::IManagerActor *mgr)
 	}
 }
 
-void MSortWorker::update(AbstractWorkerActor *o)
+void MSortWorker::update(AWorkerActor *o)
 {
 	PINF_1("Updating results.");
 	MSortWorker *w;
@@ -119,19 +118,19 @@ void MSortWorker::fire()
 	}
 }
 
-void MSortWorker::setVector(const DVector<uint32_t> &v)
+void MSortWorker::setVector(const CFlowVector<uint32_t> &v)
 {
 	_vec = v;
 }
 
-cml::StandardTLVBlock* MSortWorker::toTLVBlock() const
+cml::CTlvBlock* MSortWorker::toTLVBlock() const
 {
-	if ((_vec.size() * sizeof(uint32_t) + ITLVBlock::szHeader) > UINT16_MAX) {
+	if ((_vec.size() * sizeof(uint32_t) + ITlvBlock::szHeader) > UINT16_MAX) {
 		PERR("Too large to be a TLV object.");
 		return NULL;
 	}
 
-	StandardTLVBlock *blk = new StandardTLVBlock(TLV_TYPE_WORKER,
+	CTlvBlock *blk = new CTlvBlock(TLV_TYPE_WORKER,
 			_vec.size() * sizeof(uint32_t));
 	for (unsigned i = 0; i < _vec.size(); i++) {
 		uint32_t nbytes = htonl(_vec[i]);

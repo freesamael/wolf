@@ -5,13 +5,13 @@
  */
 
 #include "AbstractActorTestSuite.h"
-#include "AbstractActor.h"
+#include "AActor.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AbstractActorTestSuite);
 
 using namespace wfe;
 
-class TestActor: public AbstractActor
+class TestActor: public AActor
 {
 public:
 	void fire() {}

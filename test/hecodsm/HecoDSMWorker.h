@@ -8,11 +8,11 @@
 #define HECODSMWORKER_H_
 
 #include <HelperMacros.h>
-#include <SharedMemory.h>
-#include <TLVSharedMemoryInfo.h>
-#include <AbstractWorkerActor.h>
+#include <CSharedMemory.h>
+#include <CTlvSharedMemoryInfo.h>
+#include <AWorkerActor.h>
 
-class HecoDSMWorker: public wfe::AbstractWorkerActor
+class HecoDSMWorker: public wfe::AWorkerActor
 {
 public:
 	HecoDSMWorker();
@@ -24,13 +24,13 @@ public:
 	void setup();
 	void fire();
 	void postfire();
-	void update(AbstractWorkerActor *UNUSED(o)) {}
-	cml::StandardTLVBlock* toTLVBlock() const;
-	void setMeminfo(wfe::TLVSharedMemoryInfo *meminfo) { _meminfo = meminfo; }
+	void update(AWorkerActor *UNUSED(o)) {}
+	cml::CTlvBlock* toTLVBlock() const;
+	void setMeminfo(wfe::CTlvSharedMemoryInfo *meminfo) { _meminfo = meminfo; }
 
 private:
 	wfe::SharedMemory *_mem;
-	wfe::TLVSharedMemoryInfo *_meminfo;
+	wfe::CTlvSharedMemoryInfo *_meminfo;
 };
 
 #endif /* HECODSMWORKER_H_ */

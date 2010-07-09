@@ -6,29 +6,29 @@
 
 #include <iostream>
 #include <string>
-#include "AbstractSocket.h"
-#include "UDPSocket.h"
-#include "TLVReaderWriter.h"
-#include "TLVString.h"
-#include "HostAddress.h"
+#include "ASocket.h"
+#include "CUdpSocket.h"
+#include "CTlvReaderWriter.h"
+#include "CTlvString.h"
+#include "CHostAddress.h"
 
 using namespace std;
 using namespace cml;
 
 int main()
 {
-	UDPSocket sock;
-	TLVReaderWriter rw(&sock);
-    ITLVObject *obj;
-    TLVString *instr;
+	CUdpSocket sock;
+	CTlvReaderWriter rw(&sock);
+    ITlvObject *obj;
+    CTlvString *instr;
     string str;
-    HostAddress addr;
+    CHostAddress addr;
     unsigned short port;
 
     sock.passiveOpen(5566);
     do {
     	obj = rw.recvfrom(&addr, &port);
-    	if ((instr = dynamic_cast<TLVString *>(obj))) {
+    	if ((instr = dynamic_cast<CTlvString *>(obj))) {
     		str = instr->toString();
     		cout << str << endl;
     		rw.sendto(*instr, addr, port);

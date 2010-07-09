@@ -7,11 +7,11 @@
 #ifndef HECODSMDATAGENERATOR_H_
 #define HECODSMDATAGENERATOR_H_
 
-#include <AbstractActor.h>
-#include <SharedMemory.h>
+#include <AActor.h>
+#include <CSharedMemory.h>
 #include <IDrop.h>
 
-class HecoDSMDataGenerator: public wfe::AbstractActor
+class HecoDSMDataGenerator: public wfe::AActor
 {
 public:
 	HecoDSMDataGenerator(): _state(READY) { addPort(wfe::IPort::SOURCE); }

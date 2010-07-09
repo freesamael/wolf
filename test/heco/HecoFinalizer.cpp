@@ -5,7 +5,7 @@
  */
 
 #include <iostream>
-#include <DUInt32.h>
+#include <CFlowUint32.h>
 #include "HecoFinalizer.h"
 
 using namespace std;
@@ -24,7 +24,7 @@ HecoFinalizer::~HecoFinalizer()
 		delete sinkPorts()[i];
 }
 
-AbstractActor::State HecoFinalizer::state()
+AActor::State HecoFinalizer::state()
 {
 	if (_state == NOT_READY) {
 		bool ready = true;
@@ -40,8 +40,8 @@ void HecoFinalizer::fire()
 {
 	for (unsigned i = 0; i < sinkPorts().size(); i++) {
 		IDrop *d = sinkPorts()[i]->readPort();
-		DUInt32 *u32;
-		if ((u32 = dynamic_cast<DUInt32 *>(d))) {
+		CFlowUint32 *u32;
+		if ((u32 = dynamic_cast<CFlowUint32 *>(d))) {
 			cout << u32->value() << " ";
 		}
 		delete d;

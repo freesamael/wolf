@@ -7,7 +7,7 @@
 #define HELPERMACROS_H_
 
 #include <pthread.h>
-#include "Time.h"
+#include "CTime.h"
 
 extern pthread_mutex_t g_mxcout;
 extern pthread_mutex_t g_mxcerr;
@@ -38,14 +38,14 @@ extern pthread_mutex_t g_mxcerr;
 
 /**
  * \def TLV_OBJECT_REGISTRATION(type, id, creator)
- * Register a TLV object to TLVObjectFactory with given id and creator.
+ * Register a TLV object to CTlvObjectFactory with given id and creator.
  *
  * \note
  * \#include \<typeinfo\> <br>
- * \#include \<TLVObjectFactoryAutoRegistry.h\>
+ * \#include \<CTlvObjectFactoryAutoRegistry.h\>
  */
 #define TLV_OBJECT_REGISTRATION(type, id, creator) \
-	static cml::TLVObjectFactoryAutoRegistry CONCATE(__autoreg, __LINE__)( \
+	static cml::CTlvObjectFactoryAutoRegistry CONCATE(__autoreg, __LINE__)( \
 			typeid(type).name(), id, new creator())
 
 /**
@@ -94,10 +94,10 @@ extern pthread_mutex_t g_mxcerr;
  * Register a singleton object.
  *
  * \note
- * \#include \<SingletonAutoDestructor.h\>
+ * \#include \<CSingletonAutoDestructor.h\>
  */
 #define SINGLETON_REGISTRATION(type)                                           \
-	static cml::SingletonAutoDestructor< type > CONCATE(__autodes, __LINE__);  \
+	static cml::CSingletonAutoDestructor< type > CONCATE(__autodes, __LINE__); \
 	type* type::_instance = NULL;                                              \
 	type* type::instance() {                                                   \
 		if (!_instance) {                                                      \
@@ -116,10 +116,10 @@ extern pthread_mutex_t g_mxcerr;
  * Declare that self_type depends on socket objects.
  *
  * \note
- * \#include \<AbstractSocket.h\>
+ * \#include \<ASocket.h\>
  */
 #define SINGLETON_DEPENDS_SOCKET(self_type)                                    \
-			AbstractSocket::registerSocketDependant(&self_type::release)
+			cml::ASocket::registerSocketDependant(&self_type::release)
 
 /**
  * \def SINGLETON_REGISTRATION_END()
@@ -152,7 +152,7 @@ do {                                                                           \
 	__tmpstream << "Error: " << msg << std::endl << "\t[" <<                   \
 	__PRETTY_FUNCTION__ << ": " << __LINE__ << "]";                            \
 	pthread_mutex_lock(&g_mxcerr);                                             \
-	std::cerr << cml::Time::now() << ": " << __tmpstream.str() <<       \
+	std::cerr << cml::CTime::now() << ": " << __tmpstream.str() <<             \
 	std::endl;                                                                 \
 	pthread_mutex_unlock(&g_mxcerr);                                           \
 } while (false) // For semicolon and one-line statement.
@@ -165,7 +165,7 @@ do {                                                                           \
 	__tmpstream << msg << std::endl << "\t[" << __PRETTY_FUNCTION__ << ": "    \
 	<< __LINE__ << "]";                                                        \
 	pthread_mutex_lock(&g_mxcout);                                             \
-	std::cout << cml::Time::now() << ": " << __tmpstream.str() <<       \
+	std::cout << cml::CTime::now() << ": " << __tmpstream.str() <<             \
 	std::endl;                                                                 \
 	pthread_mutex_unlock(&g_mxcout);                                           \
 } while (false) // For semicolon and one-line statement.

@@ -4,15 +4,15 @@
  * \author samael
  */
 
-#include <Director.h>
-#include <SimpleWorkflowExecutor.h>
+#include <CDirector.h>
+#include <CSimpleWorkflowExecutor.h>
 
 using namespace wfe;
 
 int main()
 {
-	SimpleWorkflowExecutor exec;
-	Director d(&exec);
+	CSimpleWorkflowExecutor exec;
+	CDirector d(&exec);
 
 	d.execute(1234, 5678);
 

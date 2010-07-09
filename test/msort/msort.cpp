@@ -3,11 +3,11 @@
  * \date Jun 28, 2010
  * \author samael
  */
-#include <Director.h>
-#include <SimpleWorkflowExecutor.h>
-#include <AlwaysFirstWorkerDispatcher.h>
-#include <Master.h>
-#include <SimpleManagerActor.h>
+#include <CDirector.h>
+#include <CSimpleWorkflowExecutor.h>
+#include <CAlwaysFirstWorkerDispatcher.h>
+#include <CMaster.h>
+#include <CSimpleManagerActor.h>
 #include "MSortDataGenerator.h"
 #include "MSortFinalizer.h"
 #include "MSortWorker.h"
@@ -20,15 +20,15 @@ using namespace wfe;
 
 int main(int argc, char *argv[])
 {
-	Master::instance()->init(argc, argv);
-	AlwaysFirstWorkerDispatcher disp;
-	Master::instance()->setDispatcher(&disp);
+	CMaster::instance()->init(argc, argv);
+	CAlwaysFirstWorkerDispatcher disp;
+	CMaster::instance()->setDispatcher(&disp);
 
-	SimpleWorkflowExecutor exec;
-	Director d(&exec);
+	CSimpleWorkflowExecutor exec;
+	CDirector d(&exec);
 
 	vector<MSortWorker *> wrks;
-	vector<SimpleManagerActor *> mgrs;
+	vector<CSimpleManagerActor *> mgrs;
 
 	MSortDataGenerator gen(NWORKERS, 500);
 	d.addActor(&gen);
@@ -38,11 +38,11 @@ int main(int argc, char *argv[])
 
 	for (int i = 0; i < NWORKERS; i++) {
 		MSortWorker *w = new MSortWorker();
-		SimpleManagerActor *m = new SimpleManagerActor(w);
+		CSimpleManagerActor *m = new CSimpleManagerActor(w);
 		d.addActor(m);
 
 		// Setup input channel for worker.
-		Channel *c = d.createChannel();
+		CChannel *c = d.createChannel();
 		gen.sourcePorts()[i]->setChannel(c);
 		m->sinkPorts()[0]->setChannel(c);
 
@@ -62,7 +62,7 @@ int main(int argc, char *argv[])
 		delete wrks[i];
 	}
 
-	cout << "Total Execution Time = " << Master::instance()->executionTime() <<
+	cout << "Total Execution Time = " << CMaster::instance()->executionTime() <<
 			endl;
 
 	return 0;

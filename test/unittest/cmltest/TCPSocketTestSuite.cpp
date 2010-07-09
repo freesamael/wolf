@@ -5,8 +5,8 @@
  */
 
 #include <string>
-#include <Thread.h>
-#include <TCPSocket.h>
+#include <CThread.h>
+#include <CTcpSocket.h>
 #include "TCPSocketTestSuite.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TCPSocketTestSuite);
@@ -14,16 +14,16 @@ CPPUNIT_TEST_SUITE_REGISTRATION(TCPSocketTestSuite);
 using namespace std;
 using namespace cml;
 
-struct Acceptor: public Thread
+struct Acceptor: public CThread
 {
-	TCPSocket *msock, *ssock;
-	Acceptor(TCPSocket *m): msock(m), ssock(NULL) {}
+	CTcpSocket *msock, *ssock;
+	Acceptor(CTcpSocket *m): msock(m), ssock(NULL) {}
 	void run() { ssock = msock->accept(); }
 };
 
 void TCPSocketTestSuite::testReadWrite()
 {
-	TCPSocket server, client;
+	CTcpSocket server, client;
 	Acceptor athread(&server);
 
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", server.state()->name());
@@ -35,7 +35,7 @@ void TCPSocketTestSuite::testReadWrite()
 	CPPUNIT_ASSERT(client.activeOpen("127.0.0.1", 6655));
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", client.state()->name());
 	athread.join();
-	CPPUNIT_ASSERT_ASSERTION_FAIL(CPPUNIT_ASSERT_EQUAL((TCPSocket *)NULL, athread.ssock));
+	CPPUNIT_ASSERT_ASSERTION_FAIL(CPPUNIT_ASSERT_EQUAL((CTcpSocket *)NULL, athread.ssock));
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", athread.ssock->state()->name());
 
 	const char *str = "Hello World";

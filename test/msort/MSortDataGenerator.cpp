@@ -9,7 +9,7 @@
 #include <cstdlib>
 #include <ctime>
 #include <stdint.h>
-#include <DVector.h>
+#include <CFlowVector.h>
 #include <HelperMacros.h>
 #include "MSortDataGenerator.h"
 
@@ -33,7 +33,7 @@ void MSortDataGenerator::fire()
 {
 	PINF_1("Generating data.");
 	for (int i = 0; i < _np; i++) {
-		DVector<uint32_t> *d = new DVector<uint32_t>();
+		CFlowVector<uint32_t> *d = new CFlowVector<uint32_t>();
 		for (int j = 0; j < _psize; j++) {
 			uint32_t n = (uint32_t)rand();
 			d->push_back(n);

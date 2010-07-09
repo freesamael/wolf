@@ -7,12 +7,12 @@
 #include <iostream>
 #include <sstream>
 #include <cstring>
-#include <SharedMemory.h>
-#include <TLVObjectFactoryAutoRegistry.h>
+#include <CSharedMemory.h>
+#include <CTlvObjectFactoryAutoRegistry.h>
 #include <HelperMacros.h>
-#include <D2MCE.h>
+#include <CD2mce.h>
 #include <IManagerActor.h>
-#include <SimpleManagerActor.h>
+#include <CSimpleManagerActor.h>
 #include "HecoDSMWorker.h"
 #include "HecoDSMWorkerCreator.h"
 
@@ -35,8 +35,8 @@ HecoDSMWorker::~HecoDSMWorker()
 
 void HecoDSMWorker::managerInitialization(IManagerActor *mgr)
 {
-	SimpleManagerActor *smgr;
-	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+	CSimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
 		smgr->addPort(IPort::SINK);
 		smgr->addPort(IPort::SOURCE);
 	}
@@ -44,8 +44,8 @@ void HecoDSMWorker::managerInitialization(IManagerActor *mgr)
 
 void HecoDSMWorker::managerFinalization(IManagerActor *mgr)
 {
-	SimpleManagerActor *smgr;
-	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+	CSimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
 		smgr->removePort(smgr->sinkPorts()[0]);
 		smgr->removePort(smgr->sourcePorts()[0]);
 	}
@@ -53,8 +53,8 @@ void HecoDSMWorker::managerFinalization(IManagerActor *mgr)
 
 void HecoDSMWorker::managerPrefire(IManagerActor *mgr)
 {
-	SimpleManagerActor *smgr;
-	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+	CSimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
 		PINF_1("Manager Prefire");
 		// Load memory.
 		_mem = dynamic_cast<SharedMemory *>(smgr->sinkPorts()[0]->readPort());
@@ -68,7 +68,7 @@ void HecoDSMWorker::managerPrefire(IManagerActor *mgr)
 				num[3]);
 
 		// Generate memory info.
-		_meminfo = new TLVSharedMemoryInfo(_mem->name(), _mem->size());
+		_meminfo = new CTlvSharedMemoryInfo(_mem->name(), _mem->size());
 		PINF_1("Meminfo: name = " << _meminfo->name() << ", size = " <<
 				_meminfo->size());
 	}
@@ -76,8 +76,8 @@ void HecoDSMWorker::managerPrefire(IManagerActor *mgr)
 
 void HecoDSMWorker::managerPostfire(IManagerActor *mgr)
 {
-	SimpleManagerActor *smgr;
-	if ((smgr = dynamic_cast<SimpleManagerActor *>(mgr))) {
+	CSimpleManagerActor *smgr;
+	if ((smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
 		PINF_1("Manager Postfire");
 
 		// Load memory.
@@ -123,10 +123,10 @@ void HecoDSMWorker::postfire()
 	PINF_1("Postfire");
 }
 
-StandardTLVBlock* HecoDSMWorker::toTLVBlock() const
+CTlvBlock* HecoDSMWorker::toTLVBlock() const
 {
-	StandardTLVBlock *infoblk = _meminfo->toTLVBlock();
-	StandardTLVBlock *blk = new StandardTLVBlock(TLV_TYPE_WORKER, infoblk->plainSize());
+	CTlvBlock *infoblk = _meminfo->toTLVBlock();
+	CTlvBlock *blk = new CTlvBlock(TLV_TYPE_WORKER, infoblk->plainSize());
 	memcpy(blk->value(), infoblk->plainBuffer(), blk->length());
 	delete infoblk;
 	return blk;

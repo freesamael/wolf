@@ -5,8 +5,8 @@
  */
 
 #include "ChannelTestSuite.h"
-#include "Channel.h"
-#include "SinkPort.h"
+#include "CChannel.h"
+#include "CSinkPort.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ChannelTestSuite);
 
@@ -28,8 +28,8 @@ public:
 
 void ChannelTestSuite::testAttachDetach()
 {
-	SinkPort p1(NULL), p2(NULL), p3(NULL);
-	Channel ch;
+	CSinkPort p1(NULL), p2(NULL), p3(NULL);
+	CChannel ch;
 
 	ch.attachReader(&p1);
 	ch.attachReader(&p2);
@@ -51,9 +51,9 @@ void ChannelTestSuite::testAttachDetach()
 
 void ChannelTestSuite::testWrite()
 {
-	SinkPort p1(NULL), p2(NULL);
+	CSinkPort p1(NULL), p2(NULL);
 	FakeDrop d1, d2, d3, d4;
-	Channel ch;
+	CChannel ch;
 
 	ch.attachReader(&p1);
 	ch.attachReader(&p2);

@@ -4,17 +4,17 @@
  * \author samael
  */
 
-#include <UDPSocket.h>
-#include <TLVReaderWriter.h>
-#include <TLVString.h>
+#include <CUdpSocket.h>
+#include <CTlvReaderWriter.h>
+#include <CTlvString.h>
 
 using namespace cml;
 
 int main()
 {
-	UDPSocket sock;
-	TLVString str("i wanna go home...");
-	TLVReaderWriter rw;
+	CUdpSocket sock;
+	CTlvString str("i wanna go home...");
+	CTlvReaderWriter rw;
 
 	sock.setBroadcast(true);
 	sock.setTTL(1);

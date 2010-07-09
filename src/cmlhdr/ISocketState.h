@@ -9,13 +9,13 @@
 
 #include <string>
 #include <stdint.h>
-#include "HostAddress.h"
+#include "CHostAddress.h"
 
 namespace cml
 {
 
-class AbstractSocket;
-class TCPSocket;
+class ASocket;
+class CTcpSocket;
 
 /**
  * \interface ISocketState
@@ -40,47 +40,47 @@ public:
 
 	/// Simply open the socket.
 	/// \return True on success, false otherwise.
-	virtual bool open(AbstractSocket *sock) = 0;
+	virtual bool open(ASocket *sock) = 0;
 
 	/// Actively open the socket, which means connect to a specific host.
 	/// It can be called after open(), or called directly without open().
 	/// \return True on success, false otherwise.
-	virtual bool activeOpen(AbstractSocket *sock, const HostAddress &addr,
+	virtual bool activeOpen(ASocket *sock, const CHostAddress &addr,
 			uint16_t port) = 0;
 
 	/// Passively open the socket, which means bind or listen on specific port.
 	/// It can be called after open(), or called directly without open().
 	/// \return True on success, false otherwise.
-	virtual bool passiveOpen(AbstractSocket *sock, uint16_t port,
+	virtual bool passiveOpen(ASocket *sock, uint16_t port,
 			int qlen = 10) = 0;
 
 	/// Shutdown and close the socket.
 	/// \return True on success, false otherwise.
-	virtual bool close(AbstractSocket *sock) = 0;
+	virtual bool close(ASocket *sock) = 0;
 
 	/// Accept an incoming connection.
 	/// \return Accepted socket, or NULL for error or no padding connection if
 	/// the socket is non-blocking.
-	virtual TCPSocket* accept(AbstractSocket *sock) = 0;
+	virtual CTcpSocket* accept(ASocket *sock) = 0;
 
 	/// Read a message from the socket.
 	/// \return Size of bytes read, or -1 for error.
-	virtual ssize_t read(AbstractSocket *sock, char *buf, size_t size) = 0;
+	virtual ssize_t read(ASocket *sock, char *buf, size_t size) = 0;
 
 	/// Write a message to the socket.
 	/// \return Size of bytes written, or -1 for error.
-	virtual ssize_t write(AbstractSocket *sock, const char *buf,
+	virtual ssize_t write(ASocket *sock, const char *buf,
 			size_t size) = 0;
 
 	/// Receive an incoming message.
 	/// \return Size of bytes received, or -1 for error.
-	virtual ssize_t recvfrom(AbstractSocket *sock, char *buf, size_t size,
-			HostAddress *addr, uint16_t *port) = 0;
+	virtual ssize_t recvfrom(ASocket *sock, char *buf, size_t size,
+			CHostAddress *addr, uint16_t *port) = 0;
 
 	/// Send a message to given host.
 	/// \return Size of bytes sent, or -1 for error.
-	virtual ssize_t sendto(AbstractSocket *sock, const char *buf, size_t size,
-			const HostAddress &addr, uint16_t port) = 0;
+	virtual ssize_t sendto(ASocket *sock, const char *buf, size_t size,
+			const CHostAddress &addr, uint16_t port) = 0;
 
 	/// Get the state name.
 	virtual const std::string& name() const = 0;

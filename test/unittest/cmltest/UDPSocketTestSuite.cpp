@@ -6,8 +6,8 @@
 
 #include <cstring>
 #include <string>
-#include <Thread.h>
-#include <UDPSocket.h>
+#include <CThread.h>
+#include <CUdpSocket.h>
 #include "UDPSocketTestSuite.h"
 
 using namespace std;
@@ -17,14 +17,14 @@ CPPUNIT_TEST_SUITE_REGISTRATION(UDPSocketTestSuite);
 
 void UDPSocketTestSuite::testSendtoRecvfrom()
 {
-	UDPSocket server, client;
+	CUdpSocket server, client;
 
 	CPPUNIT_ASSERT_EQUAL((string)"Active", server.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Active", client.state()->name());
 	CPPUNIT_ASSERT(server.passiveOpen(5566));
 	CPPUNIT_ASSERT_EQUAL((string)"Bound", server.state()->name());
 
-	HostAddress addr;
+	CHostAddress addr;
 	unsigned short port;
 	const char *ostr = "Hello World";
 	char istr[20];
@@ -40,7 +40,7 @@ void UDPSocketTestSuite::testSendtoRecvfrom()
 
 void UDPSocketTestSuite::testReadWrite()
 {
-	UDPSocket server, client;
+	CUdpSocket server, client;
 
 	CPPUNIT_ASSERT_EQUAL((string)"Active", server.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Active", client.state()->name());
@@ -49,7 +49,7 @@ void UDPSocketTestSuite::testReadWrite()
 	CPPUNIT_ASSERT(client.activeOpen("127.0.0.1", 7788));
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", client.state()->name());
 
-	HostAddress addr;
+	CHostAddress addr;
 	unsigned short port;
 	const char *str = "Hello World";
 	char sstr[20], cstr[20];

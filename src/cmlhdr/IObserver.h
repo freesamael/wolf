@@ -10,7 +10,7 @@
 namespace cml
 {
 
-class AbstractObservable;
+class AObservable;
 
 /**
  * \interface IObserver
@@ -22,7 +22,7 @@ class IObserver
 public:
 	virtual ~IObserver() {}
 	/// Update the observer.
-	virtual void update(AbstractObservable *o) = 0;
+	virtual void update(AObservable *o) = 0;
 };
 
 }

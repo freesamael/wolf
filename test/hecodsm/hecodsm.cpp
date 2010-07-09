@@ -4,9 +4,9 @@
  * \author samael
  */
 
-#include <Director.h>
-#include <SimpleWorkflowExecutor.h>
-#include <SimpleManagerActor.h>
+#include <CDirector.h>
+#include <CSimpleWorkflowExecutor.h>
+#include <CSimpleManagerActor.h>
 #include "HecoDataGenerator.h"
 #include "HecoFinalizer.h"
 #include "HecoWorker.h"
@@ -16,15 +16,15 @@ using namespace wfe;
 
 int main()
 {
-	SimpleWorkflowExecutor exec;
-	Director d(&exec);
+	CSimpleWorkflowExecutor exec;
+	CDirector d(&exec);
 
 	HecoDSMDataGenerator a1;
 	HecoDSMWorker w1;
-	SimpleManagerActor a2(&w1);
+	CSimpleManagerActor a2(&w1);
 	HecoDSMFinalizer a3;
-	Channel *ch1 = d.createChannel();
-	Channel *ch2 = d.createChannel();
+	CChannel *ch1 = d.createChannel();
+	CChannel *ch2 = d.createChannel();
 
 	a1.sourcePorts()[0]->setChannel(ch1);
 	a2.sinkPorts()[0]->setChannel(ch1);

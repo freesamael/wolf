@@ -7,7 +7,7 @@
 #include <string>
 #include <vector>
 #include "StringHelperTestSuite.h"
-#include "StringHelper.h"
+#include "CStringHelper.h"
 
 using namespace std;
 using namespace cml;
@@ -18,7 +18,7 @@ void StringHelperTestSuite::testTokenSingleCharDelim()
 {
 	string str = "192.168.1.254";
 	vector<string> tok;
-	StringHelper::tokens(str, ".", &tok);
+	CStringHelper::tokens(str, ".", &tok);
 
 	CPPUNIT_ASSERT_EQUAL(4, (int)tok.size());
 	CPPUNIT_ASSERT_EQUAL((string)"192", tok[0]);
@@ -31,7 +31,7 @@ void StringHelperTestSuite::testTokenMultCharDelim()
 {
 	string str = "i++ + ++i + --i + i--";
 	vector<string> tok;
-	StringHelper::tokens(str, " i", &tok);
+	CStringHelper::tokens(str, " i", &tok);
 
 	CPPUNIT_ASSERT_EQUAL(7, (int)tok.size());
 	CPPUNIT_ASSERT_EQUAL((string)"++", tok[0]);
@@ -50,7 +50,7 @@ void StringHelperTestSuite::testTokenWithOldData()
 	tok.push_back("World");
 
 	string str = "i have a dream, that one day i can graduate.";
-	StringHelper::tokens(str, ",.", &tok);
+	CStringHelper::tokens(str, ",.", &tok);
 
 	CPPUNIT_ASSERT_EQUAL(2, (int)tok.size());
 	CPPUNIT_ASSERT_EQUAL((string)"i have a dream", tok[0]);

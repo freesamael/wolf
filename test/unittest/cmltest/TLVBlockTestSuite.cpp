@@ -7,7 +7,7 @@
 #include <vector>
 #include <arpa/inet.h>
 #include "TLVBlockTestSuite.h"
-#include "TLVBlock.h"
+#include "CTlvBlock.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVBlockTestSuite);
 
@@ -16,7 +16,7 @@ using namespace std;
 
 void TLVBlockTestSuite::testBlockOperations()
 {
-	StandardTLVBlock blk;
+	CTlvBlock blk;
 	blk.setType(0x55aa);
 	blk.setLength(0x00ff);
 
@@ -26,17 +26,17 @@ void TLVBlockTestSuite::testBlockOperations()
 
 void TLVBlockTestSuite::testNestedBlocks()
 {
-	StandardTLVBlock b1(0x4321, 0x8), b2(0x1234, 0x8), b3(0xa5a5, 0x10);
-	vector<const ITLVBlock *> v1;
+	CTlvBlock b1(0x4321, 0x8), b2(0x1234, 0x8), b3(0xa5a5, 0x10);
+	vector<const ITlvBlock *> v1;
 	v1.push_back(&b1);
 	v1.push_back(&b2);
 
-	StandardTLVBlock *nb1 = StandardTLVBlock::concate(v1);
-	vector<const ITLVBlock *> v2;
+	CTlvBlock *nb1 = CTlvBlock::concate(v1);
+	vector<const ITlvBlock *> v2;
 	v2.push_back(nb1);
 	v2.push_back(&b3);
 
-	StandardTLVBlock *nb2 = StandardTLVBlock::concate(v2);
+	CTlvBlock *nb2 = CTlvBlock::concate(v2);
 
 	/*---------------------------------------nb2------------------------------------------------------
 	 * |      |      | ----------------------nb1-------------------------------- --------b3--------- |

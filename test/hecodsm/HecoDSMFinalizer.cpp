@@ -6,13 +6,13 @@
 
 #include <iostream>
 #include <sstream>
-#include <SharedMemory.h>
+#include <CSharedMemory.h>
 #include <HelperMacros.h>
 #include "HecoDSMFinalizer.h"
 
 using namespace wfe;
 
-AbstractActor::State HecoDSMFinalizer::state()
+AActor::State HecoDSMFinalizer::state()
 {
 	if (_state == NOT_READY) {
 		bool ready = true;

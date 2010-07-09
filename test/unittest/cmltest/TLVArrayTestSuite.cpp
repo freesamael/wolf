@@ -5,8 +5,8 @@
  */
 
 #include "TLVArrayTestSuite.h"
-#include "TLVArray.h"
-#include "TLVUInt32.h"
+#include "CTlvArray.h"
+#include "CTlvUint32.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVArrayTestSuite);
 
@@ -14,12 +14,12 @@ using namespace cml;
 
 void TLVArrayTestSuite::testToTLVBlock()
 {
-	TLVArray array;
-	TLVUInt32 u32s[10];
+	CTlvArray array;
+	CTlvUint32 u32s[10];
 	for (int i = 0; i < 10; i++)
 		array.elements().push_back(&u32s[i]);
 
-	ITLVBlock *blk = array.toTLVBlock();
+	ITlvBlock *blk = array.toTLVBlock();
 	CPPUNIT_ASSERT_EQUAL((uint16_t)80, blk->length());
 	CPPUNIT_ASSERT_EQUAL((uint16_t)TLV_TYPE_ARRAY, blk->type());
 	delete blk;

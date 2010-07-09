@@ -6,11 +6,11 @@
 
 #include <cstring>
 #include "TLVSharedMemoryInfoTestSuite.h"
-#include "TLVSharedMemoryInfo.h"
+#include "CTlvSharedMemoryInfo.h"
 #include "CmlTLVTypes.h"
-#include "TLVUInt32.h"
-#include "TLVString.h"
-#include "TLVBlock.h"
+#include "CTlvUint32.h"
+#include "CTlvString.h"
+#include "CTlvBlock.h"
 #include "WfeTLVTypes.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVSharedMemoryInfoTestSuite);
@@ -20,15 +20,15 @@ using namespace wfe;
 
 void TLVSharedMemoryInfoTestSuite::testToTLVBlock()
 {
-	TLVSharedMemoryInfo info("this is a piece of shared memory", 16992);
-	ITLVBlock *blk = info.toTLVBlock();
+	CTlvSharedMemoryInfo info("this is a piece of shared memory", 16992);
+	ITlvBlock *blk = info.toTLVBlock();
 
 	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_SMINFO, blk->type());
 	CPPUNIT_ASSERT_EQUAL((unsigned short)(strlen("this is a piece of shared memory") +
-			ITLVBlock::szHeader + TLVUInt32::Size), blk->length());
+			ITlvBlock::szHeader + CTlvUint32::Size), blk->length());
 
-	SharedTLVBlock nameblk(blk->value());
-	SharedTLVBlock sizeblk(blk->value() + nameblk.plainSize());
+	CSharedTlvBlock nameblk(blk->value());
+	CSharedTlvBlock sizeblk(blk->value() + nameblk.plainSize());
 	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_STRING, nameblk.type());
 	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_UINT32, sizeblk.type());
 

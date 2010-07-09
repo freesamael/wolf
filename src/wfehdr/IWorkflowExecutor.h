@@ -8,7 +8,7 @@
 #define IWORKFLOWEXECUTOR_H_
 
 #include <vector>
-#include "AbstractActor.h"
+#include "AActor.h"
 
 namespace wfe
 {
@@ -23,7 +23,7 @@ class IWorkflowExecutor
 {
 public:
 	virtual ~IWorkflowExecutor() {}
-	virtual void execute(const std::vector<AbstractActor *> &actors) = 0;
+	virtual void execute(const std::vector<AActor *> &actors) = 0;
 };
 
 }

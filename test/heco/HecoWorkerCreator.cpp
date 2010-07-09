@@ -7,18 +7,18 @@
 #include <iostream>
 #include <sstream>
 #include <HelperMacros.h>
-#include <TLVObjectFactory.h>
+#include <CTlvObjectFactory.h>
 #include "HecoWorkerCreator.h"
-#include "DUInt32.h"
+#include "CFlowUint32.h"
 
 using namespace cml;
 using namespace wfe;
 
-ITLVObject* HecoWorkerCreator::create(const ITLVBlock &blk) const
+ITlvObject* HecoWorkerCreator::create(const ITlvBlock &blk) const
 {
-	SharedTLVBlock sblk(blk.value());
-	DUInt32 *u32;
-	if (!(u32 = dynamic_cast<DUInt32 *>(TLVObjectFactory::instance()->
+	CSharedTlvBlock sblk(blk.value());
+	CFlowUint32 *u32;
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(CTlvObjectFactory::instance()->
 			createTLVObject(sblk)))) {
 		PERR("Failed to create object.");
 		return NULL;

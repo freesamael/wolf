@@ -6,7 +6,7 @@
 
 #include <unistd.h>
 #include "ProcessEnvironmentTestSuite.h"
-#include "ProcessEnvironment.h"
+#include "CProcessEnvironment.h"
 
 using namespace std;
 using namespace cml;
@@ -15,7 +15,7 @@ CPPUNIT_TEST_SUITE_REGISTRATION(ProcessEnvironmentTestSuite);
 
 void ProcessEnvironmentTestSuite::testSystemEnvironment()
 {
-	ProcessEnvironment env(ProcessEnvironment::systemEnvironment());
+	CProcessEnvironment env(CProcessEnvironment::systemEnvironment());
 
 	for (int i = 0; environ[i] != NULL; i++) {
 		string ent(environ[i]);
@@ -27,7 +27,7 @@ void ProcessEnvironmentTestSuite::testSystemEnvironment()
 
 void ProcessEnvironmentTestSuite::testSetClearVariable()
 {
-	ProcessEnvironment env;
+	CProcessEnvironment env;
 
 	env.setVariable("obama", "yes, we can");
 	CPPUNIT_ASSERT_EQUAL((string)"yes, we can", env.lookupValue("obama"));

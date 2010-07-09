@@ -7,9 +7,9 @@
 #ifndef HECOFINALIZER_H_
 #define HECOFINALIZER_H_
 
-#include <AbstractActor.h>
+#include <AActor.h>
 
-class HecoFinalizer: public wfe::AbstractActor
+class HecoFinalizer: public wfe::AActor
 {
 public:
 	HecoFinalizer(unsigned np);

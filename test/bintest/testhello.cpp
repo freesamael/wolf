@@ -5,14 +5,14 @@
  */
 
 #include <iostream>
-#include <Director.h>
-#include <AbstractActor.h>
-#include <SimpleWorkflowExecutor.h>
+#include <CDirector.h>
+#include <AActor.h>
+#include <CSimpleWorkflowExecutor.h>
 
 using namespace std;
 using namespace wfe;
 
-class HelloActor: public AbstractActor
+class HelloActor: public AActor
 {
 public:
 	HelloActor(): _state(READY) {}
@@ -26,8 +26,8 @@ private:
 
 int main()
 {
-	SimpleWorkflowExecutor exec;
-	Director d(&exec);
+	CSimpleWorkflowExecutor exec;
+	CDirector d(&exec);
 	HelloActor hello;
 
 	d.addActor(&hello);

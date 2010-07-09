@@ -6,11 +6,11 @@
 
 #include <string>
 #include "TLVArrayCreatorTestSuite.h"
-#include "TLVArray.h"
-#include "TLVArrayCreator.h"
-#include "TLVUInt32.h"
-#include "TLVUInt16.h"
-#include "TLVString.h"
+#include "CTlvArray.h"
+#include "CTlvArrayCreator.h"
+#include "CTlvUint32.h"
+#include "CTlvUint16.h"
+#include "CTlvString.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVArrayCreatorTestSuite);
 
@@ -19,28 +19,28 @@ using namespace cml;
 
 void TLVArrayCreatorTestSuite::testCreate()
 {
-	TLVArray array;
+	CTlvArray array;
 
-	ITLVBlock *blk = array.toTLVBlock();
-	TLVArray *oary = (TLVArray *)TLVArrayCreator().create(*blk);
+	ITlvBlock *blk = array.toTLVBlock();
+	CTlvArray *oary = (CTlvArray *)CTlvArrayCreator().create(*blk);
 	CPPUNIT_ASSERT_EQUAL((size_t)0, oary->elements().size());
 	delete blk;
 	delete oary;
 
-	TLVUInt32 u32(19950101);
-	TLVUInt16 u16(8877);
-	TLVString str("Hello -u Potin -c \"Oh oh android ohohoh\"");
+	CTlvUint32 u32(19950101);
+	CTlvUint16 u16(8877);
+	CTlvString str("Hello -u Potin -c \"Oh oh android ohohoh\"");
 	array.elements().push_back(&u32);
 	array.elements().push_back(&u16);
 	array.elements().push_back(&str);
 	blk = array.toTLVBlock();
 
-	oary = (TLVArray *)TLVArrayCreator().create(*blk);
+	oary = (CTlvArray *)CTlvArrayCreator().create(*blk);
 	CPPUNIT_ASSERT_EQUAL((size_t)3, oary->elements().size());
 
-	TLVUInt32 *ou32 = (TLVUInt32 *)oary->elements()[0];
-	TLVUInt16 *ou16 = (TLVUInt16 *)oary->elements()[1];
-	TLVString *ostr = (TLVString *)oary->elements()[2];
+	CTlvUint32 *ou32 = (CTlvUint32 *)oary->elements()[0];
+	CTlvUint16 *ou16 = (CTlvUint16 *)oary->elements()[1];
+	CTlvString *ostr = (CTlvString *)oary->elements()[2];
 	CPPUNIT_ASSERT_EQUAL((unsigned)19950101, ou32->value());
 	CPPUNIT_ASSERT_EQUAL((unsigned short)8877, ou16->value());
 	CPPUNIT_ASSERT_EQUAL((string)"Hello -u Potin -c \"Oh oh android ohohoh\"", ostr->toString());

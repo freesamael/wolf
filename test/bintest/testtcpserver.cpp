@@ -6,27 +6,27 @@
 
 #include <iostream>
 #include <string>
-#include <TCPSocket.h>
-#include "TLVReaderWriter.h"
-#include "TLVString.h"
+#include <CTcpSocket.h>
+#include "CTlvReaderWriter.h"
+#include "CTlvString.h"
 
 using namespace std;
 using namespace cml;
 
 int main()
 {
-    TCPSocket msock;
+    CTcpSocket msock;
     msock.passiveOpen(5566);
-    TCPSocket *ssock = msock.accept();
-    TLVReaderWriter rw(ssock);
-    ITLVObject *obj;
+    CTcpSocket *ssock = msock.accept();
+    CTlvReaderWriter rw(ssock);
+    ITlvObject *obj;
     cout << "local address: " << msock.currentAddress().toString() << endl;
     cout << "local address: " << ssock->currentAddress().toString() << endl;
 
 	// Read in.
 	while ((obj = rw.read())) {
-		TLVString *str;
-		if ((str = dynamic_cast<TLVString *>(obj))) {
+		CTlvString *str;
+		if ((str = dynamic_cast<CTlvString *>(obj))) {
 			cout << str->toString() << endl;
 			rw.write(*str);
 		}

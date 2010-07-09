@@ -5,7 +5,7 @@
  */
 
 #include <iostream>
-#include <D2MCE.h>
+#include <CD2mce.h>
 #include <unistd.h>
 
 using namespace std;

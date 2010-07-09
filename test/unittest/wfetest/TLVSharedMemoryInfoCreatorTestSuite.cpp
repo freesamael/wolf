@@ -5,7 +5,7 @@
  */
 
 #include "TLVSharedMemoryInfoCreatorTestSuite.h"
-#include "TLVSharedMemoryInfoCreator.h"
+#include "CTlvSharedMemoryInfoCreator.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVSharedMemoryInfoCreatorTestSuite);
 
@@ -14,17 +14,17 @@ using namespace wfe;
 
 void TLVSharedMemoryInfoCreatorTestSuite::testCreate()
 {
-	TLVSharedMemoryInfo i1("test", 123), i2("hello", 456),
+	CTlvSharedMemoryInfo i1("test", 123), i2("hello", 456),
 			i3("name of shared memory", 7788), i4("7-11", 5566),
 			i5("The answer of life, the universe and everything", 42);
-	ITLVBlock *b1 = i1.toTLVBlock(), *b2 = i2.toTLVBlock(),
+	ITlvBlock *b1 = i1.toTLVBlock(), *b2 = i2.toTLVBlock(),
 			*b3 = i3.toTLVBlock(), *b4 = i4.toTLVBlock(), *b5 = i5.toTLVBlock();
-	TLVSharedMemoryInfoCreator c;
-	TLVSharedMemoryInfo *o1 = (TLVSharedMemoryInfo *)c.create(*b1),
-			*o2 = (TLVSharedMemoryInfo *)c.create(*b2),
-			*o3 = (TLVSharedMemoryInfo *)c.create(*b3),
-			*o4 = (TLVSharedMemoryInfo *)c.create(*b4),
-			*o5 = (TLVSharedMemoryInfo *)c.create(*b5);
+	CTlvSharedMemoryInfoCreator c;
+	CTlvSharedMemoryInfo *o1 = (CTlvSharedMemoryInfo *)c.create(*b1),
+			*o2 = (CTlvSharedMemoryInfo *)c.create(*b2),
+			*o3 = (CTlvSharedMemoryInfo *)c.create(*b3),
+			*o4 = (CTlvSharedMemoryInfo *)c.create(*b4),
+			*o5 = (CTlvSharedMemoryInfo *)c.create(*b5);
 
 	CPPUNIT_ASSERT_EQUAL(i1.name(), o1->name());
 	CPPUNIT_ASSERT_EQUAL(i1.size(), o1->size());

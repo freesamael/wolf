@@ -4,7 +4,6 @@
  * \author samael
  */
 
-#define __STDC_LIMIT_MACROS // Needed to use UINTx_MAX macros in <stdint.h>
 #include <stdint.h>
 #include <iostream>
 #include <sstream>
@@ -27,7 +26,7 @@ MSortFinalizer::~MSortFinalizer()
 		removePort(sinkPorts()[0]);
 }
 
-AbstractActor::State MSortFinalizer::state()
+AActor::State MSortFinalizer::state()
 {
 	if (_state == NOT_READY) {
 		bool ready = true;
@@ -42,8 +41,8 @@ AbstractActor::State MSortFinalizer::state()
 void MSortFinalizer::prefire()
 {
 	for (unsigned i = 0; i < sinkPorts().size(); i++) {
-		DVector<uint32_t> *d;
-		if (!(d = dynamic_cast<DVector<uint32_t> *>(sinkPorts()[i]->readPort()))) {
+		CFlowVector<uint32_t> *d;
+		if (!(d = dynamic_cast<CFlowVector<uint32_t> *>(sinkPorts()[i]->readPort()))) {
 			PERR("Invalid object.");
 		} else {
 			_vex.push_back(d);

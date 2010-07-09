@@ -7,10 +7,10 @@
 #ifndef MSORTFINALIZER_H_
 #define MSORTFINALIZER_H_
 
-#include <AbstractActor.h>
-#include <DVector.h>
+#include <AActor.h>
+#include <CFlowVector.h>
 
-class MSortFinalizer: public wfe::AbstractActor
+class MSortFinalizer: public wfe::AActor
 {
 public:
 	MSortFinalizer(int nports);
@@ -24,8 +24,8 @@ public:
 
 private:
 	State _state;
-	wfe::DVector<wfe::DVector<uint32_t> *> _vex;
-	wfe::DVector<wfe::DVector<uint32_t>::iterator > _its;
+	wfe::CFlowVector<wfe::CFlowVector<uint32_t> *> _vex;
+	wfe::CFlowVector<wfe::CFlowVector<uint32_t>::iterator > _its;
 };
 
 #endif /* MSORTFINALIZER_H_ */

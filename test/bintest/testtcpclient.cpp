@@ -6,9 +6,9 @@
 
 #include <iostream>
 #include <string>
-#include "TCPSocket.h"
-#include "TLVReaderWriter.h"
-#include "TLVString.h"
+#include "CTcpSocket.h"
+#include "CTlvReaderWriter.h"
+#include "CTlvString.h"
 
 using namespace std;
 using namespace cml;
@@ -16,8 +16,8 @@ using namespace cml;
 int main()
 {
     string str;
-    TCPSocket sock;
-    TLVReaderWriter rw(&sock);
+    CTcpSocket sock;
+    CTlvReaderWriter rw(&sock);
     sock.activeOpen("127.0.0.1", 5566);
     cout << "local address: " << sock.currentAddress().toString() << endl;
 
@@ -25,14 +25,14 @@ int main()
         cin >> str;
 
         // Write out.
-        TLVString ostr(str);
+        CTlvString ostr(str);
         rw.write(ostr);
 
         // Read in.
-        ITLVObject *obj;
-        TLVString *istr;
+        ITlvObject *obj;
+        CTlvString *istr;
         obj = rw.read();
-        if ((istr = dynamic_cast<TLVString *>(obj))) {
+        if ((istr = dynamic_cast<CTlvString *>(obj))) {
             cout << istr->toString() << endl;
         }
         delete obj;

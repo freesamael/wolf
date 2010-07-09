@@ -9,8 +9,8 @@
 #include <HelperMacros.h>
 #include <cstdio>
 #include <cstring>
-#include <D2MCE.h>
-#include <SharedMemory.h>
+#include <CD2mce.h>
+#include <CSharedMemory.h>
 #include "HecoDSMDataGenerator.h"
 
 using namespace wfe;

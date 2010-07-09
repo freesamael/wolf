@@ -4,15 +4,15 @@
  * \author samael
  */
 
-#include <Runner.h>
-#include <AlwaysFirstWorkerStealer.h>
+#include <CRunner.h>
+#include <CAlwaysFirstWorkerStealer.h>
 
 using namespace wfe;
 
 int main()
 {
-	AlwaysFirstWorkerStealer stealer;
-	Runner runner(9527, 7259, &stealer);
+	CAlwaysFirstWorkerStealer stealer;
+	CRunner runner(9527, 7259, &stealer);
 	runner.run();
 	return 0;
 }

@@ -7,12 +7,12 @@
 #ifndef IWORKERSTEALER_H_
 #define IWORKERSTEALER_H_
 
-#include "TCPSocket.h"
+#include "CTcpSocket.h"
 
 namespace wfe
 {
 
-class Runner;
+class CRunner;
 
 /**
  * \interface IWorkerStealer
@@ -24,14 +24,14 @@ class IWorkerStealer
 public:
 	virtual ~IWorkerStealer() {}
 	/// Set the runner. Called on construction of Runner.
-	virtual void setRunner(Runner *runner) = 0;
+	virtual void setRunner(CRunner *runner) = 0;
 	/// Called when a worker miss event happen.
 	/// \note This function must be thread-safe.
 	virtual void workerMissed() = 0;
 	/// Called when a stealing failed.
-	virtual void stealFailed(cml::TCPSocket *sender) = 0;
+	virtual void stealFailed(cml::CTcpSocket *sender) = 0;
 	/// Called when a worker arrived (from either a runner or master).
-	virtual void workerArrived(cml::TCPSocket *sender) = 0;
+	virtual void workerArrived(cml::CTcpSocket *sender) = 0;
 };
 
 }

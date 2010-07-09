@@ -7,14 +7,14 @@
 #ifndef HECOWORKERCREATOR_H_
 #define HECOWORKERCREATOR_H_
 
-#include <ITLVObjectCreator.h>
+#include <ITlvObjectCreator.h>
 #include "HecoWorker.h"
 
-class HecoWorkerCreator: public cml::ITLVObjectCreator
+class HecoWorkerCreator: public cml::ITlvObjectCreator
 {
 public:
-	cml::ITLVObject* create() const { return new HecoWorker(); };
-	cml::ITLVObject* create(const cml::ITLVBlock &blk) const;
+	cml::ITlvObject* create() const { return new HecoWorker(); };
+	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
 };
 
 #endif /* HECOWORKERCREATOR_H_ */

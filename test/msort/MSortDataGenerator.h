@@ -8,9 +8,9 @@
 #define MSORTDATAGENERATOR_H_
 
 #include <stdint.h>
-#include <AbstractActor.h>
+#include <AActor.h>
 
-class MSortDataGenerator: public wfe::AbstractActor
+class MSortDataGenerator: public wfe::AActor
 {
 public:
 	MSortDataGenerator(int nports, int psize);
