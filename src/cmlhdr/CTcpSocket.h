@@ -27,7 +27,7 @@ class CTcpSocket: public ASocket
 public:
 	CTcpSocket(): _autoclean(true), _ssocks() {}
 	CTcpSocket(int sock): ASocket(sock), _autoclean(true), _ssocks() {}
-	~CTcpSocket();
+	~CTcpSocket() throw();
 	CTcpSocket* accept();
 	inline bool autoclean() const { return _autoclean; }
 	inline void setAutoclean(bool ac) { _autoclean = ac; }

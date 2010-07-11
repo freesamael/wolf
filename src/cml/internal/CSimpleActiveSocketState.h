@@ -25,28 +25,32 @@ class CSimpleActiveSocketState: public ISocketState
 {
 	SINGLETON(CSimpleActiveSocketState);
 public:
-	inline const std::string& name() const { return _statestr; }
+	inline const std::string& name() const throw() { return _statestr; }
 
-	bool activeOpen(ASocket *sock, const CHostAddress &addr,
-			uint16_t port);
-	bool passiveOpen(ASocket *sock, uint16_t port,
-			int qlen = 10);
-	bool close(ASocket *sock);
+	void activeOpen(ASocket *sock, const CHostAddress &addr, uint16_t port)
+			throw(XSocket);
+	void passiveOpen(ASocket *sock, uint16_t port, int qlen = 10,
+			bool reuse = false) throw(XSocket);
+	void close(ASocket *sock) throw(XSocket);
 	ssize_t sendto(ASocket *sock, const char *buf, size_t size,
-			const CHostAddress &addr, uint16_t port);
+			const CHostAddress &addr, uint16_t port) throw(XSocket);
 	ssize_t recvfrom(ASocket *sock, char *buf, size_t size,
-			CHostAddress *addr, uint16_t *port);
+			CHostAddress *addr, uint16_t *port) throw(XSocket);
 
+	/// Unsupported operation.
+	inline void open(ASocket *UNUSED(sock)) throw(XSocket)
+			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation with dummy implementation.
-	inline bool open(ASocket *UNUSED(sock)) { return false; }
-	/// Unsupported operation with dummy implementation.
-	inline CTcpSocket* accept(ASocket *UNUSED(sock)) { return NULL; }
+	inline CTcpSocket* accept(ASocket *UNUSED(sock)) throw(XSocket)
+			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation with dummy implementation.
 	inline ssize_t read(ASocket *UNUSED(sock), char *UNUSED(buf),
-			size_t UNUSED(size)) { return -1; }
+			size_t UNUSED(size)) throw(XSocket)
+			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation with dummy implementation.
 	inline ssize_t write(ASocket *UNUSED(sock), const char *UNUSED(buf),
-			size_t UNUSED(size)) { return -1; }
+			size_t UNUSED(size)) throw(XSocket)
+			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 
 private:
 	CSimpleActiveSocketState(): SINGLETON_MEMBER_INITLST, _statestr("Active") {}

@@ -25,30 +25,34 @@ class CBoundSocketState: public ISocketState
 {
 	SINGLETON(CBoundSocketState);
 public:
-	inline const std::string& name() const { return _statestr; }
+	inline const std::string& name() const throw() { return _statestr; }
 
-	bool close(ASocket *sock);
-	CTcpSocket* accept(ASocket *sock);
+	void close(ASocket *sock) throw(XSocket);
+	CTcpSocket* accept(ASocket *sock) throw(XSocket);
 	ssize_t recvfrom(ASocket *sock, char *buf, size_t size,
-			CHostAddress *addr, uint16_t *port);
+			CHostAddress *addr, uint16_t *port) throw(XSocket);
 	ssize_t sendto(ASocket *sock, const char *buf, size_t size,
-			const CHostAddress &addr, uint16_t port);
+			const CHostAddress &addr, uint16_t port) throw(XSocket);
 
-	/// Unsupported operation with dummy implementation.
-	inline bool open(ASocket *UNUSED(sock)) { return false; }
-	/// Unsupported operation with dummy implementation.
-	inline bool activeOpen(ASocket *UNUSED(sock),
+	/// Unsupported operation.
+	inline void open(ASocket *UNUSED(sock)) throw(XSocket)
+			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
+	/// Unsupported operation.
+	inline void activeOpen(ASocket *UNUSED(sock),
 			const CHostAddress &UNUSED(addr), uint16_t UNUSED(port))
-			{ return false; }
-	/// Unsupported operation with dummy implementation.
-	inline bool passiveOpen(ASocket *UNUSED(sock), uint16_t UNUSED(port),
-			int UNUSED(qlen)) { return false; }
-	/// Unsupported operation with dummy implementation.
+			throw(XSocket) { throw XSocket(XSocket::INVALID_SOCKET_STATE); }
+	/// Unsupported operation.
+	inline void passiveOpen(ASocket *UNUSED(sock), uint16_t UNUSED(port),
+			int UNUSED(qlen), bool UNUSED(reuse)) throw(XSocket)
+			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
+	/// Unsupported operation.
 	inline ssize_t read(ASocket *UNUSED(sock), char *UNUSED(buf),
-			size_t UNUSED(size)) { return -1; }
-	/// Unsupported operation with dummy implementation.
+			size_t UNUSED(size)) throw(XSocket)
+			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
+	/// Unsupported operation.
 	inline ssize_t write(ASocket *UNUSED(sock), const char *UNUSED(buf),
-			size_t UNUSED(size)) { return -1; }
+			size_t UNUSED(size)) throw(XSocket)
+			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 
 private:
 	CBoundSocketState(): SINGLETON_MEMBER_INITLST, _statestr("Bound") {}

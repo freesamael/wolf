@@ -9,7 +9,7 @@
 namespace cml
 {
 
-CTcpSocket::~CTcpSocket()
+CTcpSocket::~CTcpSocket() throw()
 {
 	if (_autoclean) {
 		for (unsigned i = 0; i < _ssocks.size(); i++)

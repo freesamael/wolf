@@ -47,11 +47,7 @@ CTcpSocket* CRunnerSideMasterConnector::connect(uint16_t mport, uint16_t rport)
 	 * Connect to Master.
 	 */
 	tsock = new CTcpSocket();
-	if (!tsock->activeOpen(maddr, mport)) {
-		PERR("Unable to connect to master.");
-		delete tsock;
-		return NULL;
-	}
+	tsock->activeOpen(maddr, mport);
 	PINF_2("Connected to master.");
 
 	// Check nonblocking flag and set to block if needed.

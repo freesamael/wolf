@@ -8,24 +8,23 @@
 #define CMUTEX_H_
 
 #include <pthread.h>
+#include "XThread.h"
 #include "HelperMacros.h"
 
 namespace cml
 {
 
 /**
- * Mutex is generated to unlock on destruction.
+ * CMutex represents a mutex object.
  */
 class CMutex
 {
 	friend class CWaitCondition;
 public:
-	CMutex(): _mutex() { pthread_mutex_init(&_mutex, NULL); }
-	~CMutex() { pthread_mutex_destroy(&_mutex); }
-	/// Lock the mutex. Return true if successed.
-	inline bool lock() { return !(pthread_mutex_lock(&_mutex)); }
-	/// Unlock the mutex. Return true if successed.
-	inline bool unlock() { return !(pthread_mutex_unlock(&_mutex)); }
+	CMutex() throw(XThread);
+	~CMutex() throw();
+	void lock() throw(XThread);
+	void unlock() throw(XThread);
 
 private:
 	CMutex(const CMutex &UNUSED(o)): _mutex() {}

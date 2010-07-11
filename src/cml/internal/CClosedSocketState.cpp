@@ -4,10 +4,8 @@
  * \author samael
  */
 
-#include <cstdio>
 #include <cstring>
 #include <errno.h>
-#include <sys/types.h>
 #include <sys/socket.h>
 #include "CClosedSocketState.h"
 #include "CSimpleActiveSocketState.h"
@@ -23,25 +21,22 @@ namespace cml
 SINGLETON_REGISTRATION(CClosedSocketState);
 SINGLETON_REGISTRATION_END();
 
-bool CClosedSocketState::activeOpen(ASocket *sock,
-		const CHostAddress &addr, uint16_t port)
+void CClosedSocketState::activeOpen(ASocket *sock,
+		const CHostAddress &addr, uint16_t port) throw(XSocket)
 {
-	PINF_3("Actively opening a socket.");
-	if (open(sock))
-		return sock->activeOpen(addr, port);
-	return false;
+	open(sock);
+	sock->activeOpen(addr, port);
 }
 
-bool CClosedSocketState::passiveOpen(ASocket *sock,
-		uint16_t port, int qlen)
+void CClosedSocketState::passiveOpen(ASocket *sock, uint16_t port, int qlen,
+		bool reuse)
+		throw(XSocket)
 {
-	PINF_3("Passively opening a socket");
-	if (open(sock))
-		return sock->passiveOpen(port, qlen);
-	return false;
+	open(sock);
+	sock->passiveOpen(port, qlen, reuse);
 }
 
-bool CClosedSocketState::open(ASocket *sock)
+void CClosedSocketState::open(ASocket *sock) throw(XSocket)
 {
 	int type;
 	int sockfd;
@@ -51,21 +46,14 @@ bool CClosedSocketState::open(ASocket *sock)
 		type = SOCK_DGRAM;
 	else if (dynamic_cast<CTcpSocket *>(sock))
 		type = SOCK_STREAM;
-	else {
-		PERR("Unsupported type.");
-		return false;
-	}
+	else
+		throw XSocket(XSocket::INVALID_SOCKET_TYPE);
 
 	// Initialize.
-	PINF_3("Opening a socket.");
-	if ((sockfd = socket(AF_INET, type, 0)) < 0) {
-		perror("Error: ClosedSocketState::open()");
-		return false;
-	}
+	if ((sockfd = socket(AF_INET, type, 0)) < 0)
+		throw XSocket(errno);
 	sock->setSockfd(sockfd);
 	sock->changeState(CSimpleActiveSocketState::instance());
-
-	return true;
 }
 
 }

@@ -21,7 +21,7 @@ void UDPSocketTestSuite::testSendtoRecvfrom()
 
 	CPPUNIT_ASSERT_EQUAL((string)"Active", server.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Active", client.state()->name());
-	CPPUNIT_ASSERT(server.passiveOpen(5566));
+	server.passiveOpen(5566);
 	CPPUNIT_ASSERT_EQUAL((string)"Bound", server.state()->name());
 
 	CHostAddress addr;
@@ -32,8 +32,8 @@ void UDPSocketTestSuite::testSendtoRecvfrom()
 	CPPUNIT_ASSERT_EQUAL(12, (int)server.recvfrom(istr, 20, &addr, &port));
 	CPPUNIT_ASSERT_EQUAL((string)ostr, (string)istr);
 
-	CPPUNIT_ASSERT(server.close());
-	CPPUNIT_ASSERT(client.close());
+	server.close();
+	client.close();
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", server.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", client.state()->name());
 }
@@ -44,9 +44,9 @@ void UDPSocketTestSuite::testReadWrite()
 
 	CPPUNIT_ASSERT_EQUAL((string)"Active", server.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Active", client.state()->name());
-	CPPUNIT_ASSERT(server.passiveOpen(7788));
+	server.passiveOpen(7788);
 	CPPUNIT_ASSERT_EQUAL((string)"Bound", server.state()->name());
-	CPPUNIT_ASSERT(client.activeOpen("127.0.0.1", 7788));
+	client.activeOpen("127.0.0.1", 7788);
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", client.state()->name());
 
 	CHostAddress addr;
@@ -58,8 +58,8 @@ void UDPSocketTestSuite::testReadWrite()
 	CPPUNIT_ASSERT_EQUAL(12, (int)server.sendto(sstr, 12, addr, port));
 	CPPUNIT_ASSERT_EQUAL(12, (int)client.read(cstr, 20));
 
-	CPPUNIT_ASSERT(server.close());
-	CPPUNIT_ASSERT(client.close());
+	server.close();
+	client.close();
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", server.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", client.state()->name());
 }

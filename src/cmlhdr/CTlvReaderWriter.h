@@ -10,6 +10,7 @@
 #include "ASocket.h"
 #include "CUdpSocket.h"
 #include "CTcpSocket.h"
+#include "ITlvObject.h"
 
 namespace cml
 {

@@ -28,11 +28,11 @@ void TCPSocketTestSuite::testReadWrite()
 
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", server.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", client.state()->name());
-	CPPUNIT_ASSERT(server.passiveOpen(6655));
+	server.passiveOpen(6655);
 	CPPUNIT_ASSERT_EQUAL((string)"Bound", server.state()->name());
 
 	athread.start();
-	CPPUNIT_ASSERT(client.activeOpen("127.0.0.1", 6655));
+	client.activeOpen("127.0.0.1", 6655);
 	CPPUNIT_ASSERT_EQUAL((string)"Connected", client.state()->name());
 	athread.join();
 	CPPUNIT_ASSERT_ASSERTION_FAIL(CPPUNIT_ASSERT_EQUAL((CTcpSocket *)NULL, athread.ssock));
@@ -46,9 +46,9 @@ void TCPSocketTestSuite::testReadWrite()
 	CPPUNIT_ASSERT_EQUAL((ssize_t)12, client.read(cstr, 12));
 	CPPUNIT_ASSERT_EQUAL((string)str, (string)cstr);
 
-	CPPUNIT_ASSERT(client.close());
-	CPPUNIT_ASSERT(athread.ssock->close());
-	CPPUNIT_ASSERT(server.close());
+	client.close();
+	athread.ssock->close();
+	server.close();
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", server.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", client.state()->name());
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", athread.ssock->state()->name());

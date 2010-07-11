@@ -4,12 +4,10 @@
  * \author samael
  */
 
-#include <cstdio>
 #include <cstring>
+#include <unistd.h>
 #include <errno.h>
-#include <sys/types.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
 #include "CBoundSocketState.h"
 #include "CClosedSocketState.h"
 #include "CConnectedSocketState.h"
@@ -25,71 +23,61 @@ namespace cml
 SINGLETON_REGISTRATION(CBoundSocketState);
 SINGLETON_REGISTRATION_END();
 
-bool CBoundSocketState::close(ASocket *sock)
+void CBoundSocketState::close(ASocket *sock) throw(XSocket)
 {
-	PINF_3("Closing Socket.");
-	if (::close(sock->sockfd()) != 0) {
-		perror("Error: BoundSocketState::close(): close");
-		return false;
-	}
+	if (::close(sock->sockfd()) != 0)
+		throw XSocket(errno);
 
 	sock->changeState(CClosedSocketState::instance());
-	return true;
 }
 
-CTcpSocket* CBoundSocketState::accept(ASocket *sock)
+CTcpSocket* CBoundSocketState::accept(ASocket *sock) throw(XSocket)
 {
+	int insock;
 	struct sockaddr_in inaddr;
 	socklen_t addlen = sizeof(inaddr);
-	int insock;
 
-	PINF_3("Waiting for incoming connections.");
 	if ((insock = ::accept(sock->sockfd(), (struct sockaddr *)&inaddr,
 			&addlen)) < 0) {
-		if (!(sock->isNonblock() && (errno == EAGAIN || errno == EWOULDBLOCK)))
-			perror("Error: BoundSocketState::accept()");
-		return NULL;
+		if (sock->isNonblock() && (errno == EAGAIN || errno == EWOULDBLOCK))
+			return NULL; // Nonblocking and no connection.
+		else
+			throw XSocket(errno);
 	}
 
-	PINF_3("Got an incoming connection.");
 	CTcpSocket *tcpsock = new CTcpSocket(insock);
 	tcpsock->changeState(CConnectedSocketState::instance());
-
 	return tcpsock;
 }
 
 ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
-		CHostAddress *addr, uint16_t *port)
+		CHostAddress *addr, uint16_t *port) throw(XSocket)
 {
-	if (!(dynamic_cast<CUdpSocket *>(sock))) {
-		PERR("recvfrom is only suitable for UDP sockets.");
-		return -1;
-	}
+	if (!(dynamic_cast<CUdpSocket *>(sock)))
+		throw XSocket(XSocket::INVALID_SOCKET_TYPE);
 
 	ssize_t result;
 	struct sockaddr_in inaddr;
 	socklen_t alen = sizeof(inaddr);
 
-	PINF_3("Receiving an incoming message.");
 	if ((result = ::recvfrom(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
-		perror("Error: BoundSocketState::recvfrom()");
+		if (sock->isNonblock() && (errno == EAGAIN || errno == EWOULDBLOCK))
+			return 0; // Nonblocking and no data.
+		else
+			throw XSocket(errno);
 	}
-	PINF_3(result << " bytes received.");
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
 	*port = ntohs(inaddr.sin_port);
-
 	return result;
 }
 
 ssize_t CBoundSocketState::sendto(ASocket *sock, const char *buf,
-		size_t size, const CHostAddress &addr, uint16_t port)
+		size_t size, const CHostAddress &addr, uint16_t port) throw(XSocket)
 {
-	if (!(dynamic_cast<CUdpSocket *>(sock))) {
-		PERR("sendto is only suitable for UDP sockets.");
-		return -1;
-	}
+	if (!(dynamic_cast<CUdpSocket *>(sock)))
+		throw XSocket(XSocket::INVALID_SOCKET_TYPE);
 
 	ssize_t result;
 	sockaddr_in inaddr;
@@ -100,12 +88,10 @@ ssize_t CBoundSocketState::sendto(ASocket *sock, const char *buf,
 	inaddr.sin_addr.s_addr = addr.toInetAddr();
 	inaddr.sin_port = htons(port);
 
-	PINF_3("Sending an outgoing message.");
 	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, sizeof(inaddr))) < 0) {
-		perror("Error: BoundSocketState::sendto()");
+		throw XSocket(errno);
 	}
-	PINF_3(result << " bytes sent.");
 
 	return result;
 }

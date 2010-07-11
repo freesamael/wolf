@@ -23,16 +23,15 @@ class CTcpSocket;
  *
  * It represents stateful socket status. There are 4 possible states - closed,
  * active, bound and connected, and the corresponding classes are
- * ClosedSocketState, SimpleActiveSocketState, BoundSocketState and
- * ConnectedSocketState, respectively.
+ * CClosedSocketState, CSimpleActiveSocketState, CBoundSocketState and
+ * CConnectedSocketState, respectively.
  *
- * When a TCPSocket is initialized, it's in closed state. When it's opened
- * passively by passiveOpen(), it's active and then becomes in bound state
- * immediately. When it's opened actively by activeOpen(), it's active and then
- * becomes in connected state. A UDPSocket has similar behavior except that it
+ * When a CTcpSocket is initialized, it's in closed state. Function
+ * passiveOpen() makes it be in bound state, and activeOpen() makes it be in
+ * connected state. A CUdpSocket has similar behavior except that it
  * automatically calls open() on construction which turns it into active state.
- * For a UDPSocket, user can use recvfrom() and sendto() in active state without
- * passiveOpen() or activeOpen().
+ * For a CUdpSocket, user can use recvfrom() and sendto() in active state
+ * without passiveOpen() or activeOpen().
  */
 class ISocketState
 {
@@ -40,42 +39,44 @@ public:
 	virtual ~ISocketState() {}
 
 	/// Simply open the socket.
-	/// \return True on success, false otherwise.
-	virtual bool open(ASocket *sock) throw(XSocket) = 0;
+	virtual void open(ASocket *sock) throw(XSocket) = 0;
 
-	/// Actively open the socket, which means connect to a specific host.
+	/// Actively open the socket, which means to connect to a specific host.
 	/// It can be called after open(), or called directly without open().
-	/// \return True on success, false otherwise.
-	virtual bool activeOpen(ASocket *sock, const CHostAddress &addr,
+	virtual void activeOpen(ASocket *sock, const CHostAddress &addr,
 			uint16_t port) throw(XSocket) = 0;
 
-	/// Passively open the socket, which means bind or listen on specific port.
-	/// It can be called after open(), or called directly without open().
-	/// \return True on success, false otherwise.
-	virtual bool passiveOpen(ASocket *sock, uint16_t port,
-			int qlen = 10) throw(XSocket) = 0;
+	/// Passively open the socket, which means to bind or listen on specific
+	/// port. It can be called after open(), or called directly without open().
+	/// \param[in] sock Socket.
+	/// \param[in] port Local port to bind to.
+	/// \param[in] qlen The length of queue. Only applicable to CTcpSocket.
+	/// \param[in] reuse If true, the socket will be bound to the port even if
+	///            the port is in use.
+	virtual void passiveOpen(ASocket *sock, uint16_t port, int qlen = 10,
+			bool reuse = false) throw(XSocket) = 0;
 
 	/// Shutdown and close the socket.
-	/// \return True on success, false otherwise.
-	virtual bool close(ASocket *sock) throw(XSocket) = 0;
+	virtual void close(ASocket *sock) throw(XSocket) = 0;
 
 	/// Accept an incoming connection.
-	/// \return Accepted socket, or NULL for error or no padding connection if
-	/// the socket is non-blocking.
+	/// \return Accepted socket, or NULL if no padding connection and the socket
+	/// is non-blocking.
 	virtual CTcpSocket* accept(ASocket *sock) throw(XSocket) = 0;
 
 	/// Read a message from the socket.
-	/// \return Size of bytes read, or -1 for error.
+	/// \return Size of bytes read.
 	virtual ssize_t read(ASocket *sock, char *buf, size_t size)
 		throw(XSocket) = 0;
 
 	/// Write a message to the socket.
-	/// \return Size of bytes written, or -1 for error.
+	/// \return Size of bytes written.
 	virtual ssize_t write(ASocket *sock, const char *buf,
 			size_t size) throw(XSocket) = 0;
 
-	/// Receive an incoming message.
-	/// \return Size of bytes received, or -1 for error.
+	/// Receive an incoming message. If the socket is non-blocking and no data
+	/// to read, it simpley returns 0.
+	/// \return Size of bytes received.
 	virtual ssize_t recvfrom(ASocket *sock, char *buf, size_t size,
 			CHostAddress *addr, uint16_t *port) throw(XSocket) = 0;
 

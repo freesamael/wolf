@@ -159,12 +159,9 @@ void CRunner::connectRunner(const CHostAddress &addr)
 {
 	_id++;
 	CTcpSocket *sock = new CTcpSocket();
-	if (sock->activeOpen(addr, _rport)) {
-		runnerConnected(sock);
-		_d->cmdsdr.hello(sock);
-	} else {
-		PERR("Unable to connect to the runner at " << addr.toString());
-	}
+	sock->activeOpen(addr, _rport);
+	runnerConnected(sock);
+	_d->cmdsdr.hello(sock);
 }
 
 /**

@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include <iostream>
+#include <sstream>
 #include "CAlwaysFirstWorkerStealer.h"
 
 namespace wfe

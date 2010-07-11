@@ -9,22 +9,24 @@
 
 #include <pthread.h>
 #include "CMutex.h"
+#include "XThread.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
 
 /**
- * CWaitCondition implements the conditional variable.
+ * CWaitCondition encapsulates the conditional variable.
  */
 class CWaitCondition
 {
 public:
-	CWaitCondition();
-	~CWaitCondition();
-	bool wait(CMutex *mutex);
-	bool wait(CMutex *mutex, unsigned timeout);
-	void wakeOne();
-	void wakeAll();
+	CWaitCondition() throw(XThread);
+	~CWaitCondition() throw();
+	bool wait(CMutex *mutex) throw(XThread);
+	bool wait(CMutex *mutex, unsigned timeout_us) throw(XThread);
+	void wakeOne() throw(XThread);
+	void wakeAll() throw(XThread);
 
 private:
 	CWaitCondition(const CWaitCondition &UNUSED(o)): _cond() {}

@@ -4,20 +4,29 @@
  * \author samael
  */
 
+#include <cstring>
 #include "XSocket.h"
+
+using namespace std;
 
 namespace cml
 {
 
-XSocket::XSocket()
+XSocket::XSocket(int e) throw():
+		_e(ERRNO), _eno(e), _estr(strerror(e))
 {
-	// TODO Auto-generated constructor stub
 
 }
 
-XSocket::~XSocket()
+XSocket::XSocket(ERR e) throw():
+		_e(e), _eno(0), _estr()
 {
-	// TODO Auto-generated destructor stub
+	if (e == INVALID_SOCKET_TYPE)
+		_estr = "invalid socket type";
+	else if (e == INVALID_SOCKET_STATE)
+		_estr = "invalid socket state";
+	else
+		_estr = "unknown error";
 }
 
 }

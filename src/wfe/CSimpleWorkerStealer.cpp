@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include <iostream>
+#include <sstream>
 #include <ctime>
 #include <cstdlib>
 #include "CWaitCondition.h"

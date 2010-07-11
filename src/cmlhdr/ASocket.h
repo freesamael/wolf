@@ -7,62 +7,86 @@
 #ifndef ASOCKET_H_
 #define ASOCKET_H_
 
-#include <iostream>
-#include <sstream>
 #include <string>
 #include <stdint.h>
 #include "CHostAddress.h"
-#include "ITlvObject.h"
 #include "ISocketState.h"
 #include "CMutex.h"
-#include "HelperMacros.h"
 
 namespace cml
 {
 
 /**
- * The abstract socket used for TCP/UDP sockets. It encapsulates the underlying
- * socket states by ISocketState.
+ * The abstract socket used for TCP/UDP sockets.
  */
 class ASocket
 {
 public:
-	static const std::string ClosedState;
-	static const std::string ActiveState;
-	static const std::string BoundState;
-	static const std::string ConnectedState;
+	static const std::string &ClosedState;
+	static const std::string &ActiveState;
+	static const std::string &BoundState;
+	static const std::string &ConnectedState;
 
-	ASocket();
-	ASocket(const ASocket &sock);
-	ASocket(int sockfd);
-	virtual ~ASocket();
-	ASocket& operator=(const ASocket &sock);
+	ASocket() throw(XSocket, XThread);
+	ASocket(const ASocket &sock) throw(XSocket, XThread);
+	ASocket(int sockfd) throw(XSocket, XThread);
+	/// Destruct ASocket. It automatically closes the socket on destruction.
+	virtual ~ASocket() throw();
+	/// Assignment.
+	ASocket& operator=(const ASocket &sock) throw();
 
-	bool open();
-	bool activeOpen(const CHostAddress &addr, uint16_t port);
-	bool passiveOpen(uint16_t port, int qlen = 10);
-	bool close();
+	/// Open the socket without binding or connection.
+	inline void open() throw(XSocket) { _state->open(this); }
+	/// Actively open the socket (connect to a host).
+	inline void activeOpen(const CHostAddress &addr, uint16_t port)
+			throw(XSocket) { _state->activeOpen(this, addr, port); }
+	/// Passively open the socket (bind or listen on specific port).
+	inline void passiveOpen(uint16_t port, int qlen = 10, bool reuse = false)
+			throw(XSocket) { _state->passiveOpen(this, port, qlen, reuse); }
+	/// Close (and shutdown) the socket.
+	inline void close() throw(XSocket) { _state->close(this); }
 
-	inline bool lockread() { PINF_3("Lock read."); return _rmx.lock(); }
-	inline bool unlockread() { PINF_3("Unlock read."); return _rmx.unlock(); }
-	bool lockwrite();
-	bool unlockwrite();
-	ssize_t read(char *buf, size_t size);
-	ssize_t write(const char *buf, size_t size);
+	/// Lock read operation.
+	inline void lockread() throw(XThread) { _rmx.lock(); }
+	/// Unlock read operation.
+	inline void unlockread() throw(XThread) { _rmx.unlock(); }
+	/// Lock write operation.
+	inline void lockwrite() throw(XThread) { _wmx.lock(); }
+	/// Unlock write operation.
+	inline void unlockwrite() throw(XThread) { _wmx.unlock(); }
+	/// Read a message. It's not thread-safe unless you use lockread() and
+	/// unlockread() in your program.
+	/// \return Size read.
+	inline ssize_t read(char *buf, size_t size) throw(XSocket)
+			{ return _state->read(this, buf, size); }
+	/// Write a message. It's not thread-safe unless you use lockwrite() and
+	/// unlockwrite().
+	/// \return Size written.
+	ssize_t write(const char *buf, size_t size) throw(XSocket)
+			{ return _state->write(this, buf, size); }
 
-	bool setNonblock(bool nonblk);
-	bool isNonblock() const;
-	bool setTTL(int ttl);
-	int TTL() const;
-	CHostAddress currentAddress() const;
-	CHostAddress peerAddress() const;
+	/// Set if the socket should be nonblocking.
+	void setNonblock(bool nonblk) throw(XSocket);
+	/// Check if the socket is nonblocking.
+	bool isNonblock() const throw(XSocket);
+	/// Set the TTL of the socket.
+	void setTTL(int ttl) throw(XSocket);
+	/// Get the current TTL of the socket.
+	int TTL() const throw(XSocket);
+	/// Get the address currently bound.
+	CHostAddress currentAddress() const throw(XSocket);
+	/// Get the address of connected peer.
+	CHostAddress peerAddress() const throw(XSocket);
 
-	inline void changeState(ISocketState *state) { _state = state; }
-	inline const ISocketState* state() const { return _state; }
-	inline void setSockfd(int sockfd) { _sockfd = sockfd; }
-	inline int sockfd() const { return _sockfd; }
+	/// Change the socket state.
+	inline void changeState(ISocketState *state) throw() { _state = state; }
+	/// Get current socket state.
+	inline const ISocketState* state() const throw() { return _state; }
+	/// Set the socket descriptor.
+	inline void setSockfd(int sockfd) throw() { _sockfd = sockfd; }
+	/// Get the socket descriptor.
+	inline int sockfd() const throw() { return _sockfd; }
 
-	// Static helpers.
 	static void registerSocketDependant(void (*rls)());
 
 protected:

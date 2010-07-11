@@ -4,17 +4,12 @@
  * \author samael
  */
 
-#include <cstdio>
 #include <errno.h>
-#include <sys/types.h>
 #include <sys/socket.h>
-#include <arpa/inet.h>
 #include "CConnectedSocketState.h"
 #include "CClosedSocketState.h"
 #include "CTcpSocket.h"
 #include "CSingletonAutoDestructor.h"
-
-using namespace std;
 
 namespace cml
 {
@@ -22,42 +17,34 @@ namespace cml
 SINGLETON_REGISTRATION(CConnectedSocketState);
 SINGLETON_REGISTRATION_END();
 
-bool CConnectedSocketState::close(ASocket *sock)
+void CConnectedSocketState::close(ASocket *sock) throw(XSocket)
 {
-	PINF_3("Shutting down a socket.");
-	if (shutdown(sock->sockfd(), SHUT_RDWR) != 0) {
-		perror("Error: ConnectedSocketState::close(): shutdown");
-		return false;
-	}
+	if (shutdown(sock->sockfd(), SHUT_RDWR) != 0)
+		if (errno != ENOTCONN)	// If it's not connected (ENOTCONN), just skip.
+			throw XSocket(errno);
 
-	PINF_3("Closing a socket.");
-	if (::close(sock->sockfd()) != 0) {
-		perror("Error: ConnectedSocketState::close(): close");
-		return false;
-	}
+	if (::close(sock->sockfd()) != 0)
+		throw XSocket(errno);
 
 	sock->changeState(CClosedSocketState::instance());
-	return true;
 }
 
 ssize_t CConnectedSocketState::read(ASocket *sock, char *buf, size_t size)
+		throw(XSocket)
 {
 	ssize_t result;
 	if ((result = ::read(sock->sockfd(), buf, size)) < 0)
-		perror("Error: ConnectedSocketState::read()");
-	PINF_3(result << " bytes read.");
+		throw XSocket(errno);
 	return result;
 }
 
 ssize_t CConnectedSocketState::write(ASocket *sock, const char *buf,
-		size_t size)
+		size_t size) throw(XSocket)
 {
 	ssize_t result;
 	if ((result = ::write(sock->sockfd(), buf, size)) < 0)
-		perror("Error: ConnectedSocketState::write()");
-	PINF_3(result << " bytes written.");
+		throw XSocket(errno);
 	return result;
-
 }
 
 }

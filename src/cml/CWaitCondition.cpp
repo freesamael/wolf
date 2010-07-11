@@ -4,33 +4,42 @@
  * \author samael
  */
 
-#include <sys/time.h>
-#include <cstdio>
+#include <iostream>
+#include <sstream>
+#include <cstring>
 #include <errno.h>
+#include <sys/time.h>
 #include "CWaitCondition.h"
+
+using namespace std;
 
 namespace cml
 {
 
-CWaitCondition::CWaitCondition():
+CWaitCondition::CWaitCondition() throw(XThread):
 		_cond()
 {
-	pthread_cond_init(&_cond, NULL);
+	int e;
+	if ((e = pthread_cond_init(&_cond, NULL)) != 0)
+		throw XThread(e);
 }
 
-CWaitCondition::~CWaitCondition()
+CWaitCondition::~CWaitCondition() throw()
 {
-	if (pthread_cond_destroy(&_cond))
-		perror("Error: WaitCondition::~WaitCondition()");
+	int e;
+	if ((e = pthread_cond_destroy(&_cond)) != 0)
+		PERR(strerror(e));
 }
 
 /**
- * Unlock the mutex and wait for the condition. Return true on success
- * (though pthread_cond_wait never returns error).
+ * Unlock the mutex and wait for the condition. Always return true.
  */
-bool CWaitCondition::wait(CMutex *mutex)
+bool CWaitCondition::wait(CMutex *mutex) throw(XThread)
 {
-	return !pthread_cond_wait(&_cond, &mutex->_mutex);
+	int e;
+	if ((e = pthread_cond_wait(&_cond, &mutex->_mutex)) != 0)
+		throw XThread(e);
+	return true;
 }
 
 /**
@@ -38,12 +47,12 @@ bool CWaitCondition::wait(CMutex *mutex)
  * (specified in microseconds).
  *
  * \return
- * True on success.
+ * True on success, false if timed out.
  */
-bool CWaitCondition::wait(CMutex *mutex, unsigned timeout)
+bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us) throw(XThread)
 {
 	struct timeval now, abs_tout;
-	struct timeval rel_tout = {timeout / 1000000, timeout % 1000000};
+	struct timeval rel_tout = {timeout_us / 1000000L, timeout_us % 1000000L};
 	struct timespec tout;
 
 	// Set time.
@@ -52,9 +61,12 @@ bool CWaitCondition::wait(CMutex *mutex, unsigned timeout)
 	tout.tv_sec = abs_tout.tv_sec;
 	tout.tv_nsec = abs_tout.tv_usec * 1000;
 
-	if (pthread_cond_timedwait(&_cond, &mutex->_mutex, &tout) == 0) {
-		perror("Error: WaitCondition::wait()");
-		return false;
+	int e;
+	if ((e = pthread_cond_timedwait(&_cond, &mutex->_mutex, &tout)) != 0) {
+		if (e == ETIMEDOUT) // timed out.
+			return false;
+		else
+			throw XThread(e);
 	}
 	return true;
 }
@@ -62,17 +74,21 @@ bool CWaitCondition::wait(CMutex *mutex, unsigned timeout)
 /**
  * Wake up one waiter.
  */
-void CWaitCondition::wakeOne()
+void CWaitCondition::wakeOne() throw(XThread)
 {
-	pthread_cond_signal(&_cond);
+	int e;
+	if ((e = pthread_cond_signal(&_cond)) != 0)
+		throw XThread(e);
 }
 
 /**
  * Wake up all waiters.
  */
-void CWaitCondition::wakeAll()
+void CWaitCondition::wakeAll() throw(XThread)
 {
-	pthread_cond_broadcast(&_cond);
+	int e;
+	if ((e = pthread_cond_broadcast(&_cond)) != 0)
+		throw XThread(e);
 }
 
 }
