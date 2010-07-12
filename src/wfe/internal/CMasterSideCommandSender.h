@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <string>
-#include <stdint.h>
+#include <inttypes.h>
 #include "CTcpSocket.h"
 #include "AWorkerActor.h"
 #include "CMaster.h"
@@ -27,7 +27,7 @@ public:
 	/// Join D2MCE computing group.
 	void joinD2MCE(const std::string &appname);
 	/// Send hello message.
-	void hello(uint16_t rport, const cml::CHostAddress &addr);
+	void hello(in_port_t rport, const cml::CHostAddress &addr);
 	/// Ask a runner to add other runners.
 	void addRunner(cml::CTcpSocket *rsock, const std::vector<cml::CHostAddress> &addrs);
 	/// Tell a runner to start working.

@@ -32,7 +32,7 @@ void CMasterSideCommandSender::joinD2MCE(const string &appname)
 #endif /* ENABLE_D2MCE */
 }
 
-void CMasterSideCommandSender::hello(uint16_t rport, const CHostAddress &addr)
+void CMasterSideCommandSender::hello(in_port_t rport, const CHostAddress &addr)
 {
 	PINF_2("Sending HELLO_MASTER.");
 	CUdpSocket usock;

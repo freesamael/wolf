@@ -9,7 +9,7 @@
 
 #include <string>
 #include <utility>
-#include <stdint.h>
+#include <inttypes.h>
 #include "CTcpSocket.h"
 #include "CMutex.h"
 #include "CWaitCondition.h"
@@ -34,7 +34,7 @@ public:
 		END
 	} State;
 
-	CRunner(uint16_t master_port, uint16_t runner_port, IWorkerStealer *ws,
+	CRunner(in_port_t master_port, in_port_t runner_port, IWorkerStealer *ws,
 			const std::string &appname = "default");
 	~CRunner();
 	void run();
@@ -64,7 +64,7 @@ private:
 	State _state;
 	cml::CMutex _statemx;
 	cml::CWaitCondition _statewcond;
-	uint16_t _mport, _rport;
+	in_port_t _mport, _rport;
 	IWorkerStealer *_stealer;
 	std::string _appname;
 	cml::CTcpSocket _rsock;

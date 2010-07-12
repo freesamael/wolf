@@ -16,7 +16,7 @@ namespace wfe
 {
 
 AConnectionListener::AConnectionListener(CTcpSocket *lsock,
-		uint16_t lport): _lsock(lsock), _listener(_lsock),
+		in_port_t lport): _lsock(lsock), _listener(_lsock),
 		_listhread(&_listener)
 {
 	_lsock->passiveOpen(lport);

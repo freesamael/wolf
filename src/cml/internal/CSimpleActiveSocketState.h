@@ -27,15 +27,15 @@ class CSimpleActiveSocketState: public ISocketState
 public:
 	inline const std::string& name() const throw() { return _statestr; }
 
-	void activeOpen(ASocket *sock, const CHostAddress &addr, uint16_t port)
+	void activeOpen(ASocket *sock, const CHostAddress &addr, in_port_t port)
 			throw(XSocket);
-	void passiveOpen(ASocket *sock, uint16_t port, int qlen = 10,
+	void passiveOpen(ASocket *sock, in_port_t port, int qlen = 10,
 			bool reuse = false) throw(XSocket);
 	void close(ASocket *sock) throw(XSocket);
 	ssize_t sendto(ASocket *sock, const char *buf, size_t size,
-			const CHostAddress &addr, uint16_t port) throw(XSocket);
+			const CHostAddress &addr, in_port_t port) throw(XSocket);
 	ssize_t recvfrom(ASocket *sock, char *buf, size_t size,
-			CHostAddress *addr, uint16_t *port) throw(XSocket);
+			CHostAddress *addr, in_port_t *port) throw(XSocket);
 
 	/// Unsupported operation.
 	inline void open(ASocket *UNUSED(sock)) throw(XSocket)

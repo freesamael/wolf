@@ -9,7 +9,7 @@
 
 #include <string>
 #include <vector>
-#include <stdint.h>
+#include <netinet/in.h>
 #include "HelperMacros.h"
 #include "IWorkflowExecutor.h"
 
@@ -27,7 +27,7 @@ public:
 	CChannel* createChannel();
 	std::vector<CChannel *>& channels() { return _channels; }
 	void execute();
-	void execute(uint16_t runner_port, uint16_t master_port,
+	void execute(in_port_t runner_port, in_port_t master_port,
 			const std::string &name = "default");
 
 private:

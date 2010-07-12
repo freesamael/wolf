@@ -58,7 +58,7 @@ private:
 	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
 
-CRunner::CRunner(uint16_t master_port, uint16_t runner_port, IWorkerStealer *ws,
+CRunner::CRunner(in_port_t master_port, in_port_t runner_port, IWorkerStealer *ws,
 		const string &appname): _id(0), _state(NOT_READY), _statemx(),
 		_statewcond(), _mport(master_port), _rport(runner_port), _stealer(ws),
 		_appname(appname), _rsock(), _d(new PData())

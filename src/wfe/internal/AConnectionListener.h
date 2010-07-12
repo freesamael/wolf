@@ -7,7 +7,7 @@
 #ifndef ACONNECTIONLISTENER_H_
 #define ACONNECTIONLISTENER_H_
 
-#include <stdint.h>
+#include <inttypes.h>
 #include "CThread.h"
 #include "CTcpSocket.h"
 #include "HelperMacros.h"
@@ -23,7 +23,7 @@ namespace wfe
 class AConnectionListener: public cml::IObserver
 {
 public:
-	AConnectionListener(cml::CTcpSocket *lsock, uint16_t lport);
+	AConnectionListener(cml::CTcpSocket *lsock, in_port_t lport);
 	virtual ~AConnectionListener() {}
 	void start();
 	void stop();

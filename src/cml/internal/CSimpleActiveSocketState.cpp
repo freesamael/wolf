@@ -25,7 +25,7 @@ SINGLETON_REGISTRATION(CSimpleActiveSocketState);
 SINGLETON_REGISTRATION_END();
 
 void CSimpleActiveSocketState::activeOpen(ASocket *sock,
-		const CHostAddress &addr, uint16_t port) throw(XSocket)
+		const CHostAddress &addr, in_port_t port) throw(XSocket)
 {
 	// Clear and set address/port.
 	sockaddr_in inaddr;
@@ -41,7 +41,7 @@ void CSimpleActiveSocketState::activeOpen(ASocket *sock,
 	sock->changeState(CConnectedSocketState::instance());
 }
 
-void CSimpleActiveSocketState::passiveOpen(ASocket *sock, uint16_t port,
+void CSimpleActiveSocketState::passiveOpen(ASocket *sock, in_port_t port,
 		int qlen, bool reuse) throw(XSocket)
 {
 	// Clear and set inet address/port.
@@ -81,7 +81,7 @@ void CSimpleActiveSocketState::close(ASocket *sock) throw(XSocket)
 }
 
 ssize_t CSimpleActiveSocketState::recvfrom(ASocket *sock, char *buf,
-		size_t size, CHostAddress *addr, uint16_t *port) throw(XSocket)
+		size_t size, CHostAddress *addr, in_port_t *port) throw(XSocket)
 {
 	if (!(dynamic_cast<CUdpSocket *>(sock)))
 		throw XSocket(XSocket::INVALID_SOCKET_TYPE);
@@ -101,7 +101,7 @@ ssize_t CSimpleActiveSocketState::recvfrom(ASocket *sock, char *buf,
 }
 
 ssize_t CSimpleActiveSocketState::sendto(ASocket *sock, const char *buf,
-		size_t size, const CHostAddress &addr, uint16_t port) throw(XSocket)
+		size_t size, const CHostAddress &addr, in_port_t port) throw(XSocket)
 {
 	if (!(dynamic_cast<CUdpSocket *>(sock)))
 		throw XSocket(XSocket::INVALID_SOCKET_TYPE);

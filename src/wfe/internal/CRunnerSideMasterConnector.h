@@ -7,7 +7,7 @@
 #ifndef CRUNNERSIDEMASTERCONNECTOR_H_
 #define CRUNNERSIDEMASTERCONNECTOR_H_
 
-#include <stdint.h>
+#include <inttypes.h>
 #include "CTcpSocket.h"
 
 namespace wfe
@@ -20,7 +20,7 @@ namespace wfe
 class CRunnerSideMasterConnector
 {
 public:
-	cml::CTcpSocket* connect(uint16_t mport, uint16_t rport);
+	cml::CTcpSocket* connect(in_port_t mport, in_port_t rport);
 };
 
 }

@@ -30,19 +30,19 @@ public:
 	void close(ASocket *sock) throw(XSocket);
 	CTcpSocket* accept(ASocket *sock) throw(XSocket);
 	ssize_t recvfrom(ASocket *sock, char *buf, size_t size,
-			CHostAddress *addr, uint16_t *port) throw(XSocket);
+			CHostAddress *addr, in_port_t *port) throw(XSocket);
 	ssize_t sendto(ASocket *sock, const char *buf, size_t size,
-			const CHostAddress &addr, uint16_t port) throw(XSocket);
+			const CHostAddress &addr, in_port_t port) throw(XSocket);
 
 	/// Unsupported operation.
 	inline void open(ASocket *UNUSED(sock)) throw(XSocket)
 			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation.
 	inline void activeOpen(ASocket *UNUSED(sock),
-			const CHostAddress &UNUSED(addr), uint16_t UNUSED(port))
+			const CHostAddress &UNUSED(addr), in_port_t UNUSED(port))
 			throw(XSocket) { throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation.
-	inline void passiveOpen(ASocket *UNUSED(sock), uint16_t UNUSED(port),
+	inline void passiveOpen(ASocket *UNUSED(sock), in_port_t UNUSED(port),
 			int UNUSED(qlen), bool UNUSED(reuse)) throw(XSocket)
 			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation.

@@ -102,7 +102,7 @@ void CMaster::init(int argc, char *argv[])
 /**
  * Setup the master. It must be called before other operations.
  */
-bool CMaster::setup(uint16_t master_port, uint16_t runner_port,
+bool CMaster::setup(in_port_t master_port, in_port_t runner_port,
 		const string &appname, unsigned int timeout)
 {
 	if (_state != NOT_READY)

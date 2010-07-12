@@ -27,7 +27,7 @@ namespace cml
  * is discarded.
  */
 ssize_t CUdpSocket::recvfrom(char *buf, size_t size, CHostAddress *addr,
-		uint16_t *port) throw(XSocket)
+		in_port_t *port) throw(XSocket)
 {
 	return _state->recvfrom(this, buf, size, addr, port);
 }
@@ -39,7 +39,7 @@ ssize_t CUdpSocket::recvfrom(char *buf, size_t size, CHostAddress *addr,
  * Size written.
  */
 ssize_t CUdpSocket::sendto(const char *buf, size_t size, const CHostAddress &addr,
-		uint16_t port) throw(XSocket)
+		in_port_t port) throw(XSocket)
 {
 	return _state->sendto(this, buf, size, addr, port);;
 }

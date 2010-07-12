@@ -13,6 +13,7 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <inttypes.h>
 #include "CTime.h"
 #include "CTcpSocket.h"
 #include "HelperMacros.h"
@@ -43,7 +44,7 @@ public:
 	inline void setDispatcher(IWorkerDispatcher *d) { _activedisp = d; }
 
 	void init(int argc, char *argv[]);
-	bool setup(uint16_t master_port, uint16_t runner_port, const
+	bool setup(in_port_t master_port, in_port_t runner_port, const
 			std::string &appname = "default", unsigned int timeout = 2);
 	void runWorker(AWorkerActor *worker, IManagerActor *mgr);
 	void shutdown();

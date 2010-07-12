@@ -34,10 +34,10 @@ public:
 	bool write(const ITlvObject &obj, CTcpSocket *socket = NULL);
 
 	// UDP read/write.
-	ITlvObject* recvfrom(CHostAddress *addr, uint16_t *port,
+	ITlvObject* recvfrom(CHostAddress *addr, in_port_t *port,
 			CUdpSocket *socket = NULL);
 	bool sendto(const ITlvObject &obj, const CHostAddress &addr,
-			uint16_t port, CUdpSocket *socket = NULL);
+			in_port_t port, CUdpSocket *socket = NULL);
 
 private:
 	ASocket *_socket;

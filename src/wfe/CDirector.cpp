@@ -79,7 +79,7 @@ void CDirector::execute()
 	_exest->execute(_actors);
 }
 
-void CDirector::execute(uint16_t runner_port, uint16_t master_port,
+void CDirector::execute(in_port_t runner_port, in_port_t master_port,
 		const string &name)
 {
 	if (!CMaster::instance()->setup(runner_port, master_port, name)) {

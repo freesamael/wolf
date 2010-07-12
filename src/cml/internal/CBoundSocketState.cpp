@@ -51,7 +51,7 @@ CTcpSocket* CBoundSocketState::accept(ASocket *sock) throw(XSocket)
 }
 
 ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
-		CHostAddress *addr, uint16_t *port) throw(XSocket)
+		CHostAddress *addr, in_port_t *port) throw(XSocket)
 {
 	if (!(dynamic_cast<CUdpSocket *>(sock)))
 		throw XSocket(XSocket::INVALID_SOCKET_TYPE);
@@ -74,7 +74,7 @@ ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
 }
 
 ssize_t CBoundSocketState::sendto(ASocket *sock, const char *buf,
-		size_t size, const CHostAddress &addr, uint16_t port) throw(XSocket)
+		size_t size, const CHostAddress &addr, in_port_t port) throw(XSocket)
 {
 	if (!(dynamic_cast<CUdpSocket *>(sock)))
 		throw XSocket(XSocket::INVALID_SOCKET_TYPE);

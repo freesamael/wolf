@@ -158,7 +158,7 @@ bool CTlvReaderWriter::write(const ITlvObject &obj, CTcpSocket *socket)
  * \note
  * User should delete the returned object manually.
  */
-ITlvObject* CTlvReaderWriter::recvfrom(CHostAddress *addr, uint16_t *port,
+ITlvObject* CTlvReaderWriter::recvfrom(CHostAddress *addr, in_port_t *port,
 		CUdpSocket *socket)
 {
 	char *localbuf = NULL;
@@ -237,7 +237,7 @@ ITlvObject* CTlvReaderWriter::recvfrom(CHostAddress *addr, uint16_t *port,
  * True on success, false otherwise.
  */
 bool CTlvReaderWriter::sendto(const ITlvObject &obj, const CHostAddress &addr,
-		uint16_t port, CUdpSocket *socket)
+		in_port_t port, CUdpSocket *socket)
 {
 	bool success = false;
 	int ret;

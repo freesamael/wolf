@@ -20,7 +20,7 @@ class CRunnerSideConnectionListener: public AConnectionListener
 {
 public:
 	CRunnerSideConnectionListener(CRunner *runner, cml::CTcpSocket *lsock,
-			uint16_t lport): AConnectionListener(lsock, lport),
+			in_port_t lport): AConnectionListener(lsock, lport),
 			_runner(runner) {}
 	void notify(cml::CTcpSocket *sock);
 

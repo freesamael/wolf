@@ -22,13 +22,13 @@ SINGLETON_REGISTRATION(CClosedSocketState);
 SINGLETON_REGISTRATION_END();
 
 void CClosedSocketState::activeOpen(ASocket *sock,
-		const CHostAddress &addr, uint16_t port) throw(XSocket)
+		const CHostAddress &addr, in_port_t port) throw(XSocket)
 {
 	open(sock);
 	sock->activeOpen(addr, port);
 }
 
-void CClosedSocketState::passiveOpen(ASocket *sock, uint16_t port, int qlen,
+void CClosedSocketState::passiveOpen(ASocket *sock, in_port_t port, int qlen,
 		bool reuse)
 		throw(XSocket)
 {

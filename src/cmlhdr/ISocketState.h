@@ -8,7 +8,7 @@
 #define ISOCKETSTATE_H_
 
 #include <string>
-#include <stdint.h>
+#include <inttypes.h>
 #include "CHostAddress.h"
 #include "XSocket.h"
 
@@ -44,7 +44,7 @@ public:
 	/// Actively open the socket, which means to connect to a specific host.
 	/// It can be called after open(), or called directly without open().
 	virtual void activeOpen(ASocket *sock, const CHostAddress &addr,
-			uint16_t port) throw(XSocket) = 0;
+			in_port_t port) throw(XSocket) = 0;
 
 	/// Passively open the socket, which means to bind or listen on specific
 	/// port. It can be called after open(), or called directly without open().
@@ -53,7 +53,7 @@ public:
 	/// \param[in] qlen The length of queue. Only applicable to CTcpSocket.
 	/// \param[in] reuse If true, the socket will be bound to the port even if
 	///            the port is in use.
-	virtual void passiveOpen(ASocket *sock, uint16_t port, int qlen = 10,
+	virtual void passiveOpen(ASocket *sock, in_port_t port, int qlen = 10,
 			bool reuse = false) throw(XSocket) = 0;
 
 	/// Shutdown and close the socket.
@@ -78,12 +78,12 @@ public:
 	/// to read, it simpley returns 0.
 	/// \return Size of bytes received.
 	virtual ssize_t recvfrom(ASocket *sock, char *buf, size_t size,
-			CHostAddress *addr, uint16_t *port) throw(XSocket) = 0;
+			CHostAddress *addr, in_port_t *port) throw(XSocket) = 0;
 
 	/// Send a message to given host.
 	/// \return Size of bytes sent, or -1 for error.
 	virtual ssize_t sendto(ASocket *sock, const char *buf, size_t size,
-			const CHostAddress &addr, uint16_t port) throw(XSocket) = 0;
+			const CHostAddress &addr, in_port_t port) throw(XSocket) = 0;
 
 	/// Get the state name.
 	virtual const std::string& name() const throw() = 0;

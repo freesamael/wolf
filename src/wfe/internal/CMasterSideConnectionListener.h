@@ -20,7 +20,7 @@ class CMasterSideConnectionListener: public AConnectionListener
 {
 public:
 	CMasterSideConnectionListener(CMaster *master, cml::CTcpSocket *lsock,
-			uint16_t lport): AConnectionListener(lsock, lport),
+			in_port_t lport): AConnectionListener(lsock, lport),
 			_master(master) {}
 	void notify(cml::CTcpSocket *sock);
 private:

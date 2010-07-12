@@ -17,7 +17,7 @@ using namespace cml;
 namespace wfe
 {
 
-CTcpSocket* CRunnerSideMasterConnector::connect(uint16_t mport, uint16_t rport)
+CTcpSocket* CRunnerSideMasterConnector::connect(in_port_t mport, in_port_t rport)
 {
 	CTcpSocket *tsock = NULL;
 
@@ -28,7 +28,7 @@ CTcpSocket* CRunnerSideMasterConnector::connect(uint16_t mport, uint16_t rport)
 	CUdpSocket passivesock;
 	CTlvReaderWriter udpreader(&passivesock);
 	CTlvCommand *inmsg;
-	uint16_t tmpport;
+	in_port_t tmpport;
 
 	passivesock.passiveOpen(rport);
 	if (!(inmsg = dynamic_cast<CTlvCommand *>(udpreader.recvfrom(&maddr, &tmpport)))) {

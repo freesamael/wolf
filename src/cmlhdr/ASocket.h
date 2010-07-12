@@ -8,7 +8,6 @@
 #define ASOCKET_H_
 
 #include <string>
-#include <stdint.h>
 #include "CHostAddress.h"
 #include "ISocketState.h"
 #include "CMutex.h"
@@ -38,10 +37,10 @@ public:
 	/// Open the socket without binding or connection.
 	inline void open() throw(XSocket) { _state->open(this); }
 	/// Actively open the socket (connect to a host).
-	inline void activeOpen(const CHostAddress &addr, uint16_t port)
+	inline void activeOpen(const CHostAddress &addr, in_port_t port)
 			throw(XSocket) { _state->activeOpen(this, addr, port); }
 	/// Passively open the socket (bind or listen on specific port).
-	inline void passiveOpen(uint16_t port, int qlen = 10, bool reuse = false)
+	inline void passiveOpen(in_port_t port, int qlen = 10, bool reuse = false)
 			throw(XSocket) { _state->passiveOpen(this, port, qlen, reuse); }
 	/// Close (and shutdown) the socket.
 	inline void close() throw(XSocket) { _state->close(this); }

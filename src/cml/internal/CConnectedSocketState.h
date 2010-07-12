@@ -36,10 +36,10 @@ public:
 			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation.
 	inline void activeOpen(ASocket *UNUSED(sock),
-			const CHostAddress &UNUSED(addr), uint16_t UNUSED(port))
+			const CHostAddress &UNUSED(addr), in_port_t UNUSED(port))
 			throw(XSocket) { throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation.
-	inline void passiveOpen(ASocket *UNUSED(sock), uint16_t UNUSED(port),
+	inline void passiveOpen(ASocket *UNUSED(sock), in_port_t UNUSED(port),
 			int UNUSED(qlen), bool UNUSED(reuse)) throw(XSocket)
 			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation.
@@ -48,12 +48,12 @@ public:
 	/// Unsupported operation.
 	inline ssize_t recvfrom(ASocket *UNUSED(sock), char *UNUSED(buf),
 			size_t UNUSED(size), CHostAddress *UNUSED(addr),
-			uint16_t *UNUSED(port)) throw(XSocket)
+			in_port_t *UNUSED(port)) throw(XSocket)
 			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 	/// Unsupported operation.
 	inline ssize_t sendto(ASocket *UNUSED(sock), const char *UNUSED(buf),
 			size_t UNUSED(size), const CHostAddress &UNUSED(addr),
-			uint16_t UNUSED(port)) throw(XSocket)
+			in_port_t UNUSED(port)) throw(XSocket)
 			{ throw XSocket(XSocket::INVALID_SOCKET_STATE); }
 
 private:
