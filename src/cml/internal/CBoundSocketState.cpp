@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include "CBoundSocketState.h"
 #include "CClosedSocketState.h"
 #include "CConnectedSocketState.h"
