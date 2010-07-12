@@ -12,12 +12,51 @@
 #include <string>
 #include <ostream>
 
+/// As timercmp is not in POSIX but BSD extension, we include the eglibc
+/// implementation to make it compilable on POSIX systems without BSD-ext.
+#ifndef timercmp
+#define timercmp(a, b, CMP)                                                    \
+	(((a)->tv_sec == (b)->tv_sec) ?                                            \
+			((a)->tv_usec CMP (b)->tv_usec) :                                  \
+			((a)->tv_sec CMP (b)->tv_sec))
+#endif /* timercmp */
+
+/// As timeradd is not in POSIX but BSD extension, we include the eglibc
+/// implementation to make it compilable on POSIX systems without BSD-ext.
+#ifndef timeradd
+#define timeradd(a, b, result)                                                 \
+	do {                                                                       \
+		(result)->tv_sec = (a)->tv_sec + (b)->tv_sec;                          \
+		(result)->tv_usec = (a)->tv_usec + (b)->tv_usec;                       \
+		if ((result)->tv_usec >= 1000000L)                                     \
+		{                                                                      \
+			++(result)->tv_sec;                                                \
+			(result)->tv_usec -= 1000000L;                                     \
+		}                                                                      \
+	} while (0)
+#endif /* timeradd */
+
+/// As timersub is not in POSIX but BSD extension, we include the eglibc
+/// implementation to make it compilable on POSIX systems without BSD-ext.
+#ifndef timersub
+# define timersub(a, b, result)                                                \
+	do {                                                                       \
+		(result)->tv_sec = (a)->tv_sec - (b)->tv_sec;                          \
+		(result)->tv_usec = (a)->tv_usec - (b)->tv_usec;                       \
+		if ((result)->tv_usec < 0) {                                           \
+			--(result)->tv_sec;                                                \
+			(result)->tv_usec += 1000000;                                      \
+		}                                                                      \
+	} while (0)
+#endif
+
 namespace cml
 {
 
 class CTime
 {
 public:
+	CTime() throw(): _t() { _t.tv_sec = 0; _t.tv_usec = 0; }
 	CTime(time_t sec, suseconds_t usec) throw(): _t()
 			{ _t.tv_sec = sec; _t.tv_usec = usec; }
 	CTime(const CTime &t) throw(): _t(t._t) {}
@@ -48,21 +87,21 @@ public:
 	inline CTime& operator=(const CTime &o) throw() { _t = o._t; return *this; }
 	CTime operator+(const CTime &o) throw();
 	CTime operator-(const CTime &o) throw();
-	inline CTime operator+=(const CTime &o) throw()
+	CTime operator+=(const CTime &o) throw()
 			{ *this = *this + o; return *this; }
-	inline CTime operator-=(const CTime &o) throw()
+	CTime operator-=(const CTime &o) throw()
 			{ *this = *this - o; return *this; }
-	inline bool operator>(const CTime &o) throw()
+	bool operator>(const CTime &o) throw()
 			{ return timercmp(&_t, &o._t, >); }
-	inline bool operator<(const CTime &o) throw()
+	bool operator<(const CTime &o) throw()
 			{ return timercmp(&_t, &o._t, <); }
-	inline bool operator!=(const CTime &o) throw()
+	bool operator!=(const CTime &o) throw()
 			{ return timercmp(&_t, &o._t, !=); }
-	inline bool operator==(const CTime &o) throw()
+	bool operator==(const CTime &o) throw()
 			{ return !timercmp(&_t, &o._t, !=); }
-	inline bool operator>=(const CTime &o) throw()
+	bool operator>=(const CTime &o) throw()
 			{ return !timercmp(&_t, &o._t, <); }
-	inline bool operator<=(const CTime &o) throw()
+	bool operator<=(const CTime &o) throw()
 			{ return !timercmp(&_t, &o._t, >); }
 
 	/// Get current time of day.
