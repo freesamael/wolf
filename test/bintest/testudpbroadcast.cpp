@@ -17,7 +17,6 @@ int main()
 	CTlvReaderWriter rw;
 
 	sock.setBroadcast(true);
-	sock.setTTL(1);
 	for (int i = 0; i < 10; i++) {
 		rw.sendto(str, "255.255.255.255", 5566, &sock);
 		sleep(1);

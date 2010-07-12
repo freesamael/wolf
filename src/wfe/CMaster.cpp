@@ -31,7 +31,7 @@ struct PData
 {
 	PData(): rsocks(), clis(), clthreads(), rsocksmx(), pfwpsr(NULL),
 			pthfwpsr(NULL), cmdsdr(), mgrq(), mgrqmx(), fwq(), fwqmx(),
-			bcastaddr(CHostAddress::BroadcastAddress), bcastttl(1), stime(),
+			bcastaddr(CHostAddress::BroadcastAddress), stime(),
 			exetime() {}
 
 	vector<CTcpSocket *> rsocks;					// Runner sockets.
@@ -47,15 +47,14 @@ struct PData
 	deque<pair<uint32_t, AWorkerActor *> > fwq; // Finished worker queue.
 	CMutex fwqmx;								// Finished worker queue mutex.
 	CHostAddress bcastaddr;						// Broadcast address.
-	int bcastttl;								// Broadcast TTL.
 	cml::CTime stime;							// Time when started.
 	cml::CTime exetime;							// Execution time.
 
 private:
 	PData(const PData &UNUSED(o)): rsocks(), clis(), clthreads(), rsocksmx(),
 			pfwpsr(NULL), pthfwpsr(NULL), cmdsdr(), mgrq(), mgrqmx(), fwq(),
-			fwqmx(), bcastaddr(CHostAddress::BroadcastAddress), bcastttl(1),
-			stime(), exetime() {}
+			fwqmx(), bcastaddr(CHostAddress::BroadcastAddress), stime(),
+			exetime() {}
 	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
 
@@ -86,19 +85,15 @@ CMaster::~CMaster()
 void CMaster::init(int argc, char *argv[])
 {
 	int opt;
-	while ((opt = getopt(argc, argv, "a:t:h")) != -1) {
+	while ((opt = getopt(argc, argv, "a:h")) != -1) {
 		switch (opt) {
 		case 'a':
 			_d->bcastaddr = CHostAddress(optarg);
 			PINF_2("Broadcast address will be " << _d->bcastaddr.toString());
 			break;
-		case 't':
-			_d->bcastttl = atoi(optarg);
-			PINF_2("Broadcast TTL will be " << _d->bcastttl);
-			break;
 		case 'h':
 			cerr << "Usage: " << argv[0] <<
-			" [-a broadcast_address] [-t broadcast_ttl]" << endl;
+			" [-a broadcast_address]" << endl;
 			exit(EXIT_FAILURE);
 		}
 	}
@@ -119,7 +114,7 @@ bool CMaster::setup(uint16_t master_port, uint16_t runner_port,
 
 	// Join D2MCE group and broadcast hello message.
 	_d->cmdsdr.joinD2MCE(appname);
-	_d->cmdsdr.hello(runner_port, _d->bcastaddr, _d->bcastttl);
+	_d->cmdsdr.hello(runner_port, _d->bcastaddr);
 
 	// Check the runners.
 	sleep(timeout);

@@ -93,23 +93,6 @@ bool ASocket::isNonblock() const throw(XSocket)
 	return (arg & O_NONBLOCK);
 }
 
-void ASocket::setTTL(int ttl) throw(XSocket)
-{
-	if (ttl < 1)
-		throw XSocket(XSocket::INVALID_TTL);
-	if (setsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, sizeof(ttl)) != 0)
-		throw XSocket(errno);
-}
-
-int ASocket::TTL() const throw(XSocket)
-{
-	int ttl;
-	socklen_t len = sizeof(ttl);
-	if (getsockopt(_sockfd, IPPROTO_IP, IP_TTL, &ttl, &len) != 0)
-		throw XSocket(errno);
-	return ttl;
-}
-
 CHostAddress ASocket::currentAddress() const throw(XSocket)
 {
 	sockaddr_in inaddr;

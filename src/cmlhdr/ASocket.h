@@ -69,10 +69,6 @@ public:
 	void setNonblock(bool nonblk) throw(XSocket);
 	/// Check if the socket is nonblocking.
 	bool isNonblock() const throw(XSocket);
-	/// Set the TTL of the socket.
-	void setTTL(int ttl) throw(XSocket);
-	/// Get the current TTL of the socket.
-	int TTL() const throw(XSocket);
 	/// Get the address currently bound.
 	CHostAddress currentAddress() const throw(XSocket);
 	/// Get the address of connected peer.

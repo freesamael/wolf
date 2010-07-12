@@ -24,7 +24,6 @@ public:
 		ERRNO,
 		INVALID_SOCKET_TYPE,
 		INVALID_SOCKET_STATE,
-		INVALID_TTL,
 		UNKNOWN_ERR
 	} XType;
 	explicit XSocket(int e) throw();
