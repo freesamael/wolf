@@ -8,9 +8,12 @@
 #define CHOSTADDRESS_H_
 
 #include <string>
-#include <sys/socket.h>
-#include <netinet/in.h>
 #include <arpa/inet.h>
+
+/// INADDR_NONE is not part of POSIX.
+#ifndef INADDR_NONE
+#define	INADDR_NONE		((in_addr_t) 0xffffffff)
+#endif
 
 namespace cml
 {
