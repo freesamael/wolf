@@ -10,6 +10,7 @@
 #include <errno.h>
 #include <sys/time.h>
 #include "CWaitCondition.h"
+#include "CTime.h"
 
 using namespace std;
 
@@ -51,18 +52,10 @@ bool CWaitCondition::wait(CMutex *mutex) throw(XThread)
  */
 bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us) throw(XThread)
 {
-	struct timeval now, abs_tout;
-	struct timeval rel_tout = {timeout_us / 1000000L, timeout_us % 1000000L};
-	struct timespec tout;
-
-	// Set time.
-	gettimeofday(&now, NULL);
-	timeradd(&now, &rel_tout, &abs_tout);
-	tout.tv_sec = abs_tout.tv_sec;
-	tout.tv_nsec = abs_tout.tv_usec * 1000;
+	struct timespec timeout = (CTime::now() + CTime(timeout_us)).toTimespec();
 
 	int e;
-	if ((e = pthread_cond_timedwait(&_cond, &mutex->_mutex, &tout)) != 0) {
+	if ((e = pthread_cond_timedwait(&_cond, &mutex->_mutex, &timeout)) != 0) {
 		if (e == ETIMEDOUT) // timed out.
 			return false;
 		else

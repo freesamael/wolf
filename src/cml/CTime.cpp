@@ -12,24 +12,32 @@ using namespace std;
 namespace cml
 {
 
-CTime CTime::operator+(const CTime &o)
+CTime CTime::operator+(const CTime &o) throw()
 {
 	timeval t;
 	timeradd(&_t, &o._t, &t);
 	return t;
 }
 
-CTime CTime::operator-(const CTime &o)
+CTime CTime::operator-(const CTime &o) throw()
 {
 	timeval t;
 	timersub(&_t, &o._t, &t);
 	return t;
 }
 
-string CTime::toString() const
+timespec CTime::toTimespec() const throw()
+{
+	timespec t;
+	t.tv_sec = _t.tv_sec;
+	t.tv_nsec = _t.tv_usec * 1000;
+	return t;
+}
+
+string CTime::toString() const throw()
 {
 	stringstream s;
-	s << _t.tv_sec << "." << _t.tv_usec << " seconds";
+	s << (unsigned)_t.tv_sec << "." << (unsigned)_t.tv_usec << " seconds";
 	return s.str();
 }
 

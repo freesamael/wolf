@@ -14,24 +14,25 @@ namespace cml
 {
 
 /**
- * TCP sockets representation. If a TCPSocket is created by accept(), it's
- * managed by the master socket who creates it, and the master socket will
+ * CTcpSocket represents TCP sockets. If a CTcpSocket is created by accept(),
+ * it's managed by the master socket who creates it, and the master socket will
  * destroy it on destruction of the master socket. You can use
  * setAutoclean(false) to explicitly avoid master socket deleting slaves
  * automatically.
  *
- * \see AbstractSocket
+ * \see ASocket
  */
 class CTcpSocket: public ASocket
 {
 public:
-	CTcpSocket(): _autoclean(true), _ssocks() {}
-	CTcpSocket(int sock): ASocket(sock), _autoclean(true), _ssocks() {}
+	CTcpSocket() throw(XSocket, XThread): _autoclean(true), _ssocks() {}
+	CTcpSocket(int sock) throw(XSocket, XThread):
+			ASocket(sock), _autoclean(true), _ssocks() {}
 	~CTcpSocket() throw();
-	CTcpSocket* accept();
-	inline bool autoclean() const { return _autoclean; }
-	inline void setAutoclean(bool ac) { _autoclean = ac; }
-	inline const std::vector<CTcpSocket *>& slaveSockets() const
+	CTcpSocket* accept() throw(XSocket);
+	inline bool autoclean() const throw() { return _autoclean; }
+	inline void setAutoclean(bool ac) throw() { _autoclean = ac; }
+	inline const std::vector<CTcpSocket *>& slaveSockets() const throw()
 			{ return _ssocks; }
 
 private:

@@ -19,23 +19,23 @@ namespace cml
 class XSocket: public std::exception
 {
 public:
-	typedef enum ERR
+	typedef enum XType
 	{
 		ERRNO,
 		INVALID_SOCKET_TYPE,
 		INVALID_SOCKET_STATE,
 		INVALID_TTL,
 		UNKNOWN_ERR
-	} ERR;
+	} XType;
 	explicit XSocket(int e) throw();
-	explicit XSocket(ERR e) throw();
+	explicit XSocket(XType e) throw();
 	virtual ~XSocket() throw() {}
-	inline ERR errtype() const throw() { return _e; }
+	inline XType xtype() const throw() { return _e; }
 	inline int errnum() const throw() { return _eno; }
 	inline const std::string& toString() const throw() { return _estr; }
 
 private:
-	ERR _e;
+	XType _e;
 	int _eno;
 	std::string _estr;
 };

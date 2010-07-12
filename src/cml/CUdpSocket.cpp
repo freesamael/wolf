@@ -4,9 +4,8 @@
  * \author samael
  */
 
-#include <cstdio>
-#include <cstring>
 #include <errno.h>
+#include <sys/socket.h>
 #include "CUdpSocket.h"
 
 namespace cml
@@ -21,14 +20,14 @@ namespace cml
  * \param[out] port Sender port of incoming message.
  *
  * \return
- * Size read. On error, return -1.
+ * Size read. Zero if the socket is non-blocking and no data to read.
  *
  * \note
  * If the buffer size is not enough to record incoming message, the extra data
  * is discarded.
  */
 ssize_t CUdpSocket::recvfrom(char *buf, size_t size, CHostAddress *addr,
-		uint16_t *port)
+		uint16_t *port) throw(XSocket)
 {
 	return _state->recvfrom(this, buf, size, addr, port);
 }
@@ -37,45 +36,38 @@ ssize_t CUdpSocket::recvfrom(char *buf, size_t size, CHostAddress *addr,
  * Send a UDP message to given address/port.
  *
  * \return
- * Size written. On error, return -1.
+ * Size written.
  */
 ssize_t CUdpSocket::sendto(const char *buf, size_t size, const CHostAddress &addr,
-		uint16_t port)
+		uint16_t port) throw(XSocket)
 {
 	return _state->sendto(this, buf, size, addr, port);;
 }
 
 /**
  * Set if the it can broadcast.
- *
- * \return
- * True on success, false on failure.
  */
-bool CUdpSocket::setBroadcast(bool bcast)
+void CUdpSocket::setBroadcast(bool bcast) throw(XSocket)
 {
 	int broadcast = (bcast) ? 1 : 0;
 	if (setsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
-			sizeof(broadcast)) < 0) {
-		perror("Error: UDPSocket::setBroadcast()");
-		return false;
+			sizeof(broadcast)) != 0) {
+		throw XSocket(errno);
 	}
-	return true;
 }
 
 /**
  * Check if it can broadcast.
  *
  * \return
- * True if it can, false if it can't or an error occurred.
+ * True if it can broadcast, false otherwise.
  */
-bool CUdpSocket::canBroadcast() const
+bool CUdpSocket::canBroadcast() const throw(XSocket)
 {
 	int broadcast;
 	socklen_t len = sizeof(broadcast);
-	if (getsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, &len) < 0) {
-		perror("Error: UDPSocket::canBroadcast()");
-		return false;
-	}
+	if (getsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, &len) != 0)
+		throw XSocket(errno);
 	return broadcast;
 }
 

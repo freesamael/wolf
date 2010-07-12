@@ -20,14 +20,14 @@ namespace cml
 class CUdpSocket: public ASocket
 {
 public:
-	CUdpSocket() { open(); }
-	CUdpSocket(int sock): ASocket(sock) {}
+	CUdpSocket() throw(XSocket, XThread) { open(); }
+	CUdpSocket(int sock) throw(XSocket, XThread): ASocket(sock) {}
 	ssize_t recvfrom(char *buf, size_t size, CHostAddress *addr,
-			uint16_t *port);
+			uint16_t *port) throw(XSocket);
 	ssize_t sendto(const char *buf, size_t size, const CHostAddress &addr,
-			uint16_t port);
-	bool setBroadcast(bool bcast);
-	bool canBroadcast() const;
+			uint16_t port) throw(XSocket);
+	void setBroadcast(bool bcast) throw(XSocket);
+	bool canBroadcast() const throw(XSocket);
 };
 
 }

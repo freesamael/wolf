@@ -23,10 +23,10 @@ CTcpSocket::~CTcpSocket() throw()
  * destruction.
  *
  * \return
- * Accepted socket. Or NULL for error or no padding connection if the socket is
- * set as non-blocking.
+ * Accepted socket. Or NULL if the socket is set as non-blocking and no padding
+ * connection is found.
  */
-CTcpSocket* CTcpSocket::accept()
+CTcpSocket* CTcpSocket::accept() throw(XSocket)
 {
 	CTcpSocket *ssock = _state->accept(this);
 	if (ssock)

@@ -19,17 +19,20 @@ namespace cml
 class XThread: public std::exception
 {
 public:
-	typedef enum ERR {
+	typedef enum XType {
 		ERRNO,
 		THREAD_ALREADY_STARTED,
 		UNKNOWN
-	} ERR;
+	} XType;
 	explicit XThread(int e) throw();
-	explicit XThread(ERR e) throw();
+	explicit XThread(XType e) throw();
 	virtual ~XThread() throw() {}
+	inline XType xtype() const throw() { return _e; }
+	inline int errnum() const throw() { return _eno; }
+	inline const std::string& toString() const { return _estr; }
 
 private:
-	ERR _e;
+	XType _e;
 	int _eno;
 	std::string _estr;
 };

@@ -18,7 +18,7 @@ XSocket::XSocket(int e) throw():
 
 }
 
-XSocket::XSocket(ERR e) throw():
+XSocket::XSocket(XType e) throw():
 		_e(e), _eno(0), _estr()
 {
 	if (e == INVALID_SOCKET_TYPE)

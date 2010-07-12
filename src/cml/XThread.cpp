@@ -18,7 +18,7 @@ XThread::XThread(int e) throw():
 
 }
 
-XThread::XThread(ERR e) throw():
+XThread::XThread(XType e) throw():
 		_e(e), _eno(0), _estr()
 {
 	if (e == THREAD_ALREADY_STARTED)
