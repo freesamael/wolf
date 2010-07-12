@@ -10,6 +10,7 @@
 #include <fcntl.h>
 #include <errno.h>
 #include <sys/socket.h>
+#include <netinet/in.h>
 #include "ASocket.h"
 #include "internal/CClosedSocketState.h"
 #include "internal/CSimpleActiveSocketState.h"
