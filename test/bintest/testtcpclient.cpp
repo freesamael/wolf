@@ -5,38 +5,66 @@
  */
 
 #include <iostream>
-#include <string>
-#include "CTcpSocket.h"
-#include "CTlvReaderWriter.h"
-#include "CTlvString.h"
+#include <CTcpQueuedSocket.h>
+#include <CTcpDataReader.h>
+#include <CHostAddress.h>
+#include <CThread.h>
 
 using namespace std;
 using namespace cml;
 
-int main()
+class ReadingThread: public CThread
 {
-    string str;
-    CTcpSocket sock;
-    CTlvReaderWriter rw(&sock);
-    sock.activeOpen("127.0.0.1", 5566);
-    cout << "local address: " << sock.currentAddress().toString() << endl;
+public:
+	ReadingThread(CTcpSocket &c): _done(false), _conn(c) {}
+	void setDone(bool d = true) { _done = d; }
+	void run()
+	{
+		char d[1500];
+		while (!_done) {
+			int sz;
+			if ((sz = _conn.read(d, 1500)) > 0) {
+				for (int i = 0; i < sz; i++)
+					if (d[i] != (char)0xaa)
+						cerr << "Error: d = " << hex << (int)d[i] << endl;
+			}
+		}
+	}
 
-    do {
-        cin >> str;
+private:
+	bool _done;
+	CTcpSocket &_conn;
+};
 
-        // Write out.
-        CTlvString ostr(str);
-        rw.write(ostr);
+int main(int argc, char *argv[])
+{
+	if (argc != 2)
+		cerr << "Usage: " << argv[0] << " <addr>" << endl;
 
-        // Read in.
-        ITlvObject *obj;
-        CTlvString *istr;
-        obj = rw.read();
-        if ((istr = dynamic_cast<CTlvString *>(obj))) {
-            cout << istr->toString() << endl;
-        }
-        delete obj;
-    } while (str != "quit");
+	char c[1500];
+	for (int i = 0; i < 1500; i++)
+		c[i] = 0x55;
 
+	CTcpQueuedSocket conn;
+	conn.activeOpen(argv[1], 5566);
+
+	CTcpDataReader reader;
+	reader.addSocket(&conn);
+	CThread rdthread(&reader);
+	rdthread.start();
+
+	ReadingThread reading(conn);
+	reading.start();
+
+	CTime st = CTime::now();
+	unsigned bytecount = 0;
+	while ((CTime::now() - st) < CTime(10, 0))
+		bytecount += conn.write(c, 1500);
+	reader.setDone();
+	rdthread.join();
+	reading.setDone();
+	reading.join(1000000);
+
+	cout << "Bandwidth = " << ((double)bytecount * 8 / 10 / 1048576) << " Mbps" << endl;
     return 0;
 }

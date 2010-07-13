@@ -22,7 +22,7 @@ CWaitCondition::CWaitCondition() throw(XThread):
 {
 	int e;
 	if ((e = pthread_cond_init(&_cond, NULL)) != 0)
-		throw XThread(e);
+		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
 }
 
 CWaitCondition::~CWaitCondition() throw()
@@ -39,7 +39,7 @@ bool CWaitCondition::wait(CMutex *mutex) throw(XThread)
 {
 	int e;
 	if ((e = pthread_cond_wait(&_cond, &mutex->_mutex)) != 0)
-		throw XThread(e);
+		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
 	return true;
 }
 
@@ -59,7 +59,7 @@ bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us) throw(XThread)
 		if (e == ETIMEDOUT) // timed out.
 			return false;
 		else
-			throw XThread(e);
+			throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
 	}
 	return true;
 }
@@ -71,7 +71,7 @@ void CWaitCondition::wakeOne() throw(XThread)
 {
 	int e;
 	if ((e = pthread_cond_signal(&_cond)) != 0)
-		throw XThread(e);
+		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
 }
 
 /**
@@ -81,7 +81,7 @@ void CWaitCondition::wakeAll() throw(XThread)
 {
 	int e;
 	if ((e = pthread_cond_broadcast(&_cond)) != 0)
-		throw XThread(e);
+		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
 }
 
 }

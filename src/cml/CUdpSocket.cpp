@@ -52,7 +52,7 @@ void CUdpSocket::setBroadcast(bool bcast) throw(XSocket)
 	int broadcast = (bcast) ? 1 : 0;
 	if (setsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
 			sizeof(broadcast)) != 0) {
-		throw XSocket(errno);
+		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
 	}
 }
 
@@ -67,7 +67,7 @@ bool CUdpSocket::canBroadcast() const throw(XSocket)
 	int broadcast;
 	socklen_t len = sizeof(broadcast);
 	if (getsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, &len) != 0)
-		throw XSocket(errno);
+		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
 	return broadcast;
 }
 

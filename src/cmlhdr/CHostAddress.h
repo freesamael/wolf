@@ -9,6 +9,7 @@
 
 #include <string>
 #include <arpa/inet.h>
+#include <sys/types.h>
 
 /// INADDR_NONE is not part of POSIX.
 #ifndef INADDR_NONE

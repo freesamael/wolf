@@ -72,8 +72,8 @@ void AConnectionListener::update(AObservable *o)
 		PINF_2("Got an incoming runner connection.");
 		// Check nonblocking flag and set to block if needed.
 		// I noticed that the default value might be nonblocking on BSD/Mac.
-		if (sock->isNonblock())
-			sock->setNonblock(false);
+		if (!sock->blockable())
+			sock->setBlockable(true);
 		notify(sock);
 	}
 	delete msg;

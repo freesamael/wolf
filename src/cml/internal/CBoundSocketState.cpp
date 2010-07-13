@@ -11,9 +11,8 @@
 #include "CBoundSocketState.h"
 #include "CClosedSocketState.h"
 #include "CConnectedSocketState.h"
-#include "CUdpSocket.h"
-#include "CTcpSocket.h"
 #include "CSingletonAutoDestructor.h"
+#include "ASocket.h"
 
 using namespace std;
 
@@ -26,12 +25,12 @@ SINGLETON_REGISTRATION_END();
 void CBoundSocketState::close(ASocket *sock) throw(XSocket)
 {
 	if (::close(sock->sockfd()) != 0)
-		throw XSocket(errno);
+		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
 
 	sock->changeState(CClosedSocketState::instance());
 }
 
-CTcpSocket* CBoundSocketState::accept(ASocket *sock) throw(XSocket)
+int CBoundSocketState::accept(ASocket *sock) throw(XSocket)
 {
 	int insock;
 	struct sockaddr_in inaddr;
@@ -39,33 +38,28 @@ CTcpSocket* CBoundSocketState::accept(ASocket *sock) throw(XSocket)
 
 	if ((insock = ::accept(sock->sockfd(), (struct sockaddr *)&inaddr,
 			&addlen)) < 0) {
-		if (sock->isNonblock() && (errno == EAGAIN || errno == EWOULDBLOCK))
-			return NULL; // Nonblocking and no connection.
+		if (errno == EAGAIN || errno == EWOULDBLOCK)
+			return -1; // Nonblocking and no connection.
 		else
-			throw XSocket(errno);
+			throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
 	}
 
-	CTcpSocket *tcpsock = new CTcpSocket(insock);
-	tcpsock->changeState(CConnectedSocketState::instance());
-	return tcpsock;
+	return insock;
 }
 
 ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
 		CHostAddress *addr, in_port_t *port) throw(XSocket)
 {
-	if (!(dynamic_cast<CUdpSocket *>(sock)))
-		throw XSocket(XSocket::INVALID_SOCKET_TYPE);
-
 	ssize_t result;
 	struct sockaddr_in inaddr;
 	socklen_t alen = sizeof(inaddr);
 
 	if ((result = ::recvfrom(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
-		if (sock->isNonblock() && (errno == EAGAIN || errno == EWOULDBLOCK))
+		if (errno == EAGAIN || errno == EWOULDBLOCK)
 			return 0; // Nonblocking and no data.
 		else
-			throw XSocket(errno);
+			throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
 	}
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
@@ -76,9 +70,6 @@ ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
 ssize_t CBoundSocketState::sendto(ASocket *sock, const char *buf,
 		size_t size, const CHostAddress &addr, in_port_t port) throw(XSocket)
 {
-	if (!(dynamic_cast<CUdpSocket *>(sock)))
-		throw XSocket(XSocket::INVALID_SOCKET_TYPE);
-
 	ssize_t result;
 	sockaddr_in inaddr;
 
@@ -90,7 +81,7 @@ ssize_t CBoundSocketState::sendto(ASocket *sock, const char *buf,
 
 	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, sizeof(inaddr))) < 0) {
-		throw XSocket(errno);
+		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
 	}
 
 	return result;

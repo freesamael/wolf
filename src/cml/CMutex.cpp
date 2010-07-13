@@ -19,7 +19,7 @@ CMutex::CMutex() throw(XThread):
 {
 	int e;
 	if ((e = pthread_mutex_init(&_mutex, NULL)) != 0)
-		throw XThread(e);
+		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
 }
 
 CMutex::~CMutex() throw()
@@ -36,7 +36,7 @@ void CMutex::lock() throw(XThread)
 {
 	int e;
 	if ((e = pthread_mutex_lock(&_mutex)) != 0)
-		throw XThread(e);
+		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
 }
 
 /**
@@ -46,7 +46,7 @@ void CMutex::unlock() throw(XThread)
 {
 	int e;
 	if ((e = pthread_mutex_unlock(&_mutex)) != 0)
-		throw XThread(e);
+		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
 }
 
 }

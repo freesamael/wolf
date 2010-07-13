@@ -6,7 +6,7 @@
 
 #include <string>
 #include <CThread.h>
-#include <CTcpSocket.h>
+#include <CTcpServer.h>
 #include "TCPSocketTestSuite.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TCPSocketTestSuite);
@@ -16,14 +16,16 @@ using namespace cml;
 
 struct Acceptor: public CThread
 {
-	CTcpSocket *msock, *ssock;
-	Acceptor(CTcpSocket *m): msock(m), ssock(NULL) {}
+	CTcpServer *msock;
+	CTcpSocket *ssock;
+	Acceptor(CTcpServer *m): msock(m), ssock(NULL) {}
 	void run() { ssock = msock->accept(); }
 };
 
 void TCPSocketTestSuite::testReadWrite()
 {
-	CTcpSocket server, client;
+	CTcpServer server;
+	CTcpSocket client;
 	Acceptor athread(&server);
 
 	CPPUNIT_ASSERT_EQUAL((string)"Closed", server.state()->name());

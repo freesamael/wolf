@@ -52,8 +52,8 @@ CTcpSocket* CRunnerSideMasterConnector::connect(in_port_t mport, in_port_t rport
 
 	// Check nonblocking flag and set to block if needed.
 	// I noticed that the default value might be nonblocking on BSD/Mac.
-	if (tsock->isNonblock())
-		tsock->setNonblock(false);
+	if (!tsock->blockable())
+		tsock->setBlockable(true);
 
 	return tsock;
 }

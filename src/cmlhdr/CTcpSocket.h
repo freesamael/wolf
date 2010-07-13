@@ -9,6 +9,7 @@
 
 #include <vector>
 #include "ASocket.h"
+#include "HelperMacros.h"
 
 namespace cml
 {
@@ -25,19 +26,18 @@ namespace cml
 class CTcpSocket: public ASocket
 {
 public:
-	CTcpSocket() throw(XSocket, XThread): _autoclean(true), _ssocks() {}
-	CTcpSocket(int sock) throw(XSocket, XThread):
-			ASocket(sock), _autoclean(true), _ssocks() {}
-	~CTcpSocket() throw();
-	CTcpSocket* accept() throw(XSocket);
-	inline bool autoclean() const throw() { return _autoclean; }
-	inline void setAutoclean(bool ac) throw() { _autoclean = ac; }
-	inline const std::vector<CTcpSocket *>& slaveSockets() const throw()
-			{ return _ssocks; }
-
-private:
-	bool _autoclean;
-	std::vector<CTcpSocket *> _ssocks;
+	CTcpSocket() throw(XSocket, XThread) {}
+	CTcpSocket(int sock) throw(XSocket, XThread): ASocket(sock) {}
+	virtual ~CTcpSocket() throw() {}
+	inline void open() throw(XSocket)
+			{ state()->open(this, ISocketState::TCP); }
+	inline void activeOpen(const CHostAddress &addr, in_port_t port)
+			throw(XSocket)
+			{ state()->activeOpen(this, ISocketState::TCP, addr, port); }
+	inline void passiveOpen(in_port_t UNUSED(port), int UNUSED(qlen) = 10,
+			bool UNUSED(reuse) = false) throw(XSocket)
+			{ throw XSocket(__PRETTY_FUNCTION__, __LINE__,
+					XSocket::INVALID_SOCKET_TYPE); }
 };
 
 }

@@ -7,9 +7,10 @@
 #ifndef CTCPCONNECTIONLISENTER_H_
 #define CTCPCONNECTIONLISENTER_H_
 
-#include "CTcpSocket.h"
 #include "AObservable.h"
 #include "IRunnable.h"
+#include "CTcpSocket.h"
+#include "CTcpServer.h"
 #include "CMutex.h"
 #include "HelperMacros.h"
 
@@ -25,7 +26,7 @@ namespace cml
 class CTcpConnectionListener: public AObservable, public IRunnable
 {
 public:
-	CTcpConnectionListener(CTcpSocket *server):
+	CTcpConnectionListener(CTcpServer *server):
 		_mx(), _done(false), _server(server), _ssock(NULL) {}
 
 	inline CTcpSocket* lastAcceptedSocket()
@@ -44,7 +45,7 @@ private:
 		{ return *this; }
 	CMutex _mx;
 	bool _done;
-	CTcpSocket *_server;
+	CTcpServer *_server;
 	CTcpSocket *_ssock;
 };
 

@@ -20,7 +20,7 @@ namespace cml
  */
 void CTcpConnectionListener::run()
 {
-	_server->setNonblock(true);
+	_server->setBlockable(false);
 	while (!isDone()) {
 		CTcpSocket *sock;
 		if ((sock = _server->accept())) {
