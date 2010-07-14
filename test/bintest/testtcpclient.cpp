@@ -48,7 +48,7 @@ int main(int argc, char *argv[])
 	CQueuedTcpSocket conn;
 	conn.activeOpen(argv[1], 5566);
 
-	CTcpDataReader reader;
+	CQueuedTcpDataReader reader;
 	reader.addSocket(&conn);
 	CThread rdthread(&reader);
 	rdthread.start();

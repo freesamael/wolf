@@ -5,7 +5,7 @@
  */
 
 #include "CTcpServer.h"
-#include "CTcpQueuedSocket.h"
+#include "CQueuedTcpSocket.h"
 #include "internal/CConnectedSocketState.h"
 
 namespace cml

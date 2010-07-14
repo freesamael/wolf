@@ -15,13 +15,13 @@ using namespace std;
 namespace cml
 {
 
-CTcpDataReader::CTcpDataReader():
+CQueuedTcpDataReader::CQueuedTcpDataReader():
 		_done(false), _mx(), _socks()
 {
 
 }
 
-CTcpDataReader::~CTcpDataReader()
+CQueuedTcpDataReader::~CQueuedTcpDataReader()
 {
 
 }
@@ -30,7 +30,7 @@ CTcpDataReader::~CTcpDataReader()
  * Add a socket to the watching list. If checks for duplicates.
  * If the running loop has already started, it takes effect in the next loop.
  */
-void CTcpDataReader::addSocket(CQueuedTcpSocket *sock)
+void CQueuedTcpDataReader::addSocket(CQueuedTcpSocket *sock)
 {
 	if (sock) {
 		_mx.lock();
@@ -45,7 +45,7 @@ void CTcpDataReader::addSocket(CQueuedTcpSocket *sock)
  * Remove a socket from the watching list. Taking effect in the next loop if
  * it has started.
  */
-void CTcpDataReader::removeSocket(CQueuedTcpSocket *sock)
+void CQueuedTcpDataReader::removeSocket(CQueuedTcpSocket *sock)
 {
 	if (sock) {
 		map<int, CQueuedTcpSocket *>::iterator iter;
@@ -57,7 +57,7 @@ void CTcpDataReader::removeSocket(CQueuedTcpSocket *sock)
 	}
 }
 
-void CTcpDataReader::run()
+void CQueuedTcpDataReader::run()
 {
 	// Get limits.
 	rlimit r;

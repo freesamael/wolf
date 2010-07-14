@@ -1,16 +1,16 @@
 /**
- * \file CTcpDataReader.h
+ * \file CQueuedTcpDataReader.h
  * \date Jul 12, 2010
  * \author samael
  */
 
-#ifndef CTCPDATAREADER_H_
-#define CTCPDATAREADER_H_
+#ifndef CQUEUEDTCPDATAREADER_H_
+#define CQUEUEDTCPDATAREADER_H_
 
 #include <map>
 #include "IRunnable.h"
 #include "CMutex.h"
-#include "CTcpQueuedSocket.h"
+#include "CQueuedTcpSocket.h"
 
 namespace cml
 {
@@ -18,11 +18,11 @@ namespace cml
 /**
  * A reader designed for CTcpQueuedSocket.
  */
-class CTcpDataReader: public IRunnable
+class CQueuedTcpDataReader: public IRunnable
 {
 public:
-	CTcpDataReader();
-	~CTcpDataReader();
+	CQueuedTcpDataReader();
+	~CQueuedTcpDataReader();
 	void addSocket(CQueuedTcpSocket *sock);
 	void removeSocket(CQueuedTcpSocket *sock);
 	inline void setDone(bool d = true) { _mx.lock(); _done = d; _mx.unlock(); }
@@ -37,4 +37,4 @@ private:
 
 }
 
-#endif /* CTCPDATAREADER_H_ */
+#endif /* CQUEUEDTCPDATAREADER_H_ */

@@ -1,11 +1,11 @@
 /**
- * \file CTcpQueuedSocket.h
+ * \file CQueuedTcpSocket.h
  * \date Jul 13, 2010
  * \author samael
  */
 
-#ifndef CTCPQUEUEDSOCKET_H_
-#define CTCPQUEUEDSOCKET_H_
+#ifndef CQUEUEDTCPSOCKET_H_
+#define CQUEUEDTCPSOCKET_H_
 
 #include <deque>
 #include "CTcpSocket.h"
@@ -15,6 +15,9 @@
 namespace cml
 {
 
+/**
+ * A TCP socket implementation with reading queue.
+ */
 class CQueuedTcpSocket: public CTcpSocket
 {
 public:
@@ -34,4 +37,4 @@ private:
 
 }
 
-#endif /* CTCPQUEUEDSOCKET_H_ */
+#endif /* CQUEUEDTCPSOCKET_H_ */
