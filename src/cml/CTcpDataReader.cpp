@@ -30,7 +30,7 @@ CTcpDataReader::~CTcpDataReader()
  * Add a socket to the watching list. If checks for duplicates.
  * If the running loop has already started, it takes effect in the next loop.
  */
-void CTcpDataReader::addSocket(CTcpQueuedSocket *sock)
+void CTcpDataReader::addSocket(CQueuedTcpSocket *sock)
 {
 	if (sock) {
 		_mx.lock();
@@ -45,10 +45,10 @@ void CTcpDataReader::addSocket(CTcpQueuedSocket *sock)
  * Remove a socket from the watching list. Taking effect in the next loop if
  * it has started.
  */
-void CTcpDataReader::removeSocket(CTcpQueuedSocket *sock)
+void CTcpDataReader::removeSocket(CQueuedTcpSocket *sock)
 {
 	if (sock) {
-		map<int, CTcpQueuedSocket *>::iterator iter;
+		map<int, CQueuedTcpSocket *>::iterator iter;
 		_mx.lock();
 		if ((iter = _socks.find(sock->sockfd())) != _socks.end()) {
 			_socks.erase(iter);
@@ -67,7 +67,7 @@ void CTcpDataReader::run()
 	int nfds = (int)r.rlim_cur;
 
 	timeval timeout = CTime(10000).toTimeval();
-	map<int, CTcpQueuedSocket *>::iterator iter;
+	map<int, CQueuedTcpSocket *>::iterator iter;
 	while (!isDone()) {
 		// Initialize fdset.
 		fd_set readfds;

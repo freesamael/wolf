@@ -49,7 +49,7 @@ int main()
 	CTcpSocket *conn = server.accept(CTcpServer::QUEUED);
 
 	CTcpDataReader reader;
-	reader.addSocket(dynamic_cast<CTcpQueuedSocket *>(conn));
+	reader.addSocket(dynamic_cast<CQueuedTcpSocket *>(conn));
 	CThread rdthread(&reader);
 	rdthread.start();
 

@@ -23,8 +23,8 @@ class CTcpDataReader: public IRunnable
 public:
 	CTcpDataReader();
 	~CTcpDataReader();
-	void addSocket(CTcpQueuedSocket *sock);
-	void removeSocket(CTcpQueuedSocket *sock);
+	void addSocket(CQueuedTcpSocket *sock);
+	void removeSocket(CQueuedTcpSocket *sock);
 	inline void setDone(bool d = true) { _mx.lock(); _done = d; _mx.unlock(); }
 	inline bool isDone() { _mx.lock(); bool d = _done; _mx.unlock(); return d; }
 	void run();
@@ -32,7 +32,7 @@ public:
 private:
 	bool _done;
 	CMutex _mx;
-	std::map<int, CTcpQueuedSocket *> _socks;
+	std::map<int, CQueuedTcpSocket *> _socks;
 };
 
 }

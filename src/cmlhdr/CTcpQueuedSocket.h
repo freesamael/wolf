@@ -15,13 +15,13 @@
 namespace cml
 {
 
-class CTcpQueuedSocket: public CTcpSocket
+class CQueuedTcpSocket: public CTcpSocket
 {
 public:
-	CTcpQueuedSocket() throw(XSocket, XThread): _mx(), _cond(), _q() {}
-	CTcpQueuedSocket(int sock) throw(XSocket, XThread): CTcpSocket(sock), _mx(),
+	CQueuedTcpSocket() throw(XSocket, XThread): _mx(), _cond(), _q() {}
+	CQueuedTcpSocket(int sock) throw(XSocket, XThread): CTcpSocket(sock), _mx(),
 			_cond(), _q() {}
-	~CTcpQueuedSocket() throw() {}
+	~CQueuedTcpSocket() throw() {}
 	ssize_t read(char *buf, size_t size) throw(XSocket);
 	void readSocket() throw(XSocket);
 	void close() throw(XSocket);

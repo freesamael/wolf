@@ -39,7 +39,7 @@ CTcpSocket* CTcpServer::accept(SlaveType type) throw(XSocket)
 
 	CTcpSocket *ssock;
 	if (type == QUEUED)
-		ssock = new CTcpQueuedSocket(sockfd);
+		ssock = new CQueuedTcpSocket(sockfd);
 	else
 		ssock = new CTcpSocket(sockfd);
 	ssock->changeState(CConnectedSocketState::instance());

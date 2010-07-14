@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	for (int i = 0; i < 1500; i++)
 		c[i] = 0x55;
 
-	CTcpQueuedSocket conn;
+	CQueuedTcpSocket conn;
 	conn.activeOpen(argv[1], 5566);
 
 	CTcpDataReader reader;

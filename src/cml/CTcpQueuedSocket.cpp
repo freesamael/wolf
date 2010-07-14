@@ -16,7 +16,7 @@ namespace cml
  * \return
  * Size read. Zero indicates connection ends (end-of-file).
  */
-ssize_t CTcpQueuedSocket::read(char *buf, size_t size) throw(XSocket)
+ssize_t CQueuedTcpSocket::read(char *buf, size_t size) throw(XSocket)
 {
 	size_t offset = 0;
 	while (offset < size && state()->name() != ASocket::ClosedState) {
@@ -41,7 +41,7 @@ ssize_t CTcpQueuedSocket::read(char *buf, size_t size) throw(XSocket)
 /**
  * Read raw socket and push data into the queue.
  */
-void CTcpQueuedSocket::readSocket() throw(XSocket)
+void CQueuedTcpSocket::readSocket() throw(XSocket)
 {
 	// Set non-blocking if needed.
 	bool b = blockable();
@@ -78,7 +78,7 @@ void CTcpQueuedSocket::readSocket() throw(XSocket)
 		setBlockable(true);
 }
 
-void CTcpQueuedSocket::close() throw(XSocket)
+void CQueuedTcpSocket::close() throw(XSocket)
 {
 	CTcpSocket::close();
 	_mx.lock();
