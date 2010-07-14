@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <CTcpServer.h>
-#include <CTcpDataReader.h>
+#include <CQueuedTcpDataReader.h>
 #include <CTime.h>
 #include <CThread.h>
 
@@ -16,24 +16,25 @@ using namespace cml;
 class ReadingThread: public CThread
 {
 public:
-	ReadingThread(CTcpSocket &c): _done(false), _conn(c) {}
+	ReadingThread(CTcpSocket &c): _done(false), _conn(c), _bc(0) {}
+	unsigned bytecount() { return _bc; }
 	void setDone(bool d = true) { _done = d; }
 	void run()
 	{
 		char d[1500];
-		while (!_done) {
-			int sz;
-			if ((sz = _conn.read(d, 1500)) > 0) {
-				for (int i = 0; i < sz; i++)
-					if (d[i] != (char)0x55)
-						cerr << "Error: d = " << hex << (int)d[i] << endl;
-			}
+		int sz;
+		while ((sz = _conn.read(d, 1500)) > 0) {
+			for (int i = 0; i < sz; i++)
+				if (d[i] != (char)0x55)
+					cerr << "Error: d = " << hex << (int)d[i] << endl;
+			_bc += sz;
 		}
 	}
 
 private:
 	bool _done;
 	CTcpSocket &_conn;
+	unsigned _bc;
 };
 
 
@@ -46,7 +47,7 @@ int main()
 	for (int i = 0; i < 1500; i++)
 		c[i] = 0xaa;
 
-	CTcpSocket *conn = server.accept(CTcpServer::QUEUED);
+	CTcpSocket *conn = server.accept();
 
 	CQueuedTcpDataReader reader;
 	reader.addSocket(dynamic_cast<CQueuedTcpSocket *>(conn));
@@ -58,15 +59,20 @@ int main()
 
 	unsigned bytecount = 0;
 	CTime st = CTime::now();
-	while ((CTime::now() - st) < CTime(10, 0)) {
+	while ((CTime::now() - st) < CTime(5, 0)) {
 		bytecount += conn->write(c, 1500);
 	}
+	conn->close();
+
+	cout << "Sent " << bytecount << " bytes." << endl;
+	cout << "Sending rate = " << ((double)bytecount * 8 / 4 / 1048576) << " Mbps" << endl;
 
 	reader.setDone();
 	rdthread.join();
 	reading.setDone();
-	reading.join(1000000);
+	reading.join();
 
-	cout << "Bandwidth = " << ((double)bytecount * 8 / 10 / 1048576) << " Mbps" << endl;
+	cout << "Received " << reading.bytecount() << " bytes." << endl;
+	cout << "Receiving rate = " << ((double)reading.bytecount() * 8 / 4 / 1048576) << " Mbps" << endl;
     return 0;
 }

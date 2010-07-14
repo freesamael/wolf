@@ -17,15 +17,19 @@ namespace cml
 
 /**
  * A TCP socket implementation with reading queue.
+ *
+ * \note Buggy, dont use.
  */
 class CQueuedTcpSocket: public CTcpSocket
 {
 public:
-	CQueuedTcpSocket() throw(XSocket, XThread): _mx(), _cond(), _q() {}
+	CQueuedTcpSocket() throw(XSocket, XThread): _mx(), _cond(), _q()
+			{ setBlockable(false); }
 	CQueuedTcpSocket(int sock) throw(XSocket, XThread): CTcpSocket(sock), _mx(),
 			_cond(), _q() {}
 	~CQueuedTcpSocket() throw() {}
 	ssize_t read(char *buf, size_t size) throw(XSocket);
+	ssize_t write(const char *buf, size_t size) throw(XSocket);
 	void readSocket() throw(XSocket);
 	void close() throw(XSocket);
 

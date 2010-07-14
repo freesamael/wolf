@@ -1,5 +1,5 @@
 /**
- * \file CTcpDataReader.cpp
+ * \file CQueuedTcpDataReader.cpp
  * \date Jul 12, 2010
  * \author samael
  */
@@ -7,7 +7,7 @@
 #include <errno.h>
 #include <sys/select.h>
 #include <sys/resource.h>
-#include "CTcpDataReader.h"
+#include "CQueuedTcpDataReader.h"
 #include "CTime.h"
 
 using namespace std;
