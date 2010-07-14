@@ -27,9 +27,7 @@ public:
 	static const char *XTypeString[];
 	explicit XThread(const char *func, int line, int e) throw();
 	explicit XThread(const char *func, int line, XType e) throw();
-	XThread(const XThread &o) throw();
 	virtual ~XThread() throw() {}
-	XThread& operator=(const XThread &o) throw();
 	inline XType xtype() const throw() { return _e; }
 	inline int errnum() const throw() { return _eno; }
 	inline const char* what() const throw() { return _estr.c_str(); }

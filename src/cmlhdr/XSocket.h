@@ -29,9 +29,7 @@ public:
 	static const char *XTypeString[];
 	explicit XSocket(const char *func, int line, int e) throw();
 	explicit XSocket(const char *func, int line, XType e) throw();
-	XSocket(const XSocket &o) throw();
 	virtual ~XSocket() throw() {}
-	XSocket& operator=(const XSocket &o) throw();
 	inline XType xtype() const throw() { return _e; }
 	inline int errnum() const throw() { return _eno; }
 	inline const char* what() const throw() { return _estr.c_str(); }

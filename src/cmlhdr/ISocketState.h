@@ -91,7 +91,7 @@ public:
 
 	/// Send a message to given host.
 	/// \note Only applicable to UDP.
-	/// \return Size of bytes sent, or -1 for error.
+	/// \return Size of bytes sent.
 	virtual ssize_t sendto(ASocket *sock, const char *buf, size_t size,
 			const CHostAddress &addr, in_port_t port) throw(XSocket) = 0;
 

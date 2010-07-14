@@ -16,6 +16,7 @@
 #include "ITlvObjectCreator.h"
 #include "ITlvBlock.h"
 #include "HelperMacros.h"
+#include "XTlvObject.h"
 
 namespace cml
 {
@@ -32,10 +33,10 @@ class CTlvObjectFactory
 public:
 	void registerType(uint16_t id, const std::string &name);
 	void registerCreator(const std::string &name, ITlvObjectCreator *creator);
-	std::string lookupTypeName(uint16_t id);
-	ITlvObject* createTLVObject(const std::string &type_name);
-	ITlvObject* createTLVObject(uint16_t type_id);
-	ITlvObject* createTLVObject(const ITlvBlock &blk);
+	std::string lookupTypeName(uint16_t id) throw(XTlvObject);
+	ITlvObject* createTLVObject(const std::string &type_name) throw(XTlvObject);
+	ITlvObject* createTLVObject(uint16_t type_id) throw(XTlvObject);
+	ITlvObject* createTLVObject(const ITlvBlock &blk) throw(XTlvObject);
 
 private:
 	CTlvObjectFactory(): SINGLETON_MEMBER_INITLST, _typenames(), _creators() {}

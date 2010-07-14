@@ -38,20 +38,4 @@ XSocket::XSocket(const char *func, int line, XType e) throw():
 	_estr = (string)XTypeString[e] + " [" + func + ": " + lstr + "]";
 }
 
-XSocket::XSocket(const XSocket &o) throw():
-		_e(o._e), _eno(o._eno), _estr(o._estr)
-{
-
-}
-
-XSocket& XSocket::operator=(const XSocket &o) throw()
-{
-	if (&o != this) {
-		_e = o._e;
-		_eno = o._eno;
-		_estr = o._estr;
-	}
-	return *this;
-}
-
 }

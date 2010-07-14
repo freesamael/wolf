@@ -37,20 +37,4 @@ XThread::XThread(const char *func, int line, XType e) throw():
 	_estr = (string)XTypeString[e] + " [" + func + ": " + lstr + "]";
 }
 
-XThread::XThread(const XThread &o) throw():
-		_e(o._e), _eno(o._eno), _estr(o._estr)
-{
-
-}
-
-XThread& XThread::operator=(const XThread &o) throw()
-{
-	if (&o != this) {
-		_e = o._e;
-		_eno = o._eno;
-		_estr = o._estr;
-	}
-	return *this;
-}
-
 }

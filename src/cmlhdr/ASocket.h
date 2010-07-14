@@ -36,22 +36,32 @@ public:
 
 	/// Open the socket without binding or connection.
 	virtual void open() throw(XSocket) = 0;
-	/// Actively open the socket (connect to a host).
+	/// Actively open the socket, which means to connect to a specific host.
+	/// It can be called after open(), or called directly without open().
 	virtual void activeOpen(const CHostAddress &addr, in_port_t port)
 			throw(XSocket) = 0;
-	/// Passively open the socket (bind or listen on specific port).
+	/// Passively open the socket, which means to bind or listen on specific
+	/// port. It can be called after open(), or called directly without open().
+	/// \param[in] sock Socket.
+	/// \param[in] port Local port to bind to.
+	/// \param[in] qlen The length of queue. Only applicable to TCP.
+	/// \param[in] reuse If true, the socket will be bound to the port even if
+	///            the port is in use.
 	virtual void passiveOpen(in_port_t port, int qlen = 10, bool reuse = false)
 			throw(XSocket) = 0;
 	/// Close (and shutdown) the socket.
 	inline virtual void close() throw(XSocket) { _state->close(this); }
 	/// Read a message. It's not thread-safe unless you use lockread() and
 	/// unlockread() in your program.
-	/// \return Size read.
+	/// \return Size of bytes read. Zero indicates connection ends (end-of-file)
+	/// or no padding data for non-blocking socket (check socket state to
+	/// distinguish them).
 	inline virtual ssize_t read(char *buf, size_t size) throw(XSocket)
 			{ return _state->read(this, buf, size); }
 	/// Write a message. It's not thread-safe unless you use lockwrite() and
 	/// unlockwrite().
-	/// \return Size written.
+	/// \return Size of bytes written. Zero indicates connection ends or the
+	/// socket is non-blocking but the write operation needs to be delayed.
 	inline virtual ssize_t write(const char *buf, size_t size) throw(XSocket)
 			{ return _state->write(this, buf, size); }
 

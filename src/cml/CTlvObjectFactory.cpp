@@ -12,6 +12,7 @@
 #include "CTlvUint16Creator.h"
 #include "CTlvUint32Creator.h"
 #include "CSingletonAutoDestructor.h"
+#include "CmlTLVTypes.h"
 
 using namespace std;
 
@@ -79,40 +80,41 @@ void CTlvObjectFactory::registerCreator(const std::string &name,
  * Get host typename (typeid().name()) by giving TLV type id.
  *
  * \return
- * Typename or empty string if nothing found.
+ * Typename.
  */
-string CTlvObjectFactory::lookupTypeName(uint16_t id)
+string CTlvObjectFactory::lookupTypeName(uint16_t id) throw(XTlvObject)
 {
 	map<uint16_t, string>::iterator iter;
 	for (iter = _typenames.begin(); iter != _typenames.end(); ++iter) {
 		if (iter->first == id)
 			return iter->second;
 	}
-	return string();
+	throw XTlvObject(__PRETTY_FUNCTION__, __LINE__,
+			XTlvObject::INVALID_TYPE_ID, id);
 }
 
 /**
  * Create a object by typename (typeid().name()).
  *
  * \return
- * Object created, or NULL if no corresponding creators found.
+ * Object created.
  */
 ITlvObject* CTlvObjectFactory::createTLVObject(const string &type_name)
+		throw(XTlvObject)
 {
-	PINF_3("Creating an object.");
 	map<string, ITlvObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(type_name)) != _creators.end())
 		return iter->second->create();
-	PERR("No suite creator found.");
-	return NULL;
+	throw XTlvObject(__PRETTY_FUNCTION__, __LINE__,
+			XTlvObject::NO_SUITABLE_CREATOR, TLV_TYPE_INVALID, type_name);
 }
 
 /**
  * Overloaded creation function.
  */
 ITlvObject* CTlvObjectFactory::createTLVObject(uint16_t type_id)
+		throw(XTlvObject)
 {
-	PINF_3("Creating an object.");
 	return createTLVObject(lookupTypeName(type_id));
 }
 
@@ -120,19 +122,19 @@ ITlvObject* CTlvObjectFactory::createTLVObject(uint16_t type_id)
  * Create a object from corresponding TLV block.
  *
  * \return
- * Object created, or NULL if no proper creators found.
+ * Object created.
  */
 ITlvObject* CTlvObjectFactory::createTLVObject(const ITlvBlock &blk)
+		throw(XTlvObject)
 {
-	PINF_3("Creating an object, type id = " << blk.type() << " (" <<
-			lookupTypeName(blk.type()) << ").");
 	map<string, ITlvObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(lookupTypeName(blk.type()))) !=
 			_creators.end()) {
 		return iter->second->create(blk);
 	}
-	PERR("No suitable creator found for type " << blk.type());
-	return NULL;
+	throw XTlvObject(__PRETTY_FUNCTION__, __LINE__,
+			XTlvObject::NO_SUITABLE_CREATOR, blk.type(),
+			lookupTypeName(blk.type()));
 }
 
 }
