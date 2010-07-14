@@ -23,7 +23,7 @@ public:
 	{
 		char d[1500];
 		int sz;
-		while ((sz = _conn.read(d, 1500)) > 0) {
+		while ((sz = _conn.read(d, 10)) > 0) {
 			for (int i = 0; i < sz; i++)
 				if (d[i] != (char)0x55)
 					cerr << "Error: d = " << hex << (int)d[i] << endl;
@@ -49,11 +49,6 @@ int main()
 
 	CTcpSocket *conn = server.accept();
 
-	CQueuedTcpDataReader reader;
-	reader.addSocket(dynamic_cast<CQueuedTcpSocket *>(conn));
-	CThread rdthread(&reader);
-	rdthread.start();
-
 	ReadingThread reading(*conn);
 	reading.start();
 
@@ -67,8 +62,6 @@ int main()
 	cout << "Sent " << bytecount << " bytes." << endl;
 	cout << "Sending rate = " << ((double)bytecount * 8 / 4 / 1048576) << " Mbps" << endl;
 
-	reader.setDone();
-	rdthread.join();
 	reading.setDone();
 	reading.join();
 

@@ -5,8 +5,7 @@
  */
 
 #include <iostream>
-#include <CQueuedTcpSocket.h>
-#include <CQueuedTcpDataReader.h>
+#include <CTcpSocket.h>
 #include <CHostAddress.h>
 #include <CThread.h>
 
@@ -23,7 +22,7 @@ public:
 	{
 		char d[1500];
 		int sz;
-		while ((sz = _conn.read(d, 1500)) > 0) {
+		while ((sz = _conn.read(d, 10)) > 0) {
 			for (int i = 0; i < sz; i++)
 				if (d[i] != (char)0xaa)
 					cerr << "Error: d = " << hex << (int)d[i] << endl;
@@ -49,11 +48,6 @@ int main(int argc, char *argv[])
 	CTcpSocket conn;
 	conn.activeOpen(argv[1], 5566);
 
-//	CQueuedTcpDataReader reader;
-//	reader.addSocket(&conn);
-//	CThread rdthread(&reader);
-//	rdthread.start();
-
 	ReadingThread reading(conn);
 	reading.start();
 
@@ -62,13 +56,10 @@ int main(int argc, char *argv[])
 	while ((CTime::now() - st) < CTime(4, 0)) {
 		bytecount += conn.write(c, 1500);
 	}
-//	conn.close();
 
 	cout << "Sent " << bytecount << " bytes." << endl;
 	cout << "Sending rate = " << ((double)bytecount * 8 / 4 / 1048576) << " Mbps" << endl;
 
-//	reader.setDone();
-//	rdthread.join();
 	reading.setDone();
 	reading.join();
 
