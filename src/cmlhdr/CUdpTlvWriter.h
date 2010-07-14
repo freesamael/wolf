@@ -8,6 +8,11 @@
 #define CUDPTLVWRITER_H_
 
 #include "CUdpSocket.h"
+#include "ITlvBlock.h"
+#include "ITlvObject.h"
+#include "XSocket.h"
+#include "XThread.h"
+#include "XTlvObject.h"
 
 namespace cml
 {
@@ -20,8 +25,10 @@ public:
 	virtual ~CUdpTlvWriter();
 	inline CUdpTlvWriter& operator=(const CUdpTlvWriter &o)
 			{ _sock = o._sock; return *this; }
-//	void sendto(const ITlvObject &obj, const CHostAddress &addr,
-//			in_port_t port) throw(XSocket);
+	void sendBlockTo(const ITlvBlock &blk, const CHostAddress &addr,
+			in_port_t port) throw(XSocket, XThread);
+	void sendObjectTo(const ITlvObject &obj, const CHostAddress &addr,
+			in_port_t port) throw(XSocket, XThread, XTlvObject);
 
 private:
 	CUdpSocket *_sock;

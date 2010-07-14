@@ -12,7 +12,7 @@
 extern pthread_mutex_t g_mxcout;
 extern pthread_mutex_t g_mxcerr;
 
-#define MSG_MAX_SIZE	1500
+#define SZ_MSG_MAX	1500
 
 #ifndef UNUSED
 #ifdef __GNUC__

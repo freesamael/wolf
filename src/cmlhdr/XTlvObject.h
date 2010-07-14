@@ -9,21 +9,27 @@
 
 #include <string>
 #include <inttypes.h>
+#include "CmlTLVTypes.h"
 
 namespace cml
 {
 
+/**
+ * Exceptions of TLV objects and blocks.
+ */
 class XTlvObject
 {
 public:
 	typedef enum XType {
 		INVALID_TYPE_ID,
 		NO_SUITABLE_CREATOR,
-		NULL_BLOCK_GENERATED
+		NULL_BLOCK_GENERATED,
+		BLOCK_TOO_SHORT
 	} XType;
 	static const char *XTypeString[];
 	explicit XTlvObject(const std::string &func, int line, XType e,
-			uint16_t id, const std::string &name = "?") throw();
+			uint16_t id = TLV_TYPE_INVALID, const std::string &name = "?")
+			throw();
 	virtual ~XTlvObject() throw() {}
 	inline XType xtype() const throw() { return _e; }
 	inline const char* what() const throw() { return _estr.c_str(); }

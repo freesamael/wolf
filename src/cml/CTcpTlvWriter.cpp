@@ -34,6 +34,9 @@ void CTcpTlvWriter::writeBlock(const ITlvBlock &blk) throw(XSocket, XThread)
 	_sock->unlockwrite();
 }
 
+/**
+ * Write a TLV object to the socket.
+ */
 void CTcpTlvWriter::writeObject(const ITlvObject &obj)
 		throw(XSocket, XThread, XTlvObject)
 {

@@ -8,8 +8,11 @@
 #define CUDPTLVREADER_H_
 
 #include "CUdpSocket.h"
+#include "ITlvBlock.h"
 #include "ITlvObject.h"
 #include "XSocket.h"
+#include "XThread.h"
+#include "XTlvObject.h"
 
 namespace cml
 {
@@ -22,7 +25,10 @@ public:
 	virtual ~CUdpTlvReader();
 	inline CUdpTlvReader& operator=(const CUdpTlvReader &o)
 			{ _sock = o._sock; return *this; }
-//	ITlvObject* recvfrom(CHostAddress *addr, in_port_t *port) throw(XSocket);
+	ITlvBlock* recvBlockFrom(CHostAddress *addr, in_port_t *port)
+			throw(XSocket, XThread, XTlvObject);
+	ITlvObject* recvObjectFrom(CHostAddress *addr, in_port_t *port)
+			throw(XSocket, XThread, XTlvObject);
 
 private:
 	CUdpSocket *_sock;
