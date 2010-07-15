@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 #include <inttypes.h>
-#include "CTcpSocket.h"
+#include "CTcpServer.h"
 #include "CMutex.h"
 #include "CWaitCondition.h"
 #include "AWorkerActor.h"
@@ -55,19 +55,19 @@ public:
 
 private:
 	CRunner(const CRunner &UNUSED(o)): _id(0), _state(NOT_READY), _statemx(),
-	_statewcond(), _mport(0), _rport(0), _stealer(NULL), _appname(), _rsock(),
+	_statewcond(), _mport(0), _rport(0), _stealer(NULL), _appname(), _rserver(),
 	_d(NULL) {}
 	CRunner& operator=(const CRunner &UNUSED(o)) { return *this; }
 
 private:
-	int _id;
-	State _state;
-	cml::CMutex _statemx;
-	cml::CWaitCondition _statewcond;
-	in_port_t _mport, _rport;
-	IWorkerStealer *_stealer;
-	std::string _appname;
-	cml::CTcpSocket _rsock;
+	int _id;							// Runner id.
+	State _state;						// Runner state.
+	cml::CMutex _statemx;				// Runner state mutex.
+	cml::CWaitCondition _statewcond;	// Runner state cond variable.
+	in_port_t _mport, _rport;			// Master/Runner ports.
+	IWorkerStealer *_stealer;			// Stealer.
+	std::string _appname;				// DSM appname.
+	cml::CTcpServer _rserver;			// Runner tcp server.
 	PData *_d;
 };
 

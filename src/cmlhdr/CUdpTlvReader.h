@@ -22,7 +22,7 @@ class CUdpTlvReader
 public:
 	CUdpTlvReader(CUdpSocket *sock): _sock(sock) {}
 	CUdpTlvReader(const CUdpTlvReader &o): _sock(o._sock) {}
-	virtual ~CUdpTlvReader();
+	virtual ~CUdpTlvReader() {}
 	inline CUdpTlvReader& operator=(const CUdpTlvReader &o)
 			{ _sock = o._sock; return *this; }
 	ITlvBlock* recvBlockFrom(CHostAddress *addr, in_port_t *port)

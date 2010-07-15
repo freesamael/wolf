@@ -40,7 +40,6 @@ void CRunnerSideCommandSender::joinD2MCE(CTcpSocket *sock, const string &appname
 
 void CRunnerSideCommandSender::hello(CTcpSocket *sock)
 {
-	PINF_2("Sending HELLO_RUNNER.");
 	CTlvReaderWriter rw(sock);
 	rw.write(CTlvCommand(CTlvCommand::HELLO_RUNNER));
 }
@@ -48,7 +47,6 @@ void CRunnerSideCommandSender::hello(CTcpSocket *sock)
 void CRunnerSideCommandSender::workerFinished(CTcpSocket *sock, uint32_t wseq,
 		AWorkerActor *worker)
 {
-	PINF_2("Sending WORKER_FINISHED with id = " << wseq << ".");
 	CTlvReaderWriter rw(sock);
 	CTlvCommand cmd(CTlvCommand::WORKER_FINISHED);
 	CTlvUint32 u32(wseq);
@@ -59,7 +57,6 @@ void CRunnerSideCommandSender::workerFinished(CTcpSocket *sock, uint32_t wseq,
 
 void CRunnerSideCommandSender::stealWorker(CTcpSocket *sock, uint16_t n)
 {
-	PINF_2("Sending WORKER_STEAL to steal " << n << " workers.");
 	CTlvReaderWriter rw(sock);
 	CTlvCommand cmd(CTlvCommand::WORKER_STEAL);
 	CTlvUint16 u16(n);
@@ -69,7 +66,6 @@ void CRunnerSideCommandSender::stealWorker(CTcpSocket *sock, uint16_t n)
 
 void CRunnerSideCommandSender::stealFailed(CTcpSocket *sock)
 {
-	PINF_2("Sending WORKER_STEAL_FAILED.");
 	CTlvReaderWriter rw(sock);
 	rw.write(CTlvCommand(CTlvCommand::WORKER_STEAL_FAILED));
 }
@@ -77,7 +73,6 @@ void CRunnerSideCommandSender::stealFailed(CTcpSocket *sock)
 void CRunnerSideCommandSender::runWorker(CTcpSocket *sock, uint32_t wseq,
 		AWorkerActor *worker)
 {
-	PINF_2("Sending WORKER_RUN with id = " << wseq << ".");
 	CTlvReaderWriter rw(sock);
 	CTlvCommand cmd(CTlvCommand::WORKER_RUN);
 	CTlvUint32 u32(wseq);

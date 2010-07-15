@@ -34,7 +34,6 @@ void CMasterSideCommandSender::joinD2MCE(const string &appname)
 
 void CMasterSideCommandSender::hello(in_port_t rport, const CHostAddress &addr)
 {
-	PINF_2("Sending HELLO_MASTER.");
 	CUdpSocket usock;
 	CTlvReaderWriter udprw(&usock);
 	usock.setBroadcast(true);
@@ -43,7 +42,6 @@ void CMasterSideCommandSender::hello(in_port_t rport, const CHostAddress &addr)
 
 void CMasterSideCommandSender::addRunner(CTcpSocket *rsock, const vector<CHostAddress> &addrs)
 {
-	PINF_2("Sending RUNNER_ADD.");
 	if (addrs.size() > 0) {
 		CTlvCommand cmd(CTlvCommand::RUNNER_ADD);
 		cmd.setAutoclean(true);
@@ -57,14 +55,12 @@ void CMasterSideCommandSender::addRunner(CTcpSocket *rsock, const vector<CHostAd
 
 void CMasterSideCommandSender::startRunner(CTcpSocket *rsock)
 {
-	PINF_2("Sending RUNNER_START.");
 	CTlvReaderWriter rw(rsock);
 	rw.write(CTlvCommand(CTlvCommand::RUNNER_START));
 }
 
 void CMasterSideCommandSender::shutdown(CTcpSocket *rsock)
 {
-	PINF_2("Sending SHUTDOWN.");
 	CTlvReaderWriter rw(rsock);
 	rw.write(CTlvCommand(CTlvCommand::SHUTDOWN));
 }
@@ -74,7 +70,6 @@ uint32_t CMasterSideCommandSender::runWorker(CTcpSocket *rsock, AWorkerActor *wo
 	if (++_wseq == UINT32_MAX)
 		_wseq = 0;
 
-	PINF_2("Sending WORKER_RUN with id = " << _wseq << ".");
 	CTlvReaderWriter rw(rsock);
 	CTlvCommand cmd(CTlvCommand::WORKER_RUN);
 	CTlvUint32 u32(_wseq);

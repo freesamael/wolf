@@ -22,7 +22,7 @@ class CTcpTlvWriter
 public:
 	CTcpTlvWriter(CTcpSocket *sock): _sock(sock) {}
 	CTcpTlvWriter(const CTcpTlvWriter &o): _sock(o._sock) {}
-	virtual ~CTcpTlvWriter();
+	virtual ~CTcpTlvWriter() {}
 	inline CTcpTlvWriter& operator=(const CTcpTlvWriter &o)
 			{ _sock = o._sock; return *this; }
 	void writeBlock(const ITlvBlock &blk) throw(XSocket, XThread);

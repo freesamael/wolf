@@ -4,8 +4,6 @@
  * \author samael
  */
 
-#include <iostream>
-#include <sstream>
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>

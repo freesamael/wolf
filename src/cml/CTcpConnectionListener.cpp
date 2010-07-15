@@ -4,8 +4,6 @@
  * \author samael
  */
 
-#include <iostream>
-#include <sstream>
 #include <unistd.h>
 #include "CTcpConnectionListener.h"
 #include "HelperMacros.h"
@@ -24,7 +22,6 @@ void CTcpConnectionListener::run()
 	while (!isDone()) {
 		CTcpSocket *sock;
 		if ((sock = _server->accept())) {
-			PINF_3("Got an incoming connection.");
 			_mx.lock();
 			_ssock = sock;
 			_mx.unlock();

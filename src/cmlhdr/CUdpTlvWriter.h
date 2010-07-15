@@ -22,7 +22,7 @@ class CUdpTlvWriter
 public:
 	CUdpTlvWriter(CUdpSocket *sock): _sock(sock) {}
 	CUdpTlvWriter(const CUdpTlvWriter &o): _sock(o._sock) {}
-	virtual ~CUdpTlvWriter();
+	virtual ~CUdpTlvWriter() {}
 	inline CUdpTlvWriter& operator=(const CUdpTlvWriter &o)
 			{ _sock = o._sock; return *this; }
 	void sendBlockTo(const ITlvBlock &blk, const CHostAddress &addr,

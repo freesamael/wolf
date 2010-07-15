@@ -4,14 +4,15 @@
  * \author samael
  */
 
-#include <iostream>
-#include <sstream>
-#include "HelperMacros.h"
+#include <string>
+#include <typeinfo>
 #include "CUdpSocket.h"
-#include "CTlvReaderWriter.h"
+#include "CUdpTlvReader.h"
 #include "CTlvCommand.h"
 #include "CRunnerSideMasterConnector.h"
+#include "XTlvCommand.h"
 
+using namespace std;
 using namespace cml;
 
 namespace wfe
@@ -19,39 +20,39 @@ namespace wfe
 
 CTcpSocket* CRunnerSideMasterConnector::connect(in_port_t mport, in_port_t rport)
 {
-	CTcpSocket *tsock = NULL;
-
 	/*
 	 * Wait for Master hello message.
 	 */
 	CHostAddress maddr;
 	CUdpSocket passivesock;
-	CTlvReaderWriter udpreader(&passivesock);
-	CTlvCommand *inmsg;
+	CUdpTlvReader ureader(&passivesock);
 	in_port_t tmpport;
 
 	passivesock.passiveOpen(rport);
-	if (!(inmsg = dynamic_cast<CTlvCommand *>(udpreader.recvfrom(&maddr, &tmpport)))) {
-		PERR("Invalid incoming message.");
-		return NULL;
+
+	CTlvCommand *inmsg;
+	ITlvObject *obj = ureader.recvObjectFrom(&maddr, &tmpport);
+	if (!(inmsg = dynamic_cast<CTlvCommand *>(obj))) {
+		string type = typeid(obj).name();
+		delete obj;
+		throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
+				XTlvCommand::INVALID_OBJECT, type);
 	} else if (inmsg->command() != CTlvCommand::HELLO_MASTER) {
-		PERR("Expected command " <<
-				CTlvCommand::CommandString[CTlvCommand::HELLO_MASTER] <<
-				" but got " << CTlvCommand::CommandString[inmsg->command()]);
-		return NULL;
+		XTlvCommand x(__PRETTY_FUNCTION__, __LINE__,
+				XTlvCommand::UNEXPECTED_COMMAND, *inmsg);
+		delete inmsg;
+		throw x;
 	}
 	delete inmsg;
-	PINF_2("Got master hello message.");
 
 	/*
 	 * Connect to Master.
 	 */
-	tsock = new CTcpSocket();
+	CTcpSocket *tsock = new CTcpSocket();
 	tsock->activeOpen(maddr, mport);
-	PINF_2("Connected to master.");
 
 	// Check nonblocking flag and set to block if needed.
-	// I noticed that the default value might be nonblocking on BSD/Mac.
+	// The default value might be nonblocking on BSD/Mac.
 	if (!tsock->blockable())
 		tsock->setBlockable(true);
 

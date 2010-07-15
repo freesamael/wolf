@@ -4,8 +4,6 @@
  * \author samael
  */
 
-#include <iostream>
-#include <sstream>
 #include "AObservable.h"
 #include "HelperMacros.h"
 
@@ -45,7 +43,6 @@ void AObservable::detach(IObserver *o)
  */
 void AObservable::notify()
 {
-	PINF_3("Notifying all observers.");
 	for (unsigned i = 0; i < _obsrvs.size(); i++)
 		_obsrvs[i]->update(this);
 }

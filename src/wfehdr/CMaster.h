@@ -15,7 +15,7 @@
 #include <map>
 #include <inttypes.h>
 #include "CTime.h"
-#include "CTcpSocket.h"
+#include "CTcpServer.h"
 #include "HelperMacros.h"
 #include "AWorkerActor.h"
 #include "CSimpleWorkerDispatcher.h"
@@ -58,13 +58,13 @@ private:
 	CMaster();
 	~CMaster();
 	CMaster(const CMaster &UNUSED(o)): SINGLETON_MEMBER_INITLST,
-			_state(NOT_READY), _msock(), _defdisp(), _activedisp(NULL),
+			_state(NOT_READY), _mserver(), _defdisp(), _activedisp(NULL),
 			_d(NULL) {}
 	CMaster& operator=(const CMaster &UNUSED(o)) { return *this; }
-	State _state;
-	cml::CTcpSocket _msock;
-	CSimpleWorkerDispatcher _defdisp;
-	IWorkerDispatcher *_activedisp;
+	State _state;						// Master state.
+	cml::CTcpServer _mserver;			// Master tcp server.
+	CSimpleWorkerDispatcher _defdisp;	// Default worker dispatcher.
+	IWorkerDispatcher *_activedisp;		// Active worker dispatcher.
 	PData *_d;
 };
 

@@ -29,45 +29,40 @@ namespace wfe
 
 struct PData
 {
-	PData(): pmsock(NULL), pmclis(NULL), pmclthread(NULL), pcnlis(NULL),
-			rsocks(), rclis(), rclthreads(), rsocksmx(), cmdsdr(), pwexe(NULL),
-			pwexethread(NULL), wq(), wqmx() {}
+	PData(): pmsock(NULL), pmclis(NULL), pcnlis(NULL), rsocks(), rsocksmx(),
+			rclis(), cmdsdr(), pwexe(NULL), wq(), wqmx() {}
 	// Master related resources.
 	CTcpSocket *pmsock;							// Master sock.
 	CRunnerSideCommandListener *pmclis;			// Master cmd listener.
-	CThread *pmclthread;							// Master cmd listen thread.
 
 	// Runner related resources.
 	CRunnerSideConnectionListener *pcnlis;		// Runner connection listener.
-	vector<CTcpSocket *> rsocks;					// Runner socks.
+	vector<CTcpSocket *> rsocks;				// Runner socks.
+	CMutex rsocksmx;							// Runner socks mutex.
 	vector<CRunnerSideCommandListener *> rclis;	// Runner cmd listeners.
-	vector<CThread *> rclthreads;				// Runner cmd listener threads.
-	CMutex rsocksmx;								// Runner socks mutex.
 
 	// Others.
-	CRunnerSideCommandSender cmdsdr;				// Command sender.
+	CRunnerSideCommandSender cmdsdr;			// Command sender.
 	CRunnerSideWorkerExecutor *pwexe;			// Worker executor.
-	CThread *pwexethread;						// Worker execution thread.
 	deque<pair<uint32_t, AWorkerActor *> > wq;	// Working queue.
-	CMutex wqmx;									// Working queue mutex.
+	CMutex wqmx;								// Working queue mutex.
 
 private:
-	PData(const PData &UNUSED(o)): pmsock(NULL), pmclis(NULL), pmclthread(NULL),
-	pcnlis(NULL), rsocks(), rclis(), rclthreads(), rsocksmx(), cmdsdr(),
-	pwexe(NULL), pwexethread(NULL), wq(), wqmx() {}
+	PData(const PData &UNUSED(o)): pmsock(NULL), pmclis(NULL), pcnlis(NULL),
+	rsocks(), rsocksmx(), rclis(), cmdsdr(), pwexe(NULL), wq(), wqmx() {}
 	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
 
 CRunner::CRunner(in_port_t master_port, in_port_t runner_port, IWorkerStealer *ws,
 		const string &appname): _id(0), _state(NOT_READY), _statemx(),
 		_statewcond(), _mport(master_port), _rport(runner_port), _stealer(ws),
-		_appname(appname), _rsock(), _d(new PData())
+		_appname(appname), _rserver(), _d(new PData())
 {
 #ifndef ENABLE_D2MCE /* Normal mode */
 	if (ws)
 		ws->setRunner(this);
 #endif /* ENABLE_D2MCE */
-	_rsock.setAutoclean(false);
+	_rserver.setAutoclean(false);
 }
 
 CRunner::~CRunner()
@@ -78,11 +73,9 @@ CRunner::~CRunner()
 		delete iter->second;
 
 	// Cleanup worker executor.
-	delete _d->pwexethread;
 	delete _d->pwexe;
 
 	// Cleanup master command listener and socket.
-	delete _d->pmclthread;
 	delete _d->pmclis;
 	delete _d->pmsock;
 
@@ -91,7 +84,6 @@ CRunner::~CRunner()
 
 	// Cleanup runner command listeners and sockets.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
-		delete _d->rclthreads[i];
 		delete _d->rclis[i];
 		delete _d->rsocks[i];
 	}
@@ -101,6 +93,7 @@ CRunner::~CRunner()
 
 void CRunner::run()
 {
+	// Check state.
 	_statemx.lock();
 	if (_state != NOT_READY) {
 		_statemx.unlock();
@@ -111,26 +104,19 @@ void CRunner::run()
 
 	// Connect to master and join D2MCE.
 	CRunnerSideMasterConnector msconn;
-	if (!(_d->pmsock = msconn.connect(_mport, _rport))) {
-		PERR("Runner fails. Exit.");
-		return;
-	}
+	_d->pmsock = msconn.connect(_mport, _rport);
 	_d->cmdsdr.joinD2MCE(_d->pmsock, _appname);
 
 	// Start listening connections from other runners.
-	PINF_2("Starting runner connection listener.");
-	_d->pcnlis = new CRunnerSideConnectionListener(this, &_rsock, _rport);
+	_d->pcnlis = new CRunnerSideConnectionListener(this, &_rserver, _rport);
 	_d->pcnlis->start();
 
 	// Start listening master commands.
-	PINF_2("Starting master command listener.");
 	_d->pmclis = new CRunnerSideCommandListener(this, _d->pmsock);
-	_d->pmclthread = new CThread(_d->pmclis);
-	_d->pmclthread->start();
+	_d->pmclis->start();
 
-	// Create worker executor and corresponding thread (but not start yet).
+	// Create worker executor (but not to start yet).
 	_d->pwexe = new CRunnerSideWorkerExecutor(this);
-	_d->pwexethread = new CThread(_d->pwexe);
 
 	// Send hello message to master.
 	_d->cmdsdr.hello(_d->pmsock);
@@ -140,8 +126,7 @@ void CRunner::run()
 	_state = READY;
 	_statewcond.wait(&_statemx);
 	_statemx.unlock();
-	_d->pmclthread->join();
-	PINF_2("Runner ends.");
+	_d->pmclis->join();
 }
 
 /**
@@ -171,15 +156,13 @@ void CRunner::runnerConnected(CTcpSocket *runnersock)
 {
 	CRunnerSideCommandListener *lis =
 			new CRunnerSideCommandListener(this, runnersock);
-	CThread *listhread = new CThread(lis);
 
 	PINF_2("Starting runner command listener.");
-	listhread->start();
+	lis->start();
 
 	_d->rsocksmx.lock();
 	_d->rsocks.push_back(runnersock);
 	_d->rclis.push_back(lis);
-	_d->rclthreads.push_back(listhread);
 	_d->rsocksmx.unlock();
 }
 
@@ -188,6 +171,7 @@ void CRunner::runnerConnected(CTcpSocket *runnersock)
  */
 void CRunner::startWorking()
 {
+	// Check state.
 	_statemx.lock();
 	if (_state != READY) {
 		_statemx.unlock();
@@ -196,14 +180,13 @@ void CRunner::startWorking()
 	}
 	_statemx.unlock();
 
-	PINF_2("Stopping runner connection listener.");
+	// Stop connection listener and start worker executor.
 	_d->pcnlis->stop();
+	_d->pwexe->start();
 	PINF_2("Totally " << _d->rsocks.size() << " runners connected.");
 	PINF_2("Runner id = " << _id);
 
-	PINF_2("Starting worker executor.");
-	_d->pwexethread->start();
-
+	// Change state.
 	_statemx.lock();
 	_state = WORKING;
 	_statemx.unlock();
@@ -314,35 +297,33 @@ void CRunner::shutdown()
 	_statemx.lock();
 	if (_state == READY) {
 		_statemx.unlock();
-		PINF_2("Stopping runner connection listeners.");
+		// Stop runner connection listener.
 		_d->pcnlis->stop();
 	} else if (_state == WORKING) {
 		_statemx.unlock();
-		PINF_2("Stopping worker executor.");
+		// Stopping worker executor.
 		_d->pwexe->setDone();
-		_d->pwexethread->join();
+		_d->pwexe->join();
 	} else {
 		_statemx.unlock();
 		PERR("Invalid operation.");
 		return;
 	}
 
-	PINF_2("Closing all runner sockets.");
+	// Closing all runner sockets.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++)
 		_d->rsocks[i]->close();
 
-	PINF_2("Stopping all runner command listeners.");
-	for (unsigned i = 0; i < _d->rclis.size(); i++)
+	// Stopping all runner command listeners.
+	for (unsigned i = 0; i < _d->rclis.size(); i++) {
 		_d->rclis[i]->setDone();
+		_d->rclis[i]->join();
+	}
 
-	PINF_2("Wait until all runner command listeners end.");
-	for (unsigned i = 0; i < _d->rclthreads.size(); i++)
-		_d->rclthreads[i]->join();
-
-	PINF_2("Closing master socket.");
+	// Closing master socket.
 	_d->pmsock->close();
 
-	PINF_2("Stopping master command listener.");
+	// Stopping master command listener.
 	_d->pmclis->setDone();
 
 	_statemx.lock();

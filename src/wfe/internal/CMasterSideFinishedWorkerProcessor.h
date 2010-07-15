@@ -7,7 +7,7 @@
 #ifndef CMASTERSIDEFINISHEDWORKERPROCESSOR_H_
 #define CMASTERSIDEFINISHEDWORKERPROCESSOR_H_
 
-#include "IRunnable.h"
+#include "CThread.h"
 #include "CMutex.h"
 
 namespace wfe
@@ -18,13 +18,13 @@ class CMaster;
 /**
  * Used to process finished workers.
  */
-class CMasterSideFinishedWorkerProcessor: public cml::IRunnable
+class CMasterSideFinishedWorkerProcessor: public cml::CThread
 {
 public:
 	CMasterSideFinishedWorkerProcessor(CMaster *m):
 		_master(m), _done(false), _mx() {}
 	CMasterSideFinishedWorkerProcessor(const CMasterSideFinishedWorkerProcessor &o):
-		IRunnable(), _master(o._master), _done(o._done), _mx() {}
+		CThread(), _master(o._master), _done(o._done), _mx() {}
 	CMasterSideFinishedWorkerProcessor& operator=(const CMasterSideFinishedWorkerProcessor &o)
 		{ _master = o._master; _done = o._done; return *this; }
 	void run();

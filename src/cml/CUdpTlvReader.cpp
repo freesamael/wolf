@@ -28,7 +28,7 @@ ITlvBlock* CUdpTlvReader::recvBlockFrom(CHostAddress *addr, in_port_t *port)
 	// Read a message.
 	_sock->lockread();
 	try {
-		sz = _sock->recvfrom(buf, sz, addr, port);
+		sz = _sock->recvfrom(buf, ITlvBlock::szHeader, addr, port);
 	} catch (const XSocket &x) {
 		_sock->unlockread();
 		throw x;

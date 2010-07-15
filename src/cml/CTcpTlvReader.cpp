@@ -32,7 +32,8 @@ ITlvBlock* CTcpTlvReader::readBlock() throw(XSocket, XThread)
 			// Read value.
 			uint16_t offset = 0;
 			do {
-				_sock->read(blk->value() + offset, blk->length() - offset);
+				offset += _sock->read(blk->value() + offset,
+						blk->length() - offset);
 			} while (offset < blk->length());
 
 			// Cleanup and return.

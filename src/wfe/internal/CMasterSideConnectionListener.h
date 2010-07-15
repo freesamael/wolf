@@ -19,8 +19,8 @@ namespace wfe
 class CMasterSideConnectionListener: public AConnectionListener
 {
 public:
-	CMasterSideConnectionListener(CMaster *master, cml::CTcpSocket *lsock,
-			in_port_t lport): AConnectionListener(lsock, lport),
+	CMasterSideConnectionListener(CMaster *master, cml::CTcpServer *server,
+			in_port_t lport): AConnectionListener(server, lport),
 			_master(master) {}
 	void notify(cml::CTcpSocket *sock);
 private:

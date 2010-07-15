@@ -76,6 +76,8 @@ public:
 	inline suseconds_t microsecond() const throw() { return _t.tv_usec; }
 	/// Set the value of "microsecond" part.
 	inline void setMicrosecond(suseconds_t s) throw() { _t.tv_usec = s; }
+	inline unsigned toMicroseconds() const throw()
+			{ return _t.tv_sec * 1000000 + _t.tv_usec; }
 	/// Convert to struct timeval.
 	inline timeval toTimeval() const throw() { return _t; }
 	/// Convert to struct timespec.

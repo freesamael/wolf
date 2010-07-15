@@ -7,8 +7,8 @@
 #ifndef ACOMMANDLISTENER_H_
 #define ACOMMANDLISTENER_H_
 
+#include "CThread.h"
 #include "CTcpSocket.h"
-#include "IRunnable.h"
 #include "CTlvCommand.h"
 #include "CMutex.h"
 
@@ -18,13 +18,13 @@ namespace wfe
 /**
  * Used to listen incoming commands.
  */
-class ACommandListener: public cml::IRunnable
+class ACommandListener: public cml::CThread
 {
 public:
 	ACommandListener(cml::CTcpSocket *sock):
 		_done(false), _sock(sock), _mx() {}
 	ACommandListener(const ACommandListener &o):
-		cml::IRunnable(), _done(o._done), _sock(o._sock), _mx() {}
+		cml::CThread(), _done(o._done), _sock(o._sock), _mx() {}
 	virtual ~ACommandListener() {}
 	ACommandListener& operator=(const ACommandListener &o)
 		{ _done = o._done; _sock = o._sock; return *this; }

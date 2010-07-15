@@ -7,7 +7,7 @@
 #ifndef CRUNNERSIDEWORKEREXECUTOR_H_
 #define CRUNNERSIDEWORKEREXECUTOR_H_
 
-#include "IRunnable.h"
+#include "CThread.h"
 #include "CMutex.h"
 #include "CRunner.h"
 
@@ -17,13 +17,13 @@ namespace wfe
 /**
  * Used by runner to execute workers.
  */
-class CRunnerSideWorkerExecutor: public cml::IRunnable
+class CRunnerSideWorkerExecutor: public cml::CThread
 {
 public:
 	CRunnerSideWorkerExecutor(CRunner *runner):
 		_done(false), _runner(runner), _mx() {}
 	CRunnerSideWorkerExecutor(const CRunnerSideWorkerExecutor &o):
-		cml::IRunnable(), _done(o._done), _runner(o._runner), _mx() {}
+		cml::CThread(), _done(o._done), _runner(o._runner), _mx() {}
 	CRunnerSideWorkerExecutor& operator=(const CRunnerSideWorkerExecutor &o)
 		{ _done = o._done; _runner = o._runner; return *this; }
 	inline bool isDone()

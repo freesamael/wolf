@@ -29,19 +29,18 @@ namespace wfe
 
 struct PData
 {
-	PData(): rsocks(), clis(), clthreads(), rsocksmx(), pfwpsr(NULL),
-			pthfwpsr(NULL), cmdsdr(), mgrq(), mgrqmx(), fwq(), fwqmx(),
-			bcastaddr(CHostAddress::BroadcastAddress), stime(),
-			exetime() {}
+	PData(): rsocks(), rsocksmx(), cmdsdr(), clis(), pfwpsr(NULL), mgrq(),
+			mgrqmx(), fwq(), fwqmx(), bcastaddr(CHostAddress::BroadcastAddress),
+			stime(), exetime() {}
 
-	vector<CTcpSocket *> rsocks;					// Runner sockets.
+	// Runner related resources.
+	vector<CTcpSocket *> rsocks;				// Runner sockets.
+	CMutex rsocksmx;							// Runner sockets mutex.
+	CMasterSideCommandSender cmdsdr;			// Command sender.
 	vector<CMasterSideCommandListener *> clis;	// Command listeners.
-	vector<CThread *> clthreads;					// Command listener threads.
-	CMutex rsocksmx;								// Runner sockets mutex.
 	CMasterSideFinishedWorkerProcessor *pfwpsr;	// Finished worker processor.
-	CThread *pthfwpsr;							// Fin worker psr thread.
 
-	CMasterSideCommandSender cmdsdr;				// Command sender.
+	// Others.
 	map<uint32_t, IManagerActor *> mgrq;		// Manager queue.
 	CMutex mgrqmx;								// Manager queue mutex.
 	deque<pair<uint32_t, AWorkerActor *> > fwq; // Finished worker queue.
@@ -51,10 +50,9 @@ struct PData
 	cml::CTime exetime;							// Execution time.
 
 private:
-	PData(const PData &UNUSED(o)): rsocks(), clis(), clthreads(), rsocksmx(),
-			pfwpsr(NULL), pthfwpsr(NULL), cmdsdr(), mgrq(), mgrqmx(), fwq(),
-			fwqmx(), bcastaddr(CHostAddress::BroadcastAddress), stime(),
-			exetime() {}
+	PData(const PData &UNUSED(o)): rsocks(), rsocksmx(), cmdsdr(), clis(),
+			pfwpsr(NULL), mgrq(), mgrqmx(), fwq(), fwqmx(),
+			bcastaddr(CHostAddress::BroadcastAddress), stime(),	exetime() {}
 	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
 
@@ -65,7 +63,7 @@ SINGLETON_REGISTRATION_END();
 const string CMaster::StateString[] = { "Not Ready", "Ready", "End" };
 
 CMaster::CMaster():
-		SINGLETON_MEMBER_INITLST,	_state(NOT_READY), _msock(), _defdisp(),
+		SINGLETON_MEMBER_INITLST,	_state(NOT_READY), _mserver(), _defdisp(),
 		_activedisp(&_defdisp), _d(new PData)
 {
 }
@@ -74,8 +72,6 @@ CMaster::~CMaster()
 {
 	for (unsigned i = 0; i < _d->clis.size(); i++)
 		delete _d->clis[i];
-	for (unsigned i = 0; i < _d->clthreads.size(); i++)
-		delete _d->clthreads[i];
 	delete _d;
 }
 
@@ -109,7 +105,7 @@ bool CMaster::setup(in_port_t master_port, in_port_t runner_port,
 		return false;
 
 	// Start waiting runner connections.
-	CMasterSideConnectionListener listener(this, &_msock, master_port);
+	CMasterSideConnectionListener listener(this, &_mserver, master_port);
 	listener.start();
 
 	// Join D2MCE group and broadcast hello message.
@@ -126,17 +122,14 @@ bool CMaster::setup(in_port_t master_port, in_port_t runner_port,
 
 	// Start finished worker processor.
 	_d->pfwpsr = new CMasterSideFinishedWorkerProcessor(this);
-	_d->pthfwpsr = new CThread(_d->pfwpsr);
-	_d->pthfwpsr->start();
+	_d->pfwpsr->start();
 
 	// Bind command listeners to each runner, and start all runners.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		CMasterSideCommandListener *cl =
 				new CMasterSideCommandListener(this, _d->rsocks[i]);
-		CThread *clth = new CThread(cl);
-		clth->start();
+		cl->start();
 		_d->clis.push_back(cl);
-		_d->clthreads.push_back(clth);
 		_d->cmdsdr.startRunner(_d->rsocks[i]);
 	}
 
@@ -187,17 +180,14 @@ void CMaster::shutdown()
 
 	// Stop finished worker processor.
 	_d->pfwpsr->setDone();
-	_d->pthfwpsr->join();
+	_d->pfwpsr->join();
 
 	// Shutdown all runners and stop all command listeners.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		_d->cmdsdr.shutdown(_d->rsocks[i]);
 		_d->clis[i]->setDone();
+		_d->clis[i]->join();
 	}
-
-	// Wait listener threads end.
-	for (unsigned i = 0; i < _d->clthreads.size(); i++)
-		_d->clthreads[i]->join();
 
 	_state = END;
 }

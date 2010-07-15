@@ -13,59 +13,41 @@
 using namespace std;
 using namespace cml;
 
-class ReadingThread: public CThread
-{
-public:
-	ReadingThread(CTcpSocket &c): _done(false), _conn(c), _bc(0) {}
-	unsigned bytecount() { return _bc; }
-	void setDone(bool d = true) { _done = d; }
-	void run()
-	{
-		char d[1500];
-		int sz;
-		while ((sz = _conn.read(d, 10)) > 0) {
-			for (int i = 0; i < sz; i++)
-				if (d[i] != (char)0x55)
-					cerr << "Error: d = " << hex << (int)d[i] << endl;
-			_bc += sz;
-		}
-	}
+#define SZ_BUF	1048576
+#define T_SEND	5
 
-private:
-	bool _done;
-	CTcpSocket &_conn;
-	unsigned _bc;
-};
-
+#include "testtcp.h"
 
 int main()
 {
 	CTcpServer server;
 	server.passiveOpen(5566, 10, true);
 
-	char c[1500];
-	for (int i = 0; i < 1500; i++)
-		c[i] = 0xaa;
+	char *c = new char[SZ_BUF];
+	for (int i = 0; i < SZ_BUF; i++)
+		c[i] = (char)0xaa;
 
 	CTcpSocket *conn = server.accept();
 
-	ReadingThread reading(*conn);
+	ReadingThread reading(*conn, (char)0x55);
 	reading.start();
 
 	unsigned bytecount = 0;
 	CTime st = CTime::now();
-	while ((CTime::now() - st) < CTime(5, 0)) {
-		bytecount += conn->write(c, 1500);
+	while ((CTime::now() - st) < CTime(T_SEND, 0)) {
+		bytecount += conn->write(c, SZ_BUF);
 	}
+	CTime sendtime = CTime::now() - st;
 	conn->close();
-
 	cout << "Sent " << bytecount << " bytes." << endl;
-	cout << "Sending rate = " << ((double)bytecount * 8 / 4 / 1048576) << " Mbps" << endl;
+	cout << "Sending rate = " << ((double)bytecount * 8 / 1048576 * 1000000 / sendtime.toMicroseconds()) << " Mbps" << endl;
 
 	reading.setDone();
 	reading.join();
-
+	CTime recvtime = CTime::now() - reading.tstart();
 	cout << "Received " << reading.bytecount() << " bytes." << endl;
-	cout << "Receiving rate = " << ((double)reading.bytecount() * 8 / 4 / 1048576) << " Mbps" << endl;
-    return 0;
+	cout << "Receiving rate = " << ((double)reading.bytecount() * 8 / 1048576 * 1000000 / recvtime.toMicroseconds()) << " Mbps" << endl;
+
+	delete [] c;
+	return 0;
 }

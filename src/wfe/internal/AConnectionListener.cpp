@@ -4,23 +4,24 @@
  * \author samael
  */
 
-#include <iostream>
-#include <sstream>
-#include "CTlvReaderWriter.h"
-#include "CTcpTlvReaderWriter.h"
+#include <string>
+#include <typeinfo>
+#include "CTcpTlvReader.h"
 #include "CTlvCommand.h"
 #include "AConnectionListener.h"
+#include "XTlvCommand.h"
 
+using namespace std;
 using namespace cml;
 
 namespace wfe
 {
 
-AConnectionListener::AConnectionListener(CTcpSocket *lsock,
-		in_port_t lport): _lsock(lsock), _listener(_lsock),
+AConnectionListener::AConnectionListener(CTcpServer *server,
+		in_port_t lport): _server(server), _listener(_server),
 		_listhread(&_listener)
 {
-	_lsock->passiveOpen(lport);
+	_server->passiveOpen(lport);
 	_listener.attach(this);
 }
 
@@ -29,7 +30,6 @@ AConnectionListener::AConnectionListener(CTcpSocket *lsock,
  */
 void AConnectionListener::start()
 {
-	PINF_2("Start listening.");
 	_listhread.start();
 }
 
@@ -38,7 +38,6 @@ void AConnectionListener::start()
  */
 void AConnectionListener::stop()
 {
-	PINF_2("Stop listening.");
 	_listener.setDone();
 	_listhread.join();
 }
@@ -47,37 +46,36 @@ void AConnectionListener::update(AObservable *o)
 {
 	// Check observable.
 	CTcpConnectionListener *ca;
-	if (!(ca = dynamic_cast<CTcpConnectionListener*>(o))) {
-		PERR("Invalid update call from a object that is not TCPConnectionAcceptor.");
-		return;
+	if ((ca = dynamic_cast<CTcpConnectionListener*>(o))) {
+		// Check socket.
+		CTcpSocket *sock;
+		if ((sock = ca->lastAcceptedSocket())) {
+			// Check message.
+			CTcpTlvReader reader(sock);
+			ITlvObject *obj;
+			if ((obj = reader.readObject())) {
+				CTlvCommand *msg;
+				if (!(msg = dynamic_cast<CTlvCommand *>(obj))) {
+					string type = typeid(obj).name();
+					delete obj;
+					throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
+							XTlvCommand::INVALID_OBJECT, type);
+				} else if (msg->command() != CTlvCommand::HELLO_RUNNER) {
+					XTlvCommand x(__PRETTY_FUNCTION__, __LINE__,
+							XTlvCommand::UNEXPECTED_COMMAND, *msg);
+					delete msg;
+					throw x;
+				} else {
+					// Check nonblocking flag and set to block if needed.
+					// The default value might be nonblocking on BSD/Mac.
+					if (!sock->blockable())
+						sock->setBlockable(true);
+					notify(sock);
+				}
+				delete msg;
+			}
+		}
 	}
-
-	// Check socket.
-	CTcpSocket *sock;
-	if (!(sock = ca->lastAcceptedSocket())) {
-		PERR("No socket object found.");
-		return;
-	}
-
-	// Check message.
-	CTlvReaderWriter tcprw(sock);
-	CTlvCommand *msg;
-	if (!(msg = dynamic_cast<CTlvCommand *>(tcprw.read()))) {
-		PERR("Invalid incoming message.");
-	} else if (msg->command() != CTlvCommand::HELLO_RUNNER) {
-		PERR("Expected command " <<
-				CTlvCommand::CommandString[CTlvCommand::HELLO_RUNNER] <<
-				"but got " <<
-				CTlvCommand::CommandString[msg->command()] << ".");
-	} else {
-		PINF_2("Got an incoming runner connection.");
-		// Check nonblocking flag and set to block if needed.
-		// I noticed that the default value might be nonblocking on BSD/Mac.
-		if (!sock->blockable())
-			sock->setBlockable(true);
-		notify(sock);
-	}
-	delete msg;
 }
 
 }

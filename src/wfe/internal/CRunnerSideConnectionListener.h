@@ -19,8 +19,8 @@ namespace wfe
 class CRunnerSideConnectionListener: public AConnectionListener
 {
 public:
-	CRunnerSideConnectionListener(CRunner *runner, cml::CTcpSocket *lsock,
-			in_port_t lport): AConnectionListener(lsock, lport),
+	CRunnerSideConnectionListener(CRunner *runner, cml::CTcpServer *server,
+			in_port_t lport): AConnectionListener(server, lport),
 			_runner(runner) {}
 	void notify(cml::CTcpSocket *sock);
 

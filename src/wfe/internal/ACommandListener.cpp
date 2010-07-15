@@ -20,18 +20,24 @@ namespace wfe
 void wfe::ACommandListener::run()
 {
 	CTcpTlvReader reader(_sock);
-	ITlvObject *inobj;
-	CTlvCommand *incmd = NULL;
 
 	while (!isDone()) {
+		ITlvObject *inobj;
 		if (!(inobj = reader.readObject()))
 			break; // End of file.
+		CTlvCommand *incmd;
 		if (!(incmd = dynamic_cast<CTlvCommand *>(inobj))) {
-			string type = typeid(inojb).name();
+			string type = typeid(inobj).name();
 			delete inobj;
-			throw XTlvCommand(XTlvCommand::NOT_TLV_COMMAND);
+			throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
+					XTlvCommand::INVALID_OBJECT, typeid(inobj).name());
 		} else {
-			process(incmd);
+			try {
+				process(incmd);
+			} catch (const XTlvCommand &x) {
+				delete incmd;
+				throw x;
+			}
 			delete incmd;
 		}
 	}

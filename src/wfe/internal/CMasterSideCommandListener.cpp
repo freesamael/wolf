@@ -6,9 +6,10 @@
 
 #include <iostream>
 #include <sstream>
-#include "HelperMacros.h"
 #include "CTlvUint32.h"
+#include "HelperMacros.h"
 #include "CMasterSideCommandListener.h"
+#include "XTlvCommand.h"
 
 using namespace cml;
 
@@ -18,29 +19,37 @@ namespace wfe
 void CMasterSideCommandListener::process(CTlvCommand *cmd)
 {
 	if (cmd->command() == CTlvCommand::WORKER_FINISHED) {
-		PINF_2("Got command WORKER_FINISHED.");
 		CTlvUint32 *u32;
 		AWorkerActor *worker;
+
+		// Check #parameters.
 		if (cmd->parameters().size() != 2) { // [id, worker]
-			PERR("Invalid number of parameters.");
-			return;
+			cmd->setAutoclean(true);
+			throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
+					XTlvCommand::INVALID_PARAM_NUM, *cmd);
 		}
+
+		// Check p1.
 		if (!(u32 = dynamic_cast<CTlvUint32 *>(cmd->parameters()[0]))) {
-			PERR("Invalid parameter.");
-			return;
+			cmd->setAutoclean(true);
+			throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
+					XTlvCommand::INVALID_PARAM, *cmd);
 		}
+
+		// Check p2.
 		if (!(worker = dynamic_cast<AWorkerActor *>(cmd->parameters()[1]))) {
-			PERR("Invalid parameter.");
-			delete u32;
-			return;
+			cmd->setAutoclean(true);
+			throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
+					XTlvCommand::INVALID_PARAM, *cmd);
 		}
+
 		PINF_2("Worker " << u32->value() << " finished by runner " <<
 				sock()->peerAddress().toString());
 		_master->putFinishWorker(u32->value(), worker);
 		delete u32;
 	} else {
-		PERR("Unexpected command \"" <<
-				CTlvCommand::CommandString[cmd->command()] << "\".");
+		throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
+				XTlvCommand::UNEXPECTED_COMMAND, *cmd);
 	}
 }
 
