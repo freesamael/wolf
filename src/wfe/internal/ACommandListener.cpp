@@ -4,13 +4,14 @@
  * \author samael
  */
 
-#include <iostream>
-#include <sstream>
+#include <string>
+#include <typeinfo>
 #include "CTcpTlvReader.h"
 #include "ITlvObject.h"
-#include "HelperMacros.h"
 #include "ACommandListener.h"
+#include "XTlvCommand.h"
 
+using namespace std;
 using namespace cml;
 
 namespace wfe
@@ -22,19 +23,18 @@ void wfe::ACommandListener::run()
 	ITlvObject *inobj;
 	CTlvCommand *incmd = NULL;
 
-	PINF_2("Start listening for commands.");
 	while (!isDone()) {
 		if (!(inobj = reader.readObject()))
 			break; // End of file.
 		if (!(incmd = dynamic_cast<CTlvCommand *>(inobj))) {
-			PERR("Invalid incoming message.");
+			string type = typeid(inojb).name();
 			delete inobj;
+			throw XTlvCommand(XTlvCommand::NOT_TLV_COMMAND);
 		} else {
 			process(incmd);
 			delete incmd;
 		}
 	}
-	PINF_2("Running loop ends.");
 }
 
 }

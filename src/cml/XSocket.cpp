@@ -20,7 +20,7 @@ const char *XSocket::XTypeString[] = {
 		"unknown error"
 };
 
-XSocket::XSocket(const char *func, int line, int e) throw():
+XSocket::XSocket(const string &func, int line, int e) throw():
 		_e(ERRNO), _eno(e), _estr()
 {
 	char lstr[10];
@@ -29,7 +29,7 @@ XSocket::XSocket(const char *func, int line, int e) throw():
 	_estr = (string)strerror(e) + " [" + func + ": " + lstr + "]";
 }
 
-XSocket::XSocket(const char *func, int line, XType e) throw():
+XSocket::XSocket(const string &func, int line, XType e) throw():
 		_e(e), _eno(0), _estr()
 {
 	char lstr[10];

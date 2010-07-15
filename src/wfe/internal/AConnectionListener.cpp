@@ -7,6 +7,7 @@
 #include <iostream>
 #include <sstream>
 #include "CTlvReaderWriter.h"
+#include "CTcpTlvReaderWriter.h"
 #include "CTlvCommand.h"
 #include "AConnectionListener.h"
 

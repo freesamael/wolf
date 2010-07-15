@@ -6,6 +6,7 @@
 
 #include <cstdio>
 #include "XTlvObject.h"
+#include "CmlTLVTypes.h"
 
 using namespace std;
 
@@ -24,13 +25,16 @@ XTlvObject::XTlvObject(const std::string &func, int line, XType e, uint16_t id,
 		_e(e), _estr()
 {
 	char idstr[10];
-	sprintf(idstr, "%d", (int)id);
+	if (id == TLV_TYPE_INVALID)
+		sprintf(idstr, "?");
+	else
+		sprintf(idstr, "%d", (int)id);
 
 	char lstr[10];
 	sprintf(lstr, "%d", (int)line);
 
-	_estr = (string)XTypeString[e] + " (id: " + idstr + ", name: " + name + ")"
-			+ " [" + func + lstr + "]";
+	_estr = (string)XTypeString[e] + " (id: " + idstr + ", name: " + name +
+			") [" + func + ": " + lstr + "]";
 }
 
 }

@@ -26,8 +26,8 @@ public:
 		UNKNOWN_ERR
 	} XType;
 	static const char *XTypeString[];
-	explicit XSocket(const char *func, int line, int e) throw();
-	explicit XSocket(const char *func, int line, XType e) throw();
+	explicit XSocket(const std::string &func, int line, int e) throw();
+	explicit XSocket(const std::string &func, int line, XType e) throw();
 	virtual ~XSocket() throw() {}
 	inline XType xtype() const throw() { return _e; }
 	inline int errnum() const throw() { return _eno; }
