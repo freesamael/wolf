@@ -21,7 +21,7 @@ AConnectionListener::AConnectionListener(CTcpServer *server,
 		in_port_t lport): _server(server), _listener(_server),
 		_listhread(&_listener)
 {
-	_server->passiveOpen(lport);
+	_server->passiveOpen(lport, 10, true);
 	_listener.attach(this);
 }
 
