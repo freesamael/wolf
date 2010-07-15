@@ -7,8 +7,7 @@
 #ifndef XTHREAD_H_
 #define XTHREAD_H_
 
-#include <exception>
-#include <string>
+#include "AException.h"
 
 namespace cml
 {
@@ -16,7 +15,7 @@ namespace cml
 /**
  * Representing thread related exceptions.
  */
-class XThread: public std::exception
+class XThread: public AException
 {
 public:
 	typedef enum XType {

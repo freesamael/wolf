@@ -7,8 +7,8 @@
 #ifndef XTLVOBJECT_H_
 #define XTLVOBJECT_H_
 
-#include <string>
 #include <inttypes.h>
+#include "AException.h"
 #include "CmlTLVTypes.h"
 
 namespace cml
@@ -17,7 +17,7 @@ namespace cml
 /**
  * Exceptions of TLV objects and blocks.
  */
-class XTlvObject
+class XTlvObject: public AException
 {
 public:
 	typedef enum XType {

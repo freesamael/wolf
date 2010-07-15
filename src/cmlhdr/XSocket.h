@@ -7,8 +7,7 @@
 #ifndef XSOCKET_H_
 #define XSOCKET_H_
 
-#include <exception>
-#include <string>
+#include "AException.h"
 
 namespace cml
 {
@@ -16,7 +15,7 @@ namespace cml
 /**
  * Representing socket related exceptions.
  */
-class XSocket: public std::exception
+class XSocket: public AException
 {
 public:
 	typedef enum XType

@@ -6,7 +6,7 @@
 
 #include <iostream>
 #include <sstream>
-#include "CTlvReaderWriter.h"
+#include "CTcpTlvReader.h"
 #include "ITlvObject.h"
 #include "HelperMacros.h"
 #include "ACommandListener.h"
@@ -18,13 +18,13 @@ namespace wfe
 
 void wfe::ACommandListener::run()
 {
-	CTlvReaderWriter tcprw(_sock);
+	CTcpTlvReader reader(_sock);
 	ITlvObject *inobj;
 	CTlvCommand *incmd = NULL;
 
 	PINF_2("Start listening for commands.");
 	while (!isDone()) {
-		if (!(inobj = tcprw.read()))
+		if (!(inobj = reader.readObject()))
 			break; // End of file.
 		if (!(incmd = dynamic_cast<CTlvCommand *>(inobj))) {
 			PERR("Invalid incoming message.");
