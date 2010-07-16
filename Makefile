@@ -18,7 +18,7 @@ ifneq (${DEBUG}, n)
 CXXFLAGS += -DDEBUG=${DEBUG}
 endif
 
-CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra -D_POSIX_C_SOURCE=200112L -D__STDC_LIMIT_MACROS 
+CXXFLAGS += -g3 -O0 -ansi -pedantic -Wall -Wextra -D_XOPEN_SOURCE=600 -D__STDC_LIMIT_MACROS 
 
 COV ?= n
 ifeq (${COV}, y)
