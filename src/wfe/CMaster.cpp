@@ -81,15 +81,15 @@ CMaster::~CMaster()
 void CMaster::init(int argc, char *argv[])
 {
 	int opt;
-	while ((opt = getopt(argc, argv, "a:h")) != -1) {
+	while ((opt = getopt(argc, argv, "b:h")) != -1) {
 		switch (opt) {
-		case 'a':
+		case 'b':
 			_d->bcastaddr = CHostAddress(optarg);
 			PINF_2("Broadcast address will be " << _d->bcastaddr.toString());
 			break;
 		case 'h':
 			cerr << "Usage: " << argv[0] <<
-			" [-a broadcast_address]" << endl;
+			" [-b broadcast_address]" << endl;
 			exit(EXIT_FAILURE);
 		}
 	}
