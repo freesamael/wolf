@@ -6,9 +6,9 @@
 
 #include <vector>
 #include <cstring>
-#include <opencv/cv.h>
-#include <opencv/cvaux.h>
-#include <opencv/highgui.h>
+//#include <opencv/cv.h>
+//#include <opencv/cvaux.h>
+//#include <opencv/highgui.h>
 #include <arpa/inet.h>
 #include <CSimpleManagerActor.h>
 #include <CTlvObjectFactoryAutoRegistry.h>
@@ -102,18 +102,18 @@ void MansetWorker::fire()
 	double imagfactor = (maximag - minimag) / (_imgheight - 1);
 	for (unsigned y = _minrow; y < _minrow + _rows; y++) {
 		for (unsigned x = 0; x < _imgwidth; x++) {
+			double creal = minreal + x * realfactor;
+			double cimag = maximag - y * imagfactor;
+			double zreal = creal, zimag = cimag;
+			unsigned maxiter = 1000, iter;
+			for (iter = 0; iter < maxiter; iter++) {
+				if (zreal * zreal + zimag * zimag > 4)
+					break;
+				double tmpzreal = zreal * zreal - zimag * zimag;
+				zimag = 2 * zreal * zimag + cimag;
+				zreal = tmpzreal + creal;
+			}
 			for (int ch = 0; ch < 3; ch++) {
-				double creal = minreal + x * realfactor;
-				double cimag = maximag - y * imagfactor;
-				double zreal = creal, zimag = cimag;
-				unsigned maxiter = 1000, iter;
-				for (iter = 0; iter < maxiter; iter++) {
-					if (zreal * zreal + zimag * zimag > 4)
-						break;
-					double tmpzreal = zreal * zreal - zimag * zimag;
-					zimag = 2 * zreal * zimag + cimag;
-					zreal = tmpzreal + creal;
-				}
 				unsigned index = (y - _minrow) * (_imgwidth * 3) + x * 3 + ch;
 				if (iter == maxiter) {
 					_imgdata[index] = 0;
