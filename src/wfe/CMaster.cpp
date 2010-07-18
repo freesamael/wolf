@@ -29,8 +29,8 @@ namespace wfe
 struct PData
 {
 	PData(): rsocks(), rsocksmx(), cmdsdr(), clis(), pfwpsr(NULL), mgrq(),
-			mgrqmx(), fwq(), fwqmx(), bcastaddr(CHostAddress::BroadcastAddress),
-			stime(), exetime() {}
+			mgrqmx(), fwq(), fwqmx(), nfinwrks(0),
+			bcastaddr(CHostAddress::BroadcastAddress), stime(), exetime() {}
 
 	// Runner related resources.
 	vector<CTcpSocket *> rsocks;				// Runner sockets.
@@ -44,13 +44,14 @@ struct PData
 	CMutex mgrqmx;								// Manager queue mutex.
 	deque<pair<uint32_t, AWorkerActor *> > fwq; // Finished worker queue.
 	CMutex fwqmx;								// Finished worker queue mutex.
+	unsigned nfinwrks;							// # finished workers.
 	CHostAddress bcastaddr;						// Broadcast address.
 	cml::CTime stime;							// Time when started.
 	cml::CTime exetime;							// Execution time.
 
 private:
 	PData(const PData &UNUSED(o)): rsocks(), rsocksmx(), cmdsdr(), clis(),
-			pfwpsr(NULL), mgrq(), mgrqmx(), fwq(), fwqmx(),
+			pfwpsr(NULL), mgrq(), mgrqmx(), fwq(), fwqmx(), nfinwrks(0),
 			bcastaddr(CHostAddress::BroadcastAddress), stime(),	exetime() {}
 	PData& operator=(const PData &UNUSED(o)) { return *this; }
 };
@@ -175,6 +176,7 @@ void CMaster::shutdown()
 {
 	_d->exetime = CTime::now() - _d->stime;
 	PINF_1("Execution time = " << _d->exetime);
+	PINF_1(_d->nfinwrks << " runners finished.");
 
 	// Stop finished worker processor.
 	_d->pfwpsr->setDone();
@@ -211,6 +213,7 @@ void CMaster::runnerConnected(cml::CTcpSocket *runnersock)
 void CMaster::putFinishWorker(uint32_t wseq, AWorkerActor *worker)
 {
 	_d->fwqmx.lock();
+	_d->nfinwrks++;
 	_d->fwq.push_back(pair<uint32_t, AWorkerActor *>(wseq, worker));
 	_d->fwqmx.unlock();
 }
