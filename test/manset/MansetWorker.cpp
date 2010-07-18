@@ -94,15 +94,17 @@ void MansetWorker::prefire()
 
 void MansetWorker::fire()
 {
-	for (unsigned x = 0; x < _imgwidth; x++) {
-		for (unsigned y = _minrow; y < _minrow + _rows; y++) {
+	double minreal = -2.0;
+	double maxreal = 1.0;
+	double minimag = -1.2;
+	double maximag = 1.2;
+	double realfactor = (maxreal - minreal) / (_imgwidth - 1);
+	double imagfactor = (maximag - minimag) / (_imgheight - 1);
+	for (unsigned y = _minrow; y < _minrow + _rows; y++) {
+		for (unsigned x = 0; x < _imgwidth; x++) {
 			for (int ch = 0; ch < 3; ch++) {
-				double minreal = -2.0;
-				double maxreal = 1.0;
-				double minimag = -1.2;
-				double maximag = 1.2;
-				double creal = minreal + x * (maxreal - minreal) / (_imgwidth - 1);
-				double cimag = maximag - y * (maximag - minimag) / (_imgheight - 1);
+				double creal = minreal + x * realfactor;
+				double cimag = maximag - y * imagfactor;
 				double zreal = creal, zimag = cimag;
 				unsigned maxiter = 1000, iter;
 				for (iter = 0; iter < maxiter; iter++) {
@@ -112,33 +114,36 @@ void MansetWorker::fire()
 					zimag = 2 * zreal * zimag + cimag;
 					zreal = tmpzreal + creal;
 				}
-				unsigned index = (y - _minrow) * _imgwidth + x * 3 + ch;
+				unsigned index = (y - _minrow) * (_imgwidth * 3) + x * 3 + ch;
 				if (iter == maxiter) {
 					_imgdata[index] = 0;
 				} else if (ch == 0) {
 					if (iter <= 5)
 						_imgdata[index] = 50 + iter * 5;
-					if (iter <= 15)
+					else if (iter <= 15)
 						_imgdata[index] = (200 - 75) * (iter - 5) / 10 + 75;
-					if (iter <= 20)
+					else if (iter <= 20)
 						_imgdata[index] = (255 - 200) * (iter - 15) / 5 + 200;
-					_imgdata[index] = 255;
+					else
+						_imgdata[index] = 255;
 				} else if (ch == 1) {
 					if (iter <= 13)
 						_imgdata[index] = 0;
-					if (iter <= 18)
+					else if (iter <= 18)
 						_imgdata[index] = (iter - 13) * 5;
-					if (iter <= 23)
+					else if (iter <= 23)
 						_imgdata[index] = (255 - 75) * (iter - 18) / 5 + 75;
-					_imgdata[index] = 255;
+					else
+						_imgdata[index] = 255;
 				} else {
 					if (iter <= 18)
 						_imgdata[index] = 0;
-					if (iter <= 20)
+					else if (iter <= 20)
 						_imgdata[index] = (iter - 18) * 40;
-					if (iter <= 23)
+					else if (iter <= 23)
 						_imgdata[index] = (255 - 80) * (iter - 20) / 3;
-					_imgdata[index] = 255;
+					else
+						_imgdata[index] = 255;
 				}
 			}
 		}
@@ -147,19 +152,18 @@ void MansetWorker::fire()
 
 void MansetWorker::postfire()
 {
-	IplImage *img = cvCreateImage(cvSize(_imgwidth, _rows), IPL_DEPTH_8U, 3);
-
-	for (int i = 0; i < img->height; i++) {
-		memcpy((char *)img->imageData,
-				(char *)(_imgdata + i * _imgwidth * 3),
-				_imgwidth * 3);
-	}
-
-	char nstr[10];
-	sprintf(nstr, "%d", _minrow);
-	string filename = (string)"img_" + nstr + ".jpg";
-	cvSaveImage(filename.c_str(), img);
-	cvReleaseImage(&img);
+//	IplImage *img = cvCreateImage(cvSize(_imgwidth, _rows), IPL_DEPTH_8U, 3);
+//
+//	for (int i = 0; i < img->height; i++) {
+//		memcpy(img->imageData, _imgdata, _imgwidth * 3);
+//	}
+//	img->imageData = (char *)_imgdata;
+//
+//	char nstr[10];
+//	sprintf(nstr, "%d", _minrow);
+//	string filename = (string)"img_" + nstr + ".jpg";
+//	cvSaveImage(filename.c_str(), img);
+//	cvReleaseImage(&img);
 }
 
 void MansetWorker::update(AWorkerActor *o)

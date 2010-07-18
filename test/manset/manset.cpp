@@ -16,9 +16,9 @@
 using namespace std;
 using namespace wfe;
 
-#define IMG_WIDTH	300
-#define IMG_HEIGHT	240
-#define IMG_ROWS	40
+#define IMG_WIDTH	4000
+#define IMG_HEIGHT	3200
+#define IMG_ROWS	5
 
 int main(int argc, char *argv[])
 {
@@ -55,6 +55,12 @@ int main(int argc, char *argv[])
 		delete _mgrs[i];
 		delete _wrks[i];
 	}
+
+//	MansetWorker w;
+//	w.setImageRange(400, 320, 0, 320);
+//	w.prefire();
+//	w.fire();
+//	w.postfire();
 
 	return 0;
 }

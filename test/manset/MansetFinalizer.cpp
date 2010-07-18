@@ -51,8 +51,8 @@ void MansetFinalizer::fire()
 	IplImage *img = cvCreateImage(cvSize(_imgwidth, _imgheight), IPL_DEPTH_8U, 3);
 
 	for (int i = 0; i < img->height; i++) {
-		memcpy((char *)img->imageData,
-				(char *)(_imgdata[i / _rows] + (i % _rows) * _imgwidth * 3),
+		memcpy(img->imageData + i * img->widthStep,
+				(_imgdata[i / _rows] + (i % _rows) * _imgwidth * 3),
 				_imgwidth * 3);
 	}
 
