@@ -7,9 +7,9 @@
 #include <iostream>
 #include <string>
 #include "CUdpSocket.h"
-#include "CTlvReaderWriter.h"
 #include "CTlvString.h"
 #include "CHostAddress.h"
+#include "CUdpTlvReaderWriter.h"
 
 using namespace std;
 using namespace cml;
@@ -18,7 +18,7 @@ int main()
 {
     string str;
     CUdpSocket sock;
-    CTlvReaderWriter rw(&sock);
+    CUdpTlvReaderWriter rw(&sock);
     CHostAddress addr;
     unsigned short port;
 
@@ -27,12 +27,12 @@ int main()
 
         // Write out.
         CTlvString ostr(str);
-        rw.sendto(ostr, "127.0.0.1", 5566);
+        rw.sendObjectTo(ostr, "127.0.0.1", 5566);
 
         // Read in.
         ITlvObject *obj;
         CTlvString *istr;
-        obj = rw.recvfrom(&addr, &port);
+        obj = rw.recvObjectFrom(&addr, &port);
         if ((istr = dynamic_cast<CTlvString *>(obj))) {
             cout << istr->toString() << endl;
         }

@@ -17,6 +17,7 @@ public:
 	FlowUint8Pointer(uint8_t *p): _p(p) {}
 	FlowUint8Pointer(const FlowUint8Pointer &o): _p(o._p) {}
 	IDrop* clone() const { return new FlowUint8Pointer(*this); }
+	uint8_t* value() { return _p; }
 
 private:
 	uint8_t *_p;
@@ -25,22 +26,24 @@ private:
 class MansetWorker: public wfe::AWorkerActor
 {
 public:
-	MansetWorker(): _minx(0), _miny(0), _xrange(0), _yrange(0), _imgwidth(0),
-			_imgheight(0), _imgdata(NULL) {}
+	MansetWorker(): _imgwidth(0),_imgheight(0), _minrow(0), _rows(0),
+			_imgdata(NULL) {}
+	~MansetWorker() { delete [] _imgdata; }
 	void managerInitialization(wfe::IManagerActor *mgr);
 	void managerFinalization(wfe::IManagerActor *mgr);
 	void managerPrefire(wfe::IManagerActor *mgr);
 	void managerPostfire(wfe::IManagerActor *mgr);
+	void prefire();
 	void fire();
+	void postfire();
 	void update(AWorkerActor *o);
-	void setImageRange(uint32_t minx, uint32_t miny,
-			uint32_t xrange, uint32_t yrange,
-			uint32_t imgwidth, uint32_t imgheight);
+	void setImageRange(uint32_t imgwidth, uint32_t imgheight, uint32_t minrow,
+			uint32_t rows);
 	void setImageData(uint8_t *imgdata, uint32_t size);
 	cml::CTlvBlock* toTLVBlock() const;
 
 private:
-	uint32_t _minx, _miny, _xrange, _yrange, _imgwidth, _imgheight;
+	uint32_t _imgwidth, _imgheight, _minrow, _rows;
 	uint8_t *_imgdata;
 };
 

@@ -5,7 +5,7 @@
  */
 
 #include <CUdpSocket.h>
-#include <CTlvReaderWriter.h>
+#include <CUdpTlvWriter.h>
 #include <CTlvString.h>
 
 using namespace cml;
@@ -14,11 +14,11 @@ int main()
 {
 	CUdpSocket sock;
 	CTlvString str("i wanna go home...");
-	CTlvReaderWriter rw;
+	CUdpTlvWriter writer(&sock);
 
 	sock.setBroadcast(true);
 	for (int i = 0; i < 10; i++) {
-		rw.sendto(str, "255.255.255.255", 5566, &sock);
+		writer.sendObjectTo(str, "255.255.255.255", 5566);
 		sleep(1);
 	}
 

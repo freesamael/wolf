@@ -4,72 +4,57 @@
  * \author samael
  */
 
-//#include <iostream>
-//#include <opencv/cv.h>
-//#include <opencv/cvaux.h>
-//#include <opencv/highgui.h>
-//
-//using namespace std;
-//
-//uchar manset(int x, int y, double width, double height, int ch)
-//{
-//	double minreal = -2.0;
-//	double maxreal = 1.0;
-//	double minimag = -1.2;
-//	double maximag = 1.2;
-//	double creal = minreal + x * (maxreal - minreal) / (width - 1);
-//	double cimag = maximag - y * (maximag - minimag) / (height - 1);
-//	double zreal = creal, zimag = cimag;
-//	unsigned maxiter = 1000, iter;
-//	for (iter = 0; iter < maxiter; iter++) {
-//		if (zreal * zreal + zimag * zimag > 4)
-//			break;
-//		double tmpzreal = zreal * zreal - zimag * zimag;
-//		zimag = 2 * zreal * zimag + cimag;
-//		zreal = tmpzreal + creal;
-//	}
-//	if (iter == maxiter) {
-//		return 0;
-//	} else if (ch == 0) {
-//		if (iter <= 5)
-//			return 50 + iter * 5;
-//		if (iter <= 15)
-//			return (200 - 75) * (iter - 5) / 10 + 75;
-//		if (iter <= 20)
-//			return (255 - 200) * (iter - 15) / 5 + 200;
-//		return 255;
-//	} else if (ch == 1) {
-//		if (iter <= 13)
-//			return 0;
-//		if (iter <= 18)
-//			return (iter - 13) * 5;
-//		if (iter <= 23)
-//			return (255 - 75) * (iter - 18) / 5 + 75;
-//		return 255;
-//	} else {
-//		if (iter <= 18)
-//			return 0;
-//		if (iter <= 20)
-//			return (iter - 18) * 40;
-//		if (iter <= 23)
-//			return (255 - 80) * (iter - 20) / 3;
-//		return 255;
-//	}
-//}
+#include <vector>
+#include <CMaster.h>
+#include <CDirector.h>
+#include <CSimpleManagerActor.h>
+#include <CSimpleWorkflowExecutor.h>
+#include "MansetConfigGenerator.h"
+#include "MansetWorker.h"
+#include "MansetFinalizer.h"
 
-int main()
+using namespace std;
+using namespace wfe;
+
+#define IMG_WIDTH	300
+#define IMG_HEIGHT	240
+#define IMG_ROWS	40
+
+int main(int argc, char *argv[])
 {
-//	IplImage *img = cvCreateImage(cvSize(2400, 1920), IPL_DEPTH_8U, 3);
-//
-//	for (int i = 0; i < img->height; i++) {
-//		for (int j = 0; j < img->width; j++) {
-//			((uchar*)img->imageData)[i * img->widthStep + j * 3] = manset(j, i, img->width, img->height, 0);
-//			((uchar*)img->imageData)[i * img->widthStep + j * 3 + 1] = manset(j, i, img->width, img->height, 1);
-//			((uchar*)img->imageData)[i * img->widthStep + j * 3 + 2] = manset(j, i, img->width, img->height, 2);
-//		}
-//	}
-//
-//	cvSaveImage("img.jpg", img);
-//	cvReleaseImage(&img);
+	CMaster::instance()->init(argc, argv);
+
+	CSimpleWorkflowExecutor exec;
+	CDirector d(&exec);
+	MansetConfigGenerator gen(IMG_WIDTH, IMG_HEIGHT, IMG_ROWS);
+	MansetFinalizer fin(IMG_WIDTH, IMG_HEIGHT, IMG_ROWS);
+	vector<CSimpleManagerActor *> _mgrs;
+	vector<MansetWorker *> _wrks;
+
+	d.addActor(&gen);
+	d.addActor(&fin);
+	for (int i = 0; i < IMG_HEIGHT / IMG_ROWS; i++) {
+		MansetWorker *w = new MansetWorker();
+		CSimpleManagerActor *m = new CSimpleManagerActor(w);
+		CChannel *in = d.createChannel();
+		CChannel *out = d.createChannel();
+
+		gen.sourcePorts()[i]->setChannel(in);
+		m->sinkPorts()[0]->setChannel(in);
+		m->sourcePorts()[0]->setChannel(out);
+		fin.sinkPorts()[i]->setChannel(out);
+
+		d.addActor(m);
+		_mgrs.push_back(m);
+		_wrks.push_back(w);
+	}
+
+	d.execute(5566, 7788);
+
+	for (unsigned i = 0; i < _mgrs.size(); i++) {
+		delete _mgrs[i];
+		delete _wrks[i];
+	}
+
 	return 0;
 }

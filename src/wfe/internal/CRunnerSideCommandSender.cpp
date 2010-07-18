@@ -11,9 +11,9 @@
 #include "CD2mce.h"
 #include "CTlvUint32.h"
 #include "CTlvUint16.h"
-#include "CTlvReaderWriter.h"
 #include "CTlvCommand.h"
 #include "HelperMacros.h"
+#include "CTcpTlvWriter.h"
 #include "CRunnerSideCommandSender.h"
 
 using namespace std;
@@ -40,45 +40,45 @@ void CRunnerSideCommandSender::joinD2MCE(CTcpSocket *sock, const string &appname
 
 void CRunnerSideCommandSender::hello(CTcpSocket *sock)
 {
-	CTlvReaderWriter rw(sock);
-	rw.write(CTlvCommand(CTlvCommand::HELLO_RUNNER));
+	CTcpTlvWriter writer(sock);
+	writer.writeObject(CTlvCommand(CTlvCommand::HELLO_RUNNER));
 }
 
 void CRunnerSideCommandSender::workerFinished(CTcpSocket *sock, uint32_t wseq,
 		AWorkerActor *worker)
 {
-	CTlvReaderWriter rw(sock);
+	CTcpTlvWriter writer(sock);
 	CTlvCommand cmd(CTlvCommand::WORKER_FINISHED);
 	CTlvUint32 u32(wseq);
 	cmd.addParameter(&u32);
 	cmd.addParameter(worker);
-	rw.write(cmd);
+	writer.writeObject(cmd);
 }
 
 void CRunnerSideCommandSender::stealWorker(CTcpSocket *sock, uint16_t n)
 {
-	CTlvReaderWriter rw(sock);
+	CTcpTlvWriter writer(sock);
 	CTlvCommand cmd(CTlvCommand::WORKER_STEAL);
 	CTlvUint16 u16(n);
 	cmd.addParameter(&u16);
-	rw.write(cmd);
+	writer.writeObject(cmd);
 }
 
 void CRunnerSideCommandSender::stealFailed(CTcpSocket *sock)
 {
-	CTlvReaderWriter rw(sock);
-	rw.write(CTlvCommand(CTlvCommand::WORKER_STEAL_FAILED));
+	CTcpTlvWriter writer(sock);
+	writer.writeObject(CTlvCommand(CTlvCommand::WORKER_STEAL_FAILED));
 }
 
 void CRunnerSideCommandSender::runWorker(CTcpSocket *sock, uint32_t wseq,
 		AWorkerActor *worker)
 {
-	CTlvReaderWriter rw(sock);
+	CTcpTlvWriter writer(sock);
 	CTlvCommand cmd(CTlvCommand::WORKER_RUN);
 	CTlvUint32 u32(wseq);
 	cmd.addParameter(&u32);
 	cmd.addParameter(worker);
-	rw.write(cmd);
+	writer.writeObject(cmd);
 }
 
 }

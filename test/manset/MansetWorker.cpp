@@ -6,6 +6,9 @@
 
 #include <vector>
 #include <cstring>
+#include <opencv/cv.h>
+#include <opencv/cvaux.h>
+#include <opencv/highgui.h>
 #include <arpa/inet.h>
 #include <CSimpleManagerActor.h>
 #include <CTlvObjectFactoryAutoRegistry.h>
@@ -47,41 +50,30 @@ void MansetWorker::managerPrefire(wfe::IManagerActor *mgr)
 	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr)))
 		throw MansetException("Manager must be CSimpleManagerActor.");
 
-	// Min X
 	CFlowUint32 *u32;
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
-		throw MansetException("Invalid flow object.");
-	_minx = u32->value();
-	delete u32;
-
-	// Min Y
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
-		throw MansetException("Invalid flow object.");
-	_miny = u32->value();
-	delete u32;
-
-	// X Range
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
-		throw MansetException("Invalid flow object.");
-	_xrange = u32->value();
-	delete u32;
-
-	// Y Range
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
-		throw MansetException("Invalid flow object.");
-	_yrange = u32->value();
-	delete u32;
 
 	// Image Width
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
-		throw MansetException("Invalid flow object.");
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0]->readPort())))
+		throw MansetException((string)"Invalid flow object." + " (" + __PRETTY_FUNCTION__ + ")");
 	_imgwidth = u32->value();
 	delete u32;
 
 	// Image Height
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
-		throw MansetException("Invalid flow object.");
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0]->readPort())))
+		throw MansetException((string)"Invalid flow object." + " (" + __PRETTY_FUNCTION__ + ")");
 	_imgheight = u32->value();
+	delete u32;
+
+	// Min Row
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0]->readPort())))
+		throw MansetException((string)"Invalid flow object." + " (" + __PRETTY_FUNCTION__ + ")");
+	_minrow = u32->value();
+	delete u32;
+
+	// Rows
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0]->readPort())))
+		throw MansetException((string)"Invalid flow object." + " (" + __PRETTY_FUNCTION__ + ")");
+	_rows = u32->value();
 	delete u32;
 }
 
@@ -91,21 +83,19 @@ void MansetWorker::managerPostfire(wfe::IManagerActor *mgr)
 	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr)))
 		throw MansetException("Manager must be CSimpleManagerActor.");
 
-	CFlowUint32 *minx = new CFlowUint32(_minx), *miny = new CFlowUint32(_miny),
-			*xrange = new CFlowUint32(_xrange),
-			*yrange = new CFlowUint32(_yrange);
 	FlowUint8Pointer *imgdata = new FlowUint8Pointer(_imgdata);
-	smgr->sourcePorts()[0]->writeChannel(minx);
-	smgr->sourcePorts()[0]->writeChannel(miny);
-	smgr->sourcePorts()[0]->writeChannel(xrange);
-	smgr->sourcePorts()[0]->writeChannel(yrange);
 	smgr->sourcePorts()[0]->writeChannel(imgdata);
+}
+
+void MansetWorker::prefire()
+{
+	_imgdata = new uint8_t[_rows * _imgwidth * 3];
 }
 
 void MansetWorker::fire()
 {
-	for (unsigned x = _minx; x < _minx + _xrange; x++) {
-		for (unsigned y = _miny; y < _miny + _yrange; y++) {
+	for (unsigned x = 0; x < _imgwidth; x++) {
+		for (unsigned y = _minrow; y < _minrow + _rows; y++) {
 			for (int ch = 0; ch < 3; ch++) {
 				double minreal = -2.0;
 				double maxreal = 1.0;
@@ -122,7 +112,7 @@ void MansetWorker::fire()
 					zimag = 2 * zreal * zimag + cimag;
 					zreal = tmpzreal + creal;
 				}
-				unsigned index = (y - _miny) * _xrange + (x - _minx) * 3 + ch;
+				unsigned index = (y - _minrow) * _imgwidth + x * 3 + ch;
 				if (iter == maxiter) {
 					_imgdata[index] = 0;
 				} else if (ch == 0) {
@@ -154,36 +144,49 @@ void MansetWorker::fire()
 		}
 	}
 }
+
+void MansetWorker::postfire()
+{
+	IplImage *img = cvCreateImage(cvSize(_imgwidth, _rows), IPL_DEPTH_8U, 3);
+
+	for (int i = 0; i < img->height; i++) {
+		memcpy((char *)img->imageData,
+				(char *)(_imgdata + i * _imgwidth * 3),
+				_imgwidth * 3);
+	}
+
+	char nstr[10];
+	sprintf(nstr, "%d", _minrow);
+	string filename = (string)"img_" + nstr + ".jpg";
+	cvSaveImage(filename.c_str(), img);
+	cvReleaseImage(&img);
+}
+
 void MansetWorker::update(AWorkerActor *o)
 {
 	if (o != this) {
 		MansetWorker *w;
 		if (!(w = dynamic_cast<MansetWorker *>(o)))
 			throw MansetException("Invalid object for updating.");
-		_minx = w->_minx;
-		_miny = w->_miny;
-		_xrange = w->_xrange;
-		_yrange = w->_yrange;
 		_imgwidth = w->_imgwidth;
 		_imgheight = w->_imgheight;
+		_minrow = w->_minrow;
+		_rows = w->_rows;
 
-		unsigned imgsize = _xrange * _yrange;
+		unsigned imgsize = _rows * _imgwidth * 3;
 		delete _imgdata;
 		_imgdata = new uint8_t[imgsize];
 		memcpy((char*)_imgdata, (char*)w->_imgdata, imgsize);
 	}
 }
 
-void MansetWorker::setImageRange(uint32_t minx, uint32_t miny,
-		uint32_t xrange, uint32_t yrange,
-		uint32_t imgwidth, uint32_t imgheight)
+void MansetWorker::setImageRange(uint32_t imgwidth, uint32_t imgheight,
+		uint32_t minrow, uint32_t rows)
 {
-	_minx = minx;
-	_miny = miny;
-	_xrange = xrange;
-	_yrange = yrange;
 	_imgwidth = imgwidth;
 	_imgheight = imgheight;
+	_minrow = minrow;
+	_rows = rows;
 }
 
 void MansetWorker::setImageData(uint8_t *imgdata, uint32_t size)
@@ -195,32 +198,26 @@ void MansetWorker::setImageData(uint8_t *imgdata, uint32_t size)
 
 CTlvBlock* MansetWorker::toTLVBlock() const
 {
-	uint16_t size = 24; // six uint32_t
+	uint16_t size = 16; // four uint32_t
 	if (_imgdata)
-		size += _xrange * _yrange;
+		size += _rows * _imgwidth * 3;
 
 	CTlvBlock *blk = new CTlvBlock(TLV_TYPE_WORKER, size);
 
-	uint32_t nbytes = htonl(_minx);
+	uint32_t nbytes = htonl(_imgwidth);
 	memcpy(blk->value(), (char *)&nbytes, 4);
 
-	nbytes = htonl(_miny);
+	nbytes = htonl(_imgheight);
 	memcpy(blk->value() + 4, (char *)&nbytes, 4);
 
-	nbytes = htonl(_xrange);
+	nbytes = htonl(_minrow);
 	memcpy(blk->value() + 8, (char *)&nbytes, 4);
 
-	nbytes = htonl(_yrange);
+	nbytes = htonl(_rows);
 	memcpy(blk->value() + 12, (char *)&nbytes, 4);
 
-	nbytes = htonl(_imgwidth);
-	memcpy(blk->value() + 16, (char *)&nbytes, 4);
-
-	nbytes = htonl(_imgheight);
-	memcpy(blk->value() + 20, (char *)&nbytes, 4);
-
 	if (_imgdata)
-		memcpy(blk->value() + 24, _imgdata, _xrange * _yrange);
+		memcpy(blk->value() + 16, _imgdata, _rows * _imgwidth * 3);
 
 	return blk;
 }

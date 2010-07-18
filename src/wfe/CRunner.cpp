@@ -11,7 +11,6 @@
 #include <cstdlib>
 #include "CThread.h"
 #include "CUdpSocket.h"
-#include "CTlvReaderWriter.h"
 #include "HelperMacros.h"
 #include "CRunner.h"
 #include "CD2mce.h"

@@ -7,11 +7,12 @@
 #include <iostream>
 #include <sstream>
 #include "CUdpSocket.h"
-#include "CTlvReaderWriter.h"
 #include "CMasterSideCommandSender.h"
 #include "CTlvCommand.h"
 #include "CTlvUint32.h"
 #include "CD2mce.h"
+#include "CTcpTlvWriter.h"
+#include "CUdpTlvWriter.h"
 
 using namespace std;
 using namespace cml;
@@ -35,9 +36,9 @@ void CMasterSideCommandSender::joinD2MCE(const string &appname)
 void CMasterSideCommandSender::hello(in_port_t rport, const CHostAddress &addr)
 {
 	CUdpSocket usock;
-	CTlvReaderWriter udprw(&usock);
+	CUdpTlvWriter uwriter(&usock);
 	usock.setBroadcast(true);
-	udprw.sendto(CTlvCommand(CTlvCommand::HELLO_MASTER), addr, rport);
+	uwriter.sendObjectTo(CTlvCommand(CTlvCommand::HELLO_MASTER), addr, rport);
 }
 
 void CMasterSideCommandSender::addRunner(CTcpSocket *rsock, const vector<CHostAddress> &addrs)
@@ -48,21 +49,21 @@ void CMasterSideCommandSender::addRunner(CTcpSocket *rsock, const vector<CHostAd
 		for (unsigned i = 0; i < addrs.size(); i++) {
 			cmd.addParameter(new CTlvUint32((uint32_t)addrs[i].toInetAddr()));
 		}
-		CTlvReaderWriter rw(rsock);
-		rw.write(cmd);
+		CTcpTlvWriter writer(rsock);
+		writer.writeObject(cmd);
 	}
 }
 
 void CMasterSideCommandSender::startRunner(CTcpSocket *rsock)
 {
-	CTlvReaderWriter rw(rsock);
-	rw.write(CTlvCommand(CTlvCommand::RUNNER_START));
+	CTcpTlvWriter writer(rsock);
+	writer.writeObject(CTlvCommand(CTlvCommand::RUNNER_START));
 }
 
 void CMasterSideCommandSender::shutdown(CTcpSocket *rsock)
 {
-	CTlvReaderWriter rw(rsock);
-	rw.write(CTlvCommand(CTlvCommand::SHUTDOWN));
+	CTcpTlvWriter writer(rsock);
+	writer.writeObject(CTlvCommand(CTlvCommand::SHUTDOWN));
 }
 
 uint32_t CMasterSideCommandSender::runWorker(CTcpSocket *rsock, AWorkerActor *worker)
@@ -70,12 +71,12 @@ uint32_t CMasterSideCommandSender::runWorker(CTcpSocket *rsock, AWorkerActor *wo
 	if (++_wseq == UINT32_MAX)
 		_wseq = 0;
 
-	CTlvReaderWriter rw(rsock);
+	CTcpTlvWriter writer(rsock);
 	CTlvCommand cmd(CTlvCommand::WORKER_RUN);
 	CTlvUint32 u32(_wseq);
 	cmd.addParameter(&u32);
 	cmd.addParameter(worker);
-	rw.write(cmd);
+	writer.writeObject(cmd);
 
 	return _wseq;
 }

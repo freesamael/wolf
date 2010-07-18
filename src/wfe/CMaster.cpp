@@ -9,7 +9,6 @@
 #include <cstdlib>
 #include "CMutex.h"
 #include "CUdpSocket.h"
-#include "CTlvReaderWriter.h"
 #include "CThread.h"
 #include "CSingletonAutoDestructor.h"
 #include "CTlvUint32.h"
