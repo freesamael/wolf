@@ -6,13 +6,20 @@
 
 #include <vector>
 #include <cstring>
+#include <arpa/inet.h>
 #include <CSimpleManagerActor.h>
+#include <CTlvObjectFactoryAutoRegistry.h>
+#include <HelperMacros.h>
 #include "MansetWorker.h"
 #include "MansetException.h"
+#include "MansetWorkerCreator.h"
 
 using namespace std;
 using namespace cml;
 using namespace wfe;
+
+#define TLV_TYPE_WORKER 130
+TLV_OBJECT_REGISTRATION(MansetWorker, TLV_TYPE_WORKER, MansetWorkerCreator);
 
 void MansetWorker::managerInitialization(wfe::IManagerActor *mgr)
 {
@@ -42,44 +49,39 @@ void MansetWorker::managerPrefire(wfe::IManagerActor *mgr)
 
 	// Min X
 	CFlowUint32 *u32;
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts[0])))
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
 		throw MansetException("Invalid flow object.");
-	_minx = *u32;
+	_minx = u32->value();
 	delete u32;
 
 	// Min Y
-	CFlowUint32 *u32;
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts[0])))
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
 		throw MansetException("Invalid flow object.");
-	_miny = *u32;
+	_miny = u32->value();
 	delete u32;
 
 	// X Range
-	CFlowUint32 *u32;
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts[0])))
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
 		throw MansetException("Invalid flow object.");
-	_xrange = *u32;
+	_xrange = u32->value();
 	delete u32;
 
 	// Y Range
-	CFlowUint32 *u32;
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts[0])))
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
 		throw MansetException("Invalid flow object.");
-	_yrange = *u32;
+	_yrange = u32->value();
 	delete u32;
 
 	// Image Width
-	CFlowUint32 *u32;
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts[0])))
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
 		throw MansetException("Invalid flow object.");
-	_imgwidth = *u32;
+	_imgwidth = u32->value();
 	delete u32;
 
 	// Image Height
-	CFlowUint32 *u32;
-	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts[0])))
+	if (!(u32 = dynamic_cast<CFlowUint32 *>(smgr->sinkPorts()[0])))
 		throw MansetException("Invalid flow object.");
-	_imgheight = *u32;
+	_imgheight = u32->value();
 	delete u32;
 }
 
@@ -92,7 +94,7 @@ void MansetWorker::managerPostfire(wfe::IManagerActor *mgr)
 	CFlowUint32 *minx = new CFlowUint32(_minx), *miny = new CFlowUint32(_miny),
 			*xrange = new CFlowUint32(_xrange),
 			*yrange = new CFlowUint32(_yrange);
-	FlowUint8Pointer *imgdata = new CFlowUint8Pointer(_imgdata);
+	FlowUint8Pointer *imgdata = new FlowUint8Pointer(_imgdata);
 	smgr->sourcePorts()[0]->writeChannel(minx);
 	smgr->sourcePorts()[0]->writeChannel(miny);
 	smgr->sourcePorts()[0]->writeChannel(xrange);
@@ -155,23 +157,26 @@ void MansetWorker::fire()
 void MansetWorker::update(AWorkerActor *o)
 {
 	if (o != this) {
-		_minx = o._minx;
-		_miny = o._miny;
-		_xrange = o._xrange;
-		_yrange = o._yrange;
-		_imgwidth = o._imgwidth;
-		_imgheight = o._imgheight;
+		MansetWorker *w;
+		if (!(w = dynamic_cast<MansetWorker *>(o)))
+			throw MansetException("Invalid object for updating.");
+		_minx = w->_minx;
+		_miny = w->_miny;
+		_xrange = w->_xrange;
+		_yrange = w->_yrange;
+		_imgwidth = w->_imgwidth;
+		_imgheight = w->_imgheight;
 
 		unsigned imgsize = _xrange * _yrange;
 		delete _imgdata;
 		_imgdata = new uint8_t[imgsize];
-		memcpy((char*)_imgdata, (char*)o._imgdata, imgsize);
+		memcpy((char*)_imgdata, (char*)w->_imgdata, imgsize);
 	}
 }
 
-void MansetWorker::setImageRange(wfe::CFlowUint32 minx, wfe::CFlowUint32 miny,
-		wfe::CFlowUint32 xrange, wfe::CFlowUint32 yrange,
-		wfe::CFlowUint32 imgwidth, wfe::CFlowUint32 imgheight)
+void MansetWorker::setImageRange(uint32_t minx, uint32_t miny,
+		uint32_t xrange, uint32_t yrange,
+		uint32_t imgwidth, uint32_t imgheight)
 {
 	_minx = minx;
 	_miny = miny;
@@ -190,15 +195,32 @@ void MansetWorker::setImageData(uint8_t *imgdata, uint32_t size)
 
 CTlvBlock* MansetWorker::toTLVBlock() const
 {
-	vector<const ITlvBlock *> blks;
-	blks.push_back(_minx.toTLVBlock());
-	blks.push_back(_miny.toTLVBlock());
-	blks.push_back(_xrange.toTLVBlock());
-	blks.push_back(_yrange.toTLVBlock());
-	blks.push_back(_imgwidth.toTLVBlock());
-	blks.push_back(_imgheight.toTLVBlock());
+	uint16_t size = 24; // six uint32_t
+	if (_imgdata)
+		size += _xrange * _yrange;
 
-	if (_imgdata) {
+	CTlvBlock *blk = new CTlvBlock(TLV_TYPE_WORKER, size);
 
-	}
+	uint32_t nbytes = htonl(_minx);
+	memcpy(blk->value(), (char *)&nbytes, 4);
+
+	nbytes = htonl(_miny);
+	memcpy(blk->value() + 4, (char *)&nbytes, 4);
+
+	nbytes = htonl(_xrange);
+	memcpy(blk->value() + 8, (char *)&nbytes, 4);
+
+	nbytes = htonl(_yrange);
+	memcpy(blk->value() + 12, (char *)&nbytes, 4);
+
+	nbytes = htonl(_imgwidth);
+	memcpy(blk->value() + 16, (char *)&nbytes, 4);
+
+	nbytes = htonl(_imgheight);
+	memcpy(blk->value() + 20, (char *)&nbytes, 4);
+
+	if (_imgdata)
+		memcpy(blk->value() + 24, _imgdata, _xrange * _yrange);
+
+	return blk;
 }

@@ -20,7 +20,7 @@ using namespace std;
 using namespace cml;
 using namespace wfe;
 
-#define TLV_TYPE_WORKER	129
+#define TLV_TYPE_WORKER	130
 TLV_OBJECT_REGISTRATION(HecoDSMWorker, TLV_TYPE_WORKER, HecoDSMWorkerCreator);
 
 HecoDSMWorker::HecoDSMWorker():

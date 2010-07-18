@@ -25,7 +25,7 @@ private:
 class MansetWorker: public wfe::AWorkerActor
 {
 public:
-	MansetWorker(): _minx(0), _miny(0), _maxx(0), _maxy(0), _imgwidth(0),
+	MansetWorker(): _minx(0), _miny(0), _xrange(0), _yrange(0), _imgwidth(0),
 			_imgheight(0), _imgdata(NULL) {}
 	void managerInitialization(wfe::IManagerActor *mgr);
 	void managerFinalization(wfe::IManagerActor *mgr);
@@ -33,14 +33,14 @@ public:
 	void managerPostfire(wfe::IManagerActor *mgr);
 	void fire();
 	void update(AWorkerActor *o);
-	void setImageRange(wfe::CFlowUint32 minx, wfe::CFlowUint32 miny,
-			wfe::CFlowUint32 xrange, wfe::CFlowUint32 yrange,
-			wfe::CFlowUint32 imgwidth, wfe::CFlowUint32 imgheight);
+	void setImageRange(uint32_t minx, uint32_t miny,
+			uint32_t xrange, uint32_t yrange,
+			uint32_t imgwidth, uint32_t imgheight);
 	void setImageData(uint8_t *imgdata, uint32_t size);
 	cml::CTlvBlock* toTLVBlock() const;
 
 private:
-	wfe::CFlowUint32 _minx, _miny, _xrange, _yrange, _imgwidth, _imgheight;
+	uint32_t _minx, _miny, _xrange, _yrange, _imgwidth, _imgheight;
 	uint8_t *_imgdata;
 };
 

@@ -14,6 +14,7 @@ class MansetException: public std::exception
 {
 public:
 	MansetException(const std::string &msg) throw(): _msg(msg) {}
+	~MansetException() throw() {}
 	const char* what() const throw() { return _msg.c_str(); }
 
 private:

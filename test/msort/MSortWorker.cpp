@@ -19,7 +19,7 @@ using namespace std;
 using namespace cml;
 using namespace wfe;
 
-#define TLV_TYPE_WORKER	131
+#define TLV_TYPE_WORKER	130
 TLV_OBJECT_REGISTRATION(MSortWorker, TLV_TYPE_WORKER, MSortWorkerCreator);
 
 MSortWorker::MSortWorker():
