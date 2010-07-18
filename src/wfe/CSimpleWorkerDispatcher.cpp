@@ -4,10 +4,7 @@
  * \author samael
  */
 
-#include <iostream>
-#include <sstream>
 #include "CSimpleWorkerDispatcher.h"
-#include "HelperMacros.h"
 
 using namespace std;
 using namespace cml;
@@ -23,7 +20,6 @@ CTcpSocket* CSimpleWorkerDispatcher::choose(const vector<CTcpSocket *> &rsocks)
 
 	if (_p >= rsocks.size())
 		_p = 0;
-	PINF_2("Pick up runner " << _p);
 	return rsocks[_p++];
 }
 

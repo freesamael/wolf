@@ -71,6 +71,7 @@ CMaster::~CMaster()
 {
 	for (unsigned i = 0; i < _d->clis.size(); i++)
 		delete _d->clis[i];
+	delete _d->pfwpsr;
 	delete _d;
 }
 
@@ -84,7 +85,6 @@ void CMaster::init(int argc, char *argv[])
 		switch (opt) {
 		case 'b':
 			_d->bcastaddr = CHostAddress(optarg);
-			PINF_2("Broadcast address will be " << _d->bcastaddr.toString());
 			break;
 		case 'h':
 			cerr << "Usage: " << argv[0] <<
@@ -118,6 +118,7 @@ bool CMaster::setup(in_port_t master_port, in_port_t runner_port,
 		PERR("No runner found.");
 		return false;
 	}
+	PINF_1("Totally " << _d->rsocks.size() << " runners connected.");
 
 	// Start finished worker processor.
 	_d->pfwpsr = new CMasterSideFinishedWorkerProcessor(this);
@@ -150,7 +151,6 @@ void CMaster::runWorker(AWorkerActor *worker, IManagerActor *mgr)
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		uint32_t seq = _d->cmdsdr.runWorker(_d->rsocks[i], worker);
 		_d->mgrq[seq] = mgr;
-		PINF_2("Queue size = " << _d->mgrq.size());
 	}
 	_d->mgrqmx.unlock();
 #else /* Normal mode */
@@ -163,7 +163,6 @@ void CMaster::runWorker(AWorkerActor *worker, IManagerActor *mgr)
 		_d->mgrq[seq] = mgr;
 		PINF_2("Worker " << seq << " has been sent to runner " <<
 				runner->peerAddress().toString());
-		PINF_2("Queue size = " << _d->mgrq.size());
 		_d->mgrqmx.unlock();
 	}
 #endif /* ENABLE_D2MCE */
@@ -175,7 +174,7 @@ void CMaster::runWorker(AWorkerActor *worker, IManagerActor *mgr)
 void CMaster::shutdown()
 {
 	_d->exetime = CTime::now() - _d->stime;
-	PINF_2("Execution time = " << _d->exetime);
+	PINF_1("Execution time = " << _d->exetime);
 
 	// Stop finished worker processor.
 	_d->pfwpsr->setDone();
@@ -196,7 +195,6 @@ void CMaster::shutdown()
  */
 void CMaster::runnerConnected(cml::CTcpSocket *runnersock)
 {
-	PINF_2("Got one runner.");
 	vector<CHostAddress> addrs;
 	_d->rsocksmx.lock();
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
@@ -269,11 +267,9 @@ void CMaster::processFinishedWorker()
 
 		// Notify manager only if it's the last worker.
 		if (lastone) {
-			PINF_2("Notifying manager.");
 			mgr->processFinishedWorker(worker);
 		}
 #else /* Normal mode */
-		PINF_2("Notifying manager.");
 		mgr->workerFinished(worker);
 #endif /* DISABLE_D2MCE */
 		delete worker;

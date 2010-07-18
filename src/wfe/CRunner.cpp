@@ -156,7 +156,6 @@ void CRunner::runnerConnected(CTcpSocket *runnersock)
 	CRunnerSideCommandListener *lis =
 			new CRunnerSideCommandListener(this, runnersock);
 
-	PINF_2("Starting runner command listener.");
 	lis->start();
 
 	_d->rsocksmx.lock();
@@ -182,8 +181,8 @@ void CRunner::startWorking()
 	// Stop connection listener and start worker executor.
 	_d->pcnlis->stop();
 	_d->pwexe->start();
-	PINF_2("Totally " << _d->rsocks.size() << " runners connected.");
-	PINF_2("Runner id = " << _id);
+	PINF_1("Totally " << _d->rsocks.size() << " runners connected.");
+	PINF_1("Runner id = " << _id);
 
 	// Change state.
 	_statemx.lock();

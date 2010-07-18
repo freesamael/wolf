@@ -17,6 +17,7 @@ using namespace cml;
 using namespace wfe;
 
 #define NWORKERS	10
+#define NSIZE		120
 
 int main(int argc, char *argv[])
 {
@@ -30,7 +31,7 @@ int main(int argc, char *argv[])
 	vector<MSortWorker *> wrks;
 	vector<CSimpleManagerActor *> mgrs;
 
-	MSortDataGenerator gen(NWORKERS, 12000);
+	MSortDataGenerator gen(NWORKERS, NSIZE);
 	d.addActor(&gen);
 
 	MSortFinalizer fin(NWORKERS);

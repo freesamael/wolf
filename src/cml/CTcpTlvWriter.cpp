@@ -56,6 +56,7 @@ void CTcpTlvWriter::writeObject(const ITlvObject &obj)
 		delete blk;
 		throw x;
 	}
+	delete blk;
 }
 
 }

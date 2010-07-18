@@ -4,13 +4,11 @@
  * \author samael
  */
 
-#include <iostream>
 #include <cstring>
 #include <arpa/inet.h>
 #include "CTlvBlock.h"
 #include "CTlvUint16.h"
 #include "CTlvObjectFactory.h"
-#include "HelperMacros.h"
 #include "CTlvCommandCreator.h"
 #include "WfeTLVTypes.h"
 
@@ -31,9 +29,6 @@ namespace wfe
  */
 ITlvObject* CTlvCommandCreator::create(const ITlvBlock &blk) const
 {
-	PINF_2("Got TLVCommand with command = " <<
-			CTlvCommand::CommandString[blk.type() - TLV_TYPE_COMMAND_BASE]);
-
 	CTlvCommand *cmd = new CTlvCommand((CTlvCommand::Command)(blk.type() -
 			TLV_TYPE_COMMAND_BASE));
 
@@ -42,8 +37,6 @@ ITlvObject* CTlvCommandCreator::create(const ITlvBlock &blk) const
 	while (offset < blk.length()) {
 		CSharedTlvBlock pamblk(blk.value() + offset);
 		offset += pamblk.plainSize();
-		PINF_2("Got a parameter block with type = " << pamblk.type() <<
-				", length = " << pamblk.length());
 		cmd->addParameter(CTlvObjectFactory::instance()->createTLVObject(pamblk));
 	}
 

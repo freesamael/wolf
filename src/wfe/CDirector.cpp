@@ -75,7 +75,6 @@ CChannel* CDirector::createChannel()
 
 void CDirector::execute()
 {
-	PINF_2("Executing the actors.");
 	_exest->execute(_actors);
 }
 

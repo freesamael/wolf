@@ -22,8 +22,7 @@ template <class T>
 class CSingletonAutoDestructor
 {
 public:
-	~CSingletonAutoDestructor()
-		{ PINF_3("Releasing " << TYPENAME(T)); T::release(); }
+	~CSingletonAutoDestructor() { T::release(); }
 };
 
 }

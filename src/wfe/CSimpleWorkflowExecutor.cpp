@@ -31,7 +31,6 @@ void CSimpleWorkflowExecutor::run()
 
 void CSimpleWorkflowExecutor::setup()
 {
-	PINF_2("Setup all runners.");
 	for (unsigned i = 0; i < _all.size(); i++)
 		_all[i]->setup();
 }
@@ -63,12 +62,10 @@ void CSimpleWorkflowExecutor::iterate()
 			usleep(10000);
 	}
 
-	PINF_2("Execution loop ends.");
 }
 
 void CSimpleWorkflowExecutor::wrapup()
 {
-	PINF_2("Wrapup all runners.");
 	for (unsigned i = 0; i < _all.size(); i++)
 		_all[i]->wrapup();
 }
@@ -89,7 +86,7 @@ void CSimpleWorkflowExecutor::findready()
 	}
 
 	if (rcount != prcount || _vwaitready.size() != pwcount) {
-		PINF_2("Found " << rcount << " runners ready, " << _vwaitready.size() <<
+		PINF_3("Found " << rcount << " runners ready, " << _vwaitready.size() <<
 			" actors are still waiting.");
 	}
 
@@ -113,7 +110,7 @@ void CSimpleWorkflowExecutor::findpost()
 	}
 
 	if (pcount != ppcount || _vwaitpost.size() != pwcount) {
-		PINF_2("Found " << pcount << " runners postrunning, " <<
+		PINF_3("Found " << pcount << " runners postrunning, " <<
 				_vwaitpost.size() << " actors are still waiting.");
 	}
 
@@ -123,7 +120,6 @@ void CSimpleWorkflowExecutor::findpost()
 
 void CSimpleWorkflowExecutor::runactor(AActor *actor)
 {
-	PINF_2("Executing an actor.");
 	actor->prefire();
 	actor->fire();
 	_vwaitpost.push_back(actor);
@@ -131,7 +127,6 @@ void CSimpleWorkflowExecutor::runactor(AActor *actor)
 
 void CSimpleWorkflowExecutor::postrunactor(AActor *actor)
 {
-	PINF_2("Postrunning an actor.");
 	actor->postfire();
 	if (actor->testfire())
 		_qready.push_back(actor);

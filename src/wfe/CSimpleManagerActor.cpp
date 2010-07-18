@@ -34,7 +34,6 @@ void CSimpleManagerActor::fire()
 void CSimpleManagerActor::workerFinished(AWorkerActor *worker)
 {
 #ifndef ENABLE_D2MCE /* Normal mode */
-	PINF_2("Update worker.");
 	_worker->update(worker);
 #endif /* ENABLE_D2MCE */
 	_statemx.lock();

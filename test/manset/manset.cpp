@@ -16,9 +16,9 @@
 using namespace std;
 using namespace wfe;
 
-#define IMG_WIDTH	4000
-#define IMG_HEIGHT	3200
-#define IMG_ROWS	5
+#define IMG_WIDTH	5000
+#define IMG_HEIGHT	4000
+#define IMG_ROWS	4
 
 int main(int argc, char *argv[])
 {

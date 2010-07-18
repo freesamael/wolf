@@ -51,6 +51,7 @@ void CUdpTlvWriter::sendObjectTo(const ITlvObject &obj, const CHostAddress &addr
 		delete blk;
 		throw x;
 	}
+	delete blk;
 }
 
 }

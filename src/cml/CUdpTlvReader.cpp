@@ -31,6 +31,7 @@ ITlvBlock* CUdpTlvReader::recvBlockFrom(CHostAddress *addr, in_port_t *port)
 		sz = _sock->recvfrom(buf, ITlvBlock::szHeader, addr, port);
 	} catch (const XSocket &x) {
 		_sock->unlockread();
+		delete [] buf;
 		throw x;
 	}
 	_sock->unlockread();
@@ -42,12 +43,16 @@ ITlvBlock* CUdpTlvReader::recvBlockFrom(CHostAddress *addr, in_port_t *port)
 
 	// Check if message size is long enough for whole block.
 	CSharedTlvBlock sblk(buf);
-	if (sz < sblk.plainSize())
+	if (sz < sblk.plainSize()) {
+		delete [] buf;
 		throw XTlvObject(__PRETTY_FUNCTION__, __LINE__,
 				XTlvObject::BLOCK_TOO_SHORT);
+	}
 
 	CTlvBlock *blk = new CTlvBlock(sblk.type(), sblk.length());
 	memcpy(blk->value(), sblk.value(), sblk.length());
+
+	delete [] buf;
 	return blk;
 }
 
@@ -66,6 +71,7 @@ ITlvObject* CUdpTlvReader::recvObjectFrom(CHostAddress *addr, in_port_t *port)
 		delete blk;
 		throw x;
 	}
+	delete blk;
 	return obj;
 }
 
