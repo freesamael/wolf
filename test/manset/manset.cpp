@@ -18,7 +18,7 @@ using namespace wfe;
 
 #define IMG_WIDTH	7500
 #define IMG_HEIGHT	6000
-#define IMG_ROWS	2
+#define IMG_ROWS	1
 
 int main(int argc, char *argv[])
 {
