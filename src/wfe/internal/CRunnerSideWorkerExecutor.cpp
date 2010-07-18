@@ -36,6 +36,7 @@ void CRunnerSideWorkerExecutor::run()
 			usleep(10000);
 		}
 	}
+	PINF_1(ecount << " workers executed.");
 }
 
 }
