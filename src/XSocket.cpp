@@ -21,21 +21,13 @@ const char *XSocket::XTypeString[] = {
 };
 
 XSocket::XSocket(const string &func, int line, int e) throw():
-		_e(ERRNO), _eno(e), _estr()
+		XWolf(strerror(e)), _e(ERRNO), _eno(e)
 {
-	char lstr[10];
-	sprintf(lstr, "%d", line);
-
-	_estr = (string)strerror(e) + " [" + func + ": " + lstr + "]";
 }
 
 XSocket::XSocket(const string &func, int line, XType e) throw():
-		_e(e), _eno(0), _estr()
+		XWolf(XTypeString[e]), _e(e), _eno(0)
 {
-	char lstr[10];
-	sprintf(lstr, "%d", line);
-
-	_estr = (string)XTypeString[e] + " [" + func + ": " + lstr + "]";
 }
 
 }

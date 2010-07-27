@@ -22,19 +22,8 @@ const char *XTlvObject::XTypeString[] = {
 
 XTlvObject::XTlvObject(const std::string &func, int line, XType e, uint16_t id,
 		const std::string &name) throw():
-		_e(e), _estr()
+		XWolf(XTypeString[e]), _e(e)
 {
-	char idstr[10];
-	if (id == TLV_TYPE_INVALID)
-		sprintf(idstr, "?");
-	else
-		sprintf(idstr, "%d", (int)id);
-
-	char lstr[10];
-	sprintf(lstr, "%d", (int)line);
-
-	_estr = (string)XTypeString[e] + " (id: " + idstr + ", name: " + name +
-			") [" + func + ": " + lstr + "]";
 }
 
 }

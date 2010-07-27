@@ -29,12 +29,9 @@ public:
 			const CTlvCommand &cmd) throw();
 	virtual ~XTlvCommand() throw() {}
 	inline XType xtype() const throw() { return _e; }
-	inline const char* what() const throw() { return _estr.c_str(); }
-	inline std::string toString() const throw() { return _estr; }
 
 private:
 	XType _e;
-	std::string _estr;
 };
 
 }

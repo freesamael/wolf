@@ -21,7 +21,8 @@ class XWolf: public std::exception
 public:
 	explicit XWolf(const std::string &remark = "") throw();
 	virtual ~XWolf() throw() {}
-	inline const char* what() const throw() { return _estr.c_str(); }
+	inline virtual const char* what() const throw() { return _estr.c_str(); }
+	inline virtual const std::string& toString() const throw() { return _estr; }
 
 private:
 	std::string _estr;

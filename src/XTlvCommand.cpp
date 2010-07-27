@@ -21,25 +21,14 @@ const char *XTlvCommand::XTypeString[] = {
 
 XTlvCommand::XTlvCommand(const string &func, int line, XType e,
 		const string &type) throw():
-		_e(e), _estr()
+		XWolf(XTypeString[e]), _e(e)
 {
-	char lstr[10];
-	sprintf(lstr, "%d", line);
-
-	_estr = (string)XTypeString[e] + " (type = " + type + ") [" + func + ": " +
-			lstr + "]";
 }
 
 XTlvCommand::XTlvCommand(const std::string &func, int line, XType e,
 			const CTlvCommand &cmd) throw():
-			_e(e), _estr()
+			XWolf(XTypeString[e]), _e(e)
 {
-	char lstr[10];
-	sprintf(lstr, "%d", line);
-
-	_estr = (string)XTypeString[e] + " (cmd = " +
-			CTlvCommand::CommandString[cmd.command()] + ") [" + func + ": " +
-			lstr + "]";
 }
 
 }

@@ -29,13 +29,10 @@ public:
 	virtual ~XThread() throw() {}
 	inline XType xtype() const throw() { return _e; }
 	inline int errnum() const throw() { return _eno; }
-	inline const char* what() const throw() { return _estr.c_str(); }
-	inline std::string toString() const throw() { return _estr; }
 
 private:
 	XType _e;
 	int _eno;
-	std::string _estr;
 };
 
 }
