@@ -1,10 +1,9 @@
-COMLIB_SRCDIR = ${WOLF_SRCDIR}/cml
-COMLIB_INCDIR = ${WOLF_SRCDIR}/cmlhdr
-WOLFLIB_SRCDIR = ${WOLF_SRCDIR}/wfe
-WOLFLIB_INCDIR = ${WOLF_SRCDIR}/wfehdr
+WOLF_OBJS := ${patsubst %.cpp,%.o,${wildcard ${WOLF_SRCDIR}/*.cpp ${WOLF_SRCDIR}/internal/*.cpp}}
+WOLF = ${WOLF_LIBDIR}/libwolf.a
+${WOLF}: CXXFLAGS += -Weffc++ -I${WOLF_INCDIR} ${D2MCE_CXXFLAGS}
 
-include ${COMLIB_SRCDIR}/Makefile ${WOLFLIB_SRCDIR}/Makefile 
+wolf: ${WOLF_OBJS}
+	${AR} cru $@ ${WOLF_OBJS}
 
-wolf: ${COMLIB} ${WOLFLIB}
-
-wolf_clean: comlib_clean wolflib_clean 
+wolf_clean: 
+	-rm ${WOLF_OBJS} ${WOLF} 

@@ -27,6 +27,7 @@ LDFLAGS += -lgcov
 endif 
 
 WOLF_SRCDIR = ${PWD}/src
+WOLF_INCDIR = ${PWD}/include
 WOLF_BINDIR = ${PWD}/bin
 WOLF_LIBDIR = ${PWD}/lib
 WOLF_TESTDIR = ${PWD}/test
