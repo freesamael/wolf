@@ -1,5 +1,5 @@
 /**
- * \file TlvObjectFactoryAutoRegistry.cpp
+ * \file CTlvObjectFactoryAutoRegistry.cpp
  * \date Apr 4, 2010
  * \author samael
  */

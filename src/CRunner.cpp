@@ -1,5 +1,5 @@
 /**
- * \file Runner.cpp
+ * \file CRunner.cpp
  * \date Apr 1, 2010
  * \author samael
  */

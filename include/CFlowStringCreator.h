@@ -1,5 +1,5 @@
 /**
- * \file CFLOWStringCreator.h
+ * \file CFlowStringCreator.h
  * \date Jun 20, 2010
  * \author samael
  */

@@ -1,5 +1,5 @@
 /**
- * \file CTlvUInt16.h
+ * \file CTlvUint16.h
  * \date Mar 29, 2010
  * \author samael
  */

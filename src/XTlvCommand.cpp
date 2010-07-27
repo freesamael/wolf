@@ -1,8 +1,7 @@
-/*
- * XTlvCommand.cpp
- *
- *  Created on: Jul 15, 2010
- *      Author: samael
+/**
+ * \file XTlvCommand.cpp
+ * \date Jul 15, 2010
+ * \author samael
  */
 
 #include <cstdio>

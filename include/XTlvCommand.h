@@ -1,8 +1,7 @@
-/*
- * XTlvCommand.h
- *
- *  Created on: Jul 15, 2010
- *      Author: samael
+/**
+ * \file XTlvCommand.h
+ * \date Jul 15, 2010
+ * \author samael
  */
 
 #ifndef XTLVCOMMAND_H_

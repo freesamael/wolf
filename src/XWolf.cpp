@@ -6,18 +6,34 @@
 
 #include "XWolf.h"
 
+#if defined(__GLIBC__) && defined(__GLIBCPP__)
+#include <execinfo.h>
+#include <cxxabi.h>
+#endif
+
+using namespace std;
+
 namespace wolf
 {
 
-XWolf::XWolf() throw()
+XWolf::XWolf(const string &remark) throw():
+		_estr(remark)
 {
-	// TODO Auto-generated constructor stub
+#if defined(__GLIBC__) && defined(__GLIBCPP__)
+	int nptrs;
+	void *buf[128];
+	char **cstrs;
 
-}
+	nptrs = backtrace(buf, 128);
+	cstrs = backtrace_symbols(buf, nptrs);
 
-XWolf::~XWolf() throw()
-{
-	// TODO Auto-generated destructor stub
+	_estr += "\n\tat ";
+	for (int i = 0; i < nptrs; i++) {
+		_estr += cstrs[i];
+		if (i != nptrs - 1)
+			_estr += "\n\tby ";
+	}
+#endif
 }
 
 }
