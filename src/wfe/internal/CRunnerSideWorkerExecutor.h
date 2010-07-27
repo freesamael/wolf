@@ -11,19 +11,19 @@
 #include "CMutex.h"
 #include "CRunner.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
  * Used by runner to execute workers.
  */
-class CRunnerSideWorkerExecutor: public cml::CThread
+class CRunnerSideWorkerExecutor: public wolf::CThread
 {
 public:
 	CRunnerSideWorkerExecutor(CRunner *runner):
 		_done(false), _runner(runner), _mx() {}
 	CRunnerSideWorkerExecutor(const CRunnerSideWorkerExecutor &o):
-		cml::CThread(), _done(o._done), _runner(o._runner), _mx() {}
+		wolf::CThread(), _done(o._done), _runner(o._runner), _mx() {}
 	CRunnerSideWorkerExecutor& operator=(const CRunnerSideWorkerExecutor &o)
 		{ _done = o._done; _runner = o._runner; return *this; }
 	inline bool isDone()
@@ -35,7 +35,7 @@ public:
 private:
 	bool _done;
 	CRunner* _runner;
-	cml::CMutex _mx;
+	wolf::CMutex _mx;
 };
 
 }

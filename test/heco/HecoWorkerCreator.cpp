@@ -11,8 +11,8 @@
 #include "HecoWorkerCreator.h"
 #include "CFlowUint32.h"
 
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 ITlvObject* HecoWorkerCreator::create(const ITlvBlock &blk) const
 {

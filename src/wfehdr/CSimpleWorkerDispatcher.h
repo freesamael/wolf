@@ -9,13 +9,13 @@
 
 #include "IWorkerDispatcher.h"
 
-namespace wfe
+namespace wolf
 {
 
 class CSimpleWorkerDispatcher: public IWorkerDispatcher
 {
 public:
-	cml::CTcpSocket* choose(const std::vector<cml::CTcpSocket *> &rsocks);
+	wolf::CTcpSocket* choose(const std::vector<wolf::CTcpSocket *> &rsocks);
 
 private:
 	static unsigned _p;

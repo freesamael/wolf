@@ -10,7 +10,7 @@
 #include <map>
 #include <string>
 
-namespace cml
+namespace wolf
 {
 
 /**

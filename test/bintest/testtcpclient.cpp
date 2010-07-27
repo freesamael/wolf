@@ -10,7 +10,7 @@
 #include <CThread.h>
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
 #define SZ_BUF	8500
 #define T_SEND	4

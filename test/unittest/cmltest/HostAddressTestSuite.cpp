@@ -11,7 +11,7 @@
 CPPUNIT_TEST_SUITE_REGISTRATION(HostAddressTestSuite);
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
 void HostAddressTestSuite::testToString()
 {

@@ -5,7 +5,7 @@
  */
 #include <CRunner.h>
 
-using namespace wfe;
+using namespace wolf;
 
 int main()
 {

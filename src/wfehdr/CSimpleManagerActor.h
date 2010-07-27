@@ -14,7 +14,7 @@
 #include "IManagerActor.h"
 #include "CMutex.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -42,7 +42,7 @@ private:
 		{ return *this; }
 	AWorkerActor *_worker;
 	State _state;
-	cml::CMutex _statemx;
+	wolf::CMutex _statemx;
 };
 
 }

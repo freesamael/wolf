@@ -18,7 +18,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 SINGLETON_REGISTRATION(CBoundSocketState);

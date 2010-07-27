@@ -7,15 +7,15 @@
 #ifndef XTHREAD_H_
 #define XTHREAD_H_
 
-#include "AException.h"
+#include "XWolf.h"
 
-namespace cml
+namespace wolf
 {
 
 /**
  * Representing thread related exceptions.
  */
-class XThread: public AException
+class XThread: public XWolf
 {
 public:
 	typedef enum XType {

@@ -18,7 +18,7 @@
 #include "HelperMacros.h"
 #include "XTlvObject.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

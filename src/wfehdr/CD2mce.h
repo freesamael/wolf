@@ -13,7 +13,7 @@
 #include "HelperMacros.h"
 #include "CSharedMemory.h"
 
-namespace wfe
+namespace wolf
 {
 
 #ifdef ENABLE_D2MCE /* DSM mode */

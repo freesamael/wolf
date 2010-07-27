@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 /**
@@ -22,7 +22,7 @@ namespace cml
  */
 void* thread_caller(void *param)
 {
-	cml::CThread *th = reinterpret_cast<cml::CThread *>(param);
+	wolf::CThread *th = reinterpret_cast<wolf::CThread *>(param);
 
 	th->_mutex.lock();
 	th->_running = true;

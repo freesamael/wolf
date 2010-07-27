@@ -12,19 +12,19 @@
 #include "CTlvCommand.h"
 #include "CMutex.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
  * Used to listen incoming commands.
  */
-class ACommandListener: public cml::CThread
+class ACommandListener: public wolf::CThread
 {
 public:
-	ACommandListener(cml::CTcpSocket *sock):
+	ACommandListener(wolf::CTcpSocket *sock):
 		_done(false), _sock(sock), _mx() {}
 	ACommandListener(const ACommandListener &o):
-		cml::CThread(), _done(o._done), _sock(o._sock), _mx() {}
+		wolf::CThread(), _done(o._done), _sock(o._sock), _mx() {}
 	virtual ~ACommandListener() {}
 	ACommandListener& operator=(const ACommandListener &o)
 		{ _done = o._done; _sock = o._sock; return *this; }
@@ -32,13 +32,13 @@ public:
 		{ _mx.lock(); bool d = _done; _mx.unlock(); return d; }
 	inline void setDone(bool d = true)
 		{ _mx.lock(); _done = d; _mx.unlock(); }
-	inline cml::CTcpSocket* sock() const { return _sock; }
+	inline wolf::CTcpSocket* sock() const { return _sock; }
 	void run();
 	virtual void process(CTlvCommand *cmd) = 0;
 private:
 	bool _done;
-	cml::CTcpSocket *_sock;
-	cml::CMutex _mx;
+	wolf::CTcpSocket *_sock;
+	wolf::CMutex _mx;
 };
 
 }

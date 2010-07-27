@@ -12,7 +12,7 @@
 #include "HecoWorker.h"
 #include "HecoWorkerCreator.h"
 
-using namespace wfe;
+using namespace wolf;
 
 int main()
 {

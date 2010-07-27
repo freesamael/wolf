@@ -15,7 +15,7 @@
 #include "HecoWorker.h"
 
 using namespace std;
-using namespace wfe;
+using namespace wolf;
 
 #define NWORKER	600
 

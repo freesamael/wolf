@@ -8,13 +8,13 @@
 #ifndef XTLVCOMMAND_H_
 #define XTLVCOMMAND_H_
 
-#include "AException.h"
+#include "XWolf.h"
 #include "CTlvCommand.h"
 
-namespace wfe
+namespace wolf
 {
 
-class XTlvCommand: public cml::AException
+class XTlvCommand: public wolf::XWolf
 {
 public:
 	typedef enum XType {

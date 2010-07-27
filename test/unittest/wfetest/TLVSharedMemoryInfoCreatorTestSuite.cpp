@@ -9,8 +9,8 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVSharedMemoryInfoCreatorTestSuite);
 
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 void TLVSharedMemoryInfoCreatorTestSuite::testCreate()
 {

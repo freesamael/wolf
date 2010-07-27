@@ -9,7 +9,7 @@
 
 #include <stdint.h>
 
-namespace cml
+namespace wolf
 {
 
 /**

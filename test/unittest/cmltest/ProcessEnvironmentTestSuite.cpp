@@ -9,7 +9,7 @@
 #include "CProcessEnvironment.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ProcessEnvironmentTestSuite);
 

@@ -11,7 +11,7 @@
 #include "ASocket.h"
 #include "HelperMacros.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

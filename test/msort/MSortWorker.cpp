@@ -16,8 +16,8 @@
 #include "MSortWorkerCreator.h"
 
 using namespace std;
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 #define TLV_TYPE_WORKER	130
 TLV_OBJECT_REGISTRATION(MSortWorker, TLV_TYPE_WORKER, MSortWorkerCreator);
@@ -52,7 +52,7 @@ void MSortWorker::managerFinalization(IManagerActor *mgr)
 	}
 }
 
-void MSortWorker::managerPrefire(wfe::IManagerActor *mgr)
+void MSortWorker::managerPrefire(wolf::IManagerActor *mgr)
 {
 	PINF_1("Manager prefire.");
 	CSimpleManagerActor *smgr;
@@ -71,7 +71,7 @@ void MSortWorker::managerPrefire(wfe::IManagerActor *mgr)
 	}
 }
 
-void MSortWorker::managerPostfire(wfe::IManagerActor *mgr)
+void MSortWorker::managerPostfire(wolf::IManagerActor *mgr)
 {
 	PINF_1("Manager postfire.");
 	CSimpleManagerActor *smgr;
@@ -123,7 +123,7 @@ void MSortWorker::setVector(const CFlowVector<uint32_t> &v)
 	_vec = v;
 }
 
-cml::CTlvBlock* MSortWorker::toTLVBlock() const
+wolf::CTlvBlock* MSortWorker::toTLVBlock() const
 {
 	if ((_vec.size() * sizeof(uint32_t) + ITlvBlock::szHeader) > UINT16_MAX) {
 		PERR("Too large to be a TLV object.");

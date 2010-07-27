@@ -10,7 +10,7 @@
 #include <vector>
 #include "AActor.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**

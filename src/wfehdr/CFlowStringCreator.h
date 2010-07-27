@@ -10,17 +10,17 @@
 #include "CTlvStringCreator.h"
 #include "CFlowString.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
  * Creator for CFlowString.
  */
-class CFlowStringCreator: public cml::CTlvStringCreator
+class CFlowStringCreator: public wolf::CTlvStringCreator
 {
 public:
-	cml::ITlvObject* create() const { return new CFlowString(); }
-	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
+	wolf::ITlvObject* create() const { return new CFlowString(); }
+	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
 };
 
 }

@@ -11,7 +11,7 @@
 #include "testtlv.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
 int main(int argc, char *argv[])
 {

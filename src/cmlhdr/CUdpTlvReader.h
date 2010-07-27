@@ -14,7 +14,7 @@
 #include "XThread.h"
 #include "XTlvObject.h"
 
-namespace cml
+namespace wolf
 {
 
 class CUdpTlvReader

@@ -13,7 +13,7 @@
 #include <HelperMacros.h>
 #include "MSortDataGenerator.h"
 
-using namespace wfe;
+using namespace wolf;
 
 MSortDataGenerator::MSortDataGenerator(int nports, int psize):
 		_np(nports), _psize(psize), _state(READY)

@@ -7,7 +7,7 @@
 #include <CRunner.h>
 #include <CAlwaysFirstWorkerStealer.h>
 
-using namespace wfe;
+using namespace wolf;
 
 int main()
 {

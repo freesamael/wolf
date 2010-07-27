@@ -21,9 +21,9 @@
 #include "internal/CMasterSideFinishedWorkerProcessor.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 struct PData
@@ -46,8 +46,8 @@ struct PData
 	CMutex fwqmx;								// Finished worker queue mutex.
 	unsigned nfinwrks;							// # finished workers.
 	CHostAddress bcastaddr;						// Broadcast address.
-	cml::CTime stime;							// Time when started.
-	cml::CTime exetime;							// Execution time.
+	wolf::CTime stime;							// Time when started.
+	wolf::CTime exetime;							// Execution time.
 
 private:
 	PData(const PData &UNUSED(o)): rsocks(), rsocksmx(), cmdsdr(), clis(),
@@ -195,7 +195,7 @@ void CMaster::shutdown()
 /**
  * Used by RunnerCommandListener to notify that a runner is got.
  */
-void CMaster::runnerConnected(cml::CTcpSocket *runnersock)
+void CMaster::runnerConnected(wolf::CTcpSocket *runnersock)
 {
 	vector<CHostAddress> addrs;
 	_d->rsocksmx.lock();

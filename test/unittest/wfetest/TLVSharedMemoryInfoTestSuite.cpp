@@ -15,8 +15,8 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVSharedMemoryInfoTestSuite);
 
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 void TLVSharedMemoryInfoTestSuite::testToTLVBlock()
 {

@@ -12,12 +12,12 @@
 #include "XTlvCommand.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
-void wfe::ACommandListener::run()
+void wolf::ACommandListener::run()
 {
 	CTcpTlvReader reader(_sock);
 

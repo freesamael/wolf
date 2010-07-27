@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace wfe
+namespace wolf
 {
 
 SINGLETON_REGISTRATION(D2MCE);

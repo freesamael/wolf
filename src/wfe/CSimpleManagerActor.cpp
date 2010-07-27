@@ -7,7 +7,7 @@
 #include "CSimpleManagerActor.h"
 #include "CMaster.h"
 
-namespace wfe
+namespace wolf
 {
 
 AActor::State CSimpleManagerActor::state()

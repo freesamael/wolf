@@ -7,7 +7,7 @@
 #include "CTlvObjectFactoryAutoRegistry.h"
 #include "CTlvObjectFactory.h"
 
-namespace cml
+namespace wolf
 {
 
 CTlvObjectFactoryAutoRegistry::CTlvObjectFactoryAutoRegistry(const std::string &type,

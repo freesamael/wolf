@@ -11,8 +11,8 @@
 #include <HelperMacros.h>
 #include "HecoDSMWorkerCreator.h"
 
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 ITlvObject* HecoDSMWorkerCreator::create(const ITlvBlock &blk) const
 {

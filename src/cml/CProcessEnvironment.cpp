@@ -13,7 +13,7 @@ extern char **environ;
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 /**

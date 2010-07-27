@@ -11,7 +11,7 @@
 #include "CTcpTlvReader.h"
 #include "CTcpTlvWriter.h"
 
-namespace cml {
+namespace wolf {
 
 class CTcpTlvReaderWriter: public CTcpTlvReader, public CTcpTlvWriter {
 public:

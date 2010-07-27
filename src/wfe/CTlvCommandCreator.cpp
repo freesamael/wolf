@@ -13,9 +13,9 @@
 #include "WfeTLVTypes.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 /*

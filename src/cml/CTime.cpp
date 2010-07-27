@@ -9,7 +9,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 CTime CTime::operator+(const CTime &o) throw()
@@ -43,7 +43,7 @@ string CTime::toString() const throw()
 
 }
 
-std::ostream& operator<<(std::ostream &o, const cml::CTime &t)
+std::ostream& operator<<(std::ostream &o, const wolf::CTime &t)
 {
 	return (o << t.toString());
 }

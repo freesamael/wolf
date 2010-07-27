@@ -7,7 +7,7 @@
 #ifndef IDROP_H_
 #define IDROP_H_
 
-namespace wfe
+namespace wolf
 {
 
 /**

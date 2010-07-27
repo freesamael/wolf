@@ -10,7 +10,7 @@
 #include <AActor.h>
 #include <CFlowVector.h>
 
-class MSortFinalizer: public wfe::AActor
+class MSortFinalizer: public wolf::AActor
 {
 public:
 	MSortFinalizer(int nports);
@@ -24,8 +24,8 @@ public:
 
 private:
 	State _state;
-	wfe::CFlowVector<wfe::CFlowVector<uint32_t> *> _vex;
-	wfe::CFlowVector<wfe::CFlowVector<uint32_t>::iterator > _its;
+	wolf::CFlowVector<wolf::CFlowVector<uint32_t> *> _vex;
+	wolf::CFlowVector<wolf::CFlowVector<uint32_t>::iterator > _its;
 };
 
 #endif /* MSORTFINALIZER_H_ */

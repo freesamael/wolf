@@ -9,9 +9,9 @@
 #include "HelperMacros.h"
 #include "CFlowStringCreator.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 ITlvObject* CFlowStringCreator::create(const ITlvBlock &blk) const

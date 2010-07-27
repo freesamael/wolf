@@ -12,7 +12,7 @@
 #include <unistd.h>
 #include "CProcessEnvironment.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

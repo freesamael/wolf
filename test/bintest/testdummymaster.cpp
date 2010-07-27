@@ -7,7 +7,7 @@
 #include <CDirector.h>
 #include <CSimpleWorkflowExecutor.h>
 
-using namespace wfe;
+using namespace wolf;
 
 int main()
 {

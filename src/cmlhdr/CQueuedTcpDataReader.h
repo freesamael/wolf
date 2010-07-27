@@ -12,7 +12,7 @@
 #include "CMutex.h"
 #include "CQueuedTcpSocket.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

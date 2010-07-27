@@ -10,17 +10,17 @@
 #include "CTlvUint16Creator.h"
 #include "CFlowUint16.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
  * Creator for CFlowUint16.
  */
-class CFlowUint16Creator: public cml::CTlvUint16Creator
+class CFlowUint16Creator: public wolf::CTlvUint16Creator
 {
 public:
-	cml::ITlvObject* create() const { return new CFlowUint16(); }
-	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
+	wolf::ITlvObject* create() const { return new CFlowUint16(); }
+	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
 };
 
 }

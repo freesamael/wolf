@@ -13,7 +13,7 @@
 #include "ISocketState.h"
 #include "HelperMacros.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

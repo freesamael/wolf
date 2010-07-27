@@ -11,9 +11,9 @@
 #include "CMasterSideCommandListener.h"
 #include "XTlvCommand.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 void CMasterSideCommandListener::process(CTlvCommand *cmd)

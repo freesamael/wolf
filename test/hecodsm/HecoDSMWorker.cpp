@@ -17,8 +17,8 @@
 #include "HecoDSMWorkerCreator.h"
 
 using namespace std;
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 #define TLV_TYPE_WORKER	130
 TLV_OBJECT_REGISTRATION(HecoDSMWorker, TLV_TYPE_WORKER, HecoDSMWorkerCreator);

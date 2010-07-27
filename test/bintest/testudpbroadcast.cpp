@@ -8,7 +8,7 @@
 #include <CUdpTlvWriter.h>
 #include <CTlvString.h>
 
-using namespace cml;
+using namespace wolf;
 
 int main()
 {

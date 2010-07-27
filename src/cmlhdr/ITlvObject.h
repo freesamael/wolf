@@ -10,7 +10,7 @@
 #include <cstddef>
 #include "CTlvBlock.h"
 
-namespace cml
+namespace wolf
 {
 
 class CTlvBlock;

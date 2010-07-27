@@ -8,7 +8,7 @@
 #include "MansetConfigGenerator.h"
 #include "MansetException.h"
 
-using namespace wfe;
+using namespace wolf;
 
 MansetConfigGenerator::MansetConfigGenerator(uint32_t imgwidth,
 		uint32_t imgheight, uint32_t rows):

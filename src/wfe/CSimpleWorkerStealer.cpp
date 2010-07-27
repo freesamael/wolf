@@ -12,9 +12,9 @@
 #include "CSimpleWorkerStealer.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 CSimpleWorkerStealer::CSimpleWorkerStealer(int n):

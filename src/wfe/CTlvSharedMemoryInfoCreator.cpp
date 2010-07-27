@@ -12,9 +12,9 @@
 #include "HelperMacros.h"
 #include "CTlvSharedMemoryInfoCreator.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 ITlvObject* CTlvSharedMemoryInfoCreator::create(const ITlvBlock &blk) const

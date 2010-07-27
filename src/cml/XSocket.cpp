@@ -10,7 +10,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 const char *XSocket::XTypeString[] = {

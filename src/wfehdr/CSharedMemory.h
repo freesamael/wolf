@@ -11,7 +11,7 @@
 #include "HelperMacros.h"
 #include "IDrop.h"
 
-namespace wfe
+namespace wolf
 {
 
 #ifdef ENABLE_D2MCE /* DSM mode */

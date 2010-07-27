@@ -7,7 +7,7 @@
 #ifndef IRUNNABLE_H_
 #define IRUNNABLE_H_
 
-namespace cml
+namespace wolf
 {
 
 /**

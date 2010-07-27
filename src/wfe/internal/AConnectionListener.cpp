@@ -12,9 +12,9 @@
 #include "XTlvCommand.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 AConnectionListener::AConnectionListener(CTcpServer *server,

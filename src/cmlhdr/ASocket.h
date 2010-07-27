@@ -12,7 +12,7 @@
 #include "ISocketState.h"
 #include "CMutex.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

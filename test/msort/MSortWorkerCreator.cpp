@@ -11,8 +11,8 @@
 #include "MSortWorkerCreator.h"
 #include "MSortWorker.h"
 
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 MSortWorkerCreator::MSortWorkerCreator()
 {

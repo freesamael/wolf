@@ -10,17 +10,17 @@
 #include "CTlvUint32Creator.h"
 #include "CFlowUint32.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
  * Creator for CFlowUint32
  */
-class CFlowUint32Creator: public cml::CTlvUint32Creator
+class CFlowUint32Creator: public wolf::CTlvUint32Creator
 {
 public:
-	cml::ITlvObject* create() const { return new CFlowUint32(); }
-	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
+	wolf::ITlvObject* create() const { return new CFlowUint32(); }
+	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
 };
 
 }

@@ -16,8 +16,8 @@
 #include "HecoWorkerCreator.h"
 
 using namespace std;
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 #define TLV_TYPE_WORKER		130
 TLV_OBJECT_REGISTRATION(HecoWorker, TLV_TYPE_WORKER, HecoWorkerCreator);
@@ -26,8 +26,8 @@ void HecoWorker::managerInitialization(IManagerActor *mgr)
 {
 	CSimpleManagerActor *smgr;
 	if ((smgr = dynamic_cast<CSimpleManagerActor *>(mgr))) {
-		smgr->addPort(wfe::IPort::SINK);
-		smgr->addPort(wfe::IPort::SOURCE);
+		smgr->addPort(wolf::IPort::SINK);
+		smgr->addPort(wolf::IPort::SOURCE);
 	}
 }
 

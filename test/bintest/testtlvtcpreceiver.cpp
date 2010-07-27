@@ -10,7 +10,7 @@
 #include <CTcpTlvReader.h>
 #include "testtlv.h"
 
-using namespace cml;
+using namespace wolf;
 using namespace std;
 
 int main()

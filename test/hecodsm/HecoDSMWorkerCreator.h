@@ -10,10 +10,10 @@
 #include <ITlvObjectCreator.h>
 #include "HecoDSMWorker.h"
 
-class HecoDSMWorkerCreator: public cml::ITlvObjectCreator
+class HecoDSMWorkerCreator: public wolf::ITlvObjectCreator
 {
-	inline cml::ITlvObject* create() const { return new HecoDSMWorker(); }
-	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
+	inline wolf::ITlvObject* create() const { return new HecoDSMWorker(); }
+	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
 };
 
 #endif /* HECODSMWORKERCREATOR_H_ */

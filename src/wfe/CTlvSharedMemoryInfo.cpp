@@ -16,9 +16,9 @@
 #include "WfeTLVTypes.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 TLV_OBJECT_REGISTRATION(CTlvSharedMemoryInfo, TLV_TYPE_SMINFO, CTlvSharedMemoryInfoCreator);

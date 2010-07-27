@@ -11,7 +11,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVBlockTestSuite);
 
-using namespace cml;
+using namespace wolf;
 using namespace std;
 
 void TLVBlockTestSuite::testBlockOperations()

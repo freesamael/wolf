@@ -10,9 +10,9 @@
 #include "WfeTLVTypes.h"
 #include "CFlowStringCreator.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 TLV_OBJECT_REGISTRATION(CFlowString, TLV_TYPE_DSTRING, CFlowStringCreator);

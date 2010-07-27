@@ -9,7 +9,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(AbstractActorTestSuite);
 
-using namespace wfe;
+using namespace wolf;
 
 class TestActor: public AActor
 {

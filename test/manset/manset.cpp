@@ -14,7 +14,7 @@
 #include "MansetFinalizer.h"
 
 using namespace std;
-using namespace wfe;
+using namespace wolf;
 
 #define IMG_WIDTH	7500
 #define IMG_HEIGHT	6000

@@ -15,7 +15,7 @@
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVArrayCreatorTestSuite);
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
 void TLVArrayCreatorTestSuite::testCreate()
 {

@@ -9,7 +9,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(SinkPortTestSuite);
 
-using namespace wfe;
+using namespace wolf;
 
 class FakeDrop: public IDrop
 {

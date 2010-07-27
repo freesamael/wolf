@@ -6,12 +6,12 @@
 
 #include "CRunnerSideConnectionListener.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
-void wfe::CRunnerSideConnectionListener::notify(cml::CTcpSocket *sock)
+void wolf::CRunnerSideConnectionListener::notify(wolf::CTcpSocket *sock)
 {
 	_runner->runnerConnected(sock);
 }

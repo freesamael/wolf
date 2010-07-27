@@ -11,8 +11,8 @@
 #include "MansetException.h"
 
 using namespace std;
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 ITlvObject* MansetWorkerCreator::create(const ITlvBlock &blk) const
 {

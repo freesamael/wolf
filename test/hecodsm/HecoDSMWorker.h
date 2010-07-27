@@ -12,25 +12,25 @@
 #include <CTlvSharedMemoryInfo.h>
 #include <AWorkerActor.h>
 
-class HecoDSMWorker: public wfe::AWorkerActor
+class HecoDSMWorker: public wolf::AWorkerActor
 {
 public:
 	HecoDSMWorker();
 	~HecoDSMWorker();
-	void managerInitialization(wfe::IManagerActor *mgr);
-	void managerFinalization(wfe::IManagerActor *mgr);
-	void managerPrefire(wfe::IManagerActor *mgr);
-	void managerPostfire(wfe::IManagerActor *mgr);
+	void managerInitialization(wolf::IManagerActor *mgr);
+	void managerFinalization(wolf::IManagerActor *mgr);
+	void managerPrefire(wolf::IManagerActor *mgr);
+	void managerPostfire(wolf::IManagerActor *mgr);
 	void setup();
 	void fire();
 	void postfire();
 	void update(AWorkerActor *UNUSED(o)) {}
-	cml::CTlvBlock* toTLVBlock() const;
-	void setMeminfo(wfe::CTlvSharedMemoryInfo *meminfo) { _meminfo = meminfo; }
+	wolf::CTlvBlock* toTLVBlock() const;
+	void setMeminfo(wolf::CTlvSharedMemoryInfo *meminfo) { _meminfo = meminfo; }
 
 private:
-	wfe::SharedMemory *_mem;
-	wfe::CTlvSharedMemoryInfo *_meminfo;
+	wolf::SharedMemory *_mem;
+	wolf::CTlvSharedMemoryInfo *_meminfo;
 };
 
 #endif /* HECODSMWORKER_H_ */

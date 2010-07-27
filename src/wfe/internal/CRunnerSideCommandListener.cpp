@@ -13,9 +13,9 @@
 #include "AWorkerActor.h"
 #include "XTlvCommand.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 void CRunnerSideCommandListener::process(CTlvCommand *cmd)

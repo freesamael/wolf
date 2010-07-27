@@ -9,9 +9,9 @@
 #include "HelperMacros.h"
 #include "CFlowUint32Creator.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 ITlvObject* CFlowUint32Creator::create(const ITlvBlock &blk) const

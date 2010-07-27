@@ -10,7 +10,7 @@
 #include <vector>
 #include "IObserver.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

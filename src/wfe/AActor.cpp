@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace wfe
+namespace wolf
 {
 
 const string AActor::StateString[] =

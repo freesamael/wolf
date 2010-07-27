@@ -8,7 +8,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 CHostAddress const CHostAddress::LocalhostAddress("127.0.0.1");

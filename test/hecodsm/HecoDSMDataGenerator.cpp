@@ -13,7 +13,7 @@
 #include <CSharedMemory.h>
 #include "HecoDSMDataGenerator.h"
 
-using namespace wfe;
+using namespace wolf;
 
 void HecoDSMDataGenerator::prefire()
 {

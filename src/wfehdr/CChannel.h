@@ -12,7 +12,7 @@
 #include "CMutex.h"
 #include "IDrop.h"
 
-namespace wfe
+namespace wolf
 {
 
 class CSinkPort;
@@ -27,7 +27,7 @@ public:
 	void write(IDrop *item);
 
 private:
-	cml::CMutex _mutex;
+	wolf::CMutex _mutex;
 	std::vector<CSinkPort *> _readers;
 };
 

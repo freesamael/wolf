@@ -10,7 +10,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVArrayTestSuite);
 
-using namespace cml;
+using namespace wolf;
 
 void TLVArrayTestSuite::testToTLVBlock()
 {

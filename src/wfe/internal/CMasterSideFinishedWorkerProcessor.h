@@ -10,7 +10,7 @@
 #include "CThread.h"
 #include "CMutex.h"
 
-namespace wfe
+namespace wolf
 {
 
 class CMaster;
@@ -18,7 +18,7 @@ class CMaster;
 /**
  * Used to process finished workers.
  */
-class CMasterSideFinishedWorkerProcessor: public cml::CThread
+class CMasterSideFinishedWorkerProcessor: public wolf::CThread
 {
 public:
 	CMasterSideFinishedWorkerProcessor(CMaster *m):
@@ -36,7 +36,7 @@ public:
 private:
 	CMaster *_master;
 	bool _done;
-	cml::CMutex _mx;
+	wolf::CMutex _mx;
 };
 
 }

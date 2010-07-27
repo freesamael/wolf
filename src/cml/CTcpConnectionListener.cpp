@@ -8,7 +8,7 @@
 #include "CTcpConnectionListener.h"
 #include "HelperMacros.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

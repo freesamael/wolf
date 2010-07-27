@@ -50,7 +50,7 @@
 	} while (0)
 #endif
 
-namespace cml
+namespace wolf
 {
 
 class CTime
@@ -115,6 +115,6 @@ private:
 
 }
 
-extern std::ostream& operator<<(std::ostream &o, const cml::CTime &t);
+extern std::ostream& operator<<(std::ostream &o, const wolf::CTime &t);
 
 #endif /* CTIME_H_ */

@@ -10,7 +10,7 @@
 #include <vector>
 #include "IDrop.h"
 
-namespace wfe
+namespace wolf
 {
 
 template <typename T>

@@ -7,7 +7,7 @@
 #include "CSinkPort.h"
 #include "CChannel.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**

@@ -10,7 +10,7 @@
 #include "CSourcePort.h"
 #include "CChannel.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**

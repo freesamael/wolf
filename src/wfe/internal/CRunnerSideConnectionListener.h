@@ -10,7 +10,7 @@
 #include "AConnectionListener.h"
 #include "CRunner.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -19,10 +19,10 @@ namespace wfe
 class CRunnerSideConnectionListener: public AConnectionListener
 {
 public:
-	CRunnerSideConnectionListener(CRunner *runner, cml::CTcpServer *server,
+	CRunnerSideConnectionListener(CRunner *runner, wolf::CTcpServer *server,
 			in_port_t lport): AConnectionListener(server, lport),
 			_runner(runner) {}
-	void notify(cml::CTcpSocket *sock);
+	void notify(wolf::CTcpSocket *sock);
 
 private:
 	CRunnerSideConnectionListener(const CRunnerSideConnectionListener &UNUSED(o)):

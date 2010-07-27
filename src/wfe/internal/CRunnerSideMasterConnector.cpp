@@ -13,9 +13,9 @@
 #include "XTlvCommand.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 CTcpSocket* CRunnerSideMasterConnector::connect(in_port_t mport, in_port_t rport)

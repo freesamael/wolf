@@ -10,11 +10,11 @@
 #include <ITlvObjectCreator.h>
 #include "MansetWorker.h"
 
-class MansetWorkerCreator: public cml::ITlvObjectCreator
+class MansetWorkerCreator: public wolf::ITlvObjectCreator
 {
 public:
-	cml::ITlvObject* create() const { return new MansetWorker(); }
-	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
+	wolf::ITlvObject* create() const { return new MansetWorker(); }
+	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
 };
 
 #endif /* MANSETWORKERCREATOR_H_ */

@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 ITlvObject* CTlvStringCreator::create(const ITlvBlock &blk) const

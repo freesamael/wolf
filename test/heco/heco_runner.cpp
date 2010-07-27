@@ -6,7 +6,7 @@
 #include <CRunner.h>
 #include <CSimpleWorkerStealer.h>
 
-using namespace wfe;
+using namespace wolf;
 
 int main()
 {

@@ -7,7 +7,7 @@
 #ifndef IOBSERVER_H_
 #define IOBSERVER_H_
 
-namespace cml
+namespace wolf
 {
 
 class AObservable;

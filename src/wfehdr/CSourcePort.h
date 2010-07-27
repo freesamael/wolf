@@ -10,7 +10,7 @@
 #include "IPort.h"
 #include "IDrop.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**

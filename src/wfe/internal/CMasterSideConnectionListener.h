@@ -10,7 +10,7 @@
 #include "AConnectionListener.h"
 #include "CMaster.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -19,10 +19,10 @@ namespace wfe
 class CMasterSideConnectionListener: public AConnectionListener
 {
 public:
-	CMasterSideConnectionListener(CMaster *master, cml::CTcpServer *server,
+	CMasterSideConnectionListener(CMaster *master, wolf::CTcpServer *server,
 			in_port_t lport): AConnectionListener(server, lport),
 			_master(master) {}
-	void notify(cml::CTcpSocket *sock);
+	void notify(wolf::CTcpSocket *sock);
 private:
 	CMasterSideConnectionListener(const CMasterSideConnectionListener &UNUSED(o)):
 		AConnectionListener(NULL, 0), _master(NULL) {}

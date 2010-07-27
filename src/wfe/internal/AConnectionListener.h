@@ -15,31 +15,31 @@
 #include "AObservable.h"
 #include "CTcpConnectionListener.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
  * Used to listen incoming runner connections.
  */
-class AConnectionListener: public cml::IObserver
+class AConnectionListener: public wolf::IObserver
 {
 public:
-	AConnectionListener(cml::CTcpServer *server, in_port_t lport);
+	AConnectionListener(wolf::CTcpServer *server, in_port_t lport);
 	virtual ~AConnectionListener() {}
 	void start();
 	void stop();
-	void update(cml::AObservable *o);
-	virtual void notify(cml::CTcpSocket *sock) = 0;
+	void update(wolf::AObservable *o);
+	virtual void notify(wolf::CTcpSocket *sock) = 0;
 
 private:
 	AConnectionListener(const AConnectionListener &UNUSED(o)):
-		cml::IObserver(), _server(NULL), _listener(NULL),
+		wolf::IObserver(), _server(NULL), _listener(NULL),
 		_listhread(&_listener) {}
 	AConnectionListener& operator=(const AConnectionListener
 			&UNUSED(o)) { return *this; }
-	cml::CTcpServer *_server;
-	cml::CTcpConnectionListener _listener;
-	cml::CThread _listhread;
+	wolf::CTcpServer *_server;
+	wolf::CTcpConnectionListener _listener;
+	wolf::CThread _listhread;
 };
 
 }

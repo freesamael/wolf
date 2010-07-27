@@ -10,7 +10,7 @@
 #include <inttypes.h>
 #include "CTcpSocket.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -20,7 +20,7 @@ namespace wfe
 class CRunnerSideMasterConnector
 {
 public:
-	cml::CTcpSocket* connect(in_port_t mport, in_port_t rport);
+	wolf::CTcpSocket* connect(in_port_t mport, in_port_t rport);
 };
 
 }

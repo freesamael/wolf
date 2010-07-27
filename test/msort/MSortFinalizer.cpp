@@ -11,7 +11,7 @@
 #include "MSortFinalizer.h"
 
 using namespace std;
-using namespace wfe;
+using namespace wolf;
 
 MSortFinalizer::MSortFinalizer(int nports):
 		_state(NOT_READY), _vex(), _its()

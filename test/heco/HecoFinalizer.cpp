@@ -9,13 +9,13 @@
 #include "HecoFinalizer.h"
 
 using namespace std;
-using namespace wfe;
+using namespace wolf;
 
 HecoFinalizer::HecoFinalizer(unsigned np):
 		_state(NOT_READY)
 {
 	for (unsigned i = 0; i < np; i++)
-		addPort(wfe::IPort::SINK);
+		addPort(wolf::IPort::SINK);
 }
 
 HecoFinalizer::~HecoFinalizer()

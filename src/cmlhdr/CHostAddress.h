@@ -16,7 +16,7 @@
 #define	INADDR_NONE		((in_addr_t) 0xffffffff)
 #endif
 
-namespace cml
+namespace wolf
 {
 
 /**

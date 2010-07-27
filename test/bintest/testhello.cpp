@@ -10,7 +10,7 @@
 #include <CSimpleWorkflowExecutor.h>
 
 using namespace std;
-using namespace wfe;
+using namespace wolf;
 
 class HelloActor: public AActor
 {

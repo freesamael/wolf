@@ -9,14 +9,14 @@
 
 #include <CTlvString.h>
 
-cml::CTlvString generateString(char c, unsigned bytecount)
+wolf::CTlvString generateString(char c, unsigned bytecount)
 {
 	char *str = new char[bytecount];
 	for (unsigned i = 0; i < bytecount - 1; i++)
 		str[i] = c;
 	str[bytecount - 1] = '\0';
 
-	cml::CTlvString cstr(str);
+	wolf::CTlvString cstr(str);
 	delete [] str;
 	return cstr;
 }

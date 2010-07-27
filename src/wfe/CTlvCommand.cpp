@@ -15,10 +15,10 @@
 #include "WfeTLVTypes.h"
 #include "HelperMacros.h"
 
-using namespace cml;
+using namespace wolf;
 using namespace std;
 
-namespace wfe
+namespace wolf
 {
 
 TLV_OBJECT_REGISTRATION(CTlvCommand, TLV_TYPE_COMMAND_BASE + CTlvCommand::EMPTY,

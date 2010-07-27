@@ -10,7 +10,7 @@
 #include "ITlvObjectCreator.h"
 #include "CTlvUint16.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

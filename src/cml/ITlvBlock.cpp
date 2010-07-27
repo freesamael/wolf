@@ -6,7 +6,7 @@
 
 #include "ITlvBlock.h"
 
-namespace cml
+namespace wolf
 {
 
 /// Size of type field.

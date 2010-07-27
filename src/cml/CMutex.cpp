@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 CMutex::CMutex() throw(XThread):

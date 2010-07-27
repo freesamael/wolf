@@ -9,7 +9,7 @@
 
 #include <string>
 
-namespace wfe
+namespace wolf
 {
 
 class CChannel;

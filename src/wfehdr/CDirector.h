@@ -13,7 +13,7 @@
 #include "HelperMacros.h"
 #include "IWorkflowExecutor.h"
 
-namespace wfe
+namespace wolf
 {
 
 class CChannel;

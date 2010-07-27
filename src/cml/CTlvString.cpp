@@ -15,7 +15,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 TLV_OBJECT_REGISTRATION(CTlvString, TLV_TYPE_STRING, CTlvStringCreator);

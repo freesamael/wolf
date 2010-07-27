@@ -12,7 +12,7 @@
 #include <stdint.h>
 #include "ITlvObject.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -21,7 +21,7 @@ namespace wfe
  * set to true (by default it's false), so users need to delete the parameters
  * if it's allocated on heap, or set autoclean property.
  */
-class CTlvCommand: public cml::ITlvObject
+class CTlvCommand: public wolf::ITlvObject
 {
 public:
 	typedef enum Command {
@@ -47,14 +47,14 @@ public:
 	inline void setAutoclean(bool ac) { _autoclean = ac; }
 	inline Command command() const { return _cmd; }
 	inline void setCommand(Command c) { _cmd = c; }
-	inline const std::vector<cml::ITlvObject *> parameters() const
+	inline const std::vector<wolf::ITlvObject *> parameters() const
 			{ return _params; }
 	inline void addParameter(ITlvObject *obj) { _params.push_back(obj); }
-	virtual cml::CTlvBlock* toTLVBlock() const;
+	virtual wolf::CTlvBlock* toTLVBlock() const;
 
 private:
 	Command _cmd;
-	std::vector<cml::ITlvObject *> _params;
+	std::vector<wolf::ITlvObject *> _params;
 	bool _autoclean;
 };
 

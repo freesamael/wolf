@@ -10,9 +10,9 @@
 #include "WfeTLVTypes.h"
 #include "CFlowUint32Creator.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 TLV_OBJECT_REGISTRATION(CFlowUint32, TLV_TYPE_DUINT32, CFlowUint32Creator);

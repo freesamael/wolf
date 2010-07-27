@@ -10,12 +10,12 @@
 #include <ITlvObjectCreator.h>
 #include "MSortWorker.h"
 
-class MSortWorkerCreator: public cml::ITlvObjectCreator
+class MSortWorkerCreator: public wolf::ITlvObjectCreator
 {
 public:
 	MSortWorkerCreator();
-	cml::ITlvObject* create() const { return new MSortWorker(); }
-	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
+	wolf::ITlvObject* create() const { return new MSortWorker(); }
+	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
 };
 
 #endif /* MSORTWORKERCREATOR_H_ */

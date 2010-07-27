@@ -13,8 +13,8 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVCommandCreatorTestSuite);
 
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 void TLVCommandCreatorTestSuite::testCreate()
 {

@@ -7,7 +7,7 @@
 #include "CMasterSideFinishedWorkerProcessor.h"
 #include "CMaster.h"
 
-namespace wfe
+namespace wolf
 {
 
 void CMasterSideFinishedWorkerProcessor::run()

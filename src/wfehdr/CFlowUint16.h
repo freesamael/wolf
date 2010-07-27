@@ -10,18 +10,18 @@
 #include "IDrop.h"
 #include "CTlvUint16.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
  * Specialized CTlvUint16 implementing IDrop.
  */
-class CFlowUint16: public IDrop, public cml::CTlvUint16
+class CFlowUint16: public IDrop, public wolf::CTlvUint16
 {
 public:
 	CFlowUint16(uint16_t value = 0): CTlvUint16(value) {}
 	CFlowUint16(const CTlvUint16 &o): CTlvUint16(o) {}
-	cml::CTlvBlock* toTLVBlock() const;
+	wolf::CTlvBlock* toTLVBlock() const;
 	IDrop* clone() const;
 };
 

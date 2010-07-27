@@ -7,15 +7,15 @@
 #ifndef XSOCKET_H_
 #define XSOCKET_H_
 
-#include "AException.h"
+#include "XWolf.h"
 
-namespace cml
+namespace wolf
 {
 
 /**
  * Representing socket related exceptions.
  */
-class XSocket: public AException
+class XSocket: public XWolf
 {
 public:
 	typedef enum XType

@@ -14,7 +14,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 CWaitCondition::CWaitCondition() throw(XThread):

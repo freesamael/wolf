@@ -10,7 +10,7 @@
 #include "ACommandListener.h"
 #include "CMaster.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -19,7 +19,7 @@ namespace wfe
 class CMasterSideCommandListener: public ACommandListener
 {
 public:
-	CMasterSideCommandListener(CMaster *master, cml::CTcpSocket *sock):
+	CMasterSideCommandListener(CMaster *master, wolf::CTcpSocket *sock):
 		ACommandListener(sock), _master(master) {}
 	CMasterSideCommandListener(const CMasterSideCommandListener &o):
 		ACommandListener(o), _master(o._master) {}

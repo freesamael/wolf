@@ -9,10 +9,10 @@
 
 #include <AActor.h>
 
-class HecoDSMFinalizer: public wfe::AActor
+class HecoDSMFinalizer: public wolf::AActor
 {
 public:
-	HecoDSMFinalizer(): _state(NOT_READY) { addPort(wfe::IPort::SINK); }
+	HecoDSMFinalizer(): _state(NOT_READY) { addPort(wolf::IPort::SINK); }
 	State state();
 	void fire();
 

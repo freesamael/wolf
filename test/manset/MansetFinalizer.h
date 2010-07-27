@@ -10,7 +10,7 @@
 #include <inttypes.h>
 #include <AActor.h>
 
-class MansetFinalizer: public wfe::AActor
+class MansetFinalizer: public wolf::AActor
 {
 public:
 	MansetFinalizer(uint32_t imgwidth, uint32_t imgheight, uint32_t rows);

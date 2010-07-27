@@ -12,7 +12,7 @@
 #include "CHostAddress.h"
 #include "XSocket.h"
 
-namespace cml
+namespace wolf
 {
 
 class ASocket;

@@ -8,16 +8,16 @@
 #define XTLVOBJECT_H_
 
 #include <inttypes.h>
-#include "AException.h"
+#include "XWolf.h"
 #include "CmlTLVTypes.h"
 
-namespace cml
+namespace wolf
 {
 
 /**
  * Exceptions of TLV objects and blocks.
  */
-class XTlvObject: public AException
+class XTlvObject: public XWolf
 {
 public:
 	typedef enum XType {

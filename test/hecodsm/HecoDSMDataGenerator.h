@@ -11,10 +11,10 @@
 #include <CSharedMemory.h>
 #include <IDrop.h>
 
-class HecoDSMDataGenerator: public wfe::AActor
+class HecoDSMDataGenerator: public wolf::AActor
 {
 public:
-	HecoDSMDataGenerator(): _state(READY) { addPort(wfe::IPort::SOURCE); }
+	HecoDSMDataGenerator(): _state(READY) { addPort(wolf::IPort::SOURCE); }
 	~HecoDSMDataGenerator() { delete sourcePorts()[0]; }
 	State state() { return _state; }
 	void prefire();
@@ -22,7 +22,7 @@ public:
 	void postfire();
 
 private:
-	wfe::SharedMemory *_item;
+	wolf::SharedMemory *_item;
 	State _state;
 };
 

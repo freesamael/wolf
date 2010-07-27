@@ -11,7 +11,7 @@
 #include "CTlvBlock.h"
 #include "HelperMacros.h"
 
-namespace cml
+namespace wolf
 {
 
 ITlvObject* CTlvUint32Creator::create(const ITlvBlock &blk) const

@@ -9,7 +9,7 @@
 
 #include <AActor.h>
 
-class HecoFinalizer: public wfe::AActor
+class HecoFinalizer: public wolf::AActor
 {
 public:
 	HecoFinalizer(unsigned np);

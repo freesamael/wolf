@@ -12,7 +12,7 @@
 #include "CSourcePort.h"
 #include "CSinkPort.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**

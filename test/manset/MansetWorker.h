@@ -11,7 +11,7 @@
 #include <AWorkerActor.h>
 #include <CFlowUint32.h>
 
-class FlowUint8Pointer: public wfe::IDrop
+class FlowUint8Pointer: public wolf::IDrop
 {
 public:
 	FlowUint8Pointer(uint8_t *p): _p(p) {}
@@ -23,16 +23,16 @@ private:
 	uint8_t *_p;
 };
 
-class MansetWorker: public wfe::AWorkerActor
+class MansetWorker: public wolf::AWorkerActor
 {
 public:
 	MansetWorker(): _imgwidth(0),_imgheight(0), _minrow(0), _rows(0),
 			_imgdata(NULL) {}
 	~MansetWorker() { delete [] _imgdata; }
-	void managerInitialization(wfe::IManagerActor *mgr);
-	void managerFinalization(wfe::IManagerActor *mgr);
-	void managerPrefire(wfe::IManagerActor *mgr);
-	void managerPostfire(wfe::IManagerActor *mgr);
+	void managerInitialization(wolf::IManagerActor *mgr);
+	void managerFinalization(wolf::IManagerActor *mgr);
+	void managerPrefire(wolf::IManagerActor *mgr);
+	void managerPostfire(wolf::IManagerActor *mgr);
 	void prefire();
 	void fire();
 	void postfire();
@@ -40,7 +40,7 @@ public:
 	void setImageRange(uint32_t imgwidth, uint32_t imgheight, uint32_t minrow,
 			uint32_t rows);
 	void setImageData(uint8_t *imgdata, uint32_t size);
-	cml::CTlvBlock* toTLVBlock() const;
+	wolf::CTlvBlock* toTLVBlock() const;
 
 private:
 	uint32_t _imgwidth, _imgheight, _minrow, _rows;

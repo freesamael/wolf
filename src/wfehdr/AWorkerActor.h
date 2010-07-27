@@ -12,7 +12,7 @@
 #include "AActor.h"
 #include "IManagerActor.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -35,7 +35,7 @@ namespace wfe
  * \note A worker must has valid assignment operator. Manager uses assignment
  * to update the value of original worker when the sent worker migrated back.
  */
-class AWorkerActor: public AActor, public cml::ITlvObject
+class AWorkerActor: public AActor, public wolf::ITlvObject
 {
 public:
 	virtual ~AWorkerActor() {}

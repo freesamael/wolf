@@ -12,7 +12,7 @@
 #include "CMutex.h"
 #include "CWaitCondition.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

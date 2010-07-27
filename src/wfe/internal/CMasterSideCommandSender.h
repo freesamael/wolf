@@ -15,7 +15,7 @@
 #include "CMaster.h"
 #include "HelperMacros.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -27,16 +27,16 @@ public:
 	/// Join D2MCE computing group.
 	void joinD2MCE(const std::string &appname);
 	/// Send hello message.
-	void hello(in_port_t rport, const cml::CHostAddress &addr);
+	void hello(in_port_t rport, const wolf::CHostAddress &addr);
 	/// Ask a runner to add other runners.
-	void addRunner(cml::CTcpSocket *rsock, const std::vector<cml::CHostAddress> &addrs);
+	void addRunner(wolf::CTcpSocket *rsock, const std::vector<wolf::CHostAddress> &addrs);
 	/// Tell a runner to start working.
-	void startRunner(cml::CTcpSocket *rsock);
+	void startRunner(wolf::CTcpSocket *rsock);
 	/// Shutdown the runner.
-	void shutdown(cml::CTcpSocket *rsock);
+	void shutdown(wolf::CTcpSocket *rsock);
 	/// Send an actor to run.
 	/// \return sequence number of the worker.
-	uint32_t runWorker(cml::CTcpSocket *rsock, AWorkerActor *worker);
+	uint32_t runWorker(wolf::CTcpSocket *rsock, AWorkerActor *worker);
 
 private:
 	static uint32_t _wseq; ///< Worker sequence number.

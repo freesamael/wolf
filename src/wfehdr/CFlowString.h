@@ -10,20 +10,20 @@
 #include "IDrop.h"
 #include "CTlvString.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
  * Specialized CTlvString implementing IDrop.
  */
-class CFlowString: public IDrop, public cml::CTlvString
+class CFlowString: public IDrop, public wolf::CTlvString
 {
 public:
 	CFlowString() {}
 	CFlowString(const char *str): CTlvString(str) {}
 	CFlowString(const std::string &str): CTlvString(str) {}
-	CFlowString(const cml::CTlvString &o): CTlvString(o) {}
-	cml::CTlvBlock* toTLVBlock() const;
+	CFlowString(const wolf::CTlvString &o): CTlvString(o) {}
+	wolf::CTlvBlock* toTLVBlock() const;
 	IDrop* clone() const;
 };
 

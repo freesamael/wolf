@@ -13,8 +13,8 @@
 #include "MSortWorker.h"
 
 using namespace std;
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 #define NWORKERS	10
 #define NSIZE		120

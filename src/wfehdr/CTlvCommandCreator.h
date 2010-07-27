@@ -10,7 +10,7 @@
 #include "ITlvObjectCreator.h"
 #include "CTlvCommand.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -19,11 +19,11 @@ namespace wfe
  * ownership of that, and parameters constructed here are always constructed
  * on heap.
  */
-class CTlvCommandCreator: public cml::ITlvObjectCreator
+class CTlvCommandCreator: public wolf::ITlvObjectCreator
 {
 public:
-	inline cml::ITlvObject* create() const { return new CTlvCommand(); }
-	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
+	inline wolf::ITlvObject* create() const { return new CTlvCommand(); }
+	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
 };
 
 }

@@ -7,7 +7,7 @@
 #ifndef IMANAGERACTOR_H_
 #define IMANAGERACTOR_H_
 
-namespace wfe
+namespace wolf
 {
 
 class AWorkerActor;

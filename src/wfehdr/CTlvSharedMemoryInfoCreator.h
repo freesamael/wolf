@@ -10,14 +10,14 @@
 #include "ITlvObjectCreator.h"
 #include "CTlvSharedMemoryInfo.h"
 
-namespace wfe
+namespace wolf
 {
 
-class CTlvSharedMemoryInfoCreator: public cml::ITlvObjectCreator
+class CTlvSharedMemoryInfoCreator: public wolf::ITlvObjectCreator
 {
 public:
-	cml::ITlvObject* create() const { return new CTlvSharedMemoryInfo(); }
-	cml::ITlvObject* create(const cml::ITlvBlock &blk) const;
+	wolf::ITlvObject* create() const { return new CTlvSharedMemoryInfo(); }
+	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
 };
 
 }

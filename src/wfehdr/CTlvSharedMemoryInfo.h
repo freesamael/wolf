@@ -10,7 +10,7 @@
 #include <string>
 #include "ITlvObject.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -18,7 +18,7 @@ namespace wfe
  * make worker actors being able to allocate shared memory after migrated to
  * remote hosts.
  */
-class CTlvSharedMemoryInfo: public cml::ITlvObject
+class CTlvSharedMemoryInfo: public wolf::ITlvObject
 {
 public:
 	CTlvSharedMemoryInfo(): _name(), _size(0) {}
@@ -28,7 +28,7 @@ public:
 	inline size_t size() const { return _size; }
 	inline void setName(std::string &name) { _name = name; }
 	inline void setSize(size_t size) { _size = size; }
-	cml::CTlvBlock* toTLVBlock() const;
+	wolf::CTlvBlock* toTLVBlock() const;
 
 private:
 	std::string _name;

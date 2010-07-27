@@ -11,7 +11,7 @@
 #include "CTlvObjectFactory.h"
 #include "HelperMacros.h"
 
-namespace cml
+namespace wolf
 {
 
 ITlvObject* CTlvArrayCreator::create(const ITlvBlock &blk) const

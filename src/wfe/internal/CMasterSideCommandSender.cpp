@@ -15,9 +15,9 @@
 #include "CUdpTlvWriter.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 uint32_t CMasterSideCommandSender::_wseq = 0;

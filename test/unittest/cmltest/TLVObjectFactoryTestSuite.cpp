@@ -18,8 +18,8 @@
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVObjectFactoryTestSuite);
 
 using namespace std;
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 void TLVObjectFactoryTestSuite::testLookupName()
 {

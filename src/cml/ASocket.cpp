@@ -19,7 +19,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 const string &ASocket::ClosedState = CClosedSocketState::instance()->name();

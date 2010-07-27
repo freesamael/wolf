@@ -11,7 +11,7 @@
 #include <string>
 #include "ITlvObjectCreator.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

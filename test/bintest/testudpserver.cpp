@@ -13,7 +13,7 @@
 #include "CHostAddress.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
 int main()
 {

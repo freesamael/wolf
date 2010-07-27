@@ -10,7 +10,7 @@
 #include <stdint.h>
 #include <AActor.h>
 
-class MSortDataGenerator: public wfe::AActor
+class MSortDataGenerator: public wolf::AActor
 {
 public:
 	MSortDataGenerator(int nports, int psize);

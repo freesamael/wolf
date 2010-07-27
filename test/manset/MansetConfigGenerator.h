@@ -10,7 +10,7 @@
 #include <inttypes.h>
 #include <AActor.h>
 
-class MansetConfigGenerator: public wfe::AActor
+class MansetConfigGenerator: public wolf::AActor
 {
 public:
 	MansetConfigGenerator(uint32_t imgwidth, uint32_t imgheight, uint32_t rows);

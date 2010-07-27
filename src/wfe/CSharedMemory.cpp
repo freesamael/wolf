@@ -11,7 +11,7 @@
 
 using namespace std;
 
-namespace wfe
+namespace wolf
 {
 
 /**

@@ -8,7 +8,7 @@
 #include <sstream>
 #include "CAlwaysFirstWorkerStealer.h"
 
-namespace wfe
+namespace wolf
 {
 
 void CAlwaysFirstWorkerStealer::workerMissed()

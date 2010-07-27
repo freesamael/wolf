@@ -9,7 +9,7 @@
 
 #include <AActor.h>
 
-class HecoDataGenerator: public wfe::AActor
+class HecoDataGenerator: public wolf::AActor
 {
 public:
 	HecoDataGenerator(unsigned np);

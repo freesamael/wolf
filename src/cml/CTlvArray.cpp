@@ -13,7 +13,7 @@
 
 using namespace std;
 
-namespace cml
+namespace wolf
 {
 
 TLV_OBJECT_REGISTRATION(CTlvArray, TLV_TYPE_ARRAY, CTlvArrayCreator);

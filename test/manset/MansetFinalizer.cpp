@@ -13,7 +13,7 @@
 #include "MansetWorker.h"
 
 using namespace std;
-using namespace wfe;
+using namespace wolf;
 
 MansetFinalizer::MansetFinalizer(uint32_t imgwidth, uint32_t imgheight,
 		uint32_t rows):

@@ -10,7 +10,7 @@
 #include "ACommandListener.h"
 #include "CRunner.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -19,7 +19,7 @@ namespace wfe
 class CRunnerSideCommandListener: public ACommandListener
 {
 public:
-	CRunnerSideCommandListener(CRunner *runner, cml::CTcpSocket *sock):
+	CRunnerSideCommandListener(CRunner *runner, wolf::CTcpSocket *sock):
 		ACommandListener(sock), _runner(runner) {}
 	CRunnerSideCommandListener(const CRunnerSideCommandListener &o):
 		ACommandListener(o), _runner(o._runner) {}

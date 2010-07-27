@@ -11,7 +11,7 @@
 #include <CThread.h>
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
 #define SZ_BUF	1048576
 #define T_SEND	5

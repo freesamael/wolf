@@ -10,7 +10,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(ChannelTestSuite);
 
-using namespace wfe;
+using namespace wolf;
 
 class CloneDrop: public IDrop
 {

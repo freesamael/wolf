@@ -12,7 +12,7 @@
 #include "XThread.h"
 #include "HelperMacros.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

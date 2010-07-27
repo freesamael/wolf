@@ -10,7 +10,7 @@
 #include <vector>
 #include "CTcpSocket.h"
 
-namespace wfe
+namespace wolf
 {
 
 /**
@@ -21,7 +21,7 @@ class IWorkerDispatcher
 public:
 	virtual ~IWorkerDispatcher() {}
 	/// Choose a runner from all runners to dispatch worker.
-	virtual cml::CTcpSocket* choose(const std::vector<cml::CTcpSocket *> &rsocks) = 0;
+	virtual wolf::CTcpSocket* choose(const std::vector<wolf::CTcpSocket *> &rsocks) = 0;
 };
 
 }

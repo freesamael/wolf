@@ -10,7 +10,7 @@
 #include "CUdpTlvReader.h"
 #include "CUdpTlvWriter.h"
 
-namespace cml
+namespace wolf
 {
 
 class CUdpTlvReaderWriter: public CUdpTlvReader, public CUdpTlvWriter

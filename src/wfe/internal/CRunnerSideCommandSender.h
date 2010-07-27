@@ -11,25 +11,25 @@
 #include "CTcpSocket.h"
 #include "AWorkerActor.h"
 
-namespace wfe
+namespace wolf
 {
 
 class CRunnerSideCommandSender
 {
 public:
 	/// Join D2MCE computing group.
-	void joinD2MCE(cml::CTcpSocket *sock, const std::string &appname);
+	void joinD2MCE(wolf::CTcpSocket *sock, const std::string &appname);
 	/// Say hello.
-	void hello(cml::CTcpSocket *sock);
+	void hello(wolf::CTcpSocket *sock);
 	/// Notify that a worker is finished.
-	void workerFinished(cml::CTcpSocket *sock, uint32_t wseq,
+	void workerFinished(wolf::CTcpSocket *sock, uint32_t wseq,
 			AWorkerActor *worker);
 	/// Ask for stealing n workers.
-	void stealWorker(cml::CTcpSocket *sock, uint16_t n);
+	void stealWorker(wolf::CTcpSocket *sock, uint16_t n);
 	/// Ack that no worker to steal.
-	void stealFailed(cml::CTcpSocket *sock);
+	void stealFailed(wolf::CTcpSocket *sock);
 	/// Send a worker out.
-	void runWorker(cml::CTcpSocket *sock, uint32_t wseq,
+	void runWorker(wolf::CTcpSocket *sock, uint32_t wseq,
 			AWorkerActor *worker);
 };
 

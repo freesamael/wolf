@@ -8,7 +8,7 @@
 #include "CQueuedTcpSocket.h"
 #include "internal/CConnectedSocketState.h"
 
-namespace cml
+namespace wolf
 {
 
 CTcpServer::~CTcpServer() throw()

@@ -11,10 +11,10 @@
 #include "CThread.h"
 #include "IWorkflowExecutor.h"
 
-namespace wfe
+namespace wolf
 {
 
-class CSimpleWorkflowExecutor: public cml::CThread, public IWorkflowExecutor
+class CSimpleWorkflowExecutor: public wolf::CThread, public IWorkflowExecutor
 {
 public:
 	void execute(const std::vector<AActor *> &actors);

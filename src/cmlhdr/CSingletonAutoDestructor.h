@@ -12,7 +12,7 @@
 #include <typeinfo>
 #include "HelperMacros.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

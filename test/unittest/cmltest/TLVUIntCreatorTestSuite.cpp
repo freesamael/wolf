@@ -12,7 +12,7 @@
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVUIntCreatorTestSuite);
 
-using namespace cml;
+using namespace wolf;
 
 void TLVUIntCreatorTestSuite::testUInt16()
 {

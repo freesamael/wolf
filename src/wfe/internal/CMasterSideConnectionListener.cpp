@@ -6,9 +6,9 @@
 
 #include "CMasterSideConnectionListener.h"
 
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 void CMasterSideConnectionListener::notify(CTcpSocket *sock)

@@ -17,9 +17,9 @@
 #include "CRunnerSideCommandSender.h"
 
 using namespace std;
-using namespace cml;
+using namespace wolf;
 
-namespace wfe
+namespace wolf
 {
 
 void CRunnerSideCommandSender::joinD2MCE(CTcpSocket *sock, const string &appname)

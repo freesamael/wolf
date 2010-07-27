@@ -9,7 +9,7 @@
 #include <unistd.h>
 
 using namespace std;
-using namespace wfe;
+using namespace wolf;
 
 int main()
 {

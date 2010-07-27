@@ -14,7 +14,7 @@
 #include "HelperMacros.h"
 #include "CmlTLVTypes.h"
 
-namespace cml
+namespace wolf
 {
 
 TLV_OBJECT_REGISTRATION(CTlvUint16, TLV_TYPE_UINT16, CTlvUint16Creator);

@@ -10,7 +10,7 @@
 #include <HelperMacros.h>
 #include "HecoDSMFinalizer.h"
 
-using namespace wfe;
+using namespace wolf;
 
 AActor::State HecoDSMFinalizer::state()
 {

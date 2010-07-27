@@ -9,7 +9,7 @@
 #include <sys/socket.h>
 #include "CUdpSocket.h"
 
-namespace cml
+namespace wolf
 {
 
 /**

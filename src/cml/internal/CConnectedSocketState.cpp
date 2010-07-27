@@ -13,7 +13,7 @@
 #include "CSingletonAutoDestructor.h"
 #include "ASocket.h"
 
-namespace cml
+namespace wolf
 {
 
 SINGLETON_REGISTRATION(CConnectedSocketState);

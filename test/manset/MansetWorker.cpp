@@ -18,13 +18,13 @@
 #include "MansetWorkerCreator.h"
 
 using namespace std;
-using namespace cml;
-using namespace wfe;
+using namespace wolf;
+using namespace wolf;
 
 #define TLV_TYPE_WORKER 130
 TLV_OBJECT_REGISTRATION(MansetWorker, TLV_TYPE_WORKER, MansetWorkerCreator);
 
-void MansetWorker::managerInitialization(wfe::IManagerActor *mgr)
+void MansetWorker::managerInitialization(wolf::IManagerActor *mgr)
 {
 	CSimpleManagerActor *smgr;
 	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr)))
@@ -34,7 +34,7 @@ void MansetWorker::managerInitialization(wfe::IManagerActor *mgr)
 	smgr->addPort(IPort::SOURCE);
 }
 
-void MansetWorker::managerFinalization(wfe::IManagerActor *mgr)
+void MansetWorker::managerFinalization(wolf::IManagerActor *mgr)
 {
 	CSimpleManagerActor *smgr;
 	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr)))
@@ -44,7 +44,7 @@ void MansetWorker::managerFinalization(wfe::IManagerActor *mgr)
 	smgr->removePort(smgr->sourcePorts()[0]);
 }
 
-void MansetWorker::managerPrefire(wfe::IManagerActor *mgr)
+void MansetWorker::managerPrefire(wolf::IManagerActor *mgr)
 {
 	CSimpleManagerActor *smgr;
 	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr)))
@@ -77,7 +77,7 @@ void MansetWorker::managerPrefire(wfe::IManagerActor *mgr)
 	delete u32;
 }
 
-void MansetWorker::managerPostfire(wfe::IManagerActor *mgr)
+void MansetWorker::managerPostfire(wolf::IManagerActor *mgr)
 {
 	CSimpleManagerActor *smgr;
 	if (!(smgr = dynamic_cast<CSimpleManagerActor *>(mgr)))

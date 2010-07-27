@@ -10,7 +10,7 @@
 #include <vector>
 #include "CTcpSocket.h"
 
-namespace cml
+namespace wolf
 {
 
 class CTcpServer: public CTcpSocket

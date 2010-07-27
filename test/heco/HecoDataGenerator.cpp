@@ -7,7 +7,7 @@
 #include <CFlowUint32.h>
 #include "HecoDataGenerator.h"
 
-using namespace wfe;
+using namespace wolf;
 
 HecoDataGenerator::HecoDataGenerator(unsigned np):
 		_state(READY)
