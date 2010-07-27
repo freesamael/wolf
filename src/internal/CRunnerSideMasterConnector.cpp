@@ -13,7 +13,6 @@
 #include "XTlvCommand.h"
 
 using namespace std;
-using namespace wolf;
 
 namespace wolf
 {

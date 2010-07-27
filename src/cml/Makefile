@@ -1,9 +1,0 @@
-COMLIB_OBJS := ${patsubst %.cpp,%.o,${wildcard ${COMLIB_SRCDIR}/*.cpp ${COMLIB_SRCDIR}/internal/*.cpp}}	
-COMLIB = ${WOLF_LIBDIR}/libcom.a
-${COMLIB}: CXXFLAGS += -Weffc++ -I${COMLIB_INCDIR}
-
-${COMLIB}: ${COMLIB_OBJS}
-	${AR} cru $@ $^
-
-comlib_clean:
-	-rm ${COMLIB_OBJS} ${COMLIB}

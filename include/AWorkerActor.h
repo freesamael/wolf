@@ -35,7 +35,7 @@ namespace wolf
  * \note A worker must has valid assignment operator. Manager uses assignment
  * to update the value of original worker when the sent worker migrated back.
  */
-class AWorkerActor: public AActor, public wolf::ITlvObject
+class AWorkerActor: public AActor, public ITlvObject
 {
 public:
 	virtual ~AWorkerActor() {}

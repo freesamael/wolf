@@ -28,8 +28,8 @@ public:
 		{ _runner = o._runner; _num = o._num; return *this; }
 	inline void setRunner(CRunner *runner) { _runner = runner; }
 	void workerMissed();
-	void stealFailed(wolf::CTcpSocket *UNUSED(sender)) {}
-	void workerArrived(wolf::CTcpSocket *UNUSED(sender)) {}
+	void stealFailed(CTcpSocket *UNUSED(sender)) {}
+	void workerArrived(CTcpSocket *UNUSED(sender)) {}
 	inline bool isStealing()
 		{ _mx.lock(); bool s = _stealing; _mx.unlock(); return s; }
 	inline void setStealing(bool s)
@@ -37,7 +37,7 @@ public:
 
 private:
 	CRunner *_runner;
-	wolf::CMutex _mx;
+	CMutex _mx;
 	bool _stealing;
 	int _num;
 };

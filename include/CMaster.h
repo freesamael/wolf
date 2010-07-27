@@ -48,11 +48,11 @@ public:
 			std::string &appname = "default", unsigned int timeout = 2);
 	void runWorker(AWorkerActor *worker, IManagerActor *mgr);
 	void shutdown();
-	void runnerConnected(wolf::CTcpSocket *runnersock);
+	void runnerConnected(CTcpSocket *runnersock);
 	void putFinishWorker(uint32_t wseq, AWorkerActor *worker);
 	void processFinishedWorker();
 	unsigned numberOfRunners();
-	wolf::CTime executionTime() const;
+	CTime executionTime() const;
 
 private:
 	CMaster();
@@ -62,7 +62,7 @@ private:
 			_d(NULL) {}
 	CMaster& operator=(const CMaster &UNUSED(o)) { return *this; }
 	State _state;						// Master state.
-	wolf::CTcpServer _mserver;			// Master tcp server.
+	CTcpServer _mserver;			// Master tcp server.
 	CSimpleWorkerDispatcher _defdisp;	// Default worker dispatcher.
 	IWorkerDispatcher *_activedisp;		// Active worker dispatcher.
 	PData *_d;

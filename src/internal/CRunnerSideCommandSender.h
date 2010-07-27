@@ -18,18 +18,18 @@ class CRunnerSideCommandSender
 {
 public:
 	/// Join D2MCE computing group.
-	void joinD2MCE(wolf::CTcpSocket *sock, const std::string &appname);
+	void joinD2MCE(CTcpSocket *sock, const std::string &appname);
 	/// Say hello.
-	void hello(wolf::CTcpSocket *sock);
+	void hello(CTcpSocket *sock);
 	/// Notify that a worker is finished.
-	void workerFinished(wolf::CTcpSocket *sock, uint32_t wseq,
+	void workerFinished(CTcpSocket *sock, uint32_t wseq,
 			AWorkerActor *worker);
 	/// Ask for stealing n workers.
-	void stealWorker(wolf::CTcpSocket *sock, uint16_t n);
+	void stealWorker(CTcpSocket *sock, uint16_t n);
 	/// Ack that no worker to steal.
-	void stealFailed(wolf::CTcpSocket *sock);
+	void stealFailed(CTcpSocket *sock);
 	/// Send a worker out.
-	void runWorker(wolf::CTcpSocket *sock, uint32_t wseq,
+	void runWorker(CTcpSocket *sock, uint32_t wseq,
 			AWorkerActor *worker);
 };
 

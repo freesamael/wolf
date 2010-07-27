@@ -17,13 +17,13 @@ namespace wolf
 /**
  * Used by runner to execute workers.
  */
-class CRunnerSideWorkerExecutor: public wolf::CThread
+class CRunnerSideWorkerExecutor: public CThread
 {
 public:
 	CRunnerSideWorkerExecutor(CRunner *runner):
 		_done(false), _runner(runner), _mx() {}
 	CRunnerSideWorkerExecutor(const CRunnerSideWorkerExecutor &o):
-		wolf::CThread(), _done(o._done), _runner(o._runner), _mx() {}
+		CThread(), _done(o._done), _runner(o._runner), _mx() {}
 	CRunnerSideWorkerExecutor& operator=(const CRunnerSideWorkerExecutor &o)
 		{ _done = o._done; _runner = o._runner; return *this; }
 	inline bool isDone()
@@ -35,7 +35,7 @@ public:
 private:
 	bool _done;
 	CRunner* _runner;
-	wolf::CMutex _mx;
+	CMutex _mx;
 };
 
 }

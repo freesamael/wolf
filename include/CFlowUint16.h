@@ -16,12 +16,12 @@ namespace wolf
 /**
  * Specialized CTlvUint16 implementing IDrop.
  */
-class CFlowUint16: public IDrop, public wolf::CTlvUint16
+class CFlowUint16: public IDrop, public CTlvUint16
 {
 public:
 	CFlowUint16(uint16_t value = 0): CTlvUint16(value) {}
 	CFlowUint16(const CTlvUint16 &o): CTlvUint16(o) {}
-	wolf::CTlvBlock* toTLVBlock() const;
+	CTlvBlock* toTLVBlock() const;
 	IDrop* clone() const;
 };
 

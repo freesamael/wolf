@@ -10,8 +10,6 @@
 #include "WfeTLVTypes.h"
 #include "CFlowUint16Creator.h"
 
-using namespace wolf;
-
 namespace wolf
 {
 

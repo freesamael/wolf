@@ -19,10 +19,10 @@ namespace wolf
 class CMasterSideConnectionListener: public AConnectionListener
 {
 public:
-	CMasterSideConnectionListener(CMaster *master, wolf::CTcpServer *server,
+	CMasterSideConnectionListener(CMaster *master, CTcpServer *server,
 			in_port_t lport): AConnectionListener(server, lport),
 			_master(master) {}
-	void notify(wolf::CTcpSocket *sock);
+	void notify(CTcpSocket *sock);
 private:
 	CMasterSideConnectionListener(const CMasterSideConnectionListener &UNUSED(o)):
 		AConnectionListener(NULL, 0), _master(NULL) {}

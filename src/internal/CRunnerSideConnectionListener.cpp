@@ -6,8 +6,6 @@
 
 #include "CRunnerSideConnectionListener.h"
 
-using namespace wolf;
-
 namespace wolf
 {
 

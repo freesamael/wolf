@@ -9,8 +9,6 @@
 #include "HelperMacros.h"
 #include "CFlowStringCreator.h"
 
-using namespace wolf;
-
 namespace wolf
 {
 

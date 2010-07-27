@@ -42,7 +42,7 @@ private:
 		{ return *this; }
 	AWorkerActor *_worker;
 	State _state;
-	wolf::CMutex _statemx;
+	CMutex _statemx;
 };
 
 }

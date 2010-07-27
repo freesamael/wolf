@@ -29,9 +29,9 @@ public:
 	/// \note This function must be thread-safe.
 	virtual void workerMissed() = 0;
 	/// Called when a stealing failed.
-	virtual void stealFailed(wolf::CTcpSocket *sender) = 0;
+	virtual void stealFailed(CTcpSocket *sender) = 0;
 	/// Called when a worker arrived (from either a runner or master).
-	virtual void workerArrived(wolf::CTcpSocket *sender) = 0;
+	virtual void workerArrived(CTcpSocket *sender) = 0;
 };
 
 }

@@ -11,8 +11,6 @@
 #include "CMasterSideCommandListener.h"
 #include "XTlvCommand.h"
 
-using namespace wolf;
-
 namespace wolf
 {
 

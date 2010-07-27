@@ -19,11 +19,11 @@ namespace wolf
  * ownership of that, and parameters constructed here are always constructed
  * on heap.
  */
-class CTlvCommandCreator: public wolf::ITlvObjectCreator
+class CTlvCommandCreator: public ITlvObjectCreator
 {
 public:
-	inline wolf::ITlvObject* create() const { return new CTlvCommand(); }
-	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
+	inline ITlvObject* create() const { return new CTlvCommand(); }
+	ITlvObject* create(const ITlvBlock &blk) const;
 };
 
 }

@@ -16,11 +16,11 @@ namespace wolf
 /**
  * Creator for CFlowString.
  */
-class CFlowStringCreator: public wolf::CTlvStringCreator
+class CFlowStringCreator: public CTlvStringCreator
 {
 public:
-	wolf::ITlvObject* create() const { return new CFlowString(); }
-	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
+	ITlvObject* create() const { return new CFlowString(); }
+	ITlvObject* create(const ITlvBlock &blk) const;
 };
 
 }

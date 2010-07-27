@@ -40,17 +40,17 @@ public:
 	void run();
 
 	int id() const { return _id; }
-	std::vector<wolf::CTcpSocket *> runnerSocks();
-	void connectRunner(const wolf::CHostAddress &addr);
-	void runnerConnected(wolf::CTcpSocket *runnersock);
+	std::vector<CTcpSocket *> runnerSocks();
+	void connectRunner(const CHostAddress &addr);
+	void runnerConnected(CTcpSocket *runnersock);
 	void startWorking();
 	void putWorker(uint32_t wseq, AWorkerActor *worker,
-			wolf::CTcpSocket *sender);
+			CTcpSocket *sender);
 	std::pair<uint32_t, AWorkerActor *> takeWorker();
-	void workerStealFailed(wolf::CTcpSocket *sender);
+	void workerStealFailed(CTcpSocket *sender);
 	void sendWorkerFinished(uint32_t wseq, AWorkerActor *worker);
-	void sendWorker(wolf::CTcpSocket *sock, uint16_t nworkers);
-	void sendWorkerSteal(wolf::CTcpSocket *sock, uint16_t nworkers);
+	void sendWorker(CTcpSocket *sock, uint16_t nworkers);
+	void sendWorkerSteal(CTcpSocket *sock, uint16_t nworkers);
 	void shutdown();
 
 private:
@@ -62,12 +62,12 @@ private:
 private:
 	int _id;							// Runner id.
 	State _state;						// Runner state.
-	wolf::CMutex _statemx;				// Runner state mutex.
-	wolf::CWaitCondition _statewcond;	// Runner state cond variable.
+	CMutex _statemx;				// Runner state mutex.
+	CWaitCondition _statewcond;	// Runner state cond variable.
 	in_port_t _mport, _rport;			// Master/Runner ports.
 	IWorkerStealer *_stealer;			// Stealer.
 	std::string _appname;				// DSM appname.
-	wolf::CTcpServer _rserver;			// Runner tcp server.
+	CTcpServer _rserver;			// Runner tcp server.
 	PData *_d;
 };
 

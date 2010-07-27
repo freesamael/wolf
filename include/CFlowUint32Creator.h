@@ -16,11 +16,11 @@ namespace wolf
 /**
  * Creator for CFlowUint32
  */
-class CFlowUint32Creator: public wolf::CTlvUint32Creator
+class CFlowUint32Creator: public CTlvUint32Creator
 {
 public:
-	wolf::ITlvObject* create() const { return new CFlowUint32(); }
-	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
+	ITlvObject* create() const { return new CFlowUint32(); }
+	ITlvObject* create(const ITlvBlock &blk) const;
 };
 
 }

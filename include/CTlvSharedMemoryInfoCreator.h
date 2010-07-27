@@ -13,11 +13,11 @@
 namespace wolf
 {
 
-class CTlvSharedMemoryInfoCreator: public wolf::ITlvObjectCreator
+class CTlvSharedMemoryInfoCreator: public ITlvObjectCreator
 {
 public:
-	wolf::ITlvObject* create() const { return new CTlvSharedMemoryInfo(); }
-	wolf::ITlvObject* create(const wolf::ITlvBlock &blk) const;
+	ITlvObject* create() const { return new CTlvSharedMemoryInfo(); }
+	ITlvObject* create(const ITlvBlock &blk) const;
 };
 
 }

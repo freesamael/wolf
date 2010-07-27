@@ -10,8 +10,6 @@
 #include "WfeTLVTypes.h"
 #include "CFlowStringCreator.h"
 
-using namespace wolf;
-
 namespace wolf
 {
 

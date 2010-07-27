@@ -27,16 +27,16 @@ public:
 	/// Join D2MCE computing group.
 	void joinD2MCE(const std::string &appname);
 	/// Send hello message.
-	void hello(in_port_t rport, const wolf::CHostAddress &addr);
+	void hello(in_port_t rport, const CHostAddress &addr);
 	/// Ask a runner to add other runners.
-	void addRunner(wolf::CTcpSocket *rsock, const std::vector<wolf::CHostAddress> &addrs);
+	void addRunner(CTcpSocket *rsock, const std::vector<CHostAddress> &addrs);
 	/// Tell a runner to start working.
-	void startRunner(wolf::CTcpSocket *rsock);
+	void startRunner(CTcpSocket *rsock);
 	/// Shutdown the runner.
-	void shutdown(wolf::CTcpSocket *rsock);
+	void shutdown(CTcpSocket *rsock);
 	/// Send an actor to run.
 	/// \return sequence number of the worker.
-	uint32_t runWorker(wolf::CTcpSocket *rsock, AWorkerActor *worker);
+	uint32_t runWorker(CTcpSocket *rsock, AWorkerActor *worker);
 
 private:
 	static uint32_t _wseq; ///< Worker sequence number.

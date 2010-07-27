@@ -20,7 +20,7 @@ namespace wolf
 class CRunnerSideMasterConnector
 {
 public:
-	wolf::CTcpSocket* connect(in_port_t mport, in_port_t rport);
+	CTcpSocket* connect(in_port_t mport, in_port_t rport);
 };
 
 }

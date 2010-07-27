@@ -14,7 +14,7 @@
 namespace wolf
 {
 
-class XTlvCommand: public wolf::XWolf
+class XTlvCommand: public XWolf
 {
 public:
 	typedef enum XType {

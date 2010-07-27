@@ -19,10 +19,10 @@ namespace wolf
 class CRunnerSideConnectionListener: public AConnectionListener
 {
 public:
-	CRunnerSideConnectionListener(CRunner *runner, wolf::CTcpServer *server,
+	CRunnerSideConnectionListener(CRunner *runner, CTcpServer *server,
 			in_port_t lport): AConnectionListener(server, lport),
 			_runner(runner) {}
-	void notify(wolf::CTcpSocket *sock);
+	void notify(CTcpSocket *sock);
 
 private:
 	CRunnerSideConnectionListener(const CRunnerSideConnectionListener &UNUSED(o)):

@@ -6,8 +6,6 @@
 
 #include "CMasterSideConnectionListener.h"
 
-using namespace wolf;
-
 namespace wolf
 {
 

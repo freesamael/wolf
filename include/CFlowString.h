@@ -16,14 +16,14 @@ namespace wolf
 /**
  * Specialized CTlvString implementing IDrop.
  */
-class CFlowString: public IDrop, public wolf::CTlvString
+class CFlowString: public IDrop, public CTlvString
 {
 public:
 	CFlowString() {}
 	CFlowString(const char *str): CTlvString(str) {}
 	CFlowString(const std::string &str): CTlvString(str) {}
-	CFlowString(const wolf::CTlvString &o): CTlvString(o) {}
-	wolf::CTlvBlock* toTLVBlock() const;
+	CFlowString(const CTlvString &o): CTlvString(o) {}
+	CTlvBlock* toTLVBlock() const;
 	IDrop* clone() const;
 };
 

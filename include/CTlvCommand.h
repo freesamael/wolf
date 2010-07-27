@@ -21,7 +21,7 @@ namespace wolf
  * set to true (by default it's false), so users need to delete the parameters
  * if it's allocated on heap, or set autoclean property.
  */
-class CTlvCommand: public wolf::ITlvObject
+class CTlvCommand: public ITlvObject
 {
 public:
 	typedef enum Command {
@@ -47,14 +47,14 @@ public:
 	inline void setAutoclean(bool ac) { _autoclean = ac; }
 	inline Command command() const { return _cmd; }
 	inline void setCommand(Command c) { _cmd = c; }
-	inline const std::vector<wolf::ITlvObject *> parameters() const
+	inline const std::vector<ITlvObject *> parameters() const
 			{ return _params; }
 	inline void addParameter(ITlvObject *obj) { _params.push_back(obj); }
-	virtual wolf::CTlvBlock* toTLVBlock() const;
+	virtual CTlvBlock* toTLVBlock() const;
 
 private:
 	Command _cmd;
-	std::vector<wolf::ITlvObject *> _params;
+	std::vector<ITlvObject *> _params;
 	bool _autoclean;
 };
 

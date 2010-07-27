@@ -18,13 +18,13 @@ namespace wolf
 /**
  * Used to listen incoming commands.
  */
-class ACommandListener: public wolf::CThread
+class ACommandListener: public CThread
 {
 public:
-	ACommandListener(wolf::CTcpSocket *sock):
+	ACommandListener(CTcpSocket *sock):
 		_done(false), _sock(sock), _mx() {}
 	ACommandListener(const ACommandListener &o):
-		wolf::CThread(), _done(o._done), _sock(o._sock), _mx() {}
+		CThread(), _done(o._done), _sock(o._sock), _mx() {}
 	virtual ~ACommandListener() {}
 	ACommandListener& operator=(const ACommandListener &o)
 		{ _done = o._done; _sock = o._sock; return *this; }
@@ -32,13 +32,13 @@ public:
 		{ _mx.lock(); bool d = _done; _mx.unlock(); return d; }
 	inline void setDone(bool d = true)
 		{ _mx.lock(); _done = d; _mx.unlock(); }
-	inline wolf::CTcpSocket* sock() const { return _sock; }
+	inline CTcpSocket* sock() const { return _sock; }
 	void run();
 	virtual void process(CTlvCommand *cmd) = 0;
 private:
 	bool _done;
-	wolf::CTcpSocket *_sock;
-	wolf::CMutex _mx;
+	CTcpSocket *_sock;
+	CMutex _mx;
 };
 
 }

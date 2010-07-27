@@ -15,7 +15,6 @@
 #include "WfeTLVTypes.h"
 #include "HelperMacros.h"
 
-using namespace wolf;
 using namespace std;
 
 namespace wolf

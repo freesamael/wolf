@@ -18,7 +18,7 @@ class CMaster;
 /**
  * Used to process finished workers.
  */
-class CMasterSideFinishedWorkerProcessor: public wolf::CThread
+class CMasterSideFinishedWorkerProcessor: public CThread
 {
 public:
 	CMasterSideFinishedWorkerProcessor(CMaster *m):
@@ -36,7 +36,7 @@ public:
 private:
 	CMaster *_master;
 	bool _done;
-	wolf::CMutex _mx;
+	CMutex _mx;
 };
 
 }

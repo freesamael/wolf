@@ -13,8 +13,6 @@
 #include "AWorkerActor.h"
 #include "XTlvCommand.h"
 
-using namespace wolf;
-
 namespace wolf
 {
 

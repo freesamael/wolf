@@ -15,7 +15,7 @@ namespace wolf
 class CSimpleWorkerDispatcher: public IWorkerDispatcher
 {
 public:
-	wolf::CTcpSocket* choose(const std::vector<wolf::CTcpSocket *> &rsocks);
+	CTcpSocket* choose(const std::vector<CTcpSocket *> &rsocks);
 
 private:
 	static unsigned _p;

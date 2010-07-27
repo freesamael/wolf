@@ -21,7 +21,7 @@ class IWorkerDispatcher
 public:
 	virtual ~IWorkerDispatcher() {}
 	/// Choose a runner from all runners to dispatch worker.
-	virtual wolf::CTcpSocket* choose(const std::vector<wolf::CTcpSocket *> &rsocks) = 0;
+	virtual CTcpSocket* choose(const std::vector<CTcpSocket *> &rsocks) = 0;
 };
 
 }

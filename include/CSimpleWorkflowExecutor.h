@@ -14,7 +14,7 @@
 namespace wolf
 {
 
-class CSimpleWorkflowExecutor: public wolf::CThread, public IWorkflowExecutor
+class CSimpleWorkflowExecutor: public CThread, public IWorkflowExecutor
 {
 public:
 	void execute(const std::vector<AActor *> &actors);

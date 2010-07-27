@@ -18,7 +18,7 @@ namespace wolf
  * make worker actors being able to allocate shared memory after migrated to
  * remote hosts.
  */
-class CTlvSharedMemoryInfo: public wolf::ITlvObject
+class CTlvSharedMemoryInfo: public ITlvObject
 {
 public:
 	CTlvSharedMemoryInfo(): _name(), _size(0) {}
@@ -28,7 +28,7 @@ public:
 	inline size_t size() const { return _size; }
 	inline void setName(std::string &name) { _name = name; }
 	inline void setSize(size_t size) { _size = size; }
-	wolf::CTlvBlock* toTLVBlock() const;
+	CTlvBlock* toTLVBlock() const;
 
 private:
 	std::string _name;

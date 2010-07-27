@@ -12,10 +12,10 @@
 namespace wolf
 {
 
-class CAlwaysFirstWorkerDispatcher: public wolf::IWorkerDispatcher
+class CAlwaysFirstWorkerDispatcher: public IWorkerDispatcher
 {
 public:
-	wolf::CTcpSocket* choose(const std::vector<wolf::CTcpSocket *> &rsocks)
+	CTcpSocket* choose(const std::vector<CTcpSocket *> &rsocks)
 		{ return rsocks[0]; }
 };
 

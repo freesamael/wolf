@@ -12,8 +12,6 @@
 #include "HelperMacros.h"
 #include "CTlvSharedMemoryInfoCreator.h"
 
-using namespace wolf;
-
 namespace wolf
 {
 

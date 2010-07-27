@@ -27,7 +27,7 @@ public:
 	void write(IDrop *item);
 
 private:
-	wolf::CMutex _mutex;
+	CMutex _mutex;
 	std::vector<CSinkPort *> _readers;
 };
 

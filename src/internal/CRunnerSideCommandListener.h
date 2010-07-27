@@ -19,7 +19,7 @@ namespace wolf
 class CRunnerSideCommandListener: public ACommandListener
 {
 public:
-	CRunnerSideCommandListener(CRunner *runner, wolf::CTcpSocket *sock):
+	CRunnerSideCommandListener(CRunner *runner, CTcpSocket *sock):
 		ACommandListener(sock), _runner(runner) {}
 	CRunnerSideCommandListener(const CRunnerSideCommandListener &o):
 		ACommandListener(o), _runner(o._runner) {}
