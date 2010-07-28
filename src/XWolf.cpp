@@ -46,7 +46,7 @@ string demangle(char *symbol)
 		string str;
 		symbol[end] = '\0';
 		int status;
-		char *cstr = abi::__cxa_demangle(&symbol[begin], NULL, NULL, &status);
+		char *cstr = abi::__cxa_demangle(symbol + begin, NULL, NULL, &status);
 		str = cstr;
 		free(cstr);
 		symbol[end] = '+';
