@@ -59,7 +59,7 @@ void CQueuedTcpSocket::readSocket()
 					_cond.wakeAll();
 				_mx.unlock();
 			}
-		} catch (const XSocket &x) {
+		} catch (XSocket &x) {
 			delete data;
 			throw;
 		}

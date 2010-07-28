@@ -33,7 +33,7 @@ void wolf::ACommandListener::run()
 		} else {
 			try {
 				process(incmd);
-			} catch (const XTlvCommand &x) {
+			} catch (XTlvCommand &x) {
 				delete incmd;
 				throw;
 			}

@@ -23,7 +23,7 @@ void CUdpTlvWriter::sendBlockTo(const ITlvBlock &blk, const CHostAddress &addr,
 	_sock->lockwrite();
 	try {
 		_sock->sendto(blk.plainBuffer(), blk.plainSize(), addr, port);
-	} catch (const XSocket &x) {
+	} catch (XSocket &x) {
 		_sock->unlockwrite();
 		throw;
 	}
@@ -44,10 +44,10 @@ void CUdpTlvWriter::sendObjectTo(const ITlvObject &obj, const CHostAddress &addr
 
 	try {
 		sendBlockTo(*blk, addr, port);
-	} catch (const XSocket &x) {
+	} catch (XSocket &x) {
 		delete blk;
 		throw;
-	} catch (const XThread &x) {
+	} catch (XThread &x) {
 		delete blk;
 		throw;
 	}

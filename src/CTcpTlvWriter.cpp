@@ -28,7 +28,7 @@ void CTcpTlvWriter::writeBlock(const ITlvBlock &blk)
 			offset += _sock->write(blk.plainBuffer() + offset,
 					blk.plainSize() - offset);
 		} while (offset < blk.plainSize());
-	} catch (const XSocket &x) {
+	} catch (XSocket &x) {
 		// Cleanup and rethrow.
 		_sock->unlockwrite();
 		throw;
@@ -50,10 +50,10 @@ void CTcpTlvWriter::writeObject(const ITlvObject &obj)
 
 	try {
 		writeBlock(*blk);
-	} catch (const XSocket &x) {
+	} catch (XSocket &x) {
 		delete blk;
 		throw;
-	} catch (const XThread &x) {
+	} catch (XThread &x) {
 		delete blk;
 		throw;
 	}

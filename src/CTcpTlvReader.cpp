@@ -46,7 +46,7 @@ ITlvBlock* CTcpTlvReader::readBlock()
 			delete [] hdrbuf;
 			return NULL;
 		}
-	} catch (const XSocket &x) {
+	} catch (XSocket &x) {
 		// Cleanup and throw.
 		_sock->unlockread();
 		delete [] hdrbuf;
@@ -74,7 +74,7 @@ ITlvObject* CTcpTlvReader::readObject()
 			delete blk;
 			return obj;
 		}
-	} catch (const XTlvObject &x) {
+	} catch (XTlvObject &x) {
 		// Cleanup and rethrow.
 		delete blk;
 		throw;

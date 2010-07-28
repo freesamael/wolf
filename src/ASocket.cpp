@@ -47,7 +47,7 @@ ASocket::~ASocket()
 {
 	try {
 		_state->close(this);
-	} catch (const XSocket &x) {
+	} catch (XSocket &x) {
 		if (!(x.xtype() == XSocket::INVALID_SOCKET_STATE &&
 				_state->name() == ClosedState))
 			PERR(x.toString());

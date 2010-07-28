@@ -29,7 +29,7 @@ ITlvBlock* CUdpTlvReader::recvBlockFrom(CHostAddress *addr, in_port_t *port)
 	_sock->lockread();
 	try {
 		sz = _sock->recvfrom(buf, ITlvBlock::szHeader, addr, port);
-	} catch (const XSocket &x) {
+	} catch (XSocket &x) {
 		_sock->unlockread();
 		delete [] buf;
 		throw;
@@ -65,7 +65,7 @@ ITlvObject* CUdpTlvReader::recvObjectFrom(CHostAddress *addr, in_port_t *port)
 	ITlvObject *obj = NULL;
 	try {
 		obj = CTlvObjectFactory::instance()->createTLVObject(*blk);
-	} catch (const XTlvObject &x) {
+	} catch (XTlvObject &x) {
 		delete blk;
 		throw;
 	}
