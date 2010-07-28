@@ -5,6 +5,7 @@
  */
 
 #include <cstdlib>
+#include <ctype.h>
 #include "XWolf.h"
 
 #if defined(__GLIBC__) || (defined(__APPLE__) && defined(__MACH__))
@@ -21,39 +22,52 @@ namespace wolf
 {
 
 /**
- * The symbol string is like:
- *     bin/manset_runner(_ZN4wolf5XWolfC2ERKSs+0x4b) [0x8085489]
- *
- * Hence, characters start from '_' and before '+' is the mangle string.
+ * The symbol string might be like: <br>
+ *     bin/manset_runner(_ZN4wolf5XWolfC2ERKSs+0x4b) [0x8085489] on Linux or<br>
+ *     0   testexception  0x000029a4 _ZN4wolf5XWolfC1ERKSs + 88  on Mac. <br>
+ * Hence, characters start from '_' and before non-digit/alpha is the mangle string.
  */
 string demangle(char *symbol)
 {
 #if defined(__GLIBCXX__)
 	int begin = 0, end = 0;
 
-	// Find begin.
-	for (int i = 0; symbol[i] != '\0' && !begin; i++)
-		if (symbol[i] == '_')
-			begin = i;
+	// Find end (the character next to the last character in mangle string).
+	int candidate = 0;
+	for (int i = 0; symbol[i] != '\0'; i++) {
+		if (isdigit(symbol[i]) || isalpha(symbol[i])) {
+			candidate = i;
+		} else if (symbol[i] == '+') {
+			end = candidate + 1;
+			break;
+		}
+	}
 
-	// Find end.
-	for (int i = begin; symbol[i] != '\0' && !end; i++)
-		if (symbol[i] == '+')
-			end = i;
+	// Find begin (first character in mangle string).
+	for (int i = candidate; i >= 0 ; i--) {
+		if (!isdigit(symbol[i]) && !isalpha(symbol[i]) && symbol[i] != '_') {
+			begin = i + 1;
+			break;
+		}
+	}
 
 	// Demangle.
 	if (begin && end) {
+		string str;
 		char *cstr;
+		char originalend = symbol[end];
 
 		symbol[end] = '\0';
 		int status;
 		if ((cstr = abi::__cxa_demangle(symbol + begin, NULL, NULL, &status))) {
-			string str;
 			str = cstr;
 			free(cstr);
-			return str;
+		} else {
+			str = (string)(symbol + begin) + "()";
 		}
-		return (string)(symbol + begin) + "()";
+
+		symbol[end] = originalend;
+		return str;
 	}
 #endif
 
