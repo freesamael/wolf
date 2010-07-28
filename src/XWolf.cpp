@@ -32,25 +32,27 @@ string demangle(char *symbol)
 	int begin = 0, end = 0;
 
 	// Find begin.
-	for (int i = 0; symbol[i] != '\0'; i++)
+	for (int i = 0; symbol[i] != '\0' && !begin; i++)
 		if (symbol[i] == '(')
 			begin = i + 1;
 
 	// Find end.
-	for (int i = begin; symbol[i] != '\0'; i++)
+	for (int i = begin; symbol[i] != '\0' && !end; i++)
 		if (symbol[i] == '+')
 			end = i;
 
 	// Demangle.
 	if (begin && end) {
-		string str;
+		char *cstr;
+
 		symbol[end] = '\0';
 		int status;
-		char *cstr = abi::__cxa_demangle(symbol + begin, NULL, NULL, &status);
-		str = cstr;
-		free(cstr);
-		symbol[end] = '+';
-		return str;
+		if ((cstr = abi::__cxa_demangle(symbol + begin, NULL, NULL, &status))) {
+			string str;
+			str = cstr;
+			free(cstr);
+			return str;
+		}
 	}
 #endif
 
