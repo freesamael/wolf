@@ -13,6 +13,9 @@
 namespace wolf
 {
 
+/**
+ * Creator for CTlvSharedMemoryInfo.
+ */
 class CTlvSharedMemoryInfoCreator: public ITlvObjectCreator
 {
 public:

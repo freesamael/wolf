@@ -27,9 +27,8 @@ public:
 		BLOCK_TOO_SHORT
 	} XType;
 	static const char *XTypeString[];
-	explicit XTlvObject(const std::string &func, int line, XType e,
-			uint16_t id = TLV_TYPE_INVALID, const std::string &name = "?")
-			throw();
+	explicit XTlvObject(XType e, uint16_t id = TLV_TYPE_INVALID,
+			const std::string &name = "?") throw();
 	virtual ~XTlvObject() throw() {}
 	inline XType xtype() const throw() { return _e; }
 

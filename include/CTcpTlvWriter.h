@@ -17,6 +17,9 @@
 namespace wolf
 {
 
+/**
+ * A TLV writer on TCP socket.
+ */
 class CTcpTlvWriter
 {
 public:
@@ -25,8 +28,8 @@ public:
 	virtual ~CTcpTlvWriter() {}
 	inline CTcpTlvWriter& operator=(const CTcpTlvWriter &o)
 			{ _sock = o._sock; return *this; }
-	void writeBlock(const ITlvBlock &blk) throw(XSocket, XThread);
-	void writeObject(const ITlvObject &obj) throw(XSocket, XThread, XTlvObject);
+	void writeBlock(const ITlvBlock &blk);
+	void writeObject(const ITlvObject &obj);
 
 private:
 	CTcpSocket *_sock;

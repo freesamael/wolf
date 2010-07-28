@@ -12,6 +12,10 @@
 extern pthread_mutex_t g_mxcout;
 extern pthread_mutex_t g_mxcerr;
 
+#ifdef __GLIBCXX__
+extern std::string demangle(const char *manglename);
+#endif
+
 #define SZ_MSG_MAX	1500
 
 #ifndef UNUSED
@@ -28,8 +32,13 @@ extern pthread_mutex_t g_mxcerr;
  *
  * \note
  * \#include \<typeinfo\>
+ * \#include \<string\>
  */
+#ifdef __GLIBCXX__
+#define TYPENAME(type) demangle(typeid(type).name())
+#else
 #define TYPENAME(type) (typeid(type).name())
+#endif	/* __GLIBCXX__ */
 
 /**
  * \def CONCATE(x, y)
@@ -44,11 +53,12 @@ extern pthread_mutex_t g_mxcerr;
  *
  * \note
  * \#include \<typeinfo\> <br>
+ * \#include \<string\> <br>
  * \#include \<CTlvObjectFactoryAutoRegistry.h\>
  */
 #define TLV_OBJECT_REGISTRATION(type, id, creator) \
-	static wolf::CTlvObjectFactoryAutoRegistry CONCATE(__autoreg, __LINE__)( \
-			typeid(type).name(), id, new creator())
+	static wolf::CTlvObjectFactoryAutoRegistry CONCATE(__autoreg, __LINE__)(\
+			TYPENAME(type), id, new creator())
 
 /**
  * \def SINGLETON(type)

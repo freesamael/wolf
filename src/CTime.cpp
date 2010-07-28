@@ -12,21 +12,21 @@ using namespace std;
 namespace wolf
 {
 
-CTime CTime::operator+(const CTime &o) throw()
+CTime CTime::operator+(const CTime &o) 
 {
 	timeval t;
 	timeradd(&_t, &o._t, &t);
 	return t;
 }
 
-CTime CTime::operator-(const CTime &o) throw()
+CTime CTime::operator-(const CTime &o) 
 {
 	timeval t;
 	timersub(&_t, &o._t, &t);
 	return t;
 }
 
-timespec CTime::toTimespec() const throw()
+timespec CTime::toTimespec() const 
 {
 	timespec t;
 	t.tv_sec = _t.tv_sec;
@@ -34,7 +34,7 @@ timespec CTime::toTimespec() const throw()
 	return t;
 }
 
-string CTime::toString() const throw()
+string CTime::toString() const 
 {
 	stringstream s;
 	s << (unsigned)_t.tv_sec << "." << (unsigned)_t.tv_usec << " seconds";

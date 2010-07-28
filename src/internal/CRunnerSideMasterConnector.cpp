@@ -11,6 +11,7 @@
 #include "CTlvCommand.h"
 #include "CRunnerSideMasterConnector.h"
 #include "XTlvCommand.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
@@ -32,15 +33,13 @@ CTcpSocket* CRunnerSideMasterConnector::connect(in_port_t mport, in_port_t rport
 	CTlvCommand *inmsg;
 	ITlvObject *obj = ureader.recvObjectFrom(&maddr, &tmpport);
 	if (!(inmsg = dynamic_cast<CTlvCommand *>(obj))) {
-		string type = typeid(obj).name();
+		string type = TYPENAME(obj);
 		delete obj;
-		throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
-				XTlvCommand::INVALID_OBJECT, type);
+		throw XTlvCommand(XTlvCommand::INVALID_OBJECT, type);
 	} else if (inmsg->command() != CTlvCommand::HELLO_MASTER) {
-		XTlvCommand x(__PRETTY_FUNCTION__, __LINE__,
-				XTlvCommand::UNEXPECTED_COMMAND, *inmsg);
+		XTlvCommand x(XTlvCommand::UNEXPECTED_COMMAND, *inmsg);
 		delete inmsg;
-		throw x;
+		throw;
 	}
 	delete inmsg;
 

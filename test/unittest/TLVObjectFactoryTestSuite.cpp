@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <typeinfo>
 #include <string>
 #include <CTlvObjectFactory.h>
 #include <CTlvUint16.h>
@@ -13,6 +14,7 @@
 #include <CmlTLVTypes.h>
 #include <CTlvBlock.h>
 #include <WfeTLVTypes.h>
+#include <HelperMacros.h>
 #include "TLVObjectFactoryTestSuite.h"
 
 CPPUNIT_TEST_SUITE_REGISTRATION(TLVObjectFactoryTestSuite);
@@ -23,51 +25,51 @@ using namespace wolf;
 
 void TLVObjectFactoryTestSuite::testLookupName()
 {
-	CPPUNIT_ASSERT_EQUAL((string)typeid(CTlvUint16).name(),
+	CPPUNIT_ASSERT_EQUAL((string)TYPENAME(CTlvUint16),
 			(string)CTlvObjectFactory::instance()->lookupTypeName(TLV_TYPE_UINT16));
-	CPPUNIT_ASSERT_EQUAL((string)typeid(CTlvUint32).name(),
+	CPPUNIT_ASSERT_EQUAL((string)TYPENAME(CTlvUint32),
 			(string)CTlvObjectFactory::instance()->lookupTypeName(TLV_TYPE_UINT32));
-	CPPUNIT_ASSERT_EQUAL((string)typeid(CTlvString).name(),
+	CPPUNIT_ASSERT_EQUAL((string)TYPENAME(CTlvString),
 			(string)CTlvObjectFactory::instance()->lookupTypeName(TLV_TYPE_STRING));
-	CPPUNIT_ASSERT_EQUAL((string)typeid(CTlvCommand).name(),
+	CPPUNIT_ASSERT_EQUAL((string)TYPENAME(CTlvCommand),
 			(string)CTlvObjectFactory::instance()->lookupTypeName(TLV_TYPE_COMMAND_BASE));
 }
 
 void TLVObjectFactoryTestSuite::testCreateById()
 {
 	ITlvObject *obj = CTlvObjectFactory::instance()->createTLVObject(TLV_TYPE_UINT16);
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvUint16).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvUint16), TYPENAME(*obj));
 	delete obj;
 
 	obj = CTlvObjectFactory::instance()->createTLVObject(TLV_TYPE_UINT32);
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvUint32).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvUint32), TYPENAME(*obj));
 	delete obj;
 
 	obj = CTlvObjectFactory::instance()->createTLVObject(TLV_TYPE_STRING);
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvString).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvString), TYPENAME(*obj));
 	delete obj;
 
 	obj = CTlvObjectFactory::instance()->createTLVObject(TLV_TYPE_COMMAND_BASE);
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvCommand).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvCommand), TYPENAME(*obj));
 	delete obj;
 }
 
 void TLVObjectFactoryTestSuite::testCreateByName()
 {
-	ITlvObject *obj = CTlvObjectFactory::instance()->createTLVObject(typeid(CTlvUint16).name());
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvUint16).name(), typeid(*obj).name());
+	ITlvObject *obj = CTlvObjectFactory::instance()->createTLVObject(TYPENAME(CTlvUint16));
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvUint16), TYPENAME(*obj));
 	delete obj;
 
-	obj = CTlvObjectFactory::instance()->createTLVObject(typeid(CTlvUint32).name());
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvUint32).name(), typeid(*obj).name());
+	obj = CTlvObjectFactory::instance()->createTLVObject(TYPENAME(CTlvUint32));
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvUint32), TYPENAME(*obj));
 	delete obj;
 
-	obj = CTlvObjectFactory::instance()->createTLVObject(typeid(CTlvString).name());
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvString).name(), typeid(*obj).name());
+	obj = CTlvObjectFactory::instance()->createTLVObject(TYPENAME(CTlvString));
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvString), TYPENAME(*obj));
 	delete obj;
 
-	obj = CTlvObjectFactory::instance()->createTLVObject(typeid(CTlvCommand).name());
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvCommand).name(), typeid(*obj).name());
+	obj = CTlvObjectFactory::instance()->createTLVObject(TYPENAME(CTlvCommand));
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvCommand), TYPENAME(*obj));
 	delete obj;
 }
 
@@ -75,25 +77,25 @@ void TLVObjectFactoryTestSuite::testCreateByTLVBlock()
 {
 	ITlvBlock *blk = CTlvUint16().toTLVBlock();
 	ITlvObject *obj = CTlvObjectFactory::instance()->createTLVObject(*blk);
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvUint16).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvUint16), TYPENAME(*obj));
 	delete obj;
 	delete blk;
 
 	blk = CTlvUint32().toTLVBlock();
 	obj = CTlvObjectFactory::instance()->createTLVObject(*blk);
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvUint32).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvUint32), TYPENAME(*obj));
 	delete obj;
 	delete blk;
 
 	blk = CTlvString().toTLVBlock();
 	obj = CTlvObjectFactory::instance()->createTLVObject(*blk);
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvString).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvString), TYPENAME(*obj));
 	delete obj;
 	delete blk;
 
 	blk = CTlvCommand().toTLVBlock();
 	obj = CTlvObjectFactory::instance()->createTLVObject(*blk);
-	CPPUNIT_ASSERT_EQUAL(typeid(CTlvCommand).name(), typeid(*obj).name());
+	CPPUNIT_ASSERT_EQUAL(TYPENAME(CTlvCommand), TYPENAME(*obj));
 	delete obj;
 	delete blk;
 }

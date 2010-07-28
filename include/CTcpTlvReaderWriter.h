@@ -12,6 +12,9 @@
 
 namespace wolf {
 
+/**
+ * A TLV reader/writer on TCP socket.
+ */
 class CTcpTlvReaderWriter: public CTcpTlvReader, public CTcpTlvWriter {
 public:
 	CTcpTlvReaderWriter(CTcpSocket *sock): CTcpTlvReader(sock),

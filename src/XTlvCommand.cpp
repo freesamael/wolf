@@ -19,15 +19,14 @@ const char *XTlvCommand::XTypeString[] = {
 		"invalid parameter"
 };
 
-XTlvCommand::XTlvCommand(const string &func, int line, XType e,
-		const string &type) throw():
-		XWolf(XTypeString[e]), _e(e)
+XTlvCommand::XTlvCommand(XType e, const string &type) throw():
+		XWolf((string)XTypeString[e] + " (type = " + type + ")"), _e(e)
 {
 }
 
-XTlvCommand::XTlvCommand(const std::string &func, int line, XType e,
-			const CTlvCommand &cmd) throw():
-			XWolf(XTypeString[e]), _e(e)
+XTlvCommand::XTlvCommand(XType e, const CTlvCommand &cmd) throw():
+			XWolf((string)XTypeString[e] + " (cmd = " +
+					CTlvCommand::CommandString[cmd.command()] + ")"), _e(e)
 {
 }
 

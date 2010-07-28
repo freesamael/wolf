@@ -25,7 +25,7 @@ SINGLETON_REGISTRATION(CSimpleActiveSocketState);
 SINGLETON_REGISTRATION_END();
 
 void CSimpleActiveSocketState::activeOpen(ASocket *sock, SocketType UNUSED(type),
-		const CHostAddress &addr, in_port_t port) throw(XSocket)
+		const CHostAddress &addr, in_port_t port) 
 {
 	// Clear and set address/port.
 	sockaddr_in inaddr;
@@ -36,13 +36,13 @@ void CSimpleActiveSocketState::activeOpen(ASocket *sock, SocketType UNUSED(type)
 
 	// Perform connection.
 	if (connect(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr))	!= 0)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 
 	sock->changeState(CConnectedSocketState::instance());
 }
 
 void CSimpleActiveSocketState::passiveOpen(ASocket *sock, SocketType type,
-		in_port_t port, int qlen, bool reuse) throw(XSocket)
+		in_port_t port, int qlen, bool reuse) 
 {
 	// Clear and set inet address/port.
 	sockaddr_in inaddr;
@@ -57,31 +57,31 @@ void CSimpleActiveSocketState::passiveOpen(ASocket *sock, SocketType type,
 		socklen_t reuseaddr_len = sizeof(reuseaddr);
 		if (setsockopt(sock->sockfd(), SOL_SOCKET, SO_REUSEADDR, &reuseaddr,
 				reuseaddr_len) != 0) {
-			throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+			throw XSocket(errno);
 		}
 	}
 
 	// Perform binding.
 	if (bind(sock->sockfd(), (struct sockaddr *)&inaddr, sizeof(inaddr)) != 0)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 
 	// Perform listen if it's a TCP socket.
 	if (type == TCP)
 		if (listen(sock->sockfd(), qlen) < 0)
-			throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+			throw XSocket(errno);
 
 	sock->changeState(CBoundSocketState::instance());
 }
 
-void CSimpleActiveSocketState::close(ASocket *sock) throw(XSocket)
+void CSimpleActiveSocketState::close(ASocket *sock) 
 {
 	if (::close(sock->sockfd()) != 0)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	sock->changeState(CClosedSocketState::instance());
 }
 
 ssize_t CSimpleActiveSocketState::recvfrom(ASocket *sock, char *buf,
-		size_t size, CHostAddress *addr, in_port_t *port) throw(XSocket)
+		size_t size, CHostAddress *addr, in_port_t *port) 
 {
 	ssize_t result;
 	struct sockaddr_in inaddr;
@@ -89,7 +89,7 @@ ssize_t CSimpleActiveSocketState::recvfrom(ASocket *sock, char *buf,
 
 	if ((result = ::recvfrom(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, &alen)) < 0) {
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	}
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
@@ -98,7 +98,7 @@ ssize_t CSimpleActiveSocketState::recvfrom(ASocket *sock, char *buf,
 }
 
 ssize_t CSimpleActiveSocketState::sendto(ASocket *sock, const char *buf,
-		size_t size, const CHostAddress &addr, in_port_t port) throw(XSocket)
+		size_t size, const CHostAddress &addr, in_port_t port) 
 {
 	ssize_t result;
 	sockaddr_in inaddr;
@@ -111,7 +111,7 @@ ssize_t CSimpleActiveSocketState::sendto(ASocket *sock, const char *buf,
 
 	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr,	sizeof(inaddr))) < 0) {
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	}
 
 	return result;

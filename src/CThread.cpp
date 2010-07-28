@@ -39,17 +39,17 @@ void* thread_caller(void *param)
 	return NULL;
 }
 
-CThread::CThread(IRunnable *runner) throw(XThread):
+CThread::CThread(IRunnable *runner) :
 		_runner(runner), _mutex(), _cond(),	_tid(0), _tattr(), _tpoli(0),
 		_tparm(), _running(false), _finished(false), _canceled(false)
 {
 	int e;
 	if ((e = pthread_attr_init(&_tattr)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 	if ((e = pthread_attr_getschedpolicy(&_tattr, &_tpoli)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 	if ((e = pthread_attr_getschedparam(&_tattr, &_tparm)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 }
 
 CThread::~CThread()
@@ -62,25 +62,24 @@ CThread::~CThread()
 /**
  * Create a thread to execute run().
  */
-void CThread::start() throw(XThread)
+void CThread::start() 
 {
 	if (_tid != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__,
-				XThread::THREAD_ALREADY_STARTED);
+		throw XThread(XThread::THREAD_ALREADY_STARTED);
 
 	int e;
 	if ((e = pthread_create(&_tid, &_tattr, thread_caller, this)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 }
 
 /**
  * Block wait until thread exits. Always return true.
  */
-bool CThread::join() throw(XThread)
+bool CThread::join() 
 {
 	int e;
 	if ((e = pthread_join(_tid, NULL)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 	return true;
 }
 
@@ -93,7 +92,7 @@ bool CThread::join() throw(XThread)
  * \return
  * True on success, false if timed out.
  */
-bool CThread::join(unsigned timeout_us) throw(XThread)
+bool CThread::join(unsigned timeout_us) 
 {
 	_mutex.lock();
 	if (_running)
@@ -106,49 +105,49 @@ bool CThread::join(unsigned timeout_us) throw(XThread)
 /**
  * Request cancel for executing thread.
  */
-void CThread::cancel() throw(XThread)
+void CThread::cancel() 
 {
 	int e;
 	if ((e = pthread_cancel(_tid)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 	_canceled = true;
 }
 
 /**
  * Get the minimum priority.
  */
-int CThread::minimumPriority() throw(XThread)
+int CThread::minimumPriority() 
 {
 	int p;
 	if ((p = sched_get_priority_min(_tpoli)) == -1)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XThread(errno);
 	return p;
 }
 
 /**
  * Get the maximum priority.
  */
-int CThread::maximumPriority() throw(XThread)
+int CThread::maximumPriority() 
 {
 	int p;
 	if ((p = sched_get_priority_max(_tpoli)) == -1)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XThread(errno);
 	return p;
 }
 
 /**
  * Get current priority setting.
  */
-int CThread::priority() throw(XThread)
+int CThread::priority() 
 {
 	if (isRunning()) {
 		int e;
 		if ((e = pthread_getschedparam(_tid, &_tpoli, &_tparm)) != 0)
-			throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+			throw XThread(e);
 	} else {
 		int e;
 		if ((e = pthread_attr_getschedparam(&_tattr, &_tparm)) != 0)
-			throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+			throw XThread(e);
 	}
 	return _tparm.sched_priority;
 }
@@ -156,17 +155,17 @@ int CThread::priority() throw(XThread)
 /**
  * Set the priority.
  */
-void CThread::setPriority(int p) throw(XThread)
+void CThread::setPriority(int p) 
 {
 	_tparm.sched_priority = p;
 	if (isRunning()) {
 		int e;
 		if ((e = pthread_setschedparam(_tid, _tpoli, &_tparm)) != 0)
-			throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+			throw XThread(e);
 	} else {
 		int e;
 		if ((e = pthread_attr_setschedparam(&_tattr, &_tparm)) != 0)
-			throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+			throw XThread(e);
 	}
 }
 

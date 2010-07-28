@@ -17,6 +17,9 @@
 namespace wolf
 {
 
+/**
+ * TLV writer on UDP socket.
+ */
 class CUdpTlvWriter
 {
 public:
@@ -26,9 +29,9 @@ public:
 	inline CUdpTlvWriter& operator=(const CUdpTlvWriter &o)
 			{ _sock = o._sock; return *this; }
 	void sendBlockTo(const ITlvBlock &blk, const CHostAddress &addr,
-			in_port_t port) throw(XSocket, XThread);
+			in_port_t port) ;
 	void sendObjectTo(const ITlvObject &obj, const CHostAddress &addr,
-			in_port_t port) throw(XSocket, XThread, XTlvObject);
+			in_port_t port) ;
 
 private:
 	CUdpSocket *_sock;

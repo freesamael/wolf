@@ -12,6 +12,11 @@
 namespace wolf
 {
 
+/**
+ * A dispatching policy that dispatches workers to all runners one-by-one.
+ *
+ * \see IWorkerDispatcher
+ */
 class CSimpleWorkerDispatcher: public IWorkerDispatcher
 {
 public:

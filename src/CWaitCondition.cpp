@@ -17,15 +17,15 @@ using namespace std;
 namespace wolf
 {
 
-CWaitCondition::CWaitCondition() throw(XThread):
+CWaitCondition::CWaitCondition() :
 		_cond()
 {
 	int e;
 	if ((e = pthread_cond_init(&_cond, NULL)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 }
 
-CWaitCondition::~CWaitCondition() throw()
+CWaitCondition::~CWaitCondition() 
 {
 	int e;
 	if ((e = pthread_cond_destroy(&_cond)) != 0)
@@ -35,11 +35,11 @@ CWaitCondition::~CWaitCondition() throw()
 /**
  * Unlock the mutex and wait for the condition. Always return true.
  */
-bool CWaitCondition::wait(CMutex *mutex) throw(XThread)
+bool CWaitCondition::wait(CMutex *mutex) 
 {
 	int e;
 	if ((e = pthread_cond_wait(&_cond, &mutex->_mutex)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 	return true;
 }
 
@@ -50,7 +50,7 @@ bool CWaitCondition::wait(CMutex *mutex) throw(XThread)
  * \return
  * True on success, false if timed out.
  */
-bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us) throw(XThread)
+bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us) 
 {
 	struct timespec timeout = (CTime::now() + CTime(timeout_us)).toTimespec();
 
@@ -59,7 +59,7 @@ bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us) throw(XThread)
 		if (e == ETIMEDOUT) // timed out.
 			return false;
 		else
-			throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+			throw XThread(e);
 	}
 	return true;
 }
@@ -67,21 +67,21 @@ bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us) throw(XThread)
 /**
  * Wake up one waiter.
  */
-void CWaitCondition::wakeOne() throw(XThread)
+void CWaitCondition::wakeOne() 
 {
 	int e;
 	if ((e = pthread_cond_signal(&_cond)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 }
 
 /**
  * Wake up all waiters.
  */
-void CWaitCondition::wakeAll() throw(XThread)
+void CWaitCondition::wakeAll() 
 {
 	int e;
 	if ((e = pthread_cond_broadcast(&_cond)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 }
 
 }

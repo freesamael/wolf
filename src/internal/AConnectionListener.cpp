@@ -10,6 +10,7 @@
 #include "CTlvCommand.h"
 #include "AConnectionListener.h"
 #include "XTlvCommand.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
@@ -55,15 +56,13 @@ void AConnectionListener::update(AObservable *o)
 			if ((obj = reader.readObject())) {
 				CTlvCommand *msg;
 				if (!(msg = dynamic_cast<CTlvCommand *>(obj))) {
-					string type = typeid(obj).name();
+					string type = TYPENAME(obj);
 					delete obj;
-					throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
-							XTlvCommand::INVALID_OBJECT, type);
+					throw XTlvCommand(XTlvCommand::INVALID_OBJECT, type);
 				} else if (msg->command() != CTlvCommand::HELLO_RUNNER) {
-					XTlvCommand x(__PRETTY_FUNCTION__, __LINE__,
-							XTlvCommand::UNEXPECTED_COMMAND, *msg);
+					XTlvCommand x(XTlvCommand::UNEXPECTED_COMMAND, *msg);
 					delete msg;
-					throw x;
+					throw;
 				} else {
 					// Check nonblocking flag and set to block if needed.
 					// The default value might be nonblocking on BSD/Mac.

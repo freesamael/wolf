@@ -23,22 +23,19 @@ void CMasterSideCommandListener::process(CTlvCommand *cmd)
 		// Check #parameters.
 		if (cmd->parameters().size() != 2) { // [id, worker]
 			cmd->setAutoclean(true);
-			throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
-					XTlvCommand::INVALID_PARAM_NUM, *cmd);
+			throw XTlvCommand(XTlvCommand::INVALID_PARAM_NUM, *cmd);
 		}
 
 		// Check p1.
 		if (!(u32 = dynamic_cast<CTlvUint32 *>(cmd->parameters()[0]))) {
 			cmd->setAutoclean(true);
-			throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
-					XTlvCommand::INVALID_PARAM, *cmd);
+			throw XTlvCommand(XTlvCommand::INVALID_PARAM, *cmd);
 		}
 
 		// Check p2.
 		if (!(worker = dynamic_cast<AWorkerActor *>(cmd->parameters()[1]))) {
 			cmd->setAutoclean(true);
-			throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
-					XTlvCommand::INVALID_PARAM, *cmd);
+			throw XTlvCommand(XTlvCommand::INVALID_PARAM, *cmd);
 		}
 
 		PINF_2("Worker " << u32->value() << " finished by runner " <<
@@ -46,8 +43,7 @@ void CMasterSideCommandListener::process(CTlvCommand *cmd)
 		_master->putFinishWorker(u32->value(), worker);
 		delete u32;
 	} else {
-		throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
-				XTlvCommand::UNEXPECTED_COMMAND, *cmd);
+		throw XTlvCommand(XTlvCommand::UNEXPECTED_COMMAND, *cmd);
 	}
 }
 

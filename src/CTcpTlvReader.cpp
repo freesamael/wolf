@@ -15,7 +15,7 @@ namespace wolf
  * Read a TLV block from the socket. Applicable to blockable sockets only.
  * \return The incoming block or NULL if connection ends (end-of-file).
  */
-ITlvBlock* CTcpTlvReader::readBlock() throw(XSocket, XThread)
+ITlvBlock* CTcpTlvReader::readBlock() 
 {
 	int ret;
 	char *hdrbuf = new char[ITlvBlock::szHeader];
@@ -51,19 +51,19 @@ ITlvBlock* CTcpTlvReader::readBlock() throw(XSocket, XThread)
 		_sock->unlockread();
 		delete [] hdrbuf;
 		delete blk;
-		throw x;
+		throw;
 	}
 
 	// Unexpected result.
 	_sock->unlockread();
-	throw XSocket(__PRETTY_FUNCTION__, __LINE__, XSocket::UNKNOWN_ERR);
+	throw XSocket(XSocket::UNKNOWN_ERR);
 }
 
 /**
  * Read a TLV object from the socket. Applicable to blockable sockets only.
  * \return The incoming block or NULL if connection ends (end-of-file).
  */
-ITlvObject* CTcpTlvReader::readObject() throw(XSocket, XThread, XTlvObject)
+ITlvObject* CTcpTlvReader::readObject() 
 {
 	ITlvBlock *blk = NULL;
 	try {
@@ -77,7 +77,7 @@ ITlvObject* CTcpTlvReader::readObject() throw(XSocket, XThread, XTlvObject)
 	} catch (const XTlvObject &x) {
 		// Cleanup and rethrow.
 		delete blk;
-		throw x;
+		throw;
 	}
 
 	// End-of-file.

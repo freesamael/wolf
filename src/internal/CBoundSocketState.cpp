@@ -24,15 +24,15 @@ namespace wolf
 SINGLETON_REGISTRATION(CBoundSocketState);
 SINGLETON_REGISTRATION_END();
 
-void CBoundSocketState::close(ASocket *sock) throw(XSocket)
+void CBoundSocketState::close(ASocket *sock) 
 {
 	if (::close(sock->sockfd()) != 0)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 
 	sock->changeState(CClosedSocketState::instance());
 }
 
-int CBoundSocketState::accept(ASocket *sock) throw(XSocket)
+int CBoundSocketState::accept(ASocket *sock) 
 {
 	int insock;
 	struct sockaddr_in inaddr;
@@ -43,14 +43,14 @@ int CBoundSocketState::accept(ASocket *sock) throw(XSocket)
 		if (errno == EAGAIN || errno == EWOULDBLOCK)
 			return -1; // Nonblocking and no connection.
 		else
-			throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+			throw XSocket(errno);
 	}
 
 	return insock;
 }
 
 ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
-		CHostAddress *addr, in_port_t *port) throw(XSocket)
+		CHostAddress *addr, in_port_t *port) 
 {
 	ssize_t result;
 	struct sockaddr_in inaddr;
@@ -61,7 +61,7 @@ ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
 		if (errno == EAGAIN || errno == EWOULDBLOCK)
 			return 0; // Nonblocking and no data.
 		else
-			throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+			throw XSocket(errno);
 	}
 
 	addr->setAddr(inaddr.sin_addr.s_addr);
@@ -70,7 +70,7 @@ ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
 }
 
 ssize_t CBoundSocketState::sendto(ASocket *sock, const char *buf,
-		size_t size, const CHostAddress &addr, in_port_t port) throw(XSocket)
+		size_t size, const CHostAddress &addr, in_port_t port) 
 {
 	ssize_t result;
 	sockaddr_in inaddr;
@@ -83,7 +83,7 @@ ssize_t CBoundSocketState::sendto(ASocket *sock, const char *buf,
 
 	if ((result = ::sendto(sock->sockfd(), buf, size, 0,
 			(struct sockaddr *)&inaddr, sizeof(inaddr))) < 0) {
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	}
 
 	return result;

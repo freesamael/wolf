@@ -14,15 +14,15 @@ using namespace std;
 namespace wolf
 {
 
-CMutex::CMutex() throw(XThread):
+CMutex::CMutex() :
 		_mutex()
 {
 	int e;
 	if ((e = pthread_mutex_init(&_mutex, NULL)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 }
 
-CMutex::~CMutex() throw()
+CMutex::~CMutex() 
 {
 	int e;
 	if ((e = pthread_mutex_destroy(&_mutex)) != 0)
@@ -32,21 +32,21 @@ CMutex::~CMutex() throw()
 /**
  * Lock the mutex.
  */
-void CMutex::lock() throw(XThread)
+void CMutex::lock() 
 {
 	int e;
 	if ((e = pthread_mutex_lock(&_mutex)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 }
 
 /**
  * Unlock the mutex.
  */
-void CMutex::unlock() throw(XThread)
+void CMutex::unlock() 
 {
 	int e;
 	if ((e = pthread_mutex_unlock(&_mutex)) != 0)
-		throw XThread(__PRETTY_FUNCTION__, __LINE__, e);
+		throw XThread(e);
 }
 
 }

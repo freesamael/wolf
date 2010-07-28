@@ -71,9 +71,11 @@ public:
 	/// The default implementation is empty.
 	virtual void reset() {}
 	/// Get all sink ports.
-	inline virtual const std::vector<CSinkPort *>& sinkPorts() const { return _sinkp; }
+	inline virtual const std::vector<CSinkPort *>& sinkPorts() const
+			{ return _sinkp; }
 	/// Get all source ports.
-	inline virtual const std::vector<CSourcePort *>& sourcePorts() const { return _srcp; }
+	inline virtual const std::vector<CSourcePort *>& sourcePorts() const
+			{ return _srcp; }
 	/// Add a port and return the port added.
 	virtual IPort* addPort(IPort::Type type);
 	/// Remove and delete (free) a port from the actor.

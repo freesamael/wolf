@@ -16,6 +16,10 @@ namespace wolf
 {
 
 class CSinkPort;
+
+/**
+ * Used to connect ports. A channel can have one writer and multiple readers.
+ */
 class CChannel
 {
 public:

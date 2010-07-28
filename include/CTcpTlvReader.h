@@ -17,6 +17,9 @@
 namespace wolf
 {
 
+/**
+ * A TLV reader on TCP socket.
+ */
 class CTcpTlvReader
 {
 public:
@@ -25,8 +28,8 @@ public:
 	virtual ~CTcpTlvReader() {}
 	inline CTcpTlvReader& operator=(const CTcpTlvReader &o)
 			{ _sock = o._sock; return *this; }
-	ITlvBlock* readBlock() throw(XSocket, XThread);
-	ITlvObject* readObject() throw(XSocket, XThread, XTlvObject);
+	ITlvBlock* readBlock();
+	ITlvObject* readObject();
 
 private:
 	CTcpSocket *_sock;

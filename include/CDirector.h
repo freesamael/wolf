@@ -17,6 +17,10 @@ namespace wolf
 {
 
 class CChannel;
+
+/**
+ * Workflow execution director.
+ */
 class CDirector
 {
 public:

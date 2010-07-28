@@ -23,20 +23,20 @@ SINGLETON_REGISTRATION(CClosedSocketState);
 SINGLETON_REGISTRATION_END();
 
 void CClosedSocketState::activeOpen(ASocket *sock, SocketType type,
-		const CHostAddress &addr, in_port_t port) throw(XSocket)
+		const CHostAddress &addr, in_port_t port) 
 {
 	open(sock, type);
 	sock->activeOpen(addr, port);
 }
 
 void CClosedSocketState::passiveOpen(ASocket *sock, SocketType type,
-		in_port_t port, int qlen, bool reuse) throw(XSocket)
+		in_port_t port, int qlen, bool reuse) 
 {
 	open(sock, type);
 	sock->passiveOpen(port, qlen, reuse);
 }
 
-void CClosedSocketState::open(ASocket *sock, SocketType type) throw(XSocket)
+void CClosedSocketState::open(ASocket *sock, SocketType type) 
 {
 	int sock_type;
 	int sockfd;
@@ -47,12 +47,11 @@ void CClosedSocketState::open(ASocket *sock, SocketType type) throw(XSocket)
 	else if (type == TCP)
 		sock_type = SOCK_STREAM;
 	else
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__,
-				XSocket::INVALID_SOCKET_TYPE);
+		throw XSocket(XSocket::INVALID_SOCKET_TYPE);
 
 	// Initialize.
 	if ((sockfd = socket(AF_INET, sock_type, 0)) < 0)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	sock->setSockfd(sockfd);
 	sock->changeState(CSimpleActiveSocketState::instance());
 }

@@ -27,23 +27,23 @@ const string &ASocket::ActiveState = CSimpleActiveSocketState::instance()->name(
 const string &ASocket::BoundState = CBoundSocketState::instance()->name();
 const string &ASocket::ConnectedState = CConnectedSocketState::instance()->name();
 
-ASocket::ASocket() throw(XSocket, XThread):
+ASocket::ASocket() :
 		_sockfd(0), _wmx(), _rmx(), _mx(), _state(CClosedSocketState::instance())
 {
 }
 
-ASocket::ASocket(const ASocket &sock) throw(XSocket, XThread):
+ASocket::ASocket(const ASocket &sock) :
 		_sockfd(sock._sockfd), _wmx(), _rmx(), _mx(), _state(sock._state)
 {
 }
 
-ASocket::ASocket(int sockfd) throw(XSocket, XThread):
+ASocket::ASocket(int sockfd) :
 		_sockfd(sockfd), _wmx(), _rmx(), _mx(),
 		_state(CSimpleActiveSocketState::instance())
 {
 }
 
-ASocket::~ASocket() throw()
+ASocket::~ASocket() 
 {
 	try {
 		_state->close(this);
@@ -54,20 +54,20 @@ ASocket::~ASocket() throw()
 	}
 }
 
-ASocket& ASocket::operator=(const ASocket &sock) throw()
+ASocket& ASocket::operator=(const ASocket &sock) 
 {
 	_sockfd = sock._sockfd;
 	_state = sock._state;
 	return *this;
 }
 
-void ASocket::setBlockable(bool blk) throw(XSocket)
+void ASocket::setBlockable(bool blk) 
 {
 	int arg;
 
 	// Get arg.
 	if ((arg = fcntl(_sockfd, F_GETFL, NULL)) == -1)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 
 	// Change arg.
 	if (!blk)
@@ -77,36 +77,36 @@ void ASocket::setBlockable(bool blk) throw(XSocket)
 
 	// Set arg.
 	if ((fcntl(_sockfd, F_SETFL, arg)) == -1) {
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	}
 }
 
-bool ASocket::blockable() const throw(XSocket)
+bool ASocket::blockable() const 
 {
 	int arg;
 
 	// Get arg.
 	if ((arg = fcntl(_sockfd, F_GETFL, NULL)) == -1)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 
 	return !(arg & O_NONBLOCK);
 }
 
-CHostAddress ASocket::currentAddress() const throw(XSocket)
+CHostAddress ASocket::currentAddress() const 
 {
 	sockaddr_in inaddr;
 	socklen_t len = sizeof(inaddr);
 	if (getsockname(_sockfd, (sockaddr *)&inaddr, &len) != 0)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	return CHostAddress(inaddr.sin_addr.s_addr);
 }
 
-CHostAddress ASocket::peerAddress() const throw(XSocket)
+CHostAddress ASocket::peerAddress() const 
 {
 	sockaddr_in inaddr;
 	socklen_t len = sizeof(inaddr);
 	if (getpeername(_sockfd, (sockaddr *)&inaddr, &len) != 0)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	return CHostAddress(inaddr.sin_addr.s_addr);
 }
 

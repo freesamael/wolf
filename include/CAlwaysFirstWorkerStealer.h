@@ -15,6 +15,11 @@
 namespace wolf
 {
 
+/**
+ * A stealing policy that always steals from first runner.
+ *
+ * \see IWorkerStealer
+ */
 class CAlwaysFirstWorkerStealer: public IWorkerStealer
 {
 public:

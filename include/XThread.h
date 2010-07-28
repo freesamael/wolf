@@ -24,8 +24,8 @@ public:
 		UNKNOWN
 	} XType;
 	static const char *XTypeString[];
-	explicit XThread(const std::string &func, int line, int e) throw();
-	explicit XThread(const std::string &func, int line, XType e) throw();
+	explicit XThread(int e) throw();
+	explicit XThread(XType e) throw();
 	virtual ~XThread() throw() {}
 	inline XType xtype() const throw() { return _e; }
 	inline int errnum() const throw() { return _eno; }

@@ -20,12 +20,12 @@ const char *XSocket::XTypeString[] = {
 		"unknown error"
 };
 
-XSocket::XSocket(const string &func, int line, int e) throw():
+XSocket::XSocket(int e) throw():
 		XWolf(strerror(e)), _e(ERRNO), _eno(e)
 {
 }
 
-XSocket::XSocket(const string &func, int line, XType e) throw():
+XSocket::XSocket(XType e) throw():
 		XWolf(XTypeString[e]), _e(e), _eno(0)
 {
 }

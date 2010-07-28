@@ -28,7 +28,7 @@ class CThread
 {
 	friend void* thread_caller(void*);
 public:
-	CThread(IRunnable *runner = NULL) throw(XThread);
+	CThread(IRunnable *runner = NULL);
 	virtual ~CThread();
 	virtual inline void run() { if (_runner) _runner->run(); }
 	inline pthread_t threadID() const { return _tid; }
@@ -36,14 +36,14 @@ public:
 	inline bool isFinished() const { return _finished; }
 	inline bool isCanceled() const { return _canceled; }
 	inline IRunnable* runner() const { return _runner; }
-	void start() throw(XThread);
-	bool join() throw(XThread);
-	bool join(unsigned timeout_us) throw(XThread);
-	void cancel() throw(XThread);
-	int minimumPriority() throw(XThread);
-	int maximumPriority() throw(XThread);
-	int priority() throw(XThread);
-	void setPriority(int p) throw(XThread);
+	void start();
+	bool join();
+	bool join(unsigned timeout_us);
+	void cancel();
+	int minimumPriority();
+	int maximumPriority();
+	int priority();
+	void setPriority(int p);
 
 private:
 	CThread(const CThread &UNUSED(o)): _runner(NULL), _mutex(), _cond(),
