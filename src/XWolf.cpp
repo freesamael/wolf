@@ -24,7 +24,7 @@ namespace wolf
  * The symbol string is like:
  *     bin/manset_runner(_ZN4wolf5XWolfC2ERKSs+0x4b) [0x8085489]
  *
- * Hence, characters between '(' and '+' is the mangle string.
+ * Hence, characters start from '_' and before '+' is the mangle string.
  */
 string demangle(char *symbol)
 {
@@ -33,8 +33,8 @@ string demangle(char *symbol)
 
 	// Find begin.
 	for (int i = 0; symbol[i] != '\0' && !begin; i++)
-		if (symbol[i] == '(')
-			begin = i + 1;
+		if (symbol[i] == '_')
+			begin = i;
 
 	// Find end.
 	for (int i = begin; symbol[i] != '\0' && !end; i++)
