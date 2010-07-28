@@ -7,7 +7,7 @@
 #include <cstdlib>
 #include "XWolf.h"
 
-#if defined(__GLIBC__)
+#if defined(__GLIBC__) || (defined(__APPLE__) && defined(__MACH__))
 #include <execinfo.h>
 #endif
 
@@ -63,7 +63,7 @@ string demangle(char *symbol)
 XWolf::XWolf(const string &remark) throw():
 		_estr(remark)
 {
-#if defined(__GLIBC__)
+#if defined(__GLIBC__) || (defined(__APPLE__) && defined(__MACH__))
 	int nptrs;
 	void *buf[128];
 	char **cstrs;
