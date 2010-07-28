@@ -53,6 +53,7 @@ string demangle(char *symbol)
 			free(cstr);
 			return str;
 		}
+		symbol[end] = '+';
 	}
 #endif
 
