@@ -8,7 +8,7 @@
 #include <ctype.h>
 #include "XWolf.h"
 
-#if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_EXECINFO) \
+#if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_LIBEXECINFO) \
 			|| (defined(__APPLE__) && defined(__MACH__)))
 #include <execinfo.h>
 #endif
@@ -77,7 +77,7 @@ string demangle(char *symbol)
 XWolf::XWolf(const string &remark) throw():
 		_estr(remark)
 {
-#if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_EXECINFO) \
+#if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_LIBEXECINFO) \
 			|| (defined(__APPLE__) && defined(__MACH__)))
 	int nptrs;
 	void *buf[128];
