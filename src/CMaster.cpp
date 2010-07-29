@@ -184,10 +184,10 @@ void CMaster::shutdown()
 	// Shutdown all runners and stop all command listeners.
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		_d->clis[i]->setDone();
-		_d->clis[i]->join();
+		_d->cmdsdr.shutdown(_d->rsocks[i]);
 	}
 	for (unsigned i = 0; i < _d->rsocks.size(); i++)
-		_d->cmdsdr.shutdown(_d->rsocks[i]);
+		_d->clis[i]->join();
 
 	_state = END;
 }
