@@ -3,9 +3,6 @@ CXX ?= ${CROSS_COMPILE}g++
 AR ?= ${CROSS_COMPILE}ar
 
 DSM ?= n
-DEBUG ?= n
-LIBEXECINFO ?= n
-
 ifeq (${DSM}, y)
 D2MCE_INSTDIR ?= /opt/d2mce/i386
 D2MCE_INCDIR ?= ${D2MCE_INSTDIR}/include
@@ -15,24 +12,14 @@ D2MCE_LDFLAGS = -L${D2MCE_LIBDIR}
 D2MCE_LIBS = -ld2mce
 endif
 
+DEBUG ?= n
 ifneq (${DEBUG}, n)
 CXXFLAGS += -g3 -O0 -rdynamic -D__DEBUG__=${DEBUG}
 else
 CXXFLAGS += -O2
 endif
 
-ifeq (${LIBEXECINFO}, y)
-CXXFLAGS += -D__USE_LIBEXECINFO
-LDFLAGS += -lexecinfo
-endif
-
 CXXFLAGS += -ansi -pedantic -Wall -Wextra -D_XOPEN_SOURCE=600 -D__STDC_LIMIT_MACROS 
-
-COV ?= n
-ifeq (${COV}, y)
-CXXFLAGS += -ftest-coverage -fprofile-arcs
-LDFLAGS += -lgcov
-endif 
 
 WOLF_SRCDIR = ${PWD}/src
 WOLF_INCDIR = ${PWD}/include
@@ -45,3 +32,15 @@ clean: wolf_clean test_clean
 
 include ${WOLF_SRCDIR}/Makefile
 include ${WOLF_TESTDIR}/Makefile
+
+LIBEXECINFO ?= n
+ifeq (${LIBEXECINFO}, y)
+CXXFLAGS += -D__USE_LIBEXECINFO
+LDFLAGS += -lexecinfo
+endif
+
+COV ?= n
+ifeq (${COV}, y)
+CXXFLAGS += -ftest-coverage -fprofile-arcs
+LDFLAGS += -lgcov
+endif
