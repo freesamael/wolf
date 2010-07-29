@@ -307,15 +307,16 @@ void CRunner::shutdown()
 		return;
 	}
 
-	// Closing all runner sockets.
-	for (unsigned i = 0; i < _d->rsocks.size(); i++)
-		_d->rsocks[i]->close();
-
 	// Stopping all runner command listeners.
 	for (unsigned i = 0; i < _d->rclis.size(); i++) {
 		_d->rclis[i]->setDone();
 		_d->rclis[i]->join();
 	}
+
+	// Closing all runner sockets.
+	usleep(100000);
+	for (unsigned i = 0; i < _d->rsocks.size(); i++)
+		_d->rsocks[i]->close();
 
 	// Closing master socket.
 	_d->pmsock->close();
