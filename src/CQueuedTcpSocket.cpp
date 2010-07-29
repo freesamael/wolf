@@ -19,7 +19,7 @@ namespace wolf
  * \return
  * Size read. Zero indicates connection ends (end-of-file).
  */
-ssize_t CQueuedTcpSocket::read(char *buf, size_t size) throw(XSocket)
+ssize_t CQueuedTcpSocket::read(char *buf, size_t size) 
 {
 	size_t offset = 0;
 	while (offset < size && state()->name() != ASocket::ClosedState) {
@@ -44,7 +44,7 @@ ssize_t CQueuedTcpSocket::read(char *buf, size_t size) throw(XSocket)
 /**
  * Read raw socket and push data into the queue.
  */
-void CQueuedTcpSocket::readSocket() throw(XSocket)
+void CQueuedTcpSocket::readSocket() 
 {
 	if (_q.size() < SZ_QFULL) {
 		// Read as much data as possible.
@@ -59,9 +59,9 @@ void CQueuedTcpSocket::readSocket() throw(XSocket)
 					_cond.wakeAll();
 				_mx.unlock();
 			}
-		} catch (const XSocket &x) {
+		} catch (XSocket &x) {
 			delete data;
-			throw x;
+			throw;
 		}
 		delete data;
 
@@ -74,7 +74,7 @@ void CQueuedTcpSocket::readSocket() throw(XSocket)
 	}
 }
 
-ssize_t CQueuedTcpSocket::write(const char *buf, size_t size) throw(XSocket)
+ssize_t CQueuedTcpSocket::write(const char *buf, size_t size) 
 {
 	ssize_t sz = 0;
 	do {
@@ -83,7 +83,7 @@ ssize_t CQueuedTcpSocket::write(const char *buf, size_t size) throw(XSocket)
 	return sz;
 }
 
-void CQueuedTcpSocket::close() throw(XSocket)
+void CQueuedTcpSocket::close() 
 {
 	CTcpSocket::close();
 	_mx.lock();

@@ -62,7 +62,7 @@ void CQueuedTcpDataReader::run()
 	// Get limits.
 	rlimit r;
 	if (getrlimit(RLIMIT_NOFILE, &r) == -1) {
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	}
 	int nfds = (int)r.rlim_cur;
 
@@ -78,7 +78,7 @@ void CQueuedTcpDataReader::run()
 		_mx.unlock();
 
 		if (select(nfds, &readfds, NULL, NULL, &timeout) == -1) {
-			throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+			throw XSocket(errno);
 		} else {
 			// Update all ready sockets.
 			_mx.lock();

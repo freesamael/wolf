@@ -20,9 +20,7 @@ const char *XTlvObject::XTypeString[] = {
 		"the block is too short to be a TLV object"
 };
 
-XTlvObject::XTlvObject(const std::string &func, int line, XType e, uint16_t id,
-		const std::string &name) throw():
-		_e(e), _estr()
+string gennote(uint16_t id, const std::string &name)
 {
 	char idstr[10];
 	if (id == TLV_TYPE_INVALID)
@@ -30,11 +28,13 @@ XTlvObject::XTlvObject(const std::string &func, int line, XType e, uint16_t id,
 	else
 		sprintf(idstr, "%d", (int)id);
 
-	char lstr[10];
-	sprintf(lstr, "%d", (int)line);
+	return (string)" (id: " + idstr + ", name: " + name + ")";
 
-	_estr = (string)XTypeString[e] + " (id: " + idstr + ", name: " + name +
-			") [" + func + ": " + lstr + "]";
+}
+
+XTlvObject::XTlvObject(XType e, uint16_t id, const std::string &name) throw():
+		XWolf((string)XTypeString[e] + gennote(id, name)), _e(e)
+{
 }
 
 }

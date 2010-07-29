@@ -1,8 +1,7 @@
-/*
- * XTlvCommand.h
- *
- *  Created on: Jul 15, 2010
- *      Author: samael
+/**
+ * \file XTlvCommand.h
+ * \date Jul 15, 2010
+ * \author samael
  */
 
 #ifndef XTLVCOMMAND_H_
@@ -14,6 +13,9 @@
 namespace wolf
 {
 
+/**
+ * CTlvCommnad related exceptions.
+ */
 class XTlvCommand: public XWolf
 {
 public:
@@ -24,18 +26,13 @@ public:
 		INVALID_PARAM
 	} XType;
 	static const char *XTypeString[];
-	XTlvCommand(const std::string &func, int line, XType e,
-			const std::string &type) throw();
-	XTlvCommand(const std::string &func, int line, XType e,
-			const CTlvCommand &cmd) throw();
+	XTlvCommand(XType e, const std::string &type) throw();
+	XTlvCommand(XType e, const CTlvCommand &cmd) throw();
 	virtual ~XTlvCommand() throw() {}
 	inline XType xtype() const throw() { return _e; }
-	inline const char* what() const throw() { return _estr.c_str(); }
-	inline std::string toString() const throw() { return _estr; }
 
 private:
 	XType _e;
-	std::string _estr;
 };
 
 }

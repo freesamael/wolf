@@ -5,7 +5,7 @@ MANSET_RUNNER_O = ${MANSET_SRCDIR}/manset_runner.o
 MANSET_COM_OBJS := ${filter-out ${MANSET_O} ${MANSET_RUNNER_O},${patsubst %.cpp,%.o,${wildcard ${MANSET_SRCDIR}/*.cpp}}}
 
 ${MANSET}: CXXFLAGS += -I${WOLF_INCDIR} -I/usr/include/opencv
-${MANSET}: LIBS += -lwolf -lpthread -lcv -lcvaux -lhighgui
+${MANSET}: LIBS += -lwolf -lpthread -lcv -lcvaux -lhighgui ${EXECINFO_LIBS} ${COV_LIBS}
 ${MANSET}: LDFLAGS += -L${WOLF_LIBDIR}
 
 ${MANSET}: ${MANSET_O} ${MANSET_COM_OBJS} ${MANSET_RUNNER}

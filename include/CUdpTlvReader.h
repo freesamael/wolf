@@ -17,6 +17,9 @@
 namespace wolf
 {
 
+/**
+ * TLV reader on UDP socket.
+ */
 class CUdpTlvReader
 {
 public:
@@ -26,9 +29,9 @@ public:
 	inline CUdpTlvReader& operator=(const CUdpTlvReader &o)
 			{ _sock = o._sock; return *this; }
 	ITlvBlock* recvBlockFrom(CHostAddress *addr, in_port_t *port)
-			throw(XSocket, XThread, XTlvObject);
+			;
 	ITlvObject* recvObjectFrom(CHostAddress *addr, in_port_t *port)
-			throw(XSocket, XThread, XTlvObject);
+			;
 
 private:
 	CUdpSocket *_sock;

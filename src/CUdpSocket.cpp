@@ -28,7 +28,7 @@ namespace wolf
  * is discarded.
  */
 ssize_t CUdpSocket::recvfrom(char *buf, size_t size, CHostAddress *addr,
-		in_port_t *port) throw(XSocket)
+		in_port_t *port) 
 {
 	return _state->recvfrom(this, buf, size, addr, port);
 }
@@ -40,7 +40,7 @@ ssize_t CUdpSocket::recvfrom(char *buf, size_t size, CHostAddress *addr,
  * Size written.
  */
 ssize_t CUdpSocket::sendto(const char *buf, size_t size, const CHostAddress &addr,
-		in_port_t port) throw(XSocket)
+		in_port_t port) 
 {
 	return _state->sendto(this, buf, size, addr, port);;
 }
@@ -48,12 +48,12 @@ ssize_t CUdpSocket::sendto(const char *buf, size_t size, const CHostAddress &add
 /**
  * Set if the it can broadcast.
  */
-void CUdpSocket::setBroadcast(bool bcast) throw(XSocket)
+void CUdpSocket::setBroadcast(bool bcast) 
 {
 	int broadcast = (bcast) ? 1 : 0;
 	if (setsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast,
 			sizeof(broadcast)) != 0) {
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	}
 }
 
@@ -63,12 +63,12 @@ void CUdpSocket::setBroadcast(bool bcast) throw(XSocket)
  * \return
  * True if it can broadcast, false otherwise.
  */
-bool CUdpSocket::canBroadcast() const throw(XSocket)
+bool CUdpSocket::canBroadcast() const 
 {
 	int broadcast;
 	socklen_t len = sizeof(broadcast);
 	if (getsockopt(_sockfd, SOL_SOCKET, SO_BROADCAST, &broadcast, &len) != 0)
-		throw XSocket(__PRETTY_FUNCTION__, __LINE__, errno);
+		throw XSocket(errno);
 	return broadcast;
 }
 

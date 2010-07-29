@@ -14,6 +14,9 @@
 namespace wolf
 {
 
+/**
+ * Simple workflow scheduling policy.
+ */
 class CSimpleWorkflowExecutor: public CThread, public IWorkflowExecutor
 {
 public:

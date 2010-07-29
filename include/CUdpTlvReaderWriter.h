@@ -13,6 +13,9 @@
 namespace wolf
 {
 
+/**
+ * TLV reader/writer on UDP socket.
+ */
 class CUdpTlvReaderWriter: public CUdpTlvReader, public CUdpTlvWriter
 {
 public:

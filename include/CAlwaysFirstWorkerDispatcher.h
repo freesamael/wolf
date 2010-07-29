@@ -12,6 +12,11 @@
 namespace wolf
 {
 
+/**
+ * A dispatching policy that always dispatches to first runner.
+ *
+ * \see IWorkerDispatcher
+ */
 class CAlwaysFirstWorkerDispatcher: public IWorkerDispatcher
 {
 public:

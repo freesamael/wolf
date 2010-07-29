@@ -1,5 +1,5 @@
 /**
- * \file Runner.cpp
+ * \file CRunner.cpp
  * \date Apr 1, 2010
  * \author samael
  */
@@ -56,10 +56,10 @@ CRunner::CRunner(in_port_t master_port, in_port_t runner_port, IWorkerStealer *w
 		_statewcond(), _mport(master_port), _rport(runner_port), _stealer(ws),
 		_appname(appname), _rserver(), _d(new PData())
 {
-#ifndef ENABLE_D2MCE /* Normal mode */
+#ifndef __D2MCE__ /* Normal mode */
 	if (ws)
 		ws->setRunner(this);
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 	_rserver.setAutoclean(false);
 }
 
@@ -199,10 +199,10 @@ void CRunner::putWorker(uint32_t wseq, AWorkerActor *worker,
 	_d->wq.push_back(pair<uint32_t, AWorkerActor *>(wseq, worker));
 	_d->wqmx.unlock();
 
-#ifndef ENABLE_D2MCE /* Normal mode */
+#ifndef __D2MCE__ /* Normal mode */
 	if (_stealer)
 		_stealer->workerArrived(sender);
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 }
 
 /**
@@ -219,10 +219,10 @@ pair<uint32_t, AWorkerActor *> CRunner::takeWorker()
 	}
 	_d->wqmx.unlock();
 
-#ifndef ENABLE_D2MCE /* Normal mode */
+#ifndef __D2MCE__ /* Normal mode */
 	if (!w.second && _stealer)
 		_stealer->workerMissed();
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 
 	return w;
 }
@@ -232,10 +232,10 @@ pair<uint32_t, AWorkerActor *> CRunner::takeWorker()
  */
 void CRunner::workerStealFailed(CTcpSocket *sender)
 {
-#ifndef ENABLE_D2MCE /* Normal mode */
+#ifndef __D2MCE__ /* Normal mode */
 	if (_stealer)
 		_stealer->stealFailed(sender);
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 }
 
 /**
@@ -252,7 +252,7 @@ void CRunner::sendWorkerFinished(uint32_t wseq, AWorkerActor *worker)
  */
 void CRunner::sendWorker(CTcpSocket *sock, uint16_t nworkers)
 {
-#ifdef ENABLE_D2MCE /* DSM mode */
+#ifdef __D2MCE__ /* DSM mode */
 	_d->cmdsdr.stealFailed(sock); // Always fail in DSM mode.
 
 #else					// Normal mode.
@@ -273,7 +273,7 @@ void CRunner::sendWorker(CTcpSocket *sock, uint16_t nworkers)
 		for (unsigned i = 0; i < wps.size(); i++)
 			_d->cmdsdr.runWorker(sock, wps[i].first, wps[i].second);
 	}
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 }
 
 /**
@@ -281,9 +281,9 @@ void CRunner::sendWorker(CTcpSocket *sock, uint16_t nworkers)
  */
 void CRunner::sendWorkerSteal(CTcpSocket *sock, uint16_t nworkers)
 {
-#ifndef ENABLE_D2MCE /* Normal mode */
+#ifndef __D2MCE__ /* Normal mode */
 	_d->cmdsdr.stealWorker(sock, nworkers);
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 }
 
 /**

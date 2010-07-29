@@ -13,6 +13,10 @@
 namespace wolf
 {
 
+/**
+ * TCP server used to accept incoming connections. It manages the slave sockets
+ * and will delete them on destruction unless autoclean is set to false.
+ */
 class CTcpServer: public CTcpSocket
 {
 public:
@@ -20,16 +24,16 @@ public:
 		DIRECT,
 		QUEUED
 	} SlaveType;
-	CTcpServer() throw(XSocket, XThread): _ac(true), _ssocks() {}
-	CTcpServer(int sock) throw(XSocket, XThread): CTcpSocket(sock), _ac(true),
+	CTcpServer() : _ac(true), _ssocks() {}
+	CTcpServer(int sock) : CTcpSocket(sock), _ac(true),
 			_ssocks() {}
-	~CTcpServer() throw();
+	~CTcpServer();
 	inline void passiveOpen(in_port_t port, int qlen = 10, bool reuse = false)
-			throw(XSocket)
+			
 			{ state()->passiveOpen(this, ISocketState::TCP, port, qlen, reuse); }
-	CTcpSocket* accept(SlaveType type = DIRECT) throw(XSocket);
-	inline void setAutoclean(bool ac) throw() { _ac = ac; }
-	inline bool autoclean() const throw() { return _ac; }
+	CTcpSocket* accept(SlaveType type = DIRECT);
+	inline void setAutoclean(bool ac)  { _ac = ac; }
+	inline bool autoclean() const  { return _ac; }
 
 private:
 	bool _ac;

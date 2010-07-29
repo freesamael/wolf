@@ -5,7 +5,7 @@ MSORT_RUNNER_O = ${MSORT_SRCDIR}/msort_runner.o
 MSORT_COM_OBJS := ${filter-out ${MSORT_O} ${MSORT_RUNNER_O},${patsubst %.cpp,%.o,${wildcard ${MSORT_SRCDIR}/*.cpp}}}
 
 ${MSORT}: CXXFLAGS += -I${WOLF_INCDIR}
-${MSORT}: LIBS += -lwolf -lpthread
+${MSORT}: LIBS += -lwolf -lpthread ${EXECINFO_LIBS} ${COV_LIBS}
 ${MSORT}: LDFLAGS += -L${WOLF_LIBDIR}
 
 ${MSORT}: ${MSORT_O} ${MSORT_COM_OBJS} ${MSORT_RUNNER}

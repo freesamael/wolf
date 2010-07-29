@@ -56,54 +56,54 @@ namespace wolf
 class CTime
 {
 public:
-	CTime() throw(): _t() { _t.tv_sec = 0; _t.tv_usec = 0; }
-	CTime(time_t sec, suseconds_t usec) throw(): _t()
+	CTime() : _t() { _t.tv_sec = 0; _t.tv_usec = 0; }
+	CTime(time_t sec, suseconds_t usec) : _t()
 			{ _t.tv_sec = sec; _t.tv_usec = usec; }
-	CTime(const CTime &t) throw(): _t(t._t) {}
-	CTime(const timeval &t) throw(): _t(t) {}
+	CTime(const CTime &t) : _t(t._t) {}
+	CTime(const timeval &t) : _t(t) {}
 	/// Constrcut a CTime from timespec.
 	/// Value lower than microseconds is omitted.
-	CTime(const timespec &t) throw(): _t()
+	CTime(const timespec &t) : _t()
 			{ _t.tv_sec = t.tv_sec; _t.tv_usec = t.tv_nsec / 1000; }
 	/// Construct a CTime in microseconds. Automatically carries if needed.
-	CTime(unsigned time_us) throw(): _t()
+	CTime(unsigned time_us) : _t()
 			{ _t.tv_sec = time_us / 1000000L; _t.tv_usec = time_us % 1000000L; }
 	/// Get the value of "second" part.
-	inline time_t second() const throw() { return _t.tv_sec; }
+	inline time_t second() const  { return _t.tv_sec; }
 	/// Set the value of "second" part.
-	inline void setSecond(time_t s) throw() { _t.tv_sec = s; }
+	inline void setSecond(time_t s)  { _t.tv_sec = s; }
 	/// Get the value of "microsecond" part.
-	inline suseconds_t microsecond() const throw() { return _t.tv_usec; }
+	inline suseconds_t microsecond() const  { return _t.tv_usec; }
 	/// Set the value of "microsecond" part.
-	inline void setMicrosecond(suseconds_t s) throw() { _t.tv_usec = s; }
-	inline unsigned toMicroseconds() const throw()
+	inline void setMicrosecond(suseconds_t s)  { _t.tv_usec = s; }
+	inline unsigned toMicroseconds() const 
 			{ return _t.tv_sec * 1000000 + _t.tv_usec; }
 	/// Convert to struct timeval.
-	inline timeval toTimeval() const throw() { return _t; }
+	inline timeval toTimeval() const  { return _t; }
 	/// Convert to struct timespec.
-	timespec toTimespec() const throw();
+	timespec toTimespec() const;
 	/// Convert to string.
-	std::string toString() const throw();
+	std::string toString() const;
 
 	// Operators.
-	inline CTime& operator=(const CTime &o) throw() { _t = o._t; return *this; }
-	CTime operator+(const CTime &o) throw();
-	CTime operator-(const CTime &o) throw();
-	CTime operator+=(const CTime &o) throw()
+	inline CTime& operator=(const CTime &o)  { _t = o._t; return *this; }
+	CTime operator+(const CTime &o);
+	CTime operator-(const CTime &o);
+	CTime operator+=(const CTime &o) 
 			{ *this = *this + o; return *this; }
-	CTime operator-=(const CTime &o) throw()
+	CTime operator-=(const CTime &o) 
 			{ *this = *this - o; return *this; }
-	bool operator>(const CTime &o) throw()
+	bool operator>(const CTime &o) 
 			{ return timercmp(&_t, &o._t, >); }
-	bool operator<(const CTime &o) throw()
+	bool operator<(const CTime &o) 
 			{ return timercmp(&_t, &o._t, <); }
-	bool operator!=(const CTime &o) throw()
+	bool operator!=(const CTime &o) 
 			{ return timercmp(&_t, &o._t, !=); }
-	bool operator==(const CTime &o) throw()
+	bool operator==(const CTime &o) 
 			{ return !timercmp(&_t, &o._t, !=); }
-	bool operator>=(const CTime &o) throw()
+	bool operator>=(const CTime &o) 
 			{ return !timercmp(&_t, &o._t, <); }
-	bool operator<=(const CTime &o) throw()
+	bool operator<=(const CTime &o) 
 			{ return !timercmp(&_t, &o._t, >); }
 
 	/// Get current time of day.

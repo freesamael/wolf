@@ -146,7 +146,7 @@ void CMaster::runWorker(AWorkerActor *worker, IManagerActor *mgr)
 	if (!worker || !mgr)
 		return;
 
-#ifdef ENABLE_D2MCE /* DSM mode */
+#ifdef __D2MCE__ /* DSM mode */
 	_d->mgrqmx.lock();
 	for (unsigned i = 0; i < _d->rsocks.size(); i++) {
 		uint32_t seq = _d->cmdsdr.runWorker(_d->rsocks[i], worker);
@@ -165,7 +165,7 @@ void CMaster::runWorker(AWorkerActor *worker, IManagerActor *mgr)
 				runner->peerAddress().toString());
 		_d->mgrqmx.unlock();
 	}
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 }
 
 /**
@@ -253,7 +253,7 @@ void CMaster::processFinishedWorker()
 		_d->mgrq.erase(iter);
 		_d->mgrqmx.unlock();
 
-#ifdef ENABLE_D2MCE /* DSM mode */
+#ifdef __D2MCE__ /* DSM mode */
 		// Check if it's the last worker owned by that manager.
 		map<uint32_t, IManagerActor *>::iterator tmpiter;
 		bool lastone = true;

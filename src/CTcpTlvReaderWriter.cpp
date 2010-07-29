@@ -1,8 +1,7 @@
-/*
- * CTcpTlvReaderWriter.cpp
- *
- *  Created on: Jul 15, 2010
- *      Author: samael
+/**
+ * \file CTcpTlvReaderWriter.cpp
+ * \date Jul 15, 2010
+ * \author samael
  */
 
 #include "CTcpTlvReaderWriter.h"

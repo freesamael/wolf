@@ -1,8 +1,7 @@
-/*
- * XTlvCommand.cpp
- *
- *  Created on: Jul 15, 2010
- *      Author: samael
+/**
+ * \file XTlvCommand.cpp
+ * \date Jul 15, 2010
+ * \author samael
  */
 
 #include <cstdio>
@@ -20,27 +19,15 @@ const char *XTlvCommand::XTypeString[] = {
 		"invalid parameter"
 };
 
-XTlvCommand::XTlvCommand(const string &func, int line, XType e,
-		const string &type) throw():
-		_e(e), _estr()
+XTlvCommand::XTlvCommand(XType e, const string &type) throw():
+		XWolf((string)XTypeString[e] + " (type = " + type + ")"), _e(e)
 {
-	char lstr[10];
-	sprintf(lstr, "%d", line);
-
-	_estr = (string)XTypeString[e] + " (type = " + type + ") [" + func + ": " +
-			lstr + "]";
 }
 
-XTlvCommand::XTlvCommand(const std::string &func, int line, XType e,
-			const CTlvCommand &cmd) throw():
-			_e(e), _estr()
+XTlvCommand::XTlvCommand(XType e, const CTlvCommand &cmd) throw():
+			XWolf((string)XTypeString[e] + " (cmd = " +
+					CTlvCommand::CommandString[cmd.command()] + ")"), _e(e)
 {
-	char lstr[10];
-	sprintf(lstr, "%d", line);
-
-	_estr = (string)XTypeString[e] + " (cmd = " +
-			CTlvCommand::CommandString[cmd.command()] + ") [" + func + ": " +
-			lstr + "]";
 }
 
 }

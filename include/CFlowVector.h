@@ -14,6 +14,9 @@ namespace wolf
 {
 
 template <typename T>
+/**
+ * A vector implementing IDrop.
+ */
 class CFlowVector: public std::vector<T>, public IDrop
 {
 public:

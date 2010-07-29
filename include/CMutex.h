@@ -21,10 +21,10 @@ class CMutex
 {
 	friend class CWaitCondition;
 public:
-	CMutex() throw(XThread);
-	~CMutex() throw();
-	void lock() throw(XThread);
-	void unlock() throw(XThread);
+	CMutex();
+	~CMutex();
+	void lock();
+	void unlock();
 
 private:
 	CMutex(const CMutex &UNUSED(o)): _mutex() {}

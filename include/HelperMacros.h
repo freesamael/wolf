@@ -12,6 +12,10 @@
 extern pthread_mutex_t g_mxcout;
 extern pthread_mutex_t g_mxcerr;
 
+#ifdef __GLIBCXX__
+extern std::string demangle(const char *manglename);
+#endif
+
 #define SZ_MSG_MAX	1500
 
 #ifndef UNUSED
@@ -28,8 +32,13 @@ extern pthread_mutex_t g_mxcerr;
  *
  * \note
  * \#include \<typeinfo\>
+ * \#include \<string\>
  */
+#ifdef __GLIBCXX__
+#define TYPENAME(type) demangle(typeid(type).name())
+#else
 #define TYPENAME(type) (typeid(type).name())
+#endif	/* __GLIBCXX__ */
 
 /**
  * \def CONCATE(x, y)
@@ -44,11 +53,12 @@ extern pthread_mutex_t g_mxcerr;
  *
  * \note
  * \#include \<typeinfo\> <br>
+ * \#include \<string\> <br>
  * \#include \<CTlvObjectFactoryAutoRegistry.h\>
  */
 #define TLV_OBJECT_REGISTRATION(type, id, creator) \
-	static wolf::CTlvObjectFactoryAutoRegistry CONCATE(__autoreg, __LINE__)( \
-			typeid(type).name(), id, new creator())
+	static wolf::CTlvObjectFactoryAutoRegistry CONCATE(__autoreg, __LINE__)(\
+			TYPENAME(type), id, new creator())
 
 /**
  * \def SINGLETON(type)
@@ -160,7 +170,7 @@ do {                                                                           \
 } while (false) // For semicolon and one-line statement.
 
 
-#ifdef DEBUG
+#ifdef __DEBUG__
 #define __PINF(msg)                                                            \
 do {                                                                           \
 	std::stringstream __tmpstream;                                             \
@@ -171,13 +181,13 @@ do {                                                                           \
 	std::endl;                                                                 \
 	pthread_mutex_unlock(&g_mxcout);                                           \
 } while (false) // For semicolon and one-line statement.
-#endif /* DEBUG */
+#endif /* __DEBUG__ */
 
-#if DEBUG >= 1 // Normal
+#if __DEBUG__ >= 1 // Normal
 /**
  * \def PINFO_1(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 1.
+ * Only show when compiled as __DEBUG__ >= 1.
  *
  * \note
  * \#include \<iostream\> <br>
@@ -186,13 +196,13 @@ do {                                                                           \
 #define PINF_1(str) __PINF("Info<1>: " << str)
 #else
 #define PINF_1(str)
-#endif /* DEBUG >= 1 */
+#endif /* __DEBUG__ >= 1 */
 
-#if DEBUG >= 2 // Verbose
+#if __DEBUG__ >= 2 // Verbose
 /**
  * \def PINFO_2(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 2 (verbose).
+ * Only show when compiled as __DEBUG__ >= 2 (verbose).
  *
  * \note
  * \#include \<iostream\> <br>
@@ -201,13 +211,13 @@ do {                                                                           \
 #define PINF_2(str) __PINF("Info<2>: " << str)
 #else
 #define PINF_2(str)
-#endif /* DEBUG >= 2 */
+#endif /* __DEBUG__ >= 2 */
 
-#if DEBUG >= 3 // Very verbose
+#if __DEBUG__ >= 3 // Very verbose
 /**
  * \def PINFO_3(str)
  * Print an info message. str is a stream in "a << b << c" format.
- * Only show when compiled as DEBUG >= 3 (very verbose).
+ * Only show when compiled as __DEBUG__ >= 3 (very verbose).
  *
  * \note
  * \#include \<iostream\> <br>
@@ -216,6 +226,6 @@ do {                                                                           \
 #define PINF_3(str) __PINF("Info<3>: " << str)
 #else
 #define PINF_3(str)
-#endif /* DEBUG >= 3 */
+#endif /* __DEBUG__ >= 3 */
 
 #endif /* HELPERMACROS_H_ */

@@ -19,8 +19,13 @@ namespace wolf
 class XWolf: public std::exception
 {
 public:
-	XWolf() throw();
-	virtual ~XWolf() throw();
+	explicit XWolf(const std::string &remark = "") throw();
+	virtual ~XWolf() throw() {}
+	inline virtual const char* what() const throw() { return _estr.c_str(); }
+	inline virtual const std::string& toString() const throw() { return _estr; }
+
+private:
+	std::string _estr;
 };
 
 }

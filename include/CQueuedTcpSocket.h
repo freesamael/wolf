@@ -23,15 +23,15 @@ namespace wolf
 class CQueuedTcpSocket: public CTcpSocket
 {
 public:
-	CQueuedTcpSocket() throw(XSocket, XThread): _mx(), _cond(), _q()
+	CQueuedTcpSocket() : _mx(), _cond(), _q()
 			{ setBlockable(false); }
-	CQueuedTcpSocket(int sock) throw(XSocket, XThread): CTcpSocket(sock), _mx(),
+	CQueuedTcpSocket(int sock) : CTcpSocket(sock), _mx(),
 			_cond(), _q() {}
-	~CQueuedTcpSocket() throw() {}
-	ssize_t read(char *buf, size_t size) throw(XSocket);
-	ssize_t write(const char *buf, size_t size) throw(XSocket);
-	void readSocket() throw(XSocket);
-	void close() throw(XSocket);
+	~CQueuedTcpSocket()  {}
+	ssize_t read(char *buf, size_t size);
+	ssize_t write(const char *buf, size_t size);
+	void readSocket();
+	void close();
 
 private:
 	CMutex _mx;

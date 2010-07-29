@@ -10,6 +10,7 @@
 #include "ITlvObject.h"
 #include "ACommandListener.h"
 #include "XTlvCommand.h"
+#include "HelperMacros.h"
 
 using namespace std;
 
@@ -26,16 +27,15 @@ void wolf::ACommandListener::run()
 			break; // End of file.
 		CTlvCommand *incmd;
 		if (!(incmd = dynamic_cast<CTlvCommand *>(inobj))) {
-			string type = typeid(inobj).name();
+			string type = TYPENAME(inobj);
 			delete inobj;
-			throw XTlvCommand(__PRETTY_FUNCTION__, __LINE__,
-					XTlvCommand::INVALID_OBJECT, typeid(inobj).name());
+			throw XTlvCommand(XTlvCommand::INVALID_OBJECT, type);
 		} else {
 			try {
 				process(incmd);
-			} catch (const XTlvCommand &x) {
+			} catch (XTlvCommand &x) {
 				delete incmd;
-				throw x;
+				throw;
 			}
 			delete incmd;
 		}

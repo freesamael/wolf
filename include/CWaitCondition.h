@@ -21,12 +21,12 @@ namespace wolf
 class CWaitCondition
 {
 public:
-	CWaitCondition() throw(XThread);
-	~CWaitCondition() throw();
-	bool wait(CMutex *mutex) throw(XThread);
-	bool wait(CMutex *mutex, unsigned timeout_us) throw(XThread);
-	void wakeOne() throw(XThread);
-	void wakeAll() throw(XThread);
+	CWaitCondition() ;
+	~CWaitCondition() ;
+	bool wait(CMutex *mutex) ;
+	bool wait(CMutex *mutex, unsigned timeout_us) ;
+	void wakeOne() ;
+	void wakeAll() ;
 
 private:
 	CWaitCondition(const CWaitCondition &UNUSED(o)): _cond() {}

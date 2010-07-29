@@ -19,22 +19,14 @@ const char *XThread::XTypeString[] = {
 		"unknown error"
 };
 
-XThread::XThread(const string &func, int line, int e) throw():
-		_e(ERRNO), _eno(e), _estr()
+XThread::XThread(int e) throw():
+		XWolf(strerror(e)), _e(ERRNO), _eno(e)
 {
-	char lstr[10];
-	sprintf(lstr, "%d", line);
-
-	_estr = (string)strerror(e) + " [" + func + ": " + lstr + "]";
 }
 
-XThread::XThread(const string &func, int line, XType e) throw():
-		_e(e), _eno(0), _estr()
+XThread::XThread(XType e) throw():
+		XWolf(XTypeString[e]), _e(e), _eno(0)
 {
-	char lstr[10];
-	sprintf(lstr, "%d", line);
-
-	_estr = (string)XTypeString[e] + " [" + func + ": " + lstr + "]";
 }
 
 }
