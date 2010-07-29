@@ -23,13 +23,13 @@ uint32_t CMasterSideCommandSender::_wseq = 0;
 
 void CMasterSideCommandSender::joinD2MCE(const string &appname)
 {
-#ifdef ENABLE_D2MCE /* DSM mode */
+#ifdef __D2MCE__ /* DSM mode */
 	// Join D2MCE computing group.
 	D2MCE::instance()->join(appname);
 	PINF_2("Currently " << D2MCE::instance()->getNumberOfNodes() <<
 			" nodes inside the group, node id = " <<
 			D2MCE::instance()->nodeId() << ".");
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 }
 
 void CMasterSideCommandSender::hello(in_port_t rport, const CHostAddress &addr)

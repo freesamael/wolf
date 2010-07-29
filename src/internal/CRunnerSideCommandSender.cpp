@@ -23,7 +23,7 @@ namespace wolf
 
 void CRunnerSideCommandSender::joinD2MCE(CTcpSocket *sock, const string &appname)
 {
-#ifdef ENABLE_D2MCE /* DSM mode */
+#ifdef __D2MCE__ /* DSM mode */
 	// Random delay.
 	srand((unsigned)sock->currentAddress().toInetAddr());
 	unsigned delay = rand() % 60 * 33000; // 0 ~ 2s, step 33ms
@@ -34,7 +34,7 @@ void CRunnerSideCommandSender::joinD2MCE(CTcpSocket *sock, const string &appname
 	PINF_2("Currently " << D2MCE::instance()->getNumberOfNodes() <<
 			" nodes inside the group, node id = " <<
 			D2MCE::instance()->nodeId() << ".");
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 }
 
 void CRunnerSideCommandSender::hello(CTcpSocket *sock)

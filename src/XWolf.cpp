@@ -8,11 +8,12 @@
 #include <ctype.h>
 #include "XWolf.h"
 
-#if defined(__GLIBC__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_EXECINFO) \
+			|| (defined(__APPLE__) && defined(__MACH__)))
 #include <execinfo.h>
 #endif
 
-#if defined(__GLIBCXX__)
+#if defined(__DEBUG__) && defined(__GLIBCXX__)
 #include <cxxabi.h>
 #endif
 
@@ -29,7 +30,7 @@ namespace wolf
  */
 string demangle(char *symbol)
 {
-#if defined(__GLIBCXX__)
+#if defined(__DEBUG__) && defined(__GLIBCXX__)
 	int begin = 0, end = 0;
 
 	// Find end (the character next to the last character in mangle string).
@@ -70,14 +71,14 @@ string demangle(char *symbol)
 		return str;
 	}
 #endif
-
 	return symbol;
 }
 
 XWolf::XWolf(const string &remark) throw():
 		_estr(remark)
 {
-#if defined(__GLIBC__) || (defined(__APPLE__) && defined(__MACH__))
+#if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_EXECINFO) \
+			|| (defined(__APPLE__) && defined(__MACH__)))
 	int nptrs;
 	void *buf[128];
 	char **cstrs;

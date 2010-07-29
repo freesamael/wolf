@@ -16,7 +16,7 @@
 namespace wolf
 {
 
-#ifdef ENABLE_D2MCE /* DSM mode */
+#ifdef __D2MCE__ /* DSM mode */
 
 #include <d2mce/d2mce.h>
 /**
@@ -42,7 +42,7 @@ private:
 };
 
 #else
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 
 }
 

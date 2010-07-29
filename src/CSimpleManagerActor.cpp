@@ -33,9 +33,9 @@ void CSimpleManagerActor::fire()
 
 void CSimpleManagerActor::workerFinished(AWorkerActor *worker)
 {
-#ifndef ENABLE_D2MCE /* Normal mode */
+#ifndef __D2MCE__ /* Normal mode */
 	_worker->update(worker);
-#endif /* ENABLE_D2MCE */
+#endif /* __D2MCE__ */
 	_statemx.lock();
 	_state = POST_RUNNING;
 	_statemx.unlock();
