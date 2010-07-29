@@ -19,6 +19,18 @@ else
 CXXFLAGS += -O2
 endif
 
+LIBEXECINFO ?= n
+ifeq (${LIBEXECINFO}, y)
+CXXFLAGS += -D__USE_LIBEXECINFO
+LIBS += -lexecinfo
+endif
+
+COV ?= n
+ifeq (${COV}, y)
+CXXFLAGS += -ftest-coverage -fprofile-arcs
+LIBS += -lgcov
+endif
+
 CXXFLAGS += -ansi -pedantic -Wall -Wextra -D_XOPEN_SOURCE=600 -D__STDC_LIMIT_MACROS 
 
 WOLF_SRCDIR = ${PWD}/src
@@ -32,15 +44,3 @@ clean: wolf_clean test_clean
 
 include ${WOLF_SRCDIR}/Makefile
 include ${WOLF_TESTDIR}/Makefile
-
-LIBEXECINFO ?= n
-ifeq (${LIBEXECINFO}, y)
-CXXFLAGS += -D__USE_LIBEXECINFO
-LDFLAGS += -lexecinfo
-endif
-
-COV ?= n
-ifeq (${COV}, y)
-CXXFLAGS += -ftest-coverage -fprofile-arcs
-LDFLAGS += -lgcov
-endif
