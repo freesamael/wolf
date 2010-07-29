@@ -4,8 +4,10 @@
  * \author samael
  */
 
+#include <iostream>
 #include <XWolf.h>
 
+using namespace std;
 using namespace wolf;
 
 class FooBar
@@ -17,7 +19,11 @@ public:
 
 int main()
 {
-	FooBar fb;
-	fb.foo();
+	try {
+		FooBar fb;
+		fb.foo();
+	} catch (XWolf &x) {
+		cout << x.toString() << endl;
+	}
 	return 0;
 }

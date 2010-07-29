@@ -10,10 +10,12 @@
 
 #if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_LIBEXECINFO) \
 			|| (defined(__APPLE__) && defined(__MACH__)))
+#define __BACKTRACE__	1
 #include <execinfo.h>
 #endif
 
 #if defined(__DEBUG__) && defined(__GLIBCXX__)
+#define __DEMANGLE__	1
 #include <cxxabi.h>
 #endif
 
@@ -30,7 +32,7 @@ namespace wolf
  */
 string demangle(char *symbol)
 {
-#if defined(__DEBUG__) && defined(__GLIBCXX__)
+#ifdef __DEMANGLE__
 	int begin = 0, end = 0;
 
 	// Find end (the character next to the last character in mangle string).
@@ -53,7 +55,7 @@ string demangle(char *symbol)
 	}
 
 	// Demangle.
-	if (begin && end) {
+	if (begin && end && begin != end) {
 		string str;
 		char *cstr;
 		char originalend = symbol[end];
@@ -77,8 +79,7 @@ string demangle(char *symbol)
 XWolf::XWolf(const string &remark) throw():
 		_estr(remark)
 {
-#if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_LIBEXECINFO) \
-			|| (defined(__APPLE__) && defined(__MACH__)))
+#ifdef __BACKTRACE__
 	int nptrs;
 	void *buf[128];
 	char **cstrs;
