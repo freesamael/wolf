@@ -8,16 +8,16 @@
 
 #include <cstdlib>
 #include <ctype.h>
+#include "HelperMacros.h"
+
+#ifdef __DEMANGLE__
+#include <cxxabi.h>
+#endif
 
 #if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_LIBEXECINFO) \
 			|| (defined(__APPLE__) && defined(__MACH__)))
 #define __BACKTRACE__	1
 #include <execinfo.h>
-#endif
-
-#if defined(__DEBUG__) && defined(__GLIBCXX__)
-#define __DEMANGLE__	1
-#include <cxxabi.h>
 #endif
 
 using namespace std;
@@ -34,47 +34,47 @@ namespace wolf
 string demangle(char *symbol)
 {
 #ifdef __DEMANGLE__
-	int begin = 0, end = 0;
+  int begin = 0, end = 0;
 
-	// Find end (the character next to the last character in mangle string).
-	int candidate = 0;
-	for (int i = 0; symbol[i] != '\0'; i++) {
-		if (isdigit(symbol[i]) || isalpha(symbol[i])) {
-			candidate = i;
-		} else if (symbol[i] == '+') {
-			end = candidate + 1;
-			break;
-		}
-	}
+  // Find end (the character next to the last character in mangle string).
+  int candidate = 0;
+  for (int i = 0; symbol[i] != '\0'; i++) {
+    if (isdigit(symbol[i]) || isalpha(symbol[i])) {
+      candidate = i;
+    } else if (symbol[i] == '+') {
+      end = candidate + 1;
+      break;
+    }
+  }
 
-	// Find begin (first character in mangle string).
-	for (int i = candidate; i >= 0 ; i--) {
-		if (!isdigit(symbol[i]) && !isalpha(symbol[i]) && symbol[i] != '_') {
-			begin = i + 1;
-			break;
-		}
-	}
+  // Find begin (first character in mangle string).
+  for (int i = candidate; i >= 0 ; i--) {
+    if (!isdigit(symbol[i]) && !isalpha(symbol[i]) && symbol[i] != '_') {
+      begin = i + 1;
+      break;
+    }
+  }
 
-	// Demangle.
-	if (begin && end && begin != end) {
-		string str;
-		char *cstr;
-		char originalend = symbol[end];
+  // Demangle.
+  if (begin && end && begin != end) {
+    string str;
+    char *cstr;
+    char originalend = symbol[end];
 
-		symbol[end] = '\0';
-		int status;
-		if ((cstr = abi::__cxa_demangle(symbol + begin, NULL, NULL, &status))) {
-			str = cstr;
-			free(cstr);
-		} else {
-			str = (string)(symbol + begin) + "()";
-		}
+    symbol[end] = '\0';
+    int status;
+    if ((cstr = abi::__cxa_demangle(symbol + begin, NULL, NULL, &status))) {
+      str = cstr;
+      free(cstr);
+    } else {
+      str = (string)(symbol + begin) + "()";
+    }
 
-		symbol[end] = originalend;
-		return str;
-	}
+    symbol[end] = originalend;
+    return str;
+  }
 #endif
-	return symbol;
+  return symbol;
 }
 
 XWolf::XWolf(const string &remark) throw():

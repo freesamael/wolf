@@ -9,12 +9,15 @@
 #include <pthread.h>
 #include "CTime.h"
 
-extern pthread_mutex_t g_mxcout;
-extern pthread_mutex_t g_mxcerr;
+namespace wolf {
+	extern pthread_mutex_t g_mxcout;
+	extern pthread_mutex_t g_mxcerr;
+	std::string demangle(const char *manglename);
+}
 
-#ifdef __GLIBCXX__
-extern std::string demangle(const char *manglename);
-#endif
+#if defined(__DEBUG__) && (defined(__GLIBCXX__) || defined(__clang__))
+#define __DEMANGLE__  1
+#endif /* defined(__DEBUG__) && (defined(__GLIBCXX__) || defined(__clang__)) */
 
 #define SZ_MSG_MAX	1500
 
@@ -34,11 +37,7 @@ extern std::string demangle(const char *manglename);
  * \#include \<typeinfo\>
  * \#include \<string\>
  */
-#ifdef __GLIBCXX__
-#define TYPENAME(type) demangle(typeid(type).name())
-#else
-#define TYPENAME(type) (typeid(type).name())
-#endif	/* __GLIBCXX__ */
+#define TYPENAME(type) wolf::demangle(typeid(type).name())
 
 /**
  * \def CONCATE(x, y)
