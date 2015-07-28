@@ -55,12 +55,12 @@ void CRunnerSideCommandSender::workerFinished(CTcpSocket *sock, uint32_t wseq,
 	writer.writeObject(cmd);
 }
 
-void CRunnerSideCommandSender::stealWorker(CTcpSocket *sock, uint16_t n)
+void CRunnerSideCommandSender::stealWorker(CTcpSocket *sock, uint32_t n)
 {
 	CTcpTlvWriter writer(sock);
 	CTlvCommand cmd(CTlvCommand::WORKER_STEAL);
-	CTlvUint16 u16(n);
-	cmd.addParameter(&u16);
+	CTlvUint32 u32(n);
+	cmd.addParameter(&u32);
 	writer.writeObject(cmd);
 }
 

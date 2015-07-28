@@ -65,7 +65,7 @@ void CRunnerSideCommandListener::process(CTlvCommand *cmd)
 
 	// Command WORKER_STEAL
 	} else if (cmd->command() == CTlvCommand::WORKER_STEAL) {
-		CTlvUint16 *u16;
+		CTlvUint32 *u32;
 
 		// Check #parameters.
 		if (cmd->parameters().size() != 1) { // number of workers to steal
@@ -74,12 +74,12 @@ void CRunnerSideCommandListener::process(CTlvCommand *cmd)
 		}
 
 		// Check p1.
-		if (!(u16 = dynamic_cast<CTlvUint16 *>(cmd->parameters()[0]))) {
+		if (!(u32 = dynamic_cast<CTlvUint32 *>(cmd->parameters()[0]))) {
 			cmd->setAutoclean(true);
 			throw XTlvCommand(XTlvCommand::INVALID_PARAM, *cmd);
 		}
 
-		_runner->sendWorker(sock(), u16->value());
+		_runner->sendWorker(sock(), u32->value());
 
 	// Command WORKER_STEAL_FAILED
 	} else if (cmd->command() == CTlvCommand::WORKER_STEAL_FAILED) {
