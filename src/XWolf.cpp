@@ -88,12 +88,16 @@ XWolf::XWolf(const string &remark) throw():
 	nptrs = backtrace(buf, 128);
 	cstrs = backtrace_symbols(buf, nptrs);
 
-	_estr += "\n\tat ";
-	for (int i = 0; i < nptrs; i++) {
-		_estr += demangle(cstrs[i]);
-		if (i != nptrs - 1)
-			_estr += "\n\tby ";
-	}
+  // The last function in the stack is certainly this function itself.
+  // Hence start with the next element in the stack trace.
+  if (nptrs > 1) {
+    _estr += "\n\tat ";
+    for (int i = 1; i < nptrs; i++) {
+      _estr += demangle(cstrs[i]);
+      if (i != nptrs - 1)
+        _estr += "\n\tby ";
+    }
+  }
 
 	free(cstrs);
 #endif
