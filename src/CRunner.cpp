@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include "CRunner.h"
+
 #include <iostream>
 #include <sstream>
 #include <string>
@@ -12,7 +14,6 @@
 #include "CThread.h"
 #include "CUdpSocket.h"
 #include "HelperMacros.h"
-#include "CRunner.h"
 #include "CD2mce.h"
 #include "internal/CRunnerSideMasterConnector.h"
 #include "internal/CRunnerSideConnectionListener.h"
@@ -250,7 +251,7 @@ void CRunner::sendWorkerFinished(uint32_t wseq, AWorkerActor *worker)
 /**
  * Send n worker (if any) to given runner.
  */
-void CRunner::sendWorker(CTcpSocket *sock, uint16_t nworkers)
+void CRunner::sendWorker(CTcpSocket *sock, uint32_t nworkers)
 {
 #ifdef __D2MCE__ /* DSM mode */
 	_d->cmdsdr.stealFailed(sock); // Always fail in DSM mode.
@@ -279,7 +280,7 @@ void CRunner::sendWorker(CTcpSocket *sock, uint16_t nworkers)
 /**
  * Steal workers from givne runner.
  */
-void CRunner::sendWorkerSteal(CTcpSocket *sock, uint16_t nworkers)
+void CRunner::sendWorkerSteal(CTcpSocket *sock, uint32_t nworkers)
 {
 #ifndef __D2MCE__ /* Normal mode */
 	_d->cmdsdr.stealWorker(sock, nworkers);

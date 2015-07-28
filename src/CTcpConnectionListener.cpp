@@ -4,8 +4,9 @@
  * \author samael
  */
 
-#include <unistd.h>
 #include "CTcpConnectionListener.h"
+
+#include <unistd.h>
 #include "HelperMacros.h"
 
 namespace wolf

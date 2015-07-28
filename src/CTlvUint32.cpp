@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CTlvUint32.h"
+
 #include <cstring>
 #include <typeinfo>
 #include <arpa/inet.h>
-#include "CTlvUint32.h"
 #include "CTlvUint32Creator.h"
 #include "CTlvBlock.h"
 #include "CTlvObjectFactoryAutoRegistry.h"
@@ -19,7 +20,7 @@ namespace wolf
 
 TLV_OBJECT_REGISTRATION(CTlvUint32, TLV_TYPE_UINT32, CTlvUint32Creator);
 
-const uint16_t CTlvUint32::Size = ITlvBlock::szHeader + sizeof(uint32_t);
+const uint32_t CTlvUint32::Size = ITlvBlock::szHeader + sizeof(uint32_t);
 
 CTlvBlock* CTlvUint32::toTLVBlock() const
 {

@@ -23,7 +23,7 @@ namespace wolf
 class CTlvObjectFactoryAutoRegistry
 {
 public:
-	CTlvObjectFactoryAutoRegistry(const std::string &type, uint16_t id,
+	CTlvObjectFactoryAutoRegistry(const std::string &type, uint32_t id,
 			ITlvObjectCreator *creator);
 };
 

@@ -7,7 +7,7 @@
 #ifndef CRUNNERSIDECOMMANDSENDER_H_
 #define CRUNNERSIDECOMMANDSENDER_H_
 
-#include <stdint.h>
+#include <cstdint>
 #include "CTcpSocket.h"
 #include "AWorkerActor.h"
 
@@ -25,7 +25,7 @@ public:
 	void workerFinished(CTcpSocket *sock, uint32_t wseq,
 			AWorkerActor *worker);
 	/// Ask for stealing n workers.
-	void stealWorker(CTcpSocket *sock, uint16_t n);
+	void stealWorker(CTcpSocket *sock, uint32_t n);
 	/// Ack that no worker to steal.
 	void stealFailed(CTcpSocket *sock);
 	/// Send a worker out.

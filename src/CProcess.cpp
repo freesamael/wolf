@@ -4,11 +4,12 @@
  * \author samael
  */
 
+#include "CProcess.h"
+
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
 #include <errno.h>
-#include "CProcess.h"
 #include "CStringHelper.h"
 
 using namespace std;

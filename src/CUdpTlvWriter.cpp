@@ -4,8 +4,9 @@
  * \author samael
  */
 
-#include <typeinfo>
 #include "CUdpTlvWriter.h"
+
+#include <typeinfo>
 #include "CmlTLVTypes.h"
 #include "HelperMacros.h"
 
@@ -18,7 +19,7 @@ namespace wolf
  * Send a TLV block out through the socket.
  */
 void CUdpTlvWriter::sendBlockTo(const ITlvBlock &blk, const CHostAddress &addr,
-		in_port_t port) 
+		in_port_t port)
 {
 	_sock->lockwrite();
 	try {
@@ -34,7 +35,7 @@ void CUdpTlvWriter::sendBlockTo(const ITlvBlock &blk, const CHostAddress &addr,
  * Send a TLV object out through the socket.
  */
 void CUdpTlvWriter::sendObjectTo(const ITlvObject &obj, const CHostAddress &addr,
-		in_port_t port) 
+		in_port_t port)
 {
 	ITlvBlock *blk = NULL;
 	if (!(blk = obj.toTLVBlock())) {

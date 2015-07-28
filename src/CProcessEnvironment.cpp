@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CProcessEnvironment.h"
+
 #include <cstring>
 #include <unistd.h>
 #include "CStringHelper.h"
-#include "CProcessEnvironment.h"
 
 // Depends on <unistd.h>
 extern char **environ;

@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "XWolf.h"
+
 #include <cstdlib>
 #include <ctype.h>
-#include "XWolf.h"
 
 #if defined(__DEBUG__) && (defined(__GLIBC__) || defined(__USE_LIBEXECINFO) \
 			|| (defined(__APPLE__) && defined(__MACH__)))

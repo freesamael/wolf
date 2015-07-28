@@ -8,7 +8,7 @@
 #define ISOCKETSTATE_H_
 
 #include <string>
-#include <inttypes.h>
+#include <netinet/in.h>
 #include "CHostAddress.h"
 #include "XSocket.h"
 

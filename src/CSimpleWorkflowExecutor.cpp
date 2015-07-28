@@ -3,11 +3,13 @@
  * \date Mar 25, 2010
  * \author samael
  */
+
+#include "CSimpleWorkflowExecutor.h"
+
 #include <unistd.h>
 #include <iostream>
 #include <sstream>
 #include "HelperMacros.h"
-#include "CSimpleWorkflowExecutor.h"
 
 using namespace std;
 

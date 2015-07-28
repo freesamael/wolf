@@ -4,13 +4,14 @@
  * \author samael
  */
 
+#include "CTlvCommand.h"
+
 #include <cstring>
 #include <vector>
 #include <typeinfo>
 #include "CTlvBlock.h"
 #include "CTlvUint16.h"
 #include "CTlvObjectFactoryAutoRegistry.h"
-#include "CTlvCommand.h"
 #include "CTlvCommandCreator.h"
 #include "WfeTLVTypes.h"
 #include "HelperMacros.h"
@@ -69,7 +70,7 @@ CTlvBlock* CTlvCommand::toTLVBlock() const
 		for (unsigned i = 0; i < pamblks.size(); i++)
 			delete pamblks[i];
 	} else {
-		blk = new CTlvBlock((uint16_t)(TLV_TYPE_COMMAND_BASE + _cmd));
+		blk = new CTlvBlock((uint32_t)(TLV_TYPE_COMMAND_BASE + _cmd));
 	}
 
 	return blk;

@@ -5,13 +5,14 @@
  */
 
 #include "CTcpServer.h"
+
 #include "CQueuedTcpSocket.h"
 #include "internal/CConnectedSocketState.h"
 
 namespace wolf
 {
 
-CTcpServer::~CTcpServer() 
+CTcpServer::~CTcpServer()
 {
 	if (_ac) {
 		for (unsigned i = 0; i < _ssocks.size(); i++)
@@ -31,7 +32,7 @@ CTcpServer::~CTcpServer()
  * Accepted socket or NULL if the socket is non-blocking and no padding
  * connection has been found.
  */
-CTcpSocket* CTcpServer::accept(SlaveType type) 
+CTcpSocket* CTcpServer::accept(SlaveType type)
 {
 	int sockfd = state()->accept(this);
 	if (sockfd == -1)

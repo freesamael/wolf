@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CMutex.h"
+
 #include <iostream>
 #include <sstream>
 #include <cstring>
-#include "CMutex.h"
 
 using namespace std;
 
@@ -22,7 +23,7 @@ CMutex::CMutex() :
 		throw XThread(e);
 }
 
-CMutex::~CMutex() 
+CMutex::~CMutex()
 {
 	int e;
 	if ((e = pthread_mutex_destroy(&_mutex)) != 0)
@@ -32,7 +33,7 @@ CMutex::~CMutex()
 /**
  * Lock the mutex.
  */
-void CMutex::lock() 
+void CMutex::lock()
 {
 	int e;
 	if ((e = pthread_mutex_lock(&_mutex)) != 0)
@@ -42,7 +43,7 @@ void CMutex::lock()
 /**
  * Unlock the mutex.
  */
-void CMutex::unlock() 
+void CMutex::unlock()
 {
 	int e;
 	if ((e = pthread_mutex_unlock(&_mutex)) != 0)

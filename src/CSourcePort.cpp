@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CSourcePort.h"
+
 #include <iostream>
 #include <sstream>
 #include "HelperMacros.h"
-#include "CSourcePort.h"
 #include "CChannel.h"
 
 namespace wolf

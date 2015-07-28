@@ -4,8 +4,9 @@
  * \author samael
  */
 
-#include <cstring>
 #include "CTlvStringCreator.h"
+
+#include <cstring>
 #include "ITlvObject.h"
 #include "CTlvBlock.h"
 

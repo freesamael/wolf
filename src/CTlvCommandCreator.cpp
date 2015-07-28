@@ -4,12 +4,13 @@
  * \author samael
  */
 
+#include "CTlvCommandCreator.h"
+
 #include <cstring>
 #include <arpa/inet.h>
 #include "CTlvBlock.h"
 #include "CTlvUint16.h"
 #include "CTlvObjectFactory.h"
-#include "CTlvCommandCreator.h"
 #include "WfeTLVTypes.h"
 
 using namespace std;
@@ -32,7 +33,7 @@ ITlvObject* CTlvCommandCreator::create(const ITlvBlock &blk) const
 			TLV_TYPE_COMMAND_BASE));
 
 	// Construct parameters (if any).
-	unsigned short offset = 0;
+	uint32_t offset = 0;
 	while (offset < blk.length()) {
 		CSharedTlvBlock pamblk(blk.value() + offset);
 		offset += pamblk.plainSize();

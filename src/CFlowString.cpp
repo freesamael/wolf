@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "CFlowString.h"
+
 #include "CTlvObjectFactoryAutoRegistry.h"
 #include "HelperMacros.h"
-#include "CFlowString.h"
 #include "WfeTLVTypes.h"
 #include "CFlowStringCreator.h"
 

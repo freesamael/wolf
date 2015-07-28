@@ -20,8 +20,8 @@ void TLVBlockTestSuite::testBlockOperations()
 	blk.setType(0x55aa);
 	blk.setLength(0x00ff);
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x55aa, blk.type());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x00ff, blk.length());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x55aa, blk.type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x00ff, blk.length());
 }
 
 void TLVBlockTestSuite::testNestedBlocks()
@@ -41,28 +41,28 @@ void TLVBlockTestSuite::testNestedBlocks()
 	/*---------------------------------------nb2------------------------------------------------------
 	 * |      |      | ----------------------nb1-------------------------------- --------b3--------- |
 	 * |      |      | |      |      | --------b1--------- --------b2--------- | |      |      |   | |
-	 * |0x0000|0x0030| |0x0000|0x0018| |0x4321|0x0008|...| |0x1234|0x0008|...| | |0xa5a5|0x0010|...| |
+	 * |0x0000|0x0040| |0x0000|0x0020| |0x4321|0x0008|...| |0x1234|0x0008|...| | |0xa5a5|0x0010|...| |
 	 * |      |      | |      |      | ------------------- ------------------- | |      |      |   | |
 	 * |      |      | --------------------------------------------------------- ------------------- |
 	 * -----------------------------------------------------------------------------------------------
 	 */
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x0, nb2->type());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x30, nb2->length());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x0, nb2->type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x40, nb2->length());
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x0, nb1->type());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x18, nb1->length());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x0, ntohs(((unsigned short *)nb2->value())[0]));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x18, ntohs(((unsigned short *)nb2->value())[1]));
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x0, nb1->type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x20, nb1->length());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x0, ntohl(((uint32_t *)nb2->value())[0]));
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x20, ntohl(((uint32_t *)nb2->value())[1]));
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x4321, ntohs(((unsigned short *)nb1->value())[0]));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x8, ntohs(((unsigned short *)nb1->value())[1]));
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x4321, ntohl(((uint32_t *)nb1->value())[0]));
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x8, ntohl(((uint32_t *)nb1->value())[1]));
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x1234, ntohs(((unsigned short *)(nb1->value() + b1.plainSize()))[0]));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x8, ntohs(((unsigned short *)(nb1->value() + b1.plainSize()))[1]));
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x1234, ntohl(((uint32_t *)(nb1->value() + b1.plainSize()))[0]));
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x8, ntohl(((uint32_t *)(nb1->value() + b1.plainSize()))[1]));
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0xa5a5, ntohs(((unsigned short *)(nb2->value() + nb1->plainSize()))[0]));
-	CPPUNIT_ASSERT_EQUAL((unsigned short)0x10, ntohs(((unsigned short *)(nb2->value() + nb1->plainSize()))[1]));
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0xa5a5, ntohl(((uint32_t *)(nb2->value() + nb1->plainSize()))[0]));
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0x10, ntohl(((uint32_t *)(nb2->value() + nb1->plainSize()))[1]));
 
 	delete nb1;
 	delete nb2;

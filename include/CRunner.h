@@ -10,7 +10,7 @@
 #include <string>
 #include <utility>
 #include <unistd.h>
-#include <inttypes.h>
+#include <netinet/in.h>
 #include "CTcpServer.h"
 #include "CMutex.h"
 #include "CWaitCondition.h"
@@ -50,8 +50,8 @@ public:
 	std::pair<uint32_t, AWorkerActor *> takeWorker();
 	void workerStealFailed(CTcpSocket *sender);
 	void sendWorkerFinished(uint32_t wseq, AWorkerActor *worker);
-	void sendWorker(CTcpSocket *sock, uint16_t nworkers);
-	void sendWorkerSteal(CTcpSocket *sock, uint16_t nworkers);
+	void sendWorker(CTcpSocket *sock, uint32_t nworkers);
+	void sendWorkerSteal(CTcpSocket *sock, uint32_t nworkers);
 	void shutdown();
 
 private:

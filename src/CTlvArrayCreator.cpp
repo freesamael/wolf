@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "CTlvArrayCreator.h"
+
 #include <iostream>
 #include <sstream>
-#include "CTlvArrayCreator.h"
 #include "CTlvBlock.h"
 #include "CTlvObjectFactory.h"
 #include "HelperMacros.h"
@@ -23,7 +24,7 @@ ITlvObject* CTlvArrayCreator::create(const ITlvBlock &blk) const
 		return array;
 
 	// Non-empty case.
-	uint16_t offset = 0;
+	uint32_t offset = 0;
 	CSharedTlvBlock *sblk = NULL;
 
 	do {

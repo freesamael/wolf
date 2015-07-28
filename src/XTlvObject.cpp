@@ -4,8 +4,9 @@
  * \author samael
  */
 
-#include <cstdio>
 #include "XTlvObject.h"
+
+#include <cstdio>
 #include "CmlTLVTypes.h"
 
 using namespace std;
@@ -20,7 +21,7 @@ const char *XTlvObject::XTypeString[] = {
 		"the block is too short to be a TLV object"
 };
 
-string gennote(uint16_t id, const std::string &name)
+string gennote(uint32_t id, const std::string &name)
 {
 	char idstr[10];
 	if (id == TLV_TYPE_INVALID)
@@ -32,7 +33,7 @@ string gennote(uint16_t id, const std::string &name)
 
 }
 
-XTlvObject::XTlvObject(XType e, uint16_t id, const std::string &name) throw():
+XTlvObject::XTlvObject(XType e, uint32_t id, const std::string &name) throw():
 		XWolf((string)XTypeString[e] + gennote(id, name)), _e(e)
 {
 }

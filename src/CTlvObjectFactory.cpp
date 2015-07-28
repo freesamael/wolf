@@ -4,8 +4,9 @@
  * \author samael
  */
 
-#include <typeinfo>
 #include "CTlvObjectFactory.h"
+
+#include <typeinfo>
 #include "ITlvObjectCreator.h"
 #include "CTlvBlock.h"
 #include "CTlvStringCreator.h"
@@ -39,9 +40,9 @@ CTlvObjectFactory::~CTlvObjectFactory()
  * \param name
  * Type name, i.e. TYPENAME(Class).
  */
-void CTlvObjectFactory::registerType(uint16_t id, const std::string &name)
+void CTlvObjectFactory::registerType(uint32_t id, const std::string &name)
 {
-	map<uint16_t, string>::iterator iter;
+	map<uint32_t, string>::iterator iter;
 
 	// Erase registered one if any.
 	if ((iter = _typenames.find(id)) != _typenames.end())
@@ -82,9 +83,9 @@ void CTlvObjectFactory::registerCreator(const std::string &name,
  * \return
  * Typename.
  */
-string CTlvObjectFactory::lookupTypeName(uint16_t id) 
+string CTlvObjectFactory::lookupTypeName(uint32_t id)
 {
-	map<uint16_t, string>::iterator iter;
+	map<uint32_t, string>::iterator iter;
 	for (iter = _typenames.begin(); iter != _typenames.end(); ++iter) {
 		if (iter->first == id)
 			return iter->second;
@@ -99,7 +100,7 @@ string CTlvObjectFactory::lookupTypeName(uint16_t id)
  * Object created.
  */
 ITlvObject* CTlvObjectFactory::createTLVObject(const string &type_name)
-		
+
 {
 	map<string, ITlvObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(type_name)) != _creators.end())
@@ -110,8 +111,8 @@ ITlvObject* CTlvObjectFactory::createTLVObject(const string &type_name)
 /**
  * Overloaded creation function.
  */
-ITlvObject* CTlvObjectFactory::createTLVObject(uint16_t type_id)
-		
+ITlvObject* CTlvObjectFactory::createTLVObject(uint32_t type_id)
+
 {
 	return createTLVObject(lookupTypeName(type_id));
 }
@@ -123,7 +124,7 @@ ITlvObject* CTlvObjectFactory::createTLVObject(uint16_t type_id)
  * Object created.
  */
 ITlvObject* CTlvObjectFactory::createTLVObject(const ITlvBlock &blk)
-		
+
 {
 	map<string, ITlvObjectCreator *>::iterator iter;
 	if ((iter = _creators.find(lookupTypeName(blk.type()))) !=

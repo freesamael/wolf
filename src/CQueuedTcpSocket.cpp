@@ -4,8 +4,8 @@
  * \author samael
  */
 
-#include <algorithm>
 #include "CQueuedTcpSocket.h"
+#include <algorithm>
 #define SZ_TRUNK	1500
 #define SZ_QFULL	524288
 
@@ -19,7 +19,7 @@ namespace wolf
  * \return
  * Size read. Zero indicates connection ends (end-of-file).
  */
-ssize_t CQueuedTcpSocket::read(char *buf, size_t size) 
+ssize_t CQueuedTcpSocket::read(char *buf, size_t size)
 {
 	size_t offset = 0;
 	while (offset < size && state()->name() != ASocket::ClosedState) {
@@ -44,7 +44,7 @@ ssize_t CQueuedTcpSocket::read(char *buf, size_t size)
 /**
  * Read raw socket and push data into the queue.
  */
-void CQueuedTcpSocket::readSocket() 
+void CQueuedTcpSocket::readSocket()
 {
 	if (_q.size() < SZ_QFULL) {
 		// Read as much data as possible.
@@ -74,7 +74,7 @@ void CQueuedTcpSocket::readSocket()
 	}
 }
 
-ssize_t CQueuedTcpSocket::write(const char *buf, size_t size) 
+ssize_t CQueuedTcpSocket::write(const char *buf, size_t size)
 {
 	ssize_t sz = 0;
 	do {
@@ -83,7 +83,7 @@ ssize_t CQueuedTcpSocket::write(const char *buf, size_t size)
 	return sz;
 }
 
-void CQueuedTcpSocket::close() 
+void CQueuedTcpSocket::close()
 {
 	CTcpSocket::close();
 	_mx.lock();

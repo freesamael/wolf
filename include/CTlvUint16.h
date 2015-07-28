@@ -7,7 +7,7 @@
 #ifndef CTLVUINT16_H_
 #define CTLVUINT16_H_
 
-#include <stdint.h>
+#include <cstdint>
 #include "ITlvObject.h"
 
 namespace wolf
@@ -19,7 +19,7 @@ namespace wolf
 class CTlvUint16: public ITlvObject
 {
 public:
-	static const uint16_t Size;
+	static const uint32_t Size;
 
 	CTlvUint16(uint16_t value = 0): _value(value) {}
 	CTlvUint16(const CTlvUint16 &o): ITlvObject(), _value(o._value) {}

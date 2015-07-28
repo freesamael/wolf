@@ -31,17 +31,17 @@ class CTlvObjectFactory
 {
 	SINGLETON(CTlvObjectFactory);
 public:
-	void registerType(uint16_t id, const std::string &name);
+	void registerType(uint32_t id, const std::string &name);
 	void registerCreator(const std::string &name, ITlvObjectCreator *creator);
-	std::string lookupTypeName(uint16_t id) ;
+	std::string lookupTypeName(uint32_t id) ;
 	ITlvObject* createTLVObject(const std::string &type_name) ;
-	ITlvObject* createTLVObject(uint16_t type_id) ;
+	ITlvObject* createTLVObject(uint32_t type_id) ;
 	ITlvObject* createTLVObject(const ITlvBlock &blk) ;
 
 private:
 	CTlvObjectFactory(): SINGLETON_MEMBER_INITLST, _typenames(), _creators() {}
 	~CTlvObjectFactory();
-	std::map<uint16_t, std::string> _typenames;
+	std::map<uint32_t, std::string> _typenames;
 	std::map<std::string, ITlvObjectCreator *> _creators;
 };
 

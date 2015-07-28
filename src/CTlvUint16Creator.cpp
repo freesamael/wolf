@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CTlvUint16Creator.h"
+
 #include <iostream>
 #include <sstream>
 #include <arpa/inet.h>
-#include "CTlvUint16Creator.h"
 #include "CTlvBlock.h"
 #include "HelperMacros.h"
 

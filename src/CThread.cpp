@@ -4,11 +4,12 @@
  * \author samael
  */
 
+#include "CThread.h"
+
 #include <iostream>
 #include <sstream>
 #include <cstring>
 #include <errno.h>
-#include "CThread.h"
 #include "HelperMacros.h"
 
 using namespace std;
@@ -62,7 +63,7 @@ CThread::~CThread()
 /**
  * Create a thread to execute run().
  */
-void CThread::start() 
+void CThread::start()
 {
 	if (_tid != 0)
 		throw XThread(XThread::THREAD_ALREADY_STARTED);
@@ -75,7 +76,7 @@ void CThread::start()
 /**
  * Block wait until thread exits. Always return true.
  */
-bool CThread::join() 
+bool CThread::join()
 {
 	int e;
 	if ((e = pthread_join(_tid, NULL)) != 0)
@@ -92,7 +93,7 @@ bool CThread::join()
  * \return
  * True on success, false if timed out.
  */
-bool CThread::join(unsigned timeout_us) 
+bool CThread::join(unsigned timeout_us)
 {
 	_mutex.lock();
 	if (_running)
@@ -105,7 +106,7 @@ bool CThread::join(unsigned timeout_us)
 /**
  * Request cancel for executing thread.
  */
-void CThread::cancel() 
+void CThread::cancel()
 {
 	int e;
 	if ((e = pthread_cancel(_tid)) != 0)
@@ -116,7 +117,7 @@ void CThread::cancel()
 /**
  * Get the minimum priority.
  */
-int CThread::minimumPriority() 
+int CThread::minimumPriority()
 {
 	int p;
 	if ((p = sched_get_priority_min(_tpoli)) == -1)
@@ -127,7 +128,7 @@ int CThread::minimumPriority()
 /**
  * Get the maximum priority.
  */
-int CThread::maximumPriority() 
+int CThread::maximumPriority()
 {
 	int p;
 	if ((p = sched_get_priority_max(_tpoli)) == -1)
@@ -138,7 +139,7 @@ int CThread::maximumPriority()
 /**
  * Get current priority setting.
  */
-int CThread::priority() 
+int CThread::priority()
 {
 	if (isRunning()) {
 		int e;
@@ -155,7 +156,7 @@ int CThread::priority()
 /**
  * Set the priority.
  */
-void CThread::setPriority(int p) 
+void CThread::setPriority(int p)
 {
 	_tparm.sched_priority = p;
 	if (isRunning()) {

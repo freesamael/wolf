@@ -4,13 +4,14 @@
  * \author samael
  */
 
+#include "CSimpleActiveSocketState.h"
+
 #include <cstring>
 #include <unistd.h>
 #include <errno.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include "CSimpleActiveSocketState.h"
 #include "CClosedSocketState.h"
 #include "CConnectedSocketState.h"
 #include "CBoundSocketState.h"

@@ -4,13 +4,14 @@
  * \author samael
  */
 
+#include "CTlvSharedMemoryInfoCreator.h"
+
 #include <iostream>
 #include "CTlvBlock.h"
 #include "CTlvString.h"
 #include "CTlvUint32.h"
 #include "CTlvObjectFactory.h"
 #include "HelperMacros.h"
-#include "CTlvSharedMemoryInfoCreator.h"
 
 namespace wolf
 {

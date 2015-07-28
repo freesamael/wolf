@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CMasterSideCommandSender.h"
+
 #include <iostream>
 #include <sstream>
 #include "CUdpSocket.h"
-#include "CMasterSideCommandSender.h"
 #include "CTlvCommand.h"
 #include "CTlvUint32.h"
 #include "CD2mce.h"

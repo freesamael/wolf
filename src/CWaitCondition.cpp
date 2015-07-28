@@ -4,12 +4,13 @@
  * \author samael
  */
 
+#include "CWaitCondition.h"
+
 #include <iostream>
 #include <sstream>
 #include <cstring>
 #include <errno.h>
 #include <sys/time.h>
-#include "CWaitCondition.h"
 #include "CTime.h"
 
 using namespace std;
@@ -25,7 +26,7 @@ CWaitCondition::CWaitCondition() :
 		throw XThread(e);
 }
 
-CWaitCondition::~CWaitCondition() 
+CWaitCondition::~CWaitCondition()
 {
 	int e;
 	if ((e = pthread_cond_destroy(&_cond)) != 0)
@@ -35,7 +36,7 @@ CWaitCondition::~CWaitCondition()
 /**
  * Unlock the mutex and wait for the condition. Always return true.
  */
-bool CWaitCondition::wait(CMutex *mutex) 
+bool CWaitCondition::wait(CMutex *mutex)
 {
 	int e;
 	if ((e = pthread_cond_wait(&_cond, &mutex->_mutex)) != 0)
@@ -50,7 +51,7 @@ bool CWaitCondition::wait(CMutex *mutex)
  * \return
  * True on success, false if timed out.
  */
-bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us) 
+bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us)
 {
 	struct timespec timeout = (CTime::now() + CTime(timeout_us)).toTimespec();
 
@@ -67,7 +68,7 @@ bool CWaitCondition::wait(CMutex *mutex, unsigned timeout_us)
 /**
  * Wake up one waiter.
  */
-void CWaitCondition::wakeOne() 
+void CWaitCondition::wakeOne()
 {
 	int e;
 	if ((e = pthread_cond_signal(&_cond)) != 0)
@@ -77,7 +78,7 @@ void CWaitCondition::wakeOne()
 /**
  * Wake up all waiters.
  */
-void CWaitCondition::wakeAll() 
+void CWaitCondition::wakeAll()
 {
 	int e;
 	if ((e = pthread_cond_broadcast(&_cond)) != 0)

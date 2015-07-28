@@ -4,11 +4,12 @@
  * \author samael
  */
 
+#include "CDirector.h"
+
 #include <deque>
 #include <iostream>
 #include <sstream>
 #include "HelperMacros.h"
-#include "CDirector.h"
 #include "CChannel.h"
 #include "CMaster.h"
 

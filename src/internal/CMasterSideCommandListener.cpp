@@ -4,11 +4,12 @@
  * \author samael
  */
 
+#include "CMasterSideCommandListener.h"
+
 #include <iostream>
 #include <sstream>
 #include "CTlvUint32.h"
 #include "HelperMacros.h"
-#include "CMasterSideCommandListener.h"
 #include "XTlvCommand.h"
 
 namespace wolf

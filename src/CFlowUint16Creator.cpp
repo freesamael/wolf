@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CFlowUint16Creator.h"
+
 #include <iostream>
 #include <sstream>
 #include "HelperMacros.h"
-#include "CFlowUint16Creator.h"
 
 namespace wolf
 {

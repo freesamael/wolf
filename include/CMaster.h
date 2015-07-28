@@ -13,7 +13,7 @@
 #include <vector>
 #include <string>
 #include <map>
-#include <inttypes.h>
+#include <netinet/in.h>
 #include "CTime.h"
 #include "CTcpServer.h"
 #include "HelperMacros.h"

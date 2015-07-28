@@ -10,10 +10,10 @@ namespace wolf
 {
 
 /// Size of type field.
-const uint16_t ITlvBlock::szType = sizeof(uint16_t);
+const uint32_t ITlvBlock::szType = sizeof(uint32_t);
 /// Size of length field.
-const uint16_t ITlvBlock::szLength = sizeof(uint16_t);
+const uint32_t ITlvBlock::szLength = sizeof(uint32_t);
 /// Size of a header (type + length).
-const uint16_t ITlvBlock::szHeader = sizeof(uint16_t) * 2;
+const uint32_t ITlvBlock::szHeader = sizeof(uint32_t) * 2;
 
 }

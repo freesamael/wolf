@@ -27,7 +27,7 @@ ITlvObject* MSortWorkerCreator::create(const ITlvBlock &blk) const
 	}
 
 	CFlowVector<uint32_t> d;
-	int offset = 0;
+	uint32_t offset = 0;
 	while (offset < blk.length()) {
 		uint32_t u32;
 		memcpy(&u32, blk.value() + offset, sizeof(uint32_t));

@@ -7,7 +7,7 @@
 #ifndef CRUNNERSIDEMASTERCONNECTOR_H_
 #define CRUNNERSIDEMASTERCONNECTOR_H_
 
-#include <inttypes.h>
+#include <netinet/in.h>
 #include "CTcpSocket.h"
 
 namespace wolf

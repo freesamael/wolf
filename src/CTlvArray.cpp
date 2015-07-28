@@ -4,8 +4,9 @@
  * \author samael
  */
 
-#include <typeinfo>
 #include "CTlvArray.h"
+
+#include <typeinfo>
 #include "CTlvArrayCreator.h"
 #include "CTlvObjectFactoryAutoRegistry.h"
 #include "HelperMacros.h"

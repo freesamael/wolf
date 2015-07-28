@@ -11,7 +11,7 @@ namespace wolf
 {
 
 CTlvObjectFactoryAutoRegistry::CTlvObjectFactoryAutoRegistry(const std::string &type,
-		uint16_t id,ITlvObjectCreator *creator)
+		uint32_t id,ITlvObjectCreator *creator)
 {
 	CTlvObjectFactory::instance()->registerType(id, type);
 	CTlvObjectFactory::instance()->registerCreator(type, creator);

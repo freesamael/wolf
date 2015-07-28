@@ -9,7 +9,7 @@
 
 #include <vector>
 #include <string>
-#include <inttypes.h>
+#include <netinet/in.h>
 #include "CTcpSocket.h"
 #include "AWorkerActor.h"
 #include "CMaster.h"

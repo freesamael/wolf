@@ -5,11 +5,13 @@
  */
 
 #ifdef __D2MCE__ /* DSM mode */
+
+#include "CD2mce.h"
+
 #include <cstdlib>
 #include <cstring>
 #include <sstream>
 #include "SingletonAutoDestructor.h"
-#include "CD2mce.h"
 #include "SharedMemory.h"
 
 using namespace std;

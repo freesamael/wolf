@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include "CTlvSharedMemoryInfo.h"
+
 #include <typeinfo>
 #include <vector>
 #include "CTlvBlock.h"
@@ -11,7 +13,6 @@
 #include "CTlvUint32.h"
 #include "CTlvObjectFactoryAutoRegistry.h"
 #include "HelperMacros.h"
-#include "CTlvSharedMemoryInfo.h"
 #include "CTlvSharedMemoryInfoCreator.h"
 #include "WfeTLVTypes.h"
 

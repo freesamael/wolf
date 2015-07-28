@@ -25,21 +25,21 @@ namespace wolf
 class CTlvBlock: public ITlvBlock
 {
 public:
-	CTlvBlock(uint16_t type = TLV_TYPE_INVALID,
-			uint16_t length = 0);
+	CTlvBlock(uint32_t type = TLV_TYPE_INVALID,
+			uint32_t length = 0);
 	CTlvBlock(const CTlvBlock &blk);
 	~CTlvBlock();
 
 	// Getters.
-	inline uint16_t type() const {
-		return ntohs(((uint16_t *)_buf)[0]); }
-	inline uint16_t length() const {
-		return ntohs(((uint16_t *)_buf)[1]); }
-	inline uint16_t plainSize() const { return length() + szHeader; }
+	inline uint32_t type() const {
+		return ntohl(((uint32_t *)_buf)[0]); }
+	inline uint32_t length() const {
+		return ntohl(((uint32_t *)_buf)[1]); }
+	inline uint32_t plainSize() const { return length() + szHeader; }
 
 	// Setters.
-	void setType(uint16_t type);
-	void setLength(uint16_t len);
+	void setType(uint32_t type);
+	void setLength(uint32_t len);
 
 	// Buffer.
 	inline char* plainBuffer() { return _buf; }
@@ -55,8 +55,8 @@ public:
 	static CTlvBlock* concate(const std::vector<const ITlvBlock*> &blocks);
 
 private:
-	void _writetype(uint16_t type);
-	void _writelength(uint16_t length);
+	void _writetype(uint32_t type);
+	void _writelength(uint32_t length);
 	char *_buf;
 };
 
@@ -73,11 +73,11 @@ public:
 	CSharedTlvBlock(const char *shared_buf): _buf(shared_buf) {}
 	CSharedTlvBlock(const CSharedTlvBlock &blk): ITlvBlock(), _buf(blk._buf) {}
 	CSharedTlvBlock(const CTlvBlock &blk): _buf(blk.plainBuffer()) {}
-	inline uint16_t type() const {
-		return ntohs(((uint16_t *)_buf)[0]); }
-	inline uint16_t length() const {
-		return ntohs(((uint16_t *)_buf)[1]); }
-	inline uint16_t plainSize() const { return length() + szHeader; }
+	inline uint32_t type() const {
+		return ntohl(((uint32_t *)_buf)[0]); }
+	inline uint32_t length() const {
+		return ntohl(((uint32_t *)_buf)[1]); }
+	inline uint32_t plainSize() const { return length() + szHeader; }
 	inline const char* plainBuffer() const { return _buf; }
 	inline const char* value() const {
 		return (!length()) ? NULL : &_buf[szHeader]; }

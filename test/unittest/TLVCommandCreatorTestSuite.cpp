@@ -27,7 +27,7 @@ void TLVCommandCreatorTestSuite::testCreate()
 	cmd.addParameter(&u32_3);
 
 	CTlvBlock *blk = cmd.toTLVBlock();
-	CPPUNIT_ASSERT_EQUAL((uint16_t)(CTlvUint32::Size * 3), blk->length());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)(CTlvUint32::Size * 3), blk->length());
 	CTlvCommand *ocmd = (CTlvCommand *)CTlvCommandCreator().create(*blk);
 	CPPUNIT_ASSERT_EQUAL(CTlvCommand::RUNNER_ADD, ocmd->command());
 	CPPUNIT_ASSERT_EQUAL((size_t)3, ocmd->parameters().size());

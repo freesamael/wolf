@@ -4,29 +4,29 @@
  * \author samael
  */
 
-#include <sstream>
 #include "CTime.h"
+#include <sstream>
 
 using namespace std;
 
 namespace wolf
 {
 
-CTime CTime::operator+(const CTime &o) 
+CTime CTime::operator+(const CTime &o)
 {
 	timeval t;
 	timeradd(&_t, &o._t, &t);
 	return t;
 }
 
-CTime CTime::operator-(const CTime &o) 
+CTime CTime::operator-(const CTime &o)
 {
 	timeval t;
 	timersub(&_t, &o._t, &t);
 	return t;
 }
 
-timespec CTime::toTimespec() const 
+timespec CTime::toTimespec() const
 {
 	timespec t;
 	t.tv_sec = _t.tv_sec;
@@ -34,7 +34,7 @@ timespec CTime::toTimespec() const
 	return t;
 }
 
-string CTime::toString() const 
+string CTime::toString() const
 {
 	stringstream s;
 	s << (unsigned)_t.tv_sec << "." << (unsigned)_t.tv_usec << " seconds";

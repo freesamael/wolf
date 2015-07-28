@@ -5,6 +5,7 @@
  */
 
 #include "CTcpTlvReader.h"
+
 #include "CTlvBlock.h"
 #include "CTlvObjectFactory.h"
 
@@ -15,7 +16,7 @@ namespace wolf
  * Read a TLV block from the socket. Applicable to blockable sockets only.
  * \return The incoming block or NULL if connection ends (end-of-file).
  */
-ITlvBlock* CTcpTlvReader::readBlock() 
+ITlvBlock* CTcpTlvReader::readBlock()
 {
 	int ret;
 	char *hdrbuf = new char[ITlvBlock::szHeader];
@@ -23,14 +24,14 @@ ITlvBlock* CTcpTlvReader::readBlock()
 
 	try {
 	_sock->lockread();
-		if ((ret = _sock->read(hdrbuf, ITlvBlock::szHeader)) ==
-				ITlvBlock::szHeader) {
+		if (static_cast<uint32_t>(ret = _sock->read(hdrbuf, ITlvBlock::szHeader))
+				== ITlvBlock::szHeader) {
 			// Construct block.
 			CSharedTlvBlock sblk(hdrbuf);
 			blk = new CTlvBlock(sblk.type(), sblk.length());
 
 			// Read value.
-			uint16_t offset = 0;
+			uint32_t offset = 0;
 			do {
 				offset += _sock->read(blk->value() + offset,
 						blk->length() - offset);
@@ -63,7 +64,7 @@ ITlvBlock* CTcpTlvReader::readBlock()
  * Read a TLV object from the socket. Applicable to blockable sockets only.
  * \return The incoming block or NULL if connection ends (end-of-file).
  */
-ITlvObject* CTcpTlvReader::readObject() 
+ITlvObject* CTcpTlvReader::readObject()
 {
 	ITlvBlock *blk = NULL;
 	try {

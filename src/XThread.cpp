@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "XThread.h"
+
 #include <cstring>
 #include <cstdio>
-#include "XThread.h"
 
 using namespace std;
 

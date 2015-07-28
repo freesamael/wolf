@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include "CRunnerSideCommandSender.h"
+
 #include <iostream>
 #include <sstream>
 #include <cstdlib>
@@ -14,7 +16,6 @@
 #include "CTlvCommand.h"
 #include "HelperMacros.h"
 #include "CTcpTlvWriter.h"
-#include "CRunnerSideCommandSender.h"
 
 using namespace std;
 

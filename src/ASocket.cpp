@@ -4,13 +4,14 @@
  * \author samael
  */
 
+#include "ASocket.h"
+
 #include <unistd.h>
 #include <fcntl.h>
 #include <errno.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include "ASocket.h"
 #include "internal/CClosedSocketState.h"
 #include "internal/CSimpleActiveSocketState.h"
 #include "internal/CBoundSocketState.h"
@@ -43,7 +44,7 @@ ASocket::ASocket(int sockfd) :
 {
 }
 
-ASocket::~ASocket() 
+ASocket::~ASocket()
 {
 	try {
 		_state->close(this);
@@ -54,14 +55,14 @@ ASocket::~ASocket()
 	}
 }
 
-ASocket& ASocket::operator=(const ASocket &sock) 
+ASocket& ASocket::operator=(const ASocket &sock)
 {
 	_sockfd = sock._sockfd;
 	_state = sock._state;
 	return *this;
 }
 
-void ASocket::setBlockable(bool blk) 
+void ASocket::setBlockable(bool blk)
 {
 	int arg;
 
@@ -81,7 +82,7 @@ void ASocket::setBlockable(bool blk)
 	}
 }
 
-bool ASocket::blockable() const 
+bool ASocket::blockable() const
 {
 	int arg;
 
@@ -92,7 +93,7 @@ bool ASocket::blockable() const
 	return !(arg & O_NONBLOCK);
 }
 
-CHostAddress ASocket::currentAddress() const 
+CHostAddress ASocket::currentAddress() const
 {
 	sockaddr_in inaddr;
 	socklen_t len = sizeof(inaddr);
@@ -101,7 +102,7 @@ CHostAddress ASocket::currentAddress() const
 	return CHostAddress(inaddr.sin_addr.s_addr);
 }
 
-CHostAddress ASocket::peerAddress() const 
+CHostAddress ASocket::peerAddress() const
 {
 	sockaddr_in inaddr;
 	socklen_t len = sizeof(inaddr);

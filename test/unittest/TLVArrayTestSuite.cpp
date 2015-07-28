@@ -20,7 +20,7 @@ void TLVArrayTestSuite::testToTLVBlock()
 		array.elements().push_back(&u32s[i]);
 
 	ITlvBlock *blk = array.toTLVBlock();
-	CPPUNIT_ASSERT_EQUAL((uint16_t)80, blk->length());
-	CPPUNIT_ASSERT_EQUAL((uint16_t)TLV_TYPE_ARRAY, blk->type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)120, blk->length());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)TLV_TYPE_ARRAY, blk->type());
 	delete blk;
 }

@@ -4,11 +4,12 @@
  * \author samael
  */
 
+#include "CRunnerSideWorkerExecutor.h"
+
 #include <utility>
 #include <iostream>
 #include <sstream>
 #include "HelperMacros.h"
-#include "CRunnerSideWorkerExecutor.h"
 #include "AWorkerActor.h"
 
 using namespace std;

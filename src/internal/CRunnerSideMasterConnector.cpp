@@ -4,12 +4,13 @@
  * \author samael
  */
 
+#include "CRunnerSideMasterConnector.h"
+
 #include <string>
 #include <typeinfo>
 #include "CUdpSocket.h"
 #include "CUdpTlvReader.h"
 #include "CTlvCommand.h"
-#include "CRunnerSideMasterConnector.h"
 #include "XTlvCommand.h"
 #include "HelperMacros.h"
 

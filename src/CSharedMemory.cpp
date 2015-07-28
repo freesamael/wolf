@@ -5,8 +5,9 @@
  */
 
 #ifdef __D2MCE__ /* DSM mode */
-#include <cstring>
 #include "CSharedMemory.h"
+
+#include <cstring>
 #include "CD2mce.h"
 
 using namespace std;

@@ -4,11 +4,12 @@
  * \author samael
  */
 
+#include "ACommandListener.h"
+
 #include <string>
 #include <typeinfo>
 #include "CTcpTlvReader.h"
 #include "ITlvObject.h"
-#include "ACommandListener.h"
 #include "XTlvCommand.h"
 #include "HelperMacros.h"
 

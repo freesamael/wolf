@@ -4,8 +4,8 @@
  * \author samael
  */
 
-#include <cstring>
 #include "CStringHelper.h"
+#include <cstring>
 
 using namespace std;
 

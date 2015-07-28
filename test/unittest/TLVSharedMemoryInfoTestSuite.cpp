@@ -23,14 +23,14 @@ void TLVSharedMemoryInfoTestSuite::testToTLVBlock()
 	CTlvSharedMemoryInfo info("this is a piece of shared memory", 16992);
 	ITlvBlock *blk = info.toTLVBlock();
 
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_SMINFO, blk->type());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)(strlen("this is a piece of shared memory") +
+	CPPUNIT_ASSERT_EQUAL((uint32_t)TLV_TYPE_SMINFO, blk->type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)(strlen("this is a piece of shared memory") +
 			ITlvBlock::szHeader + CTlvUint32::Size), blk->length());
 
 	CSharedTlvBlock nameblk(blk->value());
 	CSharedTlvBlock sizeblk(blk->value() + nameblk.plainSize());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_STRING, nameblk.type());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)TLV_TYPE_UINT32, sizeblk.type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)TLV_TYPE_STRING, nameblk.type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)TLV_TYPE_UINT32, sizeblk.type());
 
 	delete blk;
 }

@@ -202,7 +202,7 @@ void MansetWorker::setImageData(uint8_t *imgdata, uint32_t size)
 
 CTlvBlock* MansetWorker::toTLVBlock() const
 {
-	uint16_t size = 16; // four uint32_t
+	uint32_t size = 16; // four uint32_t
 	if (_imgdata)
 		size += _rows * _imgwidth * 3;
 

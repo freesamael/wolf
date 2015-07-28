@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "CFlowUint16.h"
+
 #include "CTlvObjectFactoryAutoRegistry.h"
 #include "HelperMacros.h"
-#include "CFlowUint16.h"
 #include "WfeTLVTypes.h"
 #include "CFlowUint16Creator.h"
 

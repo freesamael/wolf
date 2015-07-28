@@ -22,8 +22,8 @@ void TLVCommandTestSuite::testToTLVBlock()
 {
 	CTlvCommand *cmd = new CTlvCommand();
 	ITlvBlock *blk = cmd->toTLVBlock();
-	CPPUNIT_ASSERT_EQUAL((uint16_t)TLV_TYPE_COMMAND_BASE, blk->type());
-	CPPUNIT_ASSERT_EQUAL((uint16_t)0, blk->length());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)TLV_TYPE_COMMAND_BASE, blk->type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)0, blk->length());
 	delete blk;
 	delete cmd;
 
@@ -33,8 +33,8 @@ void TLVCommandTestSuite::testToTLVBlock()
 	cmd->addParameter(&u32_1);
 	cmd->addParameter(&u32_2);
 	blk = cmd->toTLVBlock();
-	CPPUNIT_ASSERT_EQUAL((uint16_t)(TLV_TYPE_COMMAND_BASE + CTlvCommand::RUNNER_ADD), blk->type());
-	CPPUNIT_ASSERT_EQUAL((uint16_t)(CTlvUint32::Size * 2), blk->length());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)(TLV_TYPE_COMMAND_BASE + CTlvCommand::RUNNER_ADD), blk->type());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)(CTlvUint32::Size * 2), blk->length());
 	delete blk;
 	delete cmd;
 }

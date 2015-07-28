@@ -4,6 +4,8 @@
  * \author samael
  */
 
+#include "CMaster.h"
+
 #include <sys/time.h>
 #include <unistd.h>
 #include <cstdlib>
@@ -12,7 +14,6 @@
 #include "CThread.h"
 #include "CSingletonAutoDestructor.h"
 #include "CTlvUint32.h"
-#include "CMaster.h"
 #include "CTlvCommand.h"
 #include "IManagerActor.h"
 #include "internal/CMasterSideConnectionListener.h"

@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CFlowStringCreator.h"
+
 #include <iostream>
 #include <sstream>
 #include "HelperMacros.h"
-#include "CFlowStringCreator.h"
 
 namespace wolf
 {

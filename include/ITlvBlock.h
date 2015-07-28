@@ -21,12 +21,12 @@ namespace wolf
 class ITlvBlock
 {
 public:
-	static const uint16_t szType, szLength, szHeader;
+	static const uint32_t szType, szLength, szHeader;
 
 	virtual ~ITlvBlock() {}
-	virtual uint16_t type() const = 0;
-	virtual uint16_t length() const = 0;
-	virtual uint16_t plainSize() const = 0; ///< Size of plain buffer.
+	virtual uint32_t type() const = 0;
+	virtual uint32_t length() const = 0;
+	virtual uint32_t plainSize() const = 0; ///< Size of plain buffer.
 	virtual const char* plainBuffer() const = 0; ///< Plain buffer including header.
 	virtual const char* value() const = 0;
 };

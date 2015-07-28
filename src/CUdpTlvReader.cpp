@@ -4,8 +4,9 @@
  * \author samael
  */
 
-#include <cstring>
 #include "CUdpTlvReader.h"
+
+#include <cstring>
 #include "HelperMacros.h"
 #include "CTlvBlock.h"
 #include "CTlvObjectFactory.h"
@@ -20,7 +21,7 @@ namespace wolf
  * \return Incoming block.
  */
 ITlvBlock* CUdpTlvReader::recvBlockFrom(CHostAddress *addr, in_port_t *port)
-		
+
 {
 	char *buf = new char[SZ_MSG_MAX];
 	unsigned sz = 0;
@@ -59,7 +60,7 @@ ITlvBlock* CUdpTlvReader::recvBlockFrom(CHostAddress *addr, in_port_t *port)
  * \return Incoming object.
  */
 ITlvObject* CUdpTlvReader::recvObjectFrom(CHostAddress *addr, in_port_t *port)
-		
+
 {
 	ITlvBlock *blk = recvBlockFrom(addr, port);
 	ITlvObject *obj = NULL;

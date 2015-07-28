@@ -7,7 +7,7 @@
 #ifndef ACONNECTIONLISTENER_H_
 #define ACONNECTIONLISTENER_H_
 
-#include <inttypes.h>
+#include <netinet/in.h>
 #include "CThread.h"
 #include "CTcpServer.h"
 #include "CTcpSocket.h"

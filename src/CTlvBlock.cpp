@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "CTlvBlock.h"
+
 #include <cstring>
 #include <arpa/inet.h>
-#include "CTlvBlock.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ namespace wolf
  * TLVBlock takes the ownership of it's own buffer, and deletes it on
  * destruction.
  */
-CTlvBlock::CTlvBlock(uint16_t type, uint16_t length):
+CTlvBlock::CTlvBlock(uint32_t type, uint32_t length):
 		_buf(NULL)
 {
 	_buf = new char[length + szHeader];
@@ -43,7 +44,7 @@ CTlvBlock::~CTlvBlock()
 /**
  * Set TLV type.
  */
-void CTlvBlock::setType(uint16_t type)
+void CTlvBlock::setType(uint32_t type)
 {
 	_writetype(type);
 }
@@ -51,9 +52,9 @@ void CTlvBlock::setType(uint16_t type)
 /**
  * Set length and allocate proper buffer.
  */
-void CTlvBlock::setLength(uint16_t len)
+void CTlvBlock::setLength(uint32_t len)
 {
-	uint16_t tp = type();
+	uint32_t tp = type();
 	delete [] _buf;
 	_buf = new char[len + szHeader];
 
@@ -77,18 +78,18 @@ CTlvBlock& CTlvBlock::operator=(const CTlvBlock &blk)
 /**
  * Write type into buffer.
  */
-void CTlvBlock::_writetype(uint16_t type)
+void CTlvBlock::_writetype(uint32_t type)
 {
-	uint16_t ntype = htons(type);
+	uint32_t ntype = htonl(type);
 	memcpy(_buf, &ntype, szType);
 }
 
 /**
  * Write length into buffer.
  */
-void CTlvBlock::_writelength(uint16_t length)
+void CTlvBlock::_writelength(uint32_t length)
 {
-	uint16_t nlen = htons(length);
+	uint32_t nlen = htonl(length);
 	memcpy(_buf + szType, &nlen, szLength);
 }
 
@@ -102,13 +103,13 @@ CTlvBlock* CTlvBlock::concate(const vector<const ITlvBlock*> &blocks)
 {
 	CTlvBlock *blk = new CTlvBlock();
 
-	uint16_t tlen = 0;
+	uint32_t tlen = 0;
 	for (unsigned i = 0; i < blocks.size(); i++)
 		tlen += blocks[i]->plainSize();
 
 	blk->setLength(tlen);
 
-	uint16_t offset = 0;
+	uint32_t offset = 0;
 	for (unsigned i = 0; i < blocks.size(); i++) {
 		memcpy(&blk->value()[offset], blocks[i]->plainBuffer(),
 				blocks[i]->plainSize());

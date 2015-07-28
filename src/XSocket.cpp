@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "XSocket.h"
+
 #include <cstring>
 #include <cstdio>
-#include "XSocket.h"
 
 using namespace std;
 

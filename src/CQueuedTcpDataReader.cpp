@@ -4,10 +4,11 @@
  * \author samael
  */
 
+#include "CQueuedTcpDataReader.h"
+
 #include <errno.h>
 #include <sys/select.h>
 #include <sys/resource.h>
-#include "CQueuedTcpDataReader.h"
 #include "CTime.h"
 
 using namespace std;

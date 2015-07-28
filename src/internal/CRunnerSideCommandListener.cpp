@@ -4,12 +4,13 @@
  * \author samael
  */
 
+#include "CRunnerSideCommandListener.h"
+
 #include <iostream>
 #include <sstream>
 #include "CTlvUint32.h"
 #include "CTlvUint16.h"
 #include "HelperMacros.h"
-#include "CRunnerSideCommandListener.h"
 #include "AWorkerActor.h"
 #include "XTlvCommand.h"
 

@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "CTlvString.h"
+
 #include <cstring>
 #include <typeinfo>
-#include "CTlvString.h"
 #include "CTlvStringCreator.h"
 #include "CTlvBlock.h"
 #include "CTlvObjectFactoryAutoRegistry.h"

@@ -4,12 +4,13 @@
  * \author samael
  */
 
+#include "CSimpleWorkerStealer.h"
+
 #include <iostream>
 #include <sstream>
 #include <ctime>
 #include <cstdlib>
 #include "CWaitCondition.h"
-#include "CSimpleWorkerStealer.h"
 
 using namespace std;
 

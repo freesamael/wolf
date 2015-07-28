@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "CTcpTlvWriter.h"
+
 #include <typeinfo>
 #include <string>
-#include "CTcpTlvWriter.h"
 #include "CmlTLVTypes.h"
 #include "HelperMacros.h"
 
@@ -18,9 +19,9 @@ namespace wolf
 /**
  * Write a TLV block to the socket.
  */
-void CTcpTlvWriter::writeBlock(const ITlvBlock &blk) 
+void CTcpTlvWriter::writeBlock(const ITlvBlock &blk)
 {
-	uint16_t offset = 0;
+	uint32_t offset = 0;
 	_sock->lockwrite();
 	try {
 		// Loop until all data have been written.
@@ -40,7 +41,7 @@ void CTcpTlvWriter::writeBlock(const ITlvBlock &blk)
  * Write a TLV object to the socket.
  */
 void CTcpTlvWriter::writeObject(const ITlvObject &obj)
-		
+
 {
 	ITlvBlock *blk;
 	if (!(blk = obj.toTLVBlock())) {

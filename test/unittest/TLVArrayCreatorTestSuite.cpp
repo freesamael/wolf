@@ -41,8 +41,8 @@ void TLVArrayCreatorTestSuite::testCreate()
 	CTlvUint32 *ou32 = (CTlvUint32 *)oary->elements()[0];
 	CTlvUint16 *ou16 = (CTlvUint16 *)oary->elements()[1];
 	CTlvString *ostr = (CTlvString *)oary->elements()[2];
-	CPPUNIT_ASSERT_EQUAL((unsigned)19950101, ou32->value());
-	CPPUNIT_ASSERT_EQUAL((unsigned short)8877, ou16->value());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)19950101, ou32->value());
+	CPPUNIT_ASSERT_EQUAL((uint32_t)8877, ou16->value());
 	CPPUNIT_ASSERT_EQUAL((string)"Hello -u Potin -c \"Oh oh android ohohoh\"", ostr->toString());
 
 	delete blk;

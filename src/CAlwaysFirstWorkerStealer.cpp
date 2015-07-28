@@ -4,9 +4,10 @@
  * \author samael
  */
 
+#include "CAlwaysFirstWorkerStealer.h"
+
 #include <iostream>
 #include <sstream>
-#include "CAlwaysFirstWorkerStealer.h"
 
 namespace wolf
 {

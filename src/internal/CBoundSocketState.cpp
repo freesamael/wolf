@@ -4,13 +4,14 @@
  * \author samael
  */
 
+#include "CBoundSocketState.h"
+
 #include <cstring>
 #include <unistd.h>
 #include <errno.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
-#include "CBoundSocketState.h"
 #include "CClosedSocketState.h"
 #include "CConnectedSocketState.h"
 #include "CSingletonAutoDestructor.h"
@@ -24,7 +25,7 @@ namespace wolf
 SINGLETON_REGISTRATION(CBoundSocketState);
 SINGLETON_REGISTRATION_END();
 
-void CBoundSocketState::close(ASocket *sock) 
+void CBoundSocketState::close(ASocket *sock)
 {
 	if (::close(sock->sockfd()) != 0)
 		throw XSocket(errno);
@@ -32,7 +33,7 @@ void CBoundSocketState::close(ASocket *sock)
 	sock->changeState(CClosedSocketState::instance());
 }
 
-int CBoundSocketState::accept(ASocket *sock) 
+int CBoundSocketState::accept(ASocket *sock)
 {
 	int insock;
 	struct sockaddr_in inaddr;
@@ -50,7 +51,7 @@ int CBoundSocketState::accept(ASocket *sock)
 }
 
 ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
-		CHostAddress *addr, in_port_t *port) 
+		CHostAddress *addr, in_port_t *port)
 {
 	ssize_t result;
 	struct sockaddr_in inaddr;
@@ -70,7 +71,7 @@ ssize_t CBoundSocketState::recvfrom(ASocket *sock, char *buf, size_t size,
 }
 
 ssize_t CBoundSocketState::sendto(ASocket *sock, const char *buf,
-		size_t size, const CHostAddress &addr, in_port_t port) 
+		size_t size, const CHostAddress &addr, in_port_t port)
 {
 	ssize_t result;
 	sockaddr_in inaddr;
