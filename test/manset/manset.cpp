@@ -16,9 +16,9 @@
 using namespace std;
 using namespace wolf;
 
-#define IMG_WIDTH	750
-#define IMG_HEIGHT	600
-#define IMG_ROWS	1
+#define IMG_WIDTH  3000
+#define IMG_HEIGHT 2400
+#define IMG_ROWS   1
 
 int main(int argc, char *argv[])
 {
