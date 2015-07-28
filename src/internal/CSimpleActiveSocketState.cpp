@@ -5,6 +5,7 @@
  */
 
 #include <cstring>
+#include <unistd.h>
 #include <errno.h>
 #include <netinet/in.h>
 #include <sys/types.h>
@@ -16,7 +17,7 @@
 #include "CSingletonAutoDestructor.h"
 #include "ASocket.h"
 
-using namespace std;
+// using namespace std;
 
 namespace wolf
 {
@@ -25,7 +26,7 @@ SINGLETON_REGISTRATION(CSimpleActiveSocketState);
 SINGLETON_REGISTRATION_END();
 
 void CSimpleActiveSocketState::activeOpen(ASocket *sock, SocketType UNUSED(type),
-		const CHostAddress &addr, in_port_t port) 
+		const CHostAddress &addr, in_port_t port)
 {
 	// Clear and set address/port.
 	sockaddr_in inaddr;
@@ -42,7 +43,7 @@ void CSimpleActiveSocketState::activeOpen(ASocket *sock, SocketType UNUSED(type)
 }
 
 void CSimpleActiveSocketState::passiveOpen(ASocket *sock, SocketType type,
-		in_port_t port, int qlen, bool reuse) 
+		in_port_t port, int qlen, bool reuse)
 {
 	// Clear and set inet address/port.
 	sockaddr_in inaddr;
@@ -73,7 +74,7 @@ void CSimpleActiveSocketState::passiveOpen(ASocket *sock, SocketType type,
 	sock->changeState(CBoundSocketState::instance());
 }
 
-void CSimpleActiveSocketState::close(ASocket *sock) 
+void CSimpleActiveSocketState::close(ASocket *sock)
 {
 	if (::close(sock->sockfd()) != 0)
 		throw XSocket(errno);
@@ -81,7 +82,7 @@ void CSimpleActiveSocketState::close(ASocket *sock)
 }
 
 ssize_t CSimpleActiveSocketState::recvfrom(ASocket *sock, char *buf,
-		size_t size, CHostAddress *addr, in_port_t *port) 
+		size_t size, CHostAddress *addr, in_port_t *port)
 {
 	ssize_t result;
 	struct sockaddr_in inaddr;
@@ -98,7 +99,7 @@ ssize_t CSimpleActiveSocketState::recvfrom(ASocket *sock, char *buf,
 }
 
 ssize_t CSimpleActiveSocketState::sendto(ASocket *sock, const char *buf,
-		size_t size, const CHostAddress &addr, in_port_t port) 
+		size_t size, const CHostAddress &addr, in_port_t port)
 {
 	ssize_t result;
 	sockaddr_in inaddr;

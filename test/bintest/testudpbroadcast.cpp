@@ -4,6 +4,7 @@
  * \author samael
  */
 
+#include <unistd.h>
 #include <CUdpSocket.h>
 #include <CUdpTlvWriter.h>
 #include <CTlvString.h>

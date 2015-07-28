@@ -21,7 +21,7 @@ using namespace std;
 namespace wolf
 {
 
-void CRunnerSideCommandSender::joinD2MCE(CTcpSocket *sock, const string &appname)
+void CRunnerSideCommandSender::joinD2MCE(UNUSED(CTcpSocket *sock), UNUSED(const string &appname))
 {
 #ifdef __D2MCE__ /* DSM mode */
 	// Random delay.

@@ -9,6 +9,7 @@
 
 #include <string>
 #include <utility>
+#include <unistd.h>
 #include <inttypes.h>
 #include "CTcpServer.h"
 #include "CMutex.h"

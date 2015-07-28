@@ -9,6 +9,7 @@
 #include "CStringHelper.h"
 #include "CProcessEnvironment.h"
 
+// Depends on <unistd.h>
 extern char **environ;
 
 using namespace std;

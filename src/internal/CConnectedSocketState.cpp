@@ -5,6 +5,7 @@
  */
 
 #include <errno.h>
+#include <unistd.h>
 #include <netinet/in.h>
 #include <sys/types.h>
 #include <sys/socket.h>
@@ -19,7 +20,7 @@ namespace wolf
 SINGLETON_REGISTRATION(CConnectedSocketState);
 SINGLETON_REGISTRATION_END();
 
-void CConnectedSocketState::close(ASocket *sock) 
+void CConnectedSocketState::close(ASocket *sock)
 {
 	if (shutdown(sock->sockfd(), SHUT_RDWR) != 0)
 		if (errno != ENOTCONN)	// If it's not connected (ENOTCONN), just skip.
@@ -32,7 +33,7 @@ void CConnectedSocketState::close(ASocket *sock)
 }
 
 ssize_t CConnectedSocketState::read(ASocket *sock, char *buf, size_t size)
-		
+
 {
 	ssize_t result;
 	if ((result = ::read(sock->sockfd(), buf, size)) < 0) {
@@ -52,7 +53,7 @@ ssize_t CConnectedSocketState::read(ASocket *sock, char *buf, size_t size)
 }
 
 ssize_t CConnectedSocketState::write(ASocket *sock, const char *buf,
-		size_t size) 
+		size_t size)
 {
 	ssize_t result;
 	if ((result = ::write(sock->sockfd(), buf, size)) < 0) {

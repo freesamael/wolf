@@ -31,7 +31,7 @@ CXXFLAGS += -ftest-coverage -fprofile-arcs
 COV_LIBS = -lgcov
 endif
 
-CXXFLAGS += -ansi -pedantic -Wall -Wextra -D_XOPEN_SOURCE=600 -D__STDC_LIMIT_MACROS 
+CXXFLAGS += --std=c++11 -pedantic -Wall -Wextra -D_XOPEN_SOURCE=600 -D__STDC_LIMIT_MACROS
 
 WOLF_SRCDIR = ${PWD}/src
 WOLF_INCDIR = ${PWD}/include
@@ -39,8 +39,11 @@ WOLF_BINDIR = ${PWD}/bin
 WOLF_LIBDIR = ${PWD}/lib
 WOLF_TESTDIR = ${PWD}/test
 
-all: wolf test
+all: -prepare-output-dirs wolf test
 clean: wolf_clean test_clean
+-prepare-output-dirs:
+	mkdir -p ${WOLF_BINDIR}
+	mkdir -p ${WOLF_LIBDIR}
 
 include ${WOLF_SRCDIR}/Makefile
 include ${WOLF_TESTDIR}/Makefile

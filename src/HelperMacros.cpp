@@ -7,7 +7,7 @@
 #include <pthread.h>
 #include <string>
 #include <cstdlib>
-#ifdef __GLIBCXX__
+#if defined(__GLIBCXX__) || defined(__clang__)
 #include <cxxabi.h>
 #endif
 

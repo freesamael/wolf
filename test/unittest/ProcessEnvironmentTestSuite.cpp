@@ -11,6 +11,9 @@
 using namespace std;
 using namespace wolf;
 
+// Depends on <unistd.h>
+extern char **environ;
+
 CPPUNIT_TEST_SUITE_REGISTRATION(ProcessEnvironmentTestSuite);
 
 void ProcessEnvironmentTestSuite::testSystemEnvironment()
