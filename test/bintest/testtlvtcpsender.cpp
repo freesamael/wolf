@@ -15,8 +15,10 @@ using namespace wolf;
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
+	if (argc != 2) {
 		cerr << "Usage: " << argv[0] << " <addr>" << endl;
+		return EXIT_FAILURE;
+	}
 
 	CTcpSocket conn;
 	conn.activeOpen(argv[1], 5566);

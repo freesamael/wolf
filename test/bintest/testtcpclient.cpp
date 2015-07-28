@@ -19,8 +19,10 @@ using namespace wolf;
 
 int main(int argc, char *argv[])
 {
-	if (argc != 2)
+	if (argc != 2) {
 		cerr << "Usage: " << argv[0] << " <addr>" << endl;
+		return EXIT_FAILURE;
+	}
 
 	char *c = new char[SZ_BUF];
 	for (int i = 0; i < SZ_BUF; i++)
