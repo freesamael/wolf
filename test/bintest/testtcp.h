@@ -14,16 +14,17 @@ class ReadingThread: public CThread
 {
 public:
 	ReadingThread(wolf::CTcpSocket &c, char d):
-		_done(false), _conn(c), _bc(0), _data(d) {}
+		_conn(c), _bc(0), _data(d), _tstart(wolf::CTime::now()) {}
 	unsigned bytecount() { return _bc; }
 	CTime tstart() { return _tstart; }
-	void setDone(bool d = true) { _done = d; }
+	CTime tend() { return _tend; }
 	void run()
 	{
 		char *d = new char[SZ_BUF];
 		int sz;
 		int count = 0;
 		while ((sz = _conn.read(d, SZ_BUF)) > 0) {
+			_tend = wolf::CTime::now();
 			if (count == 0)
 				_tstart = wolf::CTime::now();
 			for (int i = 0; i < sz; i++)
@@ -36,11 +37,11 @@ public:
 	}
 
 private:
-	bool _done;
 	wolf::CTcpSocket &_conn;
 	unsigned _bc;
 	char _data;
 	CTime _tstart;
+	CTime _tend;
 };
 
 #endif /* TESTTCP_H_ */
